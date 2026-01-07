@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School Faculty | Official Portal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --bg: #050811;
+            --accent: #3b82f6;
+            --card-glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body { margin: 0; background: var(--bg); color: white; font-family: 'Segoe UI', sans-serif; overflow-x: hidden; }
+        
+        .panel {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .section-tag {
+            position: absolute;
+            top: 40px;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: bold;
+            border-bottom: 1px solid var(--accent);
+            padding-bottom: 5px;
+            z-index: 20;
+        }
+
+        .profile-container {
+            position: absolute;
+            width: 85%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 50px;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            background: var(--card-glass);
+            padding: 20px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        /* DEFAULT VISIBILITY FOR CHAIRMAN ON LOAD */
+        .pc-lead.chairman-card {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .image-frame {
+            width: 100%;
+            height: 420px;
+            background: #1a1f2e;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+        }
+        .image-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .image-frame::after { content: "PHOTO"; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 0.7rem; opacity: 0.3; letter-spacing: 2px; }
+
+        .name { font-size: 2.2rem; margin: 0 0 10px 0; }
+        .desig { color: var(--accent); font-weight: bold; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 20px; display: block; }
+        .quote { font-size: 1.05rem; line-height: 1.7; color: #cbd5e1; font-style: italic; }
+
+        .grid-view { position: absolute; width: 90%; max-width: 1200px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; opacity: 0; visibility: hidden; }
+        .small-card { background: var(--card-glass); padding: 20px; border-radius: 15px; border: 1px solid var(--border); text-align: center; }
+        .img-mini { width: 100px; height: 100px; background: #1a1f2e; border-radius: 50%; margin: 0 auto 15px; overflow: hidden; border: 2px solid var(--accent); }
+        .img-mini img { width: 100%; height: 100%; object-fit: cover; }
+
+        .s-name { font-size: 1.1rem; margin: 5px 0; }
+        .s-desig { font-size: 0.7rem; color: var(--accent); font-weight: bold; text-transform: uppercase; display: block; margin-bottom: 10px; }
+        .s-quote { font-size: 0.8rem; color: #94a3b8; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+
+        @media (max-width: 900px) {
+            .profile-container { grid-template-columns: 1fr; padding: 20px; }
+            .image-frame { height: 200px; width: 150px; margin: 0 auto; }
+            .grid-view { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="panel" id="sec-lead" style="background: linear-gradient(to bottom, #050811, #0a1629);">
+        <div class="section-tag">Leadership</div>
+        
+        <div class="profile-container pc-lead chairman-card">
+            <div class="image-frame"><img src="chairman.jpg" alt="Chairman"></div>
+            <div class="info">
+                <span class="desig">Chairman</span>
+                <h2 class="name">Dr. Deepak Singh</h2>
+                <p class="quote">Goal setting is not a mind game. It is a process of developing the internal willpower to accomplish what you have set out to do. I wish that all the Modernites look beyond the internal barriers and push through on the road to success. Face the challenges with courage, as challenges are goals pursued with conviction. So, propel yourself forward with a vision. Be strong and steady and develop yourselves with the human values inculcated for making a difference in this world. I wish all Modernites become strong pillars of humanity and spread positivity wherever they go. Your words have incredible power. They reinforce your beliefs, and your beliefs create your reality.</p>
+            </div>
+        </div>
+
+        <div class="profile-container pc-lead">
+            <div class="image-frame"><img src="director.jpg" alt="Director"></div>
+            <div class="info">
+                <span class="desig">Director</span>
+                <h2 class="name">Mr. Vaibhav Singh</h2>
+                <p class="quote">“If you are trying to find out what you want to do with your life, look for sparks. There is no passion to be found playing small in settling for a life that is less than the one you are capable of living.” - Nelson Mandela. When you set sail in search of your life's work, you must seek passion, not fame or rewards or riches, but a willingness to quietly do your work, trusting life's sowing and reaping nature. Strive to do your work with gratitude and conviction. Make a difference in your own way, as nobody else has what you have, your voice, your mind, and your vision. Just don't give up on your dreams. I wish all the Modernites a bright present and an inspiring future.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel" id="sec-admin" style="background: #06120b;">
+        <div class="section-tag">Administration</div>
+        <div class="profile-container pc-admin">
+            <div class="image-frame"><img src="principal.jpg" alt="Principal"></div>
+            <div class="info">
+                <span class="desig">Principal</span>
+                <h2 class="name">Mr. R K Jain</h2>
+                <p class="quote">“The function of education is to teach one to think intensively and critically. Intelligence plus character is the goal of true education.” With the perspective of teaching not for a living but as my doing to amplify my passion, I joined this prestigious institution in 1992 as a Mathematics faculty. Teaching the students the systematic procedures of solving a problem has led me to develop a step-by-step approach to any challenging situation with peace, perseverance, and clarity. The vision of our mentor Dr. Deepak Singh is to guide us by making us reach a point where we possess an identity as an intelligent “Modernite.” I strive to work with dedication to take this institution to new heights, along with the support of staff members and the belief that “A dream doesn’t become a reality through magic; it takes sweat, determination, and hard work.”</p>
+            </div>
+        </div>
+        <div class="profile-container pc-admin">
+            <div class="image-frame"><img src="vp1.jpg" alt="VP"></div>
+            <div class="info">
+                <span class="desig">Vice Principal / City Coordinator / Floater Floor Manager / IT Officer</span>
+                <h2 class="name">Mr. Nasim Mohhammd</h2>
+                <p class="quote">Here, I learned life is all about chances and the opportunities that come to you; grab it at the very first moment, and don’t rely on luck because successful people don’t wait for good luck to arrive. Rather, they venture out, look for an opportunity, and burn the midnight oil to turn it into a success story. I just want to say hard work, perspiration, passion, and learning lessons from your mistakes will be the essential elements of your success story.</p>
+            </div>
+        </div>
+        <div class="profile-container pc-admin">
+            <div class="image-frame"><img src="vp2.jpg" alt="VP"></div>
+            <div class="info">
+                <span class="desig">Vice Principal / Floor Manager- (Top Floor – V to IX)</span>
+                <h2 class="name">Ms. Priti Banda</h2>
+                <p class="quote">Learning is a process - a journey. I have learned and evolved under the guidance of Sir Chairman Dr. Deepak Singh. Aristotle once said, 'Educating the mind without educating the heart is no education at all,' we also believe in this and incorporate moral values and ethics along with the inculcation of soft skills in addition to academics. We strongly follow and uphold our motto of Modern School, which is ' We Care,' our guiding force.</p>
+            </div>
+        </div>
+        <div class="profile-container pc-admin">
+            <div class="image-frame"><img src="vp3.jpg" alt="VP"></div>
+            <div class="info">
+                <span class="desig">Vice Principal / Floor Manager- (Nursery Block – LKG-I)</span>
+                <h2 class="name">Ms. Raveen Aanand</h2>
+                <p class="quote">Modern School has been able to carve a niche in the city’s educational scene, which is an apt reflection of the vision and mission of our mentor and Chairman, Dr. Deepak Singh. Continuing his legacy are the earnest and tireless efforts of our Director, Mr. Vaibhav Singh. We at Modern strive to focus more on students, to give them real global exposure, and to ensure that they cultivate and celebrate their excellence.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel" id="sec-inch" style="background: #11081a;">
+        <div class="section-tag">Incharges</div>
+        <div class="profile-container pc-inch">
+            <div class="image-frame"><img src="inch1.jpg" alt="Incharge"></div>
+            <div class="info">
+                <span class="desig">City Coordinator (Education)</span>
+                <h2 class="name">Ms. Kalpana Ojha</h2>
+                <p class="quote">Modern school has always emphasized the concept of Human engineering. It believes that human resources form the fulcrum of any organization’s functioning. I am delighted to be a part of this institution, and my affiliation with it over the years has given me immense pride.</p>
+            </div>
+        </div>
+        <div class="profile-container pc-inch">
+            <div class="image-frame"><img src="inch2.jpg" alt="Incharge"></div>
+            <div class="info">
+                <span class="desig">Floor Manager- (Ground Floor-X, XI, XII)</span>
+                <h2 class="name">Ms Arati Gujral</h2>
+                <p class="quote">I believe that focused efforts and honesty are the secrets to success. I trust that nothing can improve society more than better education. The passion, enthusiasm, and commitment make Nursery Block a unique and cherished place to teach and learn. The Modern Family is made complete by parents' support.</p>
+            </div>
+        </div>
+        <div class="profile-container pc-inch">
+            <div class="image-frame"><img src="inch3.jpg" alt="Incharge"></div>
+            <div class="info">
+                <span class="desig">Floor Manager – (First Floor – II to IV)</span>
+                <h2 class="name">Ms Audrie D’Silva</h2>
+                <p class="quote">I believe that focused efforts and honesty are the secrets to success. I trust that nothing can improve society more than better education. The passion, enthusiasm, and commitment that both staff and students exhibit make Nursery Block a unique and cherished place to teach and learn.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="panel" id="sec-execs" style="background: #140b05;">
+        <div class="section-tag">Class Executives</div>
+        <div class="grid-view g-ex">
+            <div class="small-card"><div class="img-mini"><img src="LKG.jpg"></div><span class="s-desig">LKG</span><h4 class="s-name">Ms. Tripti Chauhan</h4><p class="s-quote">Break all self-imposed limitations and helped tap potential.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="HKG.jpg"></div><span class="s-desig">HKG</span><h4 class="s-name">Ms Aishwarya Saxena</h4><p class="s-quote">Devoted to nurturing the youngest minds. Joyful environment.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="I.jpg"></div><span class="s-desig">I</span><h4 class="s-name">Ms Rupinder Kaur</h4><p class="s-quote">Helped tap untapped potential. Aspire to spread smiles.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="II.jpg"></div><span class="s-desig">II</span><h4 class="s-name">Ms Shilpa Chawla</h4><p class="s-quote">Grooming students by inculcating human values.</p></div>
+        </div>
+        <div class="grid-view g-ex">
+            <div class="small-card"><div class="img-mini"><img src="III.jpg"></div><span class="s-desig">III</span><h4 class="s-name">Ms. Vijaya Singh</h4><p class="s-quote">Encouraging students to reach max potential. Build self-esteem.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="IV.jpg"></div><span class="s-desig">IV</span><h4 class="s-name">Ms Smitika Singh</h4><p class="s-quote">Students are building blocks of modern society.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="V.jpg"></div><span class="s-desig">V</span><h4 class="s-name">Ms Nupur Saxena</h4><p class="s-quote">Being nice is more important than being important.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="VI.jpg"></div><span class="s-desig">VI</span><h4 class="s-name">Ms Rina Shukla</h4><p class="s-quote">Fostering supportive and engaging environment.</p></div>
+        </div>
+        <div class="grid-view g-ex">
+            <div class="small-card"><div class="img-mini"><img src="VII.jpg"></div><span class="s-desig">VII</span><h4 class="s-name">Ms Chanchal Vijay</h4><p class="s-quote">40+ year journey. Fueled by passion and commitment.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="VIII.jpg"></div><span class="s-desig">VIII</span><h4 class="s-name">Ms Archana Sharma</h4><p class="s-quote">Admired professionalism and standards.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="IX.jpg"></div><span class="s-desig">IX</span><h4 class="s-name">Ms Bhawna Singh</h4><p class="s-quote">Academic excellence and holistic development.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="X.jpg"></div><span class="s-desig">X</span><h4 class="s-name">Ms D.K. Penci</h4><p class="s-quote">Teaching is a serious vocation; needs patience.</p></div>
+        </div>
+        <div class="grid-view g-ex">
+            <div class="small-card"><div class="img-mini"><img src="XI.jpg"></div><span class="s-desig">XI</span><h4 class="s-name">Ms Priti Yadav</h4><p class="s-quote">Legacy of 'We Care'. Child is morally upright.</p></div>
+            <div class="small-card"><div class="img-mini"><img src="XII.jpg"></div><span class="s-desig">XII</span><h4 class="s-name">Mr. Mohit Rohira</h4><p class="s-quote">Council plays a pivotal role in shaping leadership skills.</p></div>
+        </div>
+    </section>
+
+    <section class="panel" id="sec-coord" style="background: #08121a;">
+        <div class="section-tag">Coordinators</div>
+        <div class="grid-view g-co">
+            <div class="small-card"><h4>Mr Satish Gosain</h4><span class="s-desig">Floater Executive Officer</span></div>
+            <div class="small-card"><h4>Mr S.M. Vaishnav</h4><span class="s-desig">Student’s Council Officer</span></div>
+            <div class="small-card"><h4>Ms Manisha Kohli</h4><span class="s-desig">Cultural Officer</span></div>
+            <div class="small-card"><h4>Ms Raina Roanka</h4><span class="s-desig">Assistant Cultural Officer</span></div>
+        </div>
+        <div class="grid-view g-co">
+            <div class="small-card"><h4>Mr Rajeev Rathore</h4><span class="s-desig">Sports Officer</span></div>
+            <div class="small-card"><h4>Mr Alwin Abreo</h4><span class="s-desig">HR Officer</span></div>
+            <div class="small-card"><h4>Ms Ankita Suri</h4><span class="s-desig">HR Officer</span></div>
+            <div class="small-card"><h4>Ms Shilpa Chawla</h4><span class="s-desig">Social Media Officer</span></div>
+        </div>
+        <div class="grid-view g-co">
+            <div class="small-card"><h4>Mr Yash Bansal</h4><span class="s-desig">Assistant Social Media Officer</span></div>
+            <div class="small-card"><h4>Mr Donald Joel</h4><span class="s-desig">Assistant Executive Officer, Operations</span></div>
+        </div>
+    </section>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // LEADERSHIP: Chairman starts visible
+        let tlLead = gsap.timeline({
+            scrollTrigger: { trigger: "#sec-lead", start: "top top", end: "+=3000", pin: true, scrub: 1 }
+        });
+        // We skip the first "to alpha:1" for chairman because he is already visible
+        tlLead.to(".chairman-card", { autoAlpha: 0, y: -40, duration: 1, delay: 1 })
+              .to(".pc-lead:not(.chairman-card)", { autoAlpha: 1, y: 0, duration: 1 })
+              .to(".pc-lead:not(.chairman-card)", { autoAlpha: 0, y: -40, duration: 1, delay: 1 });
+
+        // OTHER SECTIONS
+        function setupFades(secId, cardClass, dist) {
+            let tl = gsap.timeline({
+                scrollTrigger: { trigger: secId, start: "top top", end: `+=${dist}`, pin: true, scrub: 1 }
+            });
+            gsap.utils.toArray(cardClass).forEach(card => {
+                tl.to(card, { autoAlpha: 1, y: 0, duration: 1 })
+                  .to(card, { autoAlpha: 0, y: -40, duration: 1, delay: 2 });
+            });
+        }
+
+        function setupGrids(secId, gridClass, dist) {
+            let tl = gsap.timeline({
+                scrollTrigger: { trigger: secId, start: "top top", end: `+=${dist}`, pin: true, scrub: 1 }
+            });
+            gsap.utils.toArray(gridClass).forEach(grid => {
+                tl.to(grid, { autoAlpha: 1, scale: 1, duration: 1 })
+                  .to(grid, { autoAlpha: 0, scale: 0.9, duration: 1, delay: 2.5 });
+            });
+        }
+
+        setupFades("#sec-admin", ".pc-admin", 8000);
+        setupFades("#sec-inch", ".pc-inch", 6000);
+        setupGrids("#sec-execs", ".g-ex", 8000);
+        setupGrids("#sec-coord", ".g-co", 6000);
+    </script>
+</body>
+</html>

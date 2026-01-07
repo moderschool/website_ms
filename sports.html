@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Athletics | Infrastructure Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050505;
+            --panel-bg: #0c0c0e;
+            --card: #161618;
+            --accent: #3b82f6;
+            --text-dim: #94a3b8;
+            --border: #222225;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg);
+            color: #fff;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .sport-section {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            min-height: 110vh;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .details-pane {
+            background: var(--panel-bg);
+            padding: 0 60px 80px 60px;
+            position: relative;
+        }
+
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            background: var(--panel-bg); 
+            padding: 60px 0 30px 0;
+            z-index: 10;
+        }
+
+        .sticky-header h2 {
+            font-size: 4rem;
+            margin: 0;
+            line-height: 0.85;
+            letter-spacing: -3px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .infra-tag {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--accent);
+            font-weight: 800;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .description-body p {
+            font-size: 1.1rem;
+            color: var(--text-dim);
+            font-weight: 300;
+            margin-bottom: 40px;
+        }
+
+        .spec-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .spec-box {
+            padding: 20px;
+            background: var(--card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .spec-box strong { display: block; font-size: 0.95rem; color: var(--accent); margin-bottom: 5px; }
+        .spec-box span { font-size: 0.9rem; color: #fff; }
+
+        .media-pane {
+            padding: 60px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: 280px;
+            gap: 24px;
+        }
+
+        .tile {
+            border-radius: 32px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--card);
+        }
+
+        .tile img { width: 100%; height: 100%; object-fit: cover; }
+        .wide { grid-column: span 2; }
+        .tall { grid-row: span 2; }
+
+        .glimpses-intro { padding: 120px 60px 40px; text-align: center; }
+        .glimpses-intro h2 { font-size: 5rem; letter-spacing: -5px; margin: 0; }
+
+        @media (max-width: 1100px) {
+            .sport-section { grid-template-columns: 1fr; }
+            .sticky-header { position: relative; padding: 40px 0 20px 0; }
+            .details-pane { padding: 0 40px 40px 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="sport-section">
+        <div class="details-pane">
+            <div class="sticky-header">
+                <span class="infra-tag">Indoor Courts</span>
+                <h2>BADMINTON</h2>
+            </div>
+            <div class="description-body">
+                <p>Professional indoor badminton arena featuring BWF-approved synthetic mats. The facility is optimized for shuttlecock trajectory and student safety.</p>
+                <div class="spec-list">
+                    <div class="spec-box"><strong>Surface</strong><span>Anti-skid PVC flooring for joint protection.</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="media-pane">
+            <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1626225967045-2c390f5d7f5f?q=80&w=800"></div>
+        </div>
+    </section>
+
+    <section class="sport-section">
+        <div class="details-pane">
+            <div class="sticky-header">
+                <span class="infra-tag">Olympic Standard</span>
+                <h2>BASKETBALL</h2>
+            </div>
+            <div class="description-body">
+                <p>Equipped with a FIBA-standard high-density synthetic cushioned floor, our basketball arena is built for elite performance.</p>
+                <div class="spec-list">
+                    <div class="spec-box"><strong>Hoops</strong><span>Professional breakaway rims with height adjustability.</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="media-pane">
+            <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1544910368-5152f99db577?q=80&w=800"></div>
+        </div>
+    </section>
+
+    <section class="sport-section">
+        <div class="details-pane">
+            <div class="sticky-header">
+                <span class="infra-tag">Outdoor Synthetic</span>
+                <h2>VOLLEYBALL</h2>
+            </div>
+            <div class="description-body">
+                <p>Specialized all-weather courts with advanced net systems to support competitive team training and tournaments.</p>
+                <div class="spec-list">
+                    <div class="spec-box" style="border-left-color: #a855f7;"><strong>Safety</strong><span>Shock-absorbing zones and specialized non-abrasive surface.</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="media-pane">
+            <div class="tile tall"><img src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=600"></div>
+            <div class="tile"><img src="https://images.unsplash.com/photo-1592656094267-764a45159575?q=80&w=400"></div>
+        </div>
+    </section>
+
+    <section class="sport-section">
+        <div class="details-pane">
+            <div class="sticky-header">
+                <span class="infra-tag">Indoor Arena</span>
+                <h2>TABLE TENNIS</h2>
+            </div>
+            <div class="description-body">
+                <p>An indoor facility featuring professional-grade ITTF-approved tables and high-grip flooring for tactical gameplay.</p>
+            </div>
+        </div>
+        <div class="media-pane">
+            <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1534158914592-062992fbe900?q=80&w=800"></div>
+        </div>
+    </section>
+
+    <section class="sport-section">
+        <div class="details-pane">
+            <div class="sticky-header">
+                <span class="infra-tag" style="color: #22c55e;">Curated Pitch</span>
+                <h2 style="color: #22c55e;">CRICKET</h2>
+            </div>
+            <div class="description-body">
+                <p>Our cricket facility features a vast natural turf outfield and dedicated practice bays. The pitches are curated for consistent bounce to help budding cricketers refine their technique.</p>
+                <div class="spec-list">
+                    <div class="spec-box" style="border-left-color: #22c55e;"><strong>Practice Bays</strong><span>3 Full-length nets with both turf and cement wickets.</span></div>
+                    <div class="spec-box" style="border-left-color: #22c55e;"><strong>Coaching Tech</strong><span>Automatic bowling machines for specialized batting drills.</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="media-pane">
+            <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=800"></div>
+            <div class="tile"><img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=400"></div>
+        </div>
+    </section>
+
+    <section class="sport-section">
+        <div class="details-pane">
+            <div class="sticky-header">
+                <span class="infra-tag" style="color: #f97316;">Synthetic Track</span>
+                <h2 style="color: #f97316;">TRACK & FIELD</h2>
+            </div>
+            <div class="description-body">
+                <p>The 400m synthetic all-weather track is engineered for peak performance, providing traction and energy return for sprinters and long-distance runners alike.</p>
+                <div class="spec-list">
+                    <div class="spec-box" style="border-left-color: #f97316;"><strong>Arenas</strong><span>Dedicated pits for Long Jump, Shot-put, and Hurdle sectors.</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="media-pane">
+            <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1541252260730-0412e8e2108e?q=80&w=800"></div>
+        </div>
+    </section>
+
+    <div class="glimpses-intro">
+        <span class="infra-tag">Victory & Spirit</span>
+        <h2>SPORTS MEET GLIMPSES</h2>
+    </div>
+
+    <div class="media-pane" style="padding-bottom: 100px;">
+        <div class="tile tall"><img src="https://images.unsplash.com/photo-1594503204738-d62157d60f9e?q=80&w=600"></div>
+        <div class="tile wide"><img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800"></div>
+        <div class="tile"><img src="https://images.unsplash.com/photo-1510931221715-d41935634281?q=80&w=400"></div>
+    </div>
+
+</body>
+</html>

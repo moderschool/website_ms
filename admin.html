@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School, Kota</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        /* Your existing CSS remains the same until the content section */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fefaf0;
+            color: #5d2a2a;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        body.menu-open .navbar {
+            transform: translateY(-100%);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: space-between;
+            position: fixed;
+            top: 25px;
+            left: 20px;
+            z-index: 1002;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #5d2a2a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            width: auto;
+        }
+
+        .admission-btn {
+            background-color: transparent;
+            color: #5d2a2a;
+            border: 2px solid #5d2a2a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1002;
+        }
+
+        .admission-btn:hover {
+            background-color: #5d2a2a;
+            color: white;
+        }
+
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1001;
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            overflow: hidden;
+        }
+
+        .overlay-menu.active {
+            transform: translateX(0);
+        }
+
+        .menu-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.4s ease-in-out;
+            margin-top: 80px;
+        }
+
+        .overlay-menu.submenu-active .menu-wrapper {
+            transform: translateX(-100%);
+        }
+
+        .main-menu-screen,
+        .submenu-screen {
+            width: 100%;
+            height: 100%;
+            list-style: none;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .submenu-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 1003;
+        }
+
+        .overlay-menu.submenu-active .submenu-header {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #5d2a2a;
+            font-size: 28px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 15px 10px;
+            border-radius: 5px;
+            transition: color 0.3s;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            color: #8b4513;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+
+        .main-menu-screen li,
+        .submenu-screen li {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-menu-screen a,
+        .submenu-screen a {
+            text-decoration: none;
+            color: #5d2a2a;
+            font-weight: 600;
+            display: block;
+            padding: 15px 10px;
+            margin-bottom: 5px;
+            transition: color 0.3s;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .main-menu-screen a,
+        .submenu-screen a {
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .main-menu-screen a.has-submenu::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        .main-menu-screen a:hover,
+        .submenu-screen a:hover {
+            color: #8b4513;
+        }
+
+        .submenu-screen {
+            background-color: white;
+        }
+
+        .content {
+            padding-top: 80px;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        /* NEW ADMIN TEAM STYLES WITH YOUR SCHOOL'S COLOR SCHEME */
+        .admin-team-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 60px;
+            color: #5d2a2a;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #5d2a2a;
+        }
+
+        /* Panel Styles */
+        .panel {
+            position: relative;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 80px 20px 40px;
+            background: linear-gradient(to bottom, #fefaf0, #f8f0e0);
+        }
+
+        .section-tag {
+            position: absolute;
+            top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 0.7rem;
+            color: #5d2a2a;
+            font-weight: bold;
+            border-bottom: 1px solid #5d2a2a;
+            padding-bottom: 5px;
+            z-index: 20;
+        }
+
+        .profile-container {
+            position: absolute;
+            width: 90%;
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            background: rgba(255, 255, 255, 0.98);
+            padding: 20px;
+            border-radius: 16px;
+            border: 1px solid rgba(93, 42, 42, 0.1);
+            box-shadow: 0 8px 25px rgba(93, 42, 42, 0.1);
+            text-align: center;
+            margin-top:-120px;
+        }
+
+        /* DEFAULT VISIBILITY FOR CHAIRMAN ON LOAD */
+        .pc-lead.chairman-card {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .image-frame {
+            width: 200px;
+            height: 100px;
+            background: #f8f0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #5d2a2a;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .image-frame:hover img {
+            transform: scale(1.05);
+        }
+
+        .image-frame::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.7rem;
+            opacity: 0.3;
+            letter-spacing: 2px;
+            color: #5d2a2a;
+        }
+
+        .name {
+            font-size: 1.8rem;
+            margin: 0 0 8px 0;
+            color: #5d2a2a;
+        }
+
+        .desig {
+            color: #8b4513;
+            font-weight: bold;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .quote {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #7a3e3e;
+            font-style: solid;
+            padding: 12px;
+            background: rgba(248, 240, 224, 0.5);
+            border-radius: 8px;
+           
+        }
+
+        .grid-view {
+            position: absolute;
+            width: 95%;
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .small-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(93, 42, 42, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(93, 42, 42, 0.05);
+        }
+
+        .small-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(93, 42, 42, 0.1);
+        }
+
+        .img-mini {
+            width: 80px;
+            height: 80px;
+            background: #f8f0e0;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            overflow: hidden;
+            border: 2px solid #8b4513;
+        }
+
+        .img-mini img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .s-name {
+            font-size: 1rem;
+            margin: 3px 0;
+            color: #5d2a2a;
+        }
+
+        .s-desig {
+            font-size: 0.65rem;
+            color: #8b4513;
+            font-weight: bold;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .s-quote {
+            font-size: 0.75rem;
+            color: #7a3e3e;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Coordinator Cards - Now with photos like executives */
+        .coord-card {
+            background: rgba(255, 255, 255, 0.98);
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(93, 42, 42, 0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(93, 42, 42, 0.05);
+        }
+
+        .coord-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(93, 42, 42, 0.1);
+        }
+
+        .coord-card h4 {
+            font-size: 1rem;
+            margin: 0 0 8px 0;
+            color: #5d2a2a;
+        }
+
+        /* Responsive improvements for mobile */
+        @media (max-width: 1200px) {
+            .grid-view {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .grid-view {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .profile-container {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            .name {
+                font-size: 1.6rem;
+            }
+            
+            .quote {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 40px;
+            }
+            
+            .panel {
+                padding: 70px 15px 30px;
+                min-height: 90vh;
+            }
+            
+            .section-tag {
+                top: 25px;
+                font-size: 0.65rem;
+                letter-spacing: 3px;
+            }
+            
+            .grid-view {
+                grid-template-columns: 1fr;
+                gap: 12px;
+                width: 90%;
+            }
+            
+            .small-card {
+                padding: 12px;
+            }
+            
+            .img-mini {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .s-name {
+                font-size: 0.95rem;
+            }
+            
+            .s-quote {
+                font-size: 0.7rem;
+                -webkit-line-clamp: 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 1.6rem;
+                margin-bottom: 30px;
+            }
+            
+            .panel {
+                padding: 60px 10px 25px;
+                min-height: 85vh;
+            }
+            
+            .image-frame {
+                width: 160px;
+                height: 100px;
+            }
+            
+            .name {
+                font-size: 1.4rem;
+            }
+            
+            .desig {
+                font-size: 0.75rem;
+            }
+            
+            .quote {
+                font-size: 0.85rem;
+                padding: 10px;
+                line-height: 1.5;
+            }
+            
+            .grid-view {
+                width: 95%;
+            }
+            
+            .small-card {
+                padding: 10px;
+            }
+            
+            .s-name {
+                font-size: 0.9rem;
+            }
+            
+            .s-desig {
+                font-size: 0.6rem;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .section-title {
+                font-size: 1.4rem;
+            }
+            
+            .name {
+                font-size: 1.2rem;
+            }
+            
+            .quote {
+                font-size: 0.8rem;
+            }
+            
+            .img-mini {
+                width: 60px;
+                height: 60px;
+            }
+        }
+
+        /* Desktop view adjustments */
+        @media (min-width: 992px) {
+            .profile-container {
+                grid-template-columns: 280px 1fr;
+                gap: 40px;
+                padding: 30px;
+                text-align: left;
+            }
+            
+            .image-frame {
+                width: 100%;
+                height: 350px;
+                margin: 0;
+            }
+            
+            .name {
+                font-size: 2rem;
+            }
+            
+            .quote {
+                font-size: 1rem;
+            }
+            
+            .grid-view {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+            
+            .small-card {
+                padding: 20px;
+            }
+            
+            .img-mini {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .s-name {
+                font-size: 1.1rem;
+            }
+            
+            .s-quote {
+                font-size: 0.8rem;
+                -webkit-line-clamp: 4;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .profile-container {
+                grid-template-columns: 320px 1fr;
+            }
+            
+            .image-frame {
+                height: 250px;
+            }
+            
+            .name {
+                font-size: 2.2rem;
+            }
+        }
+
+        /* Footer styles remain the same */
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-col {
+            flex: 0 0 33.33%;
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-col.logo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .info-col.address-col {
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-col.contact-col {
+            text-align: right;
+        }
+
+        .footer-logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .info-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #f8d7b3;
+        }
+
+        .info-col p {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .info-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .info-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .footer-col {
+            flex: 0 0 16.66%;
+            min-width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            color: #f8d7b3;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            background-color: #4a1f1f;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .copyright {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+
+        .footer-bottom-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-media {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-media a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-media a:hover {
+            color: #f8d7b3;
+        }
+
+        @media (max-width: 992px) {
+            .info-col {
+                flex: 0 0 100%;
+                text-align: center !important;
+                border: none !important;
+                margin-bottom: 30px;
+            }
+
+            .info-col.logo-col {
+                align-items: center;
+            }
+
+            .footer-col {
+                flex: 0 0 33.33%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-col {
+                flex: 0 0 50%;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .footer-bottom-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .social-media {
+                margin-right: 0;
+            }
+
+            .copyright {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .footer-col {
+                flex: 0 0 100%;
+            }
+        }
+        /* Inline Location Tags Styling */
+.designation-with-location {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px;
+  
+}
+
+.location-tags-inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+      
+}
+
+.location-tag-inline {
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 3px;
+}
+
+
+
+/* Separator between location tags */
+.location-tag-separator {
+    color: #8b4513;
+    margin-top:4px;
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* Mobile responsive for inline location tags */
+@media (max-width: 768px) {
+    .designation-with-location {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .location-tags-inline {
+        gap: 4px;
+    }
+    
+    .location-tag-inline {
+        font-size: 0.6rem;
+        padding: 2px 6px;
+    }
+}
+
+@media (max-width: 480px) {
+    .location-tag-inline {
+        font-size: 0.6rem;
+        padding: 2px 5px;
+    }
+}
+
+/* Desktop view adjustments */
+@media (min-width: 992px) {
+    .designation-with-location {
+        align-items: center;
+    }
+    
+    .location-tag-inline {
+        font-size: 0.75rem;
+        padding: 3px 10px;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <button class="admission-btn">Enquiry</button>
+
+    <nav class="navbar">
+        <img src="ms_logo.png" style="height:70px;margin-top:-10px;">
+    </nav>
+
+    <div class="overlay-menu" id="overlayMenu">
+        <div class="submenu-header" id="submenuHeader">
+            <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        <div class="menu-wrapper" id="menuWrapper">
+            <ul class="main-menu-screen" id="mainMenu">
+                <li><a href="#" class="close-menu">Home</a></li>
+                <li class="menu-item-with-submenu" data-submenu="about-us">
+                    <a href="#" class="has-submenu">About Us</a>
+                </li>
+                <li class="menu-item-with-submenu" data-submenu="academics">
+                    <a href="#" class="has-submenu">Academics</a>
+                </li>
+                <li><a href="#" class="close-menu">Admissions</a></li>
+                <li class="menu-item-with-submenu" data-submenu="campus-life">
+                    <a href="#" class="has-submenu">Campus Life</a>
+                </li>
+                <li class="menu-item-with-submenu" data-submenu="contact-us">
+                    <a href="#" class="has-submenu">Contact Us</a>
+                </li>
+            </ul>
+            <ul class="submenu-screen" id="submenuScreen">
+                <!-- Submenu content will be added here -->
+            </ul>
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- ADMIN TEAM SECTION -->
+        <div class="admin-team-section">
+            <h1 class="section-title">Our Leadership & Administration Team</h1>
+            
+            <!-- Leadership Panel -->
+          <!-- Leadership Panel -->
+<section class="panel" id="sec-lead" style="background: linear-gradient(to bottom, #fefaf0, #f8f0e0);">
+    <div class="section-tag">Leadership</div>
+    
+    <div class="profile-container pc-lead chairman-card">
+        <div class="image-frame">
+          <img src="DeepakSingh.jpg"> </div>
+        <div class="info">
+            <!-- INLINE DESIGNATION WITH LOCATIONS -->
+            <div class="designation-with-location">
+               <h2 class="name">Dr. Deepak Singh</h2>
+                
+                <div class="location-tags-inline">
+                   <b class="desig" style="font-size: 1.2rem;">Chairman</b>  
+                    <span class="location-tag-inline">Kota</span>
+                    <span class="location-tag-separator">|</span>
+                    <span class="location-tag-inline">Baran</span>
+                    <span class="location-tag-separator">|</span>
+                    <span class="location-tag-inline">Bharatpur</span>
+                    <span class="location-tag-separator">|</span>
+                    <span class="location-tag-inline">Nayanohra</span>
+                    <span class="location-tag-separator">|</span>
+                    <span class="location-tag-inline">Jaipur</span>
+                 </div>
+            </div>
+            
+           
+            <p class="quote">Goal setting is not a mind game. It is a process of developing the internal willpower to accomplish what you have set out to do. I wish that all the Modernites look beyond the internal barriers and push through on the road to success. Face the challenges with courage, as challenges are goals pursued with conviction. So, propel yourself forward with a vision. Be strong and steady and develop yourselves with the human values inculcated for making a difference in this world.</p>
+        </div>
+    </div>
+
+    <div class="profile-container pc-lead">
+        <div class="image-frame">
+           <img src="VaibhavSingh.jpg"> </div>
+        <div class="info">
+            <!-- INLINE DESIGNATION WITH LOCATIONS -->
+            
+            
+            <h2 class="name">Mr. Vaibhav Singh</h2>
+              <div class="location-tags-inline">
+                   <b class="desig" style="font-size: 1.2rem;">Director</b>  
+                    <span class="location-tag-inline">Kota</span>
+                    <span class="location-tag-separator">|</span>
+                    <span class="location-tag-inline">Baran</span>
+                    <span class="location-tag-separator">|</span>
+                    <span class="location-tag-inline">Bharatpur</span>
+                    <span class="location-tag-separator">|</span>
+                    <span class="location-tag-inline">Nayanohra</span>
+                    <span class="location-tag-separator">|</span>
+                    <span class="location-tag-inline">Jaipur</span>
+                 </div>
+            <p style="font-style: italic;"><b style="font-size: 1.2rem;">"</b>If you are trying to find out what you want to do with your life, look for sparks. There is no passion to be found playing small in settling for a life that is less than the one you are capable of living.<b style="font-size: 1.2rem;">"</b> - Nelson Mandela.</p>
+            <p class="quote">When you set sail in search of your life's work, you must seek passion, not fame or rewards or riches, but a willingness to quietly do your work, trusting life's sowing and reaping nature. Strive to do your work with gratitude and conviction. Make a difference in your own way, as nobody else has what you have, your voice, your mind, and your vision. Just don't give up on your dreams. I wish all the Modernites a bright present and an inspiring future.
+
+</p>
+        </div>
+    </div>
+</section>
+
+            <!-- Administration Panel -->
+            <section class="panel" id="sec-admin" style="background: #f8f0e0;">
+                <div class="section-tag">Administration</div>
+                
+                <!-- Principal -->
+                <div class="profile-container pc-admin">
+                    <div class="image-frame">
+                       <img src="rkjain.png"> </div>
+                    <div class="info">
+                        <span class="desig">Principal</span>
+                        <h2 class="name">Mr. R K Jain</h2>
+                        <p class="quote">"The function of education is to teach one to think intensively and critically. Intelligence plus character is the goal of true education." With the perspective of teaching not for a living but as my doing to amplify my passion, I joined this prestigious institution in 1992 as a Mathematics faculty. Teaching the students the systematic procedures of solving a problem has led me to develop a step-by-step approach to any challenging situation.</p>
+                    </div>
+                </div>
+                
+                <!-- Vice Principal 1 -->
+                <div class="profile-container pc-admin">
+                    <div class="image-frame">
+                        <img src="Nasim_Mohommad.jpg"></div>
+                    <div class="info">
+                        <span class="desig">Vice Principal / City Coordinator</span>
+                        <h2 class="name">Mr. Nasim Mohhammd</h2>
+                        <p class="quote">Here, I learned life is all about chances and the opportunities that come to you; grab it at the very first moment, and don't rely on luck because successful people don't wait for good luck to arrive. Rather, they venture out, look for an opportunity, and burn the midnight oil to turn it into a success story.</p>
+                    </div>
+                </div>
+                
+                <!-- Vice Principal 2 -->
+                <div class="profile-container pc-admin">
+                    <div class="image-frame">
+                      <img src="Priti_Banda.jpg"></div>
+                    <div class="info">
+                        <span class="desig">Vice Principal / Floor Manager</span>
+                        <h2 class="name">Ms. Priti Banda</h2>
+                        <p class="quote">Learning is a process - a journey. I have learned and evolved under the guidance of Sir Chairman Dr. Deepak Singh. Aristotle once said, 'Educating the mind without educating the heart is no education at all,' we also believe in this and incorporate moral values and ethics along with the inculcation of soft skills.</p>
+                    </div>
+                </div>
+                
+                <!-- Vice Principal 3 -->
+                <div class="profile-container pc-admin">
+                    <div class="image-frame">
+                       <img src="Raveena_Anand.jpg"> </div>
+                    <div class="info">
+                        <span class="desig">Vice Principal / Floor Manager</span>
+                        <h2 class="name">Ms. Raveen Aanand</h2>
+                        <p class="quote">Modern School has been able to carve a niche in the city's educational scene, which is an apt reflection of the vision and mission of our mentor and Chairman, Dr. Deepak Singh. Continuing his legacy are the earnest and tireless efforts of our Director, Mr. Vaibhav Singh.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Incharges Panel -->
+            <section class="panel" id="sec-inch" style="background: #fefaf0;">
+                <div class="section-tag">Incharges</div>
+                
+                <!-- Incharge 1 -->
+                <div class="profile-container pc-inch">
+                    <div class="image-frame">
+                       <img src="Kalpana_Ojha.jpg"> </div>
+                    <div class="info">
+                        <span class="desig">City Coordinator (Education)</span>
+                        <h2 class="name">Ms. Kalpana Ojha</h2>
+                        <p class="quote">Modern school has always emphasized the concept of Human engineering. It believes that human resources form the fulcrum of any organization's functioning. I am delighted to be a part of this institution, and my affiliation with it over the years has given me immense pride.</p>
+                    </div>
+                </div>
+                
+                <!-- Incharge 2 -->
+                <div class="profile-container pc-inch">
+                    <div class="image-frame">
+                      <img src="Arati_Gujral.jpg">  </div>
+                    <div class="info">
+                        <span class="desig">Floor Manager</span>
+                        <h2 class="name">Ms Arati Gujral</h2>
+                        <p class="quote">I believe that focused efforts and honesty are the secrets to success. I trust that nothing can improve society more than better education. The passion, enthusiasm, and commitment make Nursery Block a unique and cherished place to teach and learn.</p>
+                    </div>
+                </div>
+                
+                <!-- Incharge 3 -->
+                <div class="profile-container pc-inch">
+                    <div class="image-frame">
+                      <img src="Audrie_DSilva.jpg">  </div>
+                    <div class="info">
+                        <span class="desig">Floor Manager</span>
+                        <h2 class="name">Ms Audrie D'Silva</h2>
+                        <p class="quote">I believe that focused efforts and honesty are the secrets to success. I trust that nothing can improve society more than better education. The passion, enthusiasm, and commitment that both staff and students exhibit make Nursery Block a unique and cherished place to teach and learn.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Class Executives Panel -->
+            <section class="panel" id="sec-execs" style="background: #f8f0e0;">
+                <div class="section-tag">Class Executives</div>
+                
+                <!-- Grid 1 -->
+                <div class="grid-view g-ex">
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">LKG</div>
+                        </div>
+                        <span class="s-desig">LKG</span>
+                        <h4 class="s-name">Ms. Tripti Chauhan</h4>
+                        <p class="s-quote">Break all self-imposed limitations and helped tap potential.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">HKG</div>
+                        </div>
+                        <span class="s-desig">HKG</span>
+                        <h4 class="s-name">Ms Aishwarya Saxena</h4>
+                        <p class="s-quote">Devoted to nurturing the youngest minds. Joyful environment.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">I</div>
+                        </div>
+                        <span class="s-desig">I</span>
+                        <h4 class="s-name">Ms Rupinder Kaur</h4>
+                        <p class="s-quote">Helped tap untapped potential. Aspire to spread smiles.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">II</div>
+                        </div>
+                        <span class="s-desig">II</span>
+                        <h4 class="s-name">Ms Shilpa Chawla</h4>
+                        <p class="s-quote">Grooming students by inculcating human values.</p>
+                    </div>
+                </div>
+                
+                <!-- Grid 2 -->
+                <div class="grid-view g-ex">
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">III</div>
+                        </div>
+                        <span class="s-desig">III</span>
+                        <h4 class="s-name">Ms. Vijaya Singh</h4>
+                        <p class="s-quote">Encouraging students to reach max potential. Build self-esteem.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">IV</div>
+                        </div>
+                        <span class="s-desig">IV</span>
+                        <h4 class="s-name">Ms Smitika Singh</h4>
+                        <p class="s-quote">Students are building blocks of modern society.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">V</div>
+                        </div>
+                        <span class="s-desig">V</span>
+                        <h4 class="s-name">Ms Nupur Saxena</h4>
+                        <p class="s-quote">Being nice is more important than being important.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">VI</div>
+                        </div>
+                        <span class="s-desig">VI</span>
+                        <h4 class="s-name">Ms Rina Shukla</h4>
+                        <p class="s-quote">Fostering supportive and engaging environment.</p>
+                    </div>
+                </div>
+                
+                <!-- Grid 3 -->
+                <div class="grid-view g-ex">
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">VII</div>
+                        </div>
+                        <span class="s-desig">VII</span>
+                        <h4 class="s-name">Ms Chanchal Vijay</h4>
+                        <p class="s-quote">40+ year journey. Fueled by passion and commitment.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">VIII</div>
+                        </div>
+                        <span class="s-desig">VIII</span>
+                        <h4 class="s-name">Ms Archana Sharma</h4>
+                        <p class="s-quote">Admired professionalism and standards.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">IX</div>
+                        </div>
+                        <span class="s-desig">IX</span>
+                        <h4 class="s-name">Ms Bhawna Singh</h4>
+                        <p class="s-quote">Academic excellence and holistic development.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">X</div>
+                        </div>
+                        <span class="s-desig">X</span>
+                        <h4 class="s-name">Ms D.K. Penci</h4>
+                        <p class="s-quote">Teaching is a serious vocation; needs patience.</p>
+                    </div>
+                </div>
+                
+                <!-- Grid 4 -->
+                <div class="grid-view g-ex">
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">XI</div>
+                        </div>
+                        <span class="s-desig">XI</span>
+                        <h4 class="s-name">Ms Priti Yadav</h4>
+                        <p class="s-quote">Legacy of 'We Care'. Child is morally upright.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <div style="background: #e8d9c5; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #5d2a2a; font-weight: bold; font-size: 0.9rem;">XII</div>
+                        </div>
+                        <span class="s-desig">XII</span>
+                        <h4 class="s-name">Mr. Mohit Rohira</h4>
+                        <p class="s-quote">Council plays a pivotal role in shaping leadership skills.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Coordinators Panel - UPDATED WITH PHOTOS LIKE EXECUTIVES -->
+            <section class="panel" id="sec-coord" style="background: #fefaf0;">
+                <div class="section-tag">Coordinators</div>
+                
+                <!-- Grid 1 -->
+                <div class="grid-view g-co">
+                    <div class="small-card">
+                        <div class="img-mini">
+                         <img src="Satish_Gosain.jpg">  </div>
+                        <span class="s-desig">Floater Executive Officer</span>
+                        <h4 class="s-name">Mr Satish Gosain</h4>
+                        <p class="s-quote">Ensuring smooth operations across all departments.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                          <img src="SM_Vaishnav.jpg"> </div>
+                        <span class="s-desig">Student's Council Officer</span>
+                        <h4 class="s-name">Mr S.M. Vaishnav</h4>
+                        <p class="s-quote">Guiding student leadership and council activities.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                          <img src="Manisha_Kohli.jpg"></div>
+                        <span class="s-desig">Cultural Officer</span>
+                        <h4 class="s-name">Ms Manisha Kohli</h4>
+                        <p class="s-quote">Nurturing artistic talents and cultural events.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                           <img src="Rina_Roanka.jpg"></div>
+                        <span class="s-desig">Assistant Cultural Officer</span>
+                        <h4 class="s-name">Ms Raina Roanka</h4>
+                        <p class="s-quote">Supporting cultural activities and student participation.</p>
+                    </div>
+                </div>
+                
+                <!-- Grid 2 -->
+                <div class="grid-view g-co">
+                    <div class="small-card">
+                        <div class="img-mini">
+                           <img src="Rajeev_Singh.jpg"></div>
+                        <span class="s-desig">Sports Officer</span>
+                        <h4 class="s-name">Mr Rajeev Rathore</h4>
+                        <p class="s-quote">Promoting sportsmanship and physical fitness.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                           <img src="Alwin_Abreo.jpg"> </div>
+                        <span class="s-desig">HR Officer</span>
+                        <h4 class="s-name">Mr Alwin Abreo</h4>
+                        <p class="s-quote">Managing human resources and staff development.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                           <img src="Ankita_Suri.jpg"> </div>
+                        <span class="s-desig">HR Officer</span>
+                        <h4 class="s-name">Ms Ankita Suri</h4>
+                        <p class="s-quote">Supporting staff welfare and development.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                            <img src="Shilpa_Chawla.jpg"> </div>
+                        <span class="s-desig">Social Media Officer</span>
+                        <h4 class="s-name">Ms Shilpa Chawla</h4>
+                        <p class="s-quote">Managing digital presence and communication.</p>
+                    </div>
+                </div>
+                
+                <!-- Grid 3 -->
+                <div class="grid-view g-co">
+                    <div class="small-card">
+                        <div class="img-mini">
+                           <img src="Yash_Bansal.jpg"> </div>
+                        <span class="s-desig">Assistant Social Media Officer</span>
+                        <h4 class="s-name">Mr Yash Bansal</h4>
+                        <p class="s-quote">Supporting digital initiatives and online engagement.</p>
+                    </div>
+                    <div class="small-card">
+                        <div class="img-mini">
+                          <img src="Donald_Joel.jpg"> </div>
+                        <span class="s-desig">Assistant Executive Officer</span>
+                        <h4 class="s-name">Mr Donald Joel</h4>
+                        <p class="s-quote">Assisting in operational management and coordination.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer sections -->
+    <div class="footer-info">
+        <div class="info-col logo-col">
+            <img src="logo.png" alt="Modern School Logo" class="footer-logo">
+            <p>Excellence in Education Since 1973</p>
+        </div>
+        <div class="info-col address-col">
+            <h3>Our Address</h3>
+            <p>Modern School</p>
+            <p>Sector - A Talwandi,</p>
+            <p>Kota, Rajasthan 324005</p>
+            <p>India</p>
+        </div>
+        <div class="info-col contact-col">
+            <h3>Contact Information</h3>
+            <p><i class="fas fa-phone"></i> +91-744-24211167</p>
+            <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
+            <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
+            <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
+        </div>
+    </div>
+
+    <div class="footer-columns">
+        <div class="footer-col">
+            <h3>Academics</h3>
+            <ul>
+                <li><a href="#">Curriculum</a></li>
+                <li><a href="#">Exam & Result</a></li>
+                <li><a href="#">Calendar</a></li>
+                <li><a href="#">Counselling</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Admissions</h3>
+            <ul>
+                <li><a href="#">Apply Now</a></li>
+                <li><a href="#">Tuition & Fees</a></li>
+                <li><a href="#">RTE</a></li>
+                <li><a href="#">Campus Tours</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Campus Life</h3>
+            <ul>
+                <li><a href="#">Student Activities</a></li>
+                <li><a href="#">ModFest</a></li>
+                <li><a href="#">Athletics</a></li>
+                <li><a href="#">Campus Facilities</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="#">Our History</a></li>
+                <li><a href="#">Vision & Mission</a></li>
+                <li><a href="#">Leadership</a></li>
+                <li><a href="#">Our Core Team</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#">Alumni Network</a></li>
+                <li><a href="#">CBSE Corner</a></li>
+                <li><a href="#">TC Verification</a></li>
+                <li><a href="#">Mandatory Disclosures</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="#">Faculty</a></li>
+                <li><a href="#">Campus Location</a></li>
+                <li><a href="#">Career</a></li>
+                <li><a href="#">General Inquiry</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="copyright">
+            <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+        <div class="footer-bottom-right">
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const hamburger = document.getElementById('hamburger');
+        const overlayMenu = document.getElementById('overlayMenu');
+        const mainMenu = document.getElementById('mainMenu');
+        const submenuScreen = document.getElementById('submenuScreen');
+        const backButton = document.getElementById('backButton');
+        const body = document.body;
+        
+        // Define all submenu data
+        const submenus = {
+            'about-us': [
+                { text: 'Our History', href: '#' },
+                { text: 'Vision & Mission', href: '#' },
+                { text: 'Leadership', href: '#' },
+                { text: 'Our Core Team', href: '#' },
+            ],
+            'academics': [
+                { text: 'Curriculum', href: '#' },
+                { text: 'Exam &amp; Result', href: '#' },
+                { text: 'Calendar', href: '#' },
+                { text: 'Counselling', href: '#' },
+            ],
+            'campus-life': [
+                { text: 'Student Activities', href: '#' },
+                { text: 'ModFest', href: '#' },
+                { text: 'Athletics', href: '#' },
+                { text: 'Campus Facilities', href: '#' },
+            ],
+            'contact-us': [
+                { text: 'Faculty ', href: '#' },
+                { text: 'Campus Location', href: '#' },
+                { text: 'Career', href: '#' },
+                { text: 'General Inquiry', href: '#' },
+            ]
+        };
+
+        // Function to close the entire menu and reset the view
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            overlayMenu.classList.remove('active');
+            body.classList.remove('menu-open');
+            // Ensure menu returns to the main screen view
+            overlayMenu.classList.remove('submenu-active');
+            submenuScreen.innerHTML = ''; // Clear submenu content
+        }
+
+        // Toggle main menu when hamburger is clicked
+        hamburger.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                closeMenu();
+            } else {
+                this.classList.add('active');
+                overlayMenu.classList.add('active');
+                body.classList.add('menu-open');
+            }
+        });
+
+        // Handle clicks on main menu items with submenus (drill-down)
+        document.querySelectorAll('.main-menu-screen a.has-submenu').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const menuItem = this.closest('.menu-item-with-submenu');
+                const submenuKey = menuItem.getAttribute('data-submenu');
+                const submenuData = submenus[submenuKey];
+
+                if (!submenuData) return;
+
+                // 1. Build the submenu content
+                submenuScreen.innerHTML = ''; // Clear previous content
+                submenuData.forEach(item => {
+                    const li = document.createElement('li');
+                    // Add the 'close-menu' class to submenu links to close the entire menu on click
+                    li.innerHTML = `<a href="${item.href}" class="close-menu">${item.text}</a>`; 
+                    submenuScreen.appendChild(li);
+                });
+                
+                // Re-attach the closeMenu listener to the newly created links
+                submenuScreen.querySelectorAll('.close-menu').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        closeMenu(); // Close on click
+                        alert(`Navigating to: ${this.textContent}`);
+                    });
+                });
+
+                // 2. Trigger the slide transition
+                overlayMenu.classList.add('submenu-active');
+            });
+        });
+
+        // Handle the Back Button click
+        backButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Slide back to the main menu view
+            overlayMenu.classList.remove('submenu-active');
+            // Clear the submenu content after the transition starts
+            setTimeout(() => {
+                submenuScreen.innerHTML = '';
+            }, 400); // 400ms to match the CSS transition duration
+        });
+
+        // Close menu when clicking on a close-menu link (home, admissions, etc.)
+        document.querySelectorAll('.close-menu').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMenu();
+                alert(`Navigating to: ${this.textContent}`);
+            });
+        });
+        
+        // Close menu when clicking outside of menu content (overlay background)
+        overlayMenu.addEventListener('click', function(e) {
+            // Check if the click target is the overlay background itself
+            if (e.target === this) {
+                closeMenu();
+            }
+        });
+
+        // GSAP Animations for Admin Team Section
+        gsap.registerPlugin(ScrollTrigger);
+
+        // LEADERSHIP: Chairman starts visible
+        let tlLead = gsap.timeline({
+            scrollTrigger: { 
+                trigger: "#sec-lead", 
+                start: "top 100px", 
+                end: "+=2500", 
+                scrub: 1.5,
+                pin: true,
+                anticipatePin: 1,
+                markers: false
+            }
+        });
+        
+        // Animate chairman out and director in
+        tlLead.to(".chairman-card", { autoAlpha: 0, y: -40, duration: 1, delay: 1 })
+              .to(".pc-lead:not(.chairman-card)", { autoAlpha: 1, y: 0, duration: 1 })
+              .to(".pc-lead:not(.chairman-card)", { autoAlpha: 0, y: -40, duration: 1, delay: 1 });
+
+        // ADMINISTRATION section animations
+        function setupFades(secId, cardClass, dist) {
+            let tl = gsap.timeline({
+                scrollTrigger: { 
+                    trigger: secId, 
+                    start: "top 100px", 
+                    end: `+=${dist}`, 
+                    scrub: 1.5,
+                    pin: true,
+                    anticipatePin: 1,
+                    markers: false
+                }
+            });
+            gsap.utils.toArray(cardClass).forEach((card, index) => {
+                tl.to(card, { autoAlpha: 1, y: 0, duration: 1 })
+                  .to(card, { autoAlpha: 0, y: -40, duration: 1, delay: 2 });
+            });
+        }
+
+        function setupGrids(secId, gridClass, dist) {
+            let tl = gsap.timeline({
+                scrollTrigger: { 
+                    trigger: secId, 
+                    start: "top 100px", 
+                    end: `+=${dist}`, 
+                    scrub: 1.5,
+                    pin: true,
+                    anticipatePin: 1,
+                    markers: false
+                }
+            });
+            gsap.utils.toArray(gridClass).forEach((grid, index) => {
+                tl.to(grid, { autoAlpha: 1, scale: 1, duration: 1 })
+                  .to(grid, { autoAlpha: 0, scale: 0.9, duration: 1, delay: 2 });
+            });
+        }
+
+        // Setup animations for all sections
+        setupFades("#sec-admin", ".pc-admin", 8000);
+        setupFades("#sec-inch", ".pc-inch", 6000);
+        setupGrids("#sec-execs", ".g-ex", 8000);
+        setupGrids("#sec-coord", ".g-co", 6000);
+
+        // Add subtle animation to cards on hover
+        gsap.utils.toArray(".small-card").forEach(card => {
+            card.addEventListener("mouseenter", () => {
+                gsap.to(card, { scale: 1.05, duration: 0.3 });
+            });
+            card.addEventListener("mouseleave", () => {
+                gsap.to(card, { scale: 1, duration: 0.3 });
+            });
+        });
+
+        // Add animation to profile containers on hover
+        gsap.utils.toArray(".profile-container").forEach(container => {
+            container.addEventListener("mouseenter", () => {
+                gsap.to(container, { scale: 1.02, duration: 0.4 });
+            });
+            container.addEventListener("mouseleave", () => {
+                gsap.to(container, { scale: 1, duration: 0.4 });
+            });
+        });
+    </script>
+</body>
+</html>

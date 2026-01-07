@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educational Values Timeline</title>
+    <style>
+        /* --- General Setup --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #800000; /* Maroon background */
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px 20px;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .header h1 {
+            font-size: 2.8rem;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Timeline Structure (Default: Desktop/Horizontal Scroll) --- */
+        .timeline-container {
+            margin: 60px 0;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+        
+        .timeline-dots-row {
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+            overflow-x: auto; 
+            padding-bottom: 5px;
+            min-height: 30px;
+        }
+
+        /* Lines: Horizontal Positioning */
+        .timeline-line, .completed-line {
+            position: absolute;
+            top: 50%; 
+            height: 3px;
+            z-index: 1;
+            transform: translateY(-50%); 
+        }
+
+        .timeline-line { background: rgba(255, 255, 255, 0.3); }
+        .completed-line { background: #FFA500; transition: width 1.5s ease; }
+
+        /* Dot is a direct flex item with fixed spacing */
+        .timeline-dot {
+            width: 18px;
+            height: 18px;
+            background: rgba(255, 165, 0, 0.3);
+            border-radius: 50%;
+            border: 2px solid white;
+            z-index: 6; 
+            transition: all 0.5s ease;
+            flex-shrink: 0;
+            min-width: 18px;
+            /* Space between dots based on item width (250px item width - 18px dot width) / 2 = 116px */
+            margin: 0 116px; 
+        }
+
+        /* Content Row: Flex Container */
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 3;
+            margin-top: 30px; 
+        }
+
+        /* Content Item: Fixed width for horizontal layout, aligned below dots */
+        .timeline-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 250px; 
+            position: relative;
+            opacity: 0.6;
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            flex-shrink: 0; 
+            /* CRITICAL Horizontal Fix: Shift item left by (item width / 2) - (dot width / 2) */
+            /* (250 / 2) - (18 / 2) = 125 - 9 = 116px. This aligns the content center with the dot center */
+            margin-left: -116px; 
+        }
+        
+        /* --- Active/Completed Styles --- */
+        .timeline-item.completed { opacity: 1; }
+        .timeline-item.active { opacity: 1; transform: translateY(-5px); }
+        
+        .timeline-dot.completed { background: #FFA500; box-shadow: 0 0 0 2px white; }
+        .timeline-dot.active { background: #FFA500; transform: scale(1.3); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5); }
+        
+        /* --- Content Styling --- */
+        .timeline-title { font-size: 1.2rem; font-weight: 600; color: #f0f0f0; margin-bottom: 6px; text-align: center; }
+        .timeline-item.active .timeline-title, .timeline-item.completed .timeline-title { color: white; text-shadow: 0 0 8px rgba(255, 255, 255, 0.7); }
+        .timeline-description { font-size: 0.85rem; color: #e0e0e0; text-align: center; line-height: 1.3; }
+
+        /* --- Controls & Status --- */
+        .status { text-align: center; margin-top: 20px; font-size: 1rem; color: #FFA500; min-height: 25px; }
+        .controls { text-align: center; margin-top: 30px; }
+        .btn { background: rgba(255, 255, 255, 0.2); color: white; border: 2px solid white; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-size: 0.9rem; margin: 0 8px; transition: all 0.3s ease; }
+        .btn:disabled { background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.5); cursor: not-allowed; }
+        
+        
+        /* ========================================================================= */
+        /* --- MOBILE VIEW: VERTICAL TIMELINE --- */
+        /* ========================================================================= */
+        @media (max-width: 768px) {
+            
+            .timeline-container {
+                padding: 0;
+                /* Reset display for vertical stacking */
+                flex-direction: row; 
+                justify-content: center;
+            }
+
+            /* The dots and line containers become vertical columns */
+            .timeline-dots-row, .timeline {
+                display: block; /* Remove flex behavior */
+                overflow-x: visible; /* Disable horizontal scroll */
+                margin-top: 0;
+            }
+            
+            /* Dots Row: Becomes the Left Column */
+            .timeline-dots-row {
+                width: 50px; /* Fixed width for the vertical spine */
+                min-height: auto;
+                padding-bottom: 0;
+                flex-shrink: 0; /* Ensures it stays narrow */
+            }
+
+            /* Content Row: Becomes the Right Column */
+            .timeline {
+                width: calc(100% - 50px);
+                padding-left: 10px;
+                /* Use flex to stack items vertically */
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* --- Vertical Line Setup --- */
+            .timeline-line, .completed-line {
+                /* Transform from horizontal to vertical */
+                height: 100%; /* Spans full height of the dots-row */
+                width: 3px; /* Thin vertical line */
+                left: 50%; /* Center the line in the 50px column */
+                top: 0; 
+                right: auto;
+                /* CRITICAL: Center vertically and shift left by half its width */
+                transform: translateX(-50%); 
+                transition: height 1.5s ease; /* Animate height now */
+            }
+            .completed-line { width: 3px; }
+
+            /* --- Dot Repositioning --- */
+            .timeline-dot {
+                /* Reset horizontal spacing */
+                margin: 0; 
+                align-self: center; /* Center dot in the 50px column */
+                /* CRITICAL: Add vertical spacing */
+                margin-bottom: 50px; 
+            }
+
+            /* Remove vertical margin from the last dot */
+            .timeline-dot:last-child {
+                margin-bottom: 0;
+            }
+
+            /* --- Content Repositioning --- */
+            .timeline-item {
+                /* Reset horizontal positioning/sizing */
+                width: 100%;
+                margin-left: 0;
+                /* CRITICAL: Add vertical spacing to align with dots */
+                margin-bottom: 50px; 
+                align-items: flex-start; /* Align text left */
+                opacity: 1; /* Keep text visible */
+                transform: none; /* Reset active animation */
+            }
+
+            /* Remove vertical margin from the last item */
+            .timeline-item:last-child {
+                margin-bottom: 0;
+            }
+
+            .timeline-title, .timeline-description {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Core Educational Values</h1>
+            <p>Building character through fundamental principles</p>
+        </div>
+        
+        <div class="timeline-container">
+            <div class="timeline-dots-row">
+                <div class="timeline-line" id="staticTimelineLine"></div> 
+                <div class="completed-line" id="completedLine"></div>
+                
+                <div class="timeline-dot completed" id="dot-0"></div>
+                <div class="timeline-dot" id="dot-1"></div>
+                <div class="timeline-dot" id="dot-2"></div>
+                <div class="timeline-dot" id="dot-3"></div>
+            </div>
+
+            <div class="timeline">
+                <div class="timeline-item completed" id="item1">
+                    <div class="icon-container">
+                        <svg width="50" height="50" viewBox="0 0 60 60">
+                            <circle cx="30" cy="30" r="25" fill="none" stroke="white" stroke-width="2"/>
+                            <line x1="15" y1="20" x2="45" y2="20" stroke="white" stroke-width="2"/>
+                            <rect x="18" y="20" width="6" height="15" fill="white"/>
+                            <rect x="36" y="20" width="6" height="15" fill="white"/>
+                            <line x1="21" y1="35" x2="24" y2="45" stroke="white" stroke-width="2"/>
+                            <line x1="39" y1="35" x2="36" y2="45" stroke="white" stroke-width="2"/>
+                            <line x1="20" y1="45" x2="40" y2="45" stroke="white" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Discipline</h3>
+                        <p class="timeline-description">Structured approach to learning</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" id="item2">
+                    <div class="icon-container">
+                        <svg width="50" height="50" viewBox="0 0 60 60">
+                            <circle cx="30" cy="30" r="25" fill="none" stroke="white" stroke-width="2"/>
+                            <path d="M20,25 Q25,20 30,25 Q35,20 40,25" stroke="white" stroke-width="2" fill="none"/>
+                            <path d="M20,30 Q25,25 30,30 Q35,25 40,30" stroke="white" stroke-width="2" fill="none"/>
+                            <line x1="25" y1="35" x2="35" y2="35" stroke="white" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Courtesy</h3>
+                        <p class="timeline-description">Respectful behavior and interactions</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" id="item3">
+                    <div class="icon-container">
+                        <svg width="50" height="50" viewBox="0 0 60 60">
+                            <circle cx="30" cy="30" r="25" fill="none" stroke="white" stroke-width="2"/>
+                            <circle cx="30" cy="30" r="15" fill="none" stroke="white" stroke-width="2"/>
+                            <line x1="30" y1="15" x2="30" y2="25" stroke="white" stroke-width="2"/>
+                            <line x1="30" y1="30" x2="40" y2="30" stroke="white" stroke-width="2"/>
+                            <circle cx="30" cy="30" r="3" fill="white"/>
+                            <path d="M35,15 L38,12 L42,16 L39,19 Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Efficiency</h3>
+                        <p class="timeline-description">Optimal use of time and resources</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item" id="item4">
+                    <div class="icon-container">
+                        <svg width="50" height="50" viewBox="0 0 60 60">
+                            <circle cx="30" cy="30" r="25" fill="none" stroke="white" stroke-width="2"/>
+                            <path d="M25,25 Q30,20 35,25 Q37,30 35,35 Q30,40 25,35 Q23,30 25,25" 
+                                    fill="none" stroke="white" stroke-width="2"/>
+                            <path d="M22,32 L25,35 L28,32" fill="none" stroke="white" stroke-width="2"/>
+                            <path d="M32,32 L35,35 L38,32" fill="none" stroke="white" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="timeline-content">
+                        <h3 class="timeline-title">Care</h3>
+                        <p class="timeline-description">Compassionate learning approach</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status" id="status">Starting with Discipline...</div>
+        
+        <div class="controls">
+            <button class="btn" id="prevBtn" disabled>Previous</button>
+            <button class="btn" id="nextBtn">Next</button>
+            <button class="btn" id="resetBtn">Reset</button>
+        </div>
+        
+        <div class="footer">
+            <p>Educational Values Timeline</p>
+            <p>Building Foundations for Success</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            const dots = document.querySelectorAll('.timeline-dot'); 
+            const completedLine = document.getElementById('completedLine');
+            const staticTimelineLine = document.getElementById('staticTimelineLine');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const status = document.getElementById('status');
+            const timelineDotsRow = document.querySelector('.timeline-dots-row');
+            
+            let currentIndex = 0;
+            const totalItems = timelineItems.length;
+            const mobileBreakpoint = 768; 
+
+            const statusMessages = [
+                "Starting with Discipline...",
+                "Discipline enables Courtesy...",
+                "Courtesy leads to Efficiency...", 
+                "Efficiency tempered by Care...",
+                "Journey Complete: All values mastered!"
+            ];
+            
+            /**
+             * Determines if the current view is mobile (vertical timeline).
+             */
+            function isMobileView() {
+                return window.innerWidth <= mobileBreakpoint;
+            }
+
+            /**
+             * Calculates the required position and size for the lines.
+             */
+            function getLineMetrics() {
+                if (totalItems === 0) return { staticStart: 0, staticSize: 0, activeStart: 0, activeSize: 0 };
+                
+                const startDot = dots[0];
+                const endDot = dots[totalItems - 1];
+                
+                const containerRect = timelineDotsRow.getBoundingClientRect();
+                const startRect = startDot.getBoundingClientRect();
+                const endRect = endDot.getBoundingClientRect();
+                
+                const isMobile = isMobileView();
+                const dimension = isMobile ? 'top' : 'left';
+                const sizeProp = isMobile ? 'height' : 'width';
+
+                // Helper to get center offset (either horizontal or vertical)
+                const getCenterOffset = (rect, containerRect) => {
+                    if (isMobile) {
+                        return (rect.top - containerRect.top) + (rect.height / 2);
+                    } else {
+                        return (rect.left - containerRect.left) + (rect.width / 2);
+                    }
+                };
+
+                // --- Static Line Metrics ---
+                const staticLineStart = getCenterOffset(startRect, containerRect);
+                const staticLineEnd = getCenterOffset(endRect, containerRect);
+                const staticLineSize = staticLineEnd - staticLineStart;
+
+                // --- Active Line Metrics ---
+                const targetEndIndex = Math.min(currentIndex, totalItems - 1);
+                const activeEndDot = dots[targetEndIndex];
+                const activeEndRect = activeEndDot.getBoundingClientRect();
+
+                const activeLineStart = staticLineStart;
+                let activeLineSize = 0;
+
+                if (currentIndex > 0) {
+                    const activeLineEnd = getCenterOffset(activeEndRect, containerRect);
+                    activeLineSize = activeLineEnd - activeLineStart;
+                }
+                
+                return { 
+                    staticStart: staticLineStart, 
+                    staticSize: staticLineSize,
+                    activeStart: activeLineStart, 
+                    activeSize: activeLineSize,
+                    sizeProp: sizeProp,
+                    dimension: dimension
+                };
+            }
+            
+            function updateProgress() {
+                // 1. Reset/Set classes
+                timelineItems.forEach(item => item.classList.remove('active', 'completed'));
+                dots.forEach(item => item.classList.remove('active', 'completed'));
+                
+                for (let i = 0; i < currentIndex; i++) {
+                    dots[i].classList.add('completed');
+                    timelineItems[i].classList.add('completed');
+                }
+                
+                if (currentIndex < totalItems) {
+                    dots[currentIndex].classList.add('active');
+                    timelineItems[currentIndex].classList.add('active');
+                } else if (totalItems > 0) {
+                    dots[totalItems - 1].classList.add('completed');
+                    timelineItems[totalItems - 1].classList.add('completed');
+                }
+                
+                // 2. Update status
+                status.textContent = statusMessages[currentIndex];
+                
+                // 3. Animate the line
+                setTimeout(() => {
+                    const metrics = getLineMetrics();
+                    
+                    // Static (white) line
+                    staticTimelineLine.style[metrics.dimension] = `${metrics.staticStart}px`;
+                    staticTimelineLine.style[metrics.sizeProp] = `${metrics.staticSize}px`;
+
+                    // Completed (orange) line
+                    completedLine.style[metrics.dimension] = `${metrics.activeStart}px`;
+                    completedLine.style[metrics.sizeProp] = `${metrics.activeSize}px`;
+                }, 50); 
+
+                // 4. Update button states
+                prevBtn.disabled = currentIndex === 0;
+                nextBtn.disabled = currentIndex === totalItems;
+            }
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < totalItems) {
+                    currentIndex++;
+                    updateProgress();
+                }
+            });
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateProgress();
+                }
+            });
+            
+            resetBtn.addEventListener('click', function() {
+                currentIndex = 0;
+                updateProgress();
+            });
+            
+            window.addEventListener('resize', updateProgress);
+            
+            // Initialize the timeline
+            updateProgress();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Website Tour with Intro Modal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            background: #f9f9fb;
+        }
+
+        /* Shared Backdrop */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        /* Intro Modal - Centered */
+        #intro-modal .modal-content {
+            background: #ffffff;
+            border-radius: 24px;
+            width: 90%;
+            max-width: 480px;
+            padding: 40px 32px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            animation: scaleIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        #intro-modal h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #111111;
+            margin: 0 0 16px;
+        }
+
+        #intro-modal p {
+            font-size: 16.5px;
+            color: #555555;
+            line-height: 1.6;
+            margin-bottom: 36px;
+        }
+
+        /* Tour Selection Modal - Bottom Sheet */
+        #tour-modal .modal-sheet {
+            background: #ffffff;
+            border-radius: 28px 28px 0 0;
+            width: 100%;
+            max-width: 660px;
+            padding: 24px 20px 32px;
+            box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.18);
+            animation: slideUp 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .sheet-handle {
+            width: 42px;
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 0 auto 24px;
+        }
+
+        #tour-modal h2 {
+            font-size: 26px;
+            font-weight: 700;
+            text-align: center;
+            margin: 0 0 12px;
+            color: #111111;
+        }
+
+        #tour-modal .subtitle {
+            text-align: center;
+            color: #666666;
+            font-size: 16px;
+            margin-bottom: 32px;
+            font-weight: 500;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 32px;
+        }
+
+        .option-btn {
+            position: relative;
+            background: #ffffff;
+            border: 2px solid #e2e2e7;
+            border-radius: 18px;
+            padding: 16px 10px;
+            text-align: center;
+            font-size: 14.5px;
+            font-weight: 600;
+            color: #333333;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .option-btn:hover,
+        .option-btn.selected {
+            border: 3px solid #4f46e5;
+            padding: 15px 9px; /* maintain size */
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(79, 70, 229, 0.22);
+        }
+
+        .option-btn i {
+            display: block;
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: #4f46e5;
+        }
+
+        .check-mark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 22px;
+            height: 22px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .option-btn.selected .check-mark {
+            display: flex;
+        }
+
+        /* Shared Action Buttons Style */
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .actions button {
+            flex: 1;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .primary-btn {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .secondary-btn {
+            background: #f1f1f5;
+            color: #4f46e5;
+        }
+
+        .primary-btn:disabled {
+            background: #a5a5c7;
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        /* Tour View */
+        .tour-view {
+            position: fixed;
+            inset: 0;
+            background: #ffffff;
+            display: none;
+            flex-direction: column;
+            z-index: 1001;
+        }
+
+        .tour-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .tour-content h2 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #111111;
+            margin-bottom: 20px;
+        }
+
+        .tour-content p {
+            font-size: 18px;
+            color: #555555;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .tour-controls {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            display: flex;
+            gap: 14px;
+            z-index: 1002;
+        }
+
+        .tour-controls button {
+            padding: 12px 20px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid #e0e0e0;
+            cursor: pointer;
+            font-size: 15.5px;
+            font-weight: 600;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transition: all 0.25s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tour-controls button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+        }
+
+        #back-to-modal {
+            color: #4f46e5;
+        }
+
+        #end-tour {
+            color: #dc2626;
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Intro Modal (Centered) -->
+    <div id="intro-modal" class="modal-backdrop">
+        <div class="modal-content">
+            <h2>Need Help Navigating?</h2>
+            <p>We noticed you might be exploring our website.<br>
+            Would you like a guided tour to discover key sections?</p>
+            <div class="actions">
+                <button id="start-intro-tour" class="primary-btn">Yes, Start Tour</button>
+                <button id="skip-intro" class="secondary-btn">No, Thanks</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tour Selection Modal (Bottom Sheet) -->
+    <div id="tour-modal" class="modal-backdrop">
+        <div class="modal-sheet">
+            <div class="sheet-handle"></div>
+            <h2>Explore Our School</h2>
+            <p class="subtitle">Select one section to begin the tour</p>
+            <div class="options-grid">
+                <button class="option-btn" data-topic="about-us"><i class="fas fa-info-circle"></i>About Us<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="school-fees"><i class="fas fa-dollar-sign"></i>Fees<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="infrastructure"><i class="fas fa-building"></i>Infrastructure<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="unique"><i class="fas fa-star"></i>Unique<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="admissions"><i class="fas fa-graduation-cap"></i>Admissions<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="faculty"><i class="fas fa-chalkboard-teacher"></i>Faculty<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="curriculum"><i class="fas fa-book"></i>Curriculum<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="extracurriculars"><i class="fas fa-futbol"></i>Activities<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="testimonials"><i class="fas fa-quote-left"></i>Testimonials<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="contact"><i class="fas fa-phone"></i>Contact<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="events"><i class="fas fa-calendar-alt"></i>Events<div class="check-mark">✓</div></button>
+                <button class="option-btn" data-topic="gallery"><i class="fas fa-images"></i>Gallery<div class="check-mark">✓</div></button>
+            </div>
+            <div class="actions">
+                <button id="start-tour" class="primary-btn" disabled>Start Tour</button>
+                <button id="skip-tour" class="secondary-btn">Skip</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tour View -->
+    <div id="tour-view" class="tour-view">
+        <div class="tour-content">
+            <!-- Dynamic content injected here -->
+        </div>
+        <div class="tour-controls">
+            <button id="back-to-modal"><i class="fas fa-arrow-left"></i> Back to Tour</button>
+            <button id="end-tour"><i class="fas fa-times"></i> End Tour</button>
+        </div>
+    </div>
+
+    <script>
+        let inactivityTimeout;
+        const INACTIVITY_TIME = 10000; // 10 seconds
+
+        const introModal = document.getElementById('intro-modal');
+        const tourModal = document.getElementById('tour-modal');
+        const tourView = document.getElementById('tour-view');
+
+        function openIntroModal() {
+            introModal.style.display = 'flex';
+        }
+
+        function resetTimer() {
+            clearTimeout(inactivityTimeout);
+            inactivityTimeout = setTimeout(openIntroModal, INACTIVITY_TIME);
+        }
+
+        ['mousemove', 'keydown', 'scroll', 'click', 'touchstart'].forEach(evt => 
+            document.addEventListener(evt, resetTimer, { passive: true })
+        );
+
+        resetTimer();
+
+        // Intro Modal Actions
+        document.getElementById('start-intro-tour').addEventListener('click', () => {
+            introModal.style.display = 'none';
+            tourModal.style.display = 'flex';
+        });
+
+        document.getElementById('skip-intro').addEventListener('click', () => {
+            introModal.style.display = 'none';
+            resetTimer(); // restart inactivity if they come back later
+        });
+
+        // Tour Selection Logic
+        const startBtn = document.getElementById('start-tour');
+        const optionBtns = document.querySelectorAll('.option-btn');
+        let selectedTopic = null;
+
+        optionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                optionBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedTopic = btn.dataset.topic;
+                startBtn.disabled = false;
+            });
+        });
+
+        document.getElementById('start-tour').addEventListener('click', () => {
+            if (!selectedTopic) return;
+            tourModal.style.display = 'none';
+            tourView.style.display = 'flex';
+
+            const tourContent = document.querySelector('.tour-content');
+            const topicTitle = selectedTopic.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            tourContent.innerHTML = `
+                <h2>${topicTitle}</h2>
+                <p>This is where the guided tour for "${topicTitle}" would appear.<br>
+                In a real website, it would highlight relevant sections with animations and tooltips.</p>
+            `;
+        });
+
+        document.getElementById('skip-tour').addEventListener('click', () => {
+            tourModal.style.display = 'none';
+            resetTimer();
+        });
+
+        document.getElementById('back-to-modal').addEventListener('click', () => {
+            tourView.style.display = 'none';
+            tourModal.style.display = 'flex';
+            optionBtns.forEach(b => b.classList.remove('selected'));
+            selectedTopic = null;
+            startBtn.disabled = true;
+        });
+
+        document.getElementById('end-tour').addEventListener('click', () => {
+            tourView.style.display = 'none';
+            resetTimer();
+        });
+    </script>
+</body>
+</html>

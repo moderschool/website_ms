@@ -1,0 +1,1542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School, Kota</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 100%; /* Prevent elements from exceeding viewport width */
+        }
+
+        html, body {
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        body {
+            background-color: #fefaf0; /* Cream background */
+            color: #5d2a2a; /* Maroon font color */
+            line-height: 1.6;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        /* Top Navbar & Fixed Elements */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease; 
+        }
+
+        body.menu-open .navbar {
+            transform: translateY(-100%);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: space-between;
+            position: fixed; 
+            top: 25px; 
+            left: 20px;
+            z-index: 1002; 
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #5d2a2a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .logo { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo img { height: 40px; width: auto; }
+     
+        .admission-btn { 
+            background-color: transparent; 
+            color: #5d2a2a; 
+            border: 2px solid #5d2a2a; 
+            padding: 8px 18px; 
+            border-radius: 20px; 
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1002;
+        }
+        .admission-btn:hover { background-color: #5d2a2a; color: white; }
+
+        /* Full Page Overlay Menu CONTAINER */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1001; 
+            transform: translateX(-100%); /* Start hidden off-screen left */
+            transition: transform 0.5s ease;
+            overflow: hidden; /* Important for horizontal transitions */
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        .overlay-menu.active {
+            transform: translateX(0); /* Slide in from the left */
+        }
+
+        /* Menu Wrapper for Drill-Down Effect */
+        .menu-wrapper {
+            width: 100%; /* Changed from 200% to 100% */
+            height: 100%;
+            display: flex; /* Makes main and sub-menu components line up horizontally */
+            transition: transform 0.4s ease-in-out;
+            margin-top: 80px;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        /* State when a submenu is active */
+        .overlay-menu.submenu-active .menu-wrapper {
+            transform: translateX(-100%); /* Slide the main menu out (left) and the submenu in (center) */
+        }
+        
+        /* Main Menu and Submenu Screen */
+        .main-menu-screen, .submenu-screen {
+            width: 100%; /* Each takes full width of the wrapper */
+            height: 100%;
+            list-style: none;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0; /* Prevents shrinking */
+            overflow-y: auto; /* Allows scrolling if needed */
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the menu items horizontally */
+        }
+
+        /* BACK BUTTON Container - Now positioned at top of submenu */
+        .submenu-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 1003;
+        }
+        
+        .overlay-menu.submenu-active .submenu-header {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #5d2a2a;
+            font-size: 28px; /* Same font size as main menu */
+            font-weight: 600;
+            cursor: pointer;
+            padding: 15px 10px;
+            border-radius: 5px;
+            transition: color 0.3s;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            color: #8b4513; /* Same hover color as menu items */
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+
+        /* Menu Item Styles - Shared */
+        .main-menu-screen li, .submenu-screen li {
+            margin: 0;
+            padding: 0;
+            width: 100%; /* Ensure full width for centering */
+            display: flex;
+            justify-content: center; /* Center the links */
+        }
+        
+        .main-menu-screen a, .submenu-screen a {
+            text-decoration: none;
+            color: #5d2a2a;
+            font-weight: 600;
+            display: block; 
+            padding: 15px 10px;
+            margin-bottom: 5px; /* Spacing between menu items */
+            transition: color 0.3s;
+            position: relative;
+            width: 100%; /* Take full width of the container */
+            max-width: 400px; /* Limit maximum width for better appearance */
+        }
+        
+        .main-menu-screen a, .submenu-screen a { 
+            font-size: 28px; 
+            text-align: center; /* Center the text */
+        }
+
+        /* Arrow Indicator for Drill-Down */
+        .main-menu-screen a.has-submenu::after {
+            content: '\f054'; /* Font Awesome Chevron Right */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        /* Hover Styles (unchanged from original intent) */
+        .main-menu-screen a:hover, .submenu-screen a:hover {
+            color: #8b4513;
+        }
+        
+        /* Submenu screen styling */
+        .submenu-screen {
+            background-color: white; /* Same background as main menu */
+        }
+        
+        /* Content area styles for demonstration */
+        .content {
+            padding-top: 80px; /* Offset for fixed navbar */
+            padding-left: 20px;
+            padding-right: 20px;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+        
+        .hero {
+            background-color: #f0f0f0;
+            padding: 50px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .feature-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .feature-card i {
+            font-size: 40px;
+            color: #5d2a2a;
+            margin-bottom: 15px;
+        }
+        
+        /* CAROUSEL STYLES */
+        .carousel-container {
+            width: 100%;
+            height: 550px;
+            position: relative;
+            margin: 40px 0;
+            perspective: 1000px;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        .carousel-track {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            height: 100%;
+            position: relative;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        .slide {
+            position: absolute;
+            width: 340px; /* This will be overridden by specific classes below */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            opacity: 0;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+        
+        /* Specific width classes for each position */
+        .slide.left {
+            width: 250px !important; /* Left slide - 220px */
+            height:180px;
+        }
+
+        .slide.center {
+            width: 430px !important; /* Center slide - 320px */
+            height:320px;
+        }
+
+        .slide.right {
+            width:250px !important; /* Right slide - 420px */
+            height:180px;
+        }
+        
+        .slide.left {
+            transform: translateX(-540px) translateY(-380px) scale(0.9);
+            z-index: 1;
+        }
+
+        .slide.center {
+            transform: translateX(0) translateY(-20px) scale(1);
+            z-index: 3;
+        }
+
+        .slide.right {
+            transform: translateX(540px) translateY(-380px) scale(0.9);
+            z-index: 1;
+        }
+
+        .slide.hidden-left {
+            transform: translateX(-620px) translateY(-400px) scale(0.8);
+            opacity: 0;
+            z-index: 0;
+        }
+
+        .slide.hidden-right {
+            transform: translateX(600px) translateY(-300px) scale(0.8);
+            opacity: 0;
+            z-index: 0;
+        }
+
+        /* Update the image container to be responsive to slide width */
+        .image-container {
+            width: 100%; /* This will now adapt to the parent slide width */
+            height: 220px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            margin-bottom: 15px;
+            transition: all 0.4s ease;
+        }
+
+        .slide.center .image-container {
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+            height: 230px;
+        }
+
+        .slide-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .slide:hover .slide-image {
+            transform: scale(1.05);
+        }
+
+        .slide-title {
+            font-size: 1.1rem;
+            color: #5d2a2a;
+            margin-bottom: 3px;
+            font-weight: 500;
+        }
+
+        .slide-description {
+            font-size: 0.75rem;
+            color: #8b4513;
+            line-height: 0.8;
+            max-width: 250px;
+        }
+
+        /* Description Panel for Center Slide */
+        .description-panel {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 340px;
+            padding: 5px;
+            z-index: 2;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            text-align: left;
+        }
+
+        .description-panel.active {
+            opacity: 1;
+        }
+
+        .panel-heading {
+            font-size: 1.2rem;
+            color: #5d2a2a;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .panel-description {
+            font-size: 1rem;
+            color: #8b4513;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .panel-button {
+            padding: 10px 25px;
+            background: #d4c9a8;
+            border: none;
+            border-radius: 25px;
+            position:center;
+            color: #5d2a2a;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .panel-button:hover {
+            background: #b8ad8e;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .carousel-instructions {
+            margin-top: 150px;
+            color: #8b4513;
+            font-size: 0.9rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .scroll-hint {
+            margin-top: 20px;
+            color: #b8ad8e;
+            font-size: 1rem;
+            animation: pulse 2s infinite;
+            text-align: center;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+
+        /* Additional content for page scroll */
+        .additional-content {
+            margin-top: 100px;
+            padding: 40px 20px;
+            max-width: 800px;
+            text-align: left;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .additional-content.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .content-section {
+            margin-bottom: 60px;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            color: #5d2a2a;
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .content-section p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #8b4513;
+            margin-bottom: 20px;
+        }
+
+        .content-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Completion message */
+        .completion-message {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #f5f2e9;
+            border-radius: 12px;
+            max-width: 600px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .completion-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .completion-message h3 {
+            font-size: 1.5rem;
+            color: #5d2a2a;
+            margin-bottom: 15px;
+        }
+
+        .completion-message p {
+            color: #8b4513;
+            line-height: 1.6;
+        }
+
+        /* Progress indicator */
+        .progress-container {
+            width: 200px;
+            height: 4px;
+            background-color: #e0e0e0;
+            border-radius: 2px;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background-color: #b8ad8e;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* IMAGE ARC ANIMATION STYLES */
+        .scroll-area {
+            height: 400vh; 
+            position: relative;
+            background-color: #fefaf0;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        .sticky-container {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px; 
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+        
+        .header-reveal {
+            position: absolute;
+            top: 10vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 5vw; 
+            font-weight: 900;
+            color: #5d2a2a;
+            text-align: center;
+            width: 100%;
+            opacity: 1; 
+            z-index: 50; 
+            letter-spacing: 0.1em;
+            will-change: transform, opacity; 
+        }
+
+        .arc-container {
+            position: absolute;
+            width: 90%; 
+            height: 30%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            will-change: transform;
+            top: 75%; 
+            transform: translateY(-50%); 
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        .arc-image {
+            position: absolute;
+            width: 220px;
+            height: 280px;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
+            backface-visibility: hidden; 
+            will-change: transform, opacity;
+        }
+
+        .arc-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-1 { transform: translate3d(-500px, 0, 0px) rotateY(30deg); z-index: 10; }
+        .image-2 { transform: translate3d(-250px, 0, 10px) rotateY(15deg); z-index: 20; }
+        .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); z-index: 30; } 
+        .image-4 { transform: translate3d(250px, 0, 10px) rotateY(-15deg); z-index: 20; }
+        .image-5 { transform: translate3d(500px, 0, 0px) rotateY(-30deg); z-index: 40; } 
+
+        .text-reveal-container {
+            position: absolute;
+            font-size: 3.5vw;
+            font-weight: 800;
+            color: #8b4513; 
+            text-align: left;
+            white-space: nowrap;
+            opacity: 0; 
+            z-index: 30; 
+            left: 10%; 
+            top: 50%;
+            transform: translateY(-50%);
+            will-change: opacity;
+        }
+
+        .text-reveal-container .word {
+            display: inline-block;
+            margin-right: 1.5vw;
+            transform: translateX(-50px); 
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* New 3-column info section */
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+        
+        .info-col {
+            flex: 0 0 33.33%; /* 3 columns - each takes 33.33% */
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-col.logo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .info-col.address-col {
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .info-col.contact-col {
+            text-align: right;
+        }
+        
+        .footer-logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        
+        .info-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #f8d7b3;
+        }
+        
+        .info-col p {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .info-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .info-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        /* New 6-column footer section */
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+        
+        .footer-col {
+            flex: 0 0 16.66%; /* 6 columns - each takes 16.66% */
+            min-width: 150px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            color: #f8d7b3;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        /* Bottom footer section */
+        .footer-bottom {
+            background-color: #4a1f1f;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+        
+        .copyright {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        .footer-bottom-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .social-media {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .social-media a:hover {
+            color: #f8d7b3;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .info-col {
+                flex: 0 0 100%; /* 1 column on medium screens */
+                text-align: center !important;
+                border: none !important;
+                margin-bottom: 30px;
+            }
+            
+            .info-col.logo-col {
+                align-items: center;
+            }
+            
+            .footer-col {
+                flex: 0 0 33.33%; /* 3 columns on medium screens */
+            }
+            
+            .arc-image {
+                width: 180px;
+                height: 240px;
+            }
+            
+            .image-1 { transform: translate3d(-400px, 0, 0px) rotateY(30deg); }
+            .image-2 { transform: translate3d(-200px, 0, 10px) rotateY(15deg); }
+            .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); }
+            .image-4 { transform: translate3d(200px, 0, 10px) rotateY(-15deg); }
+            .image-5 { transform: translate3d(400px, 0, 0px) rotateY(-30deg); }
+        }
+        
+        @media (max-width: 768px) {
+            .footer-col {
+                flex: 0 0 50%; /* 2 columns on small screens */
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .footer-bottom-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .social-media {
+                margin-right: 0;
+            }
+            
+            .copyright {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .arc-image {
+                width: 150px;
+                height: 200px;
+            }
+            
+            .image-1 { transform: translate3d(-300px, 0, 0px) rotateY(30deg); }
+            .image-2 { transform: translate3d(-150px, 0, 10px) rotateY(15deg); }
+            .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); }
+            .image-4 { transform: translate3d(150px, 0, 10px) rotateY(-15deg); }
+            .image-5 { transform: translate3d(300px, 0, 0px) rotateY(-30deg); }
+            
+            .header-reveal {
+                font-size: 7vw;
+            }
+            
+            .text-reveal-container {
+                font-size: 5vw;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-col {
+                flex: 0 0 100%; /* 1 column on extra small screens */
+            }
+            
+            .arc-image {
+                width: 120px;
+                height: 160px;
+            }
+            
+            .image-1 { transform: translate3d(-240px, 0, 0px) rotateY(30deg); }
+            .image-2 { transform: translate3d(-120px, 0, 10px) rotateY(15deg); }
+            .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); }
+            .image-4 { transform: translate3d(120px, 0, 10px) rotateY(-15deg); }
+            .image-5 { transform: translate3d(240px, 0, 0px) rotateY(-30deg); }
+            
+            .text-reveal-container {
+                white-space: normal;
+                text-align: center;
+                left: 5%;
+                right: 5%;
+            }
+            
+            .text-reveal-container .word {
+                display: block;
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <button class="admission-btn">Enquiry</button>
+
+    <nav class="navbar">
+        <img src="ms_logo.png" style="height:70px;margin-top:-10px;">
+    </nav>
+
+    <div class="overlay-menu" id="overlayMenu">
+        
+        <div class="submenu-header" id="submenuHeader">
+            <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="menu-wrapper" id="menuWrapper">
+            
+            <ul class="main-menu-screen" id="mainMenu">
+                <li><a href="#" class="close-menu">Home</a></li>
+                
+                <li class="menu-item-with-submenu" data-submenu="about-us">
+                    <a href="#" class="has-submenu">About Us</a> 
+                </li>
+                
+                <li class="menu-item-with-submenu" data-submenu="academics">
+                    <a href="#" class="has-submenu">Academics</a>
+                </li>
+                
+                <li><a href="#" class="close-menu">Admissions</a></li>
+                
+                <li class="menu-item-with-submenu" data-submenu="campus-life">
+                    <a href="#" class="has-submenu">Campus Life</a>
+                </li>
+                
+                <li class="menu-item-with-submenu" data-submenu="contact-us">
+                    <a href="#" class="has-submenu">Contact Us</a>
+                </li>
+            </ul>
+            
+            <ul class="submenu-screen" id="submenuScreen">
+                </ul>
+
+        </div>
+    </div>
+
+    <div class="content">
+       
+        
+        <!-- CAROUSEL SECTION -->
+        <div class="carousel-container">
+            <!-- Description Panel -->
+            <div class="description-panel">
+                <h2 class="panel-heading" style="text-align:center;">Modern Campus</h2>
+                <p class="panel-description" style="text-align:center;">Our state-of-the-art campus provides the perfect environment for learning and growth, with modern facilities and beautiful surroundings.</p>
+                <center><button class="panel-button">Explore Campus</button></center>
+            </div>
+            
+            <div class="carousel-track">
+                <!-- Slide 1 -->
+                <div class="slide active center" data-index="0">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="School Building" class="slide-image">
+                    </div>
+                 
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="slide active right" data-index="1">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1588072432836-e10032774350?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Classroom" class="slide-image">
+                    </div>
+                  
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="slide hidden-right" data-index="2">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1541336032412-2048a678540d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Students in activity" class="slide-image">
+                    </div>
+                   
+                </div>
+                
+                <!-- Slide 4 -->
+                <div class="slide hidden-left" data-index="3">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" alt="Science Lab" class="slide-image">
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress indicator -->
+        <div class="progress-container">
+            <div class="progress-bar"></div>
+        </div>
+        
+        
+       
+    </div>
+
+    <!-- New 3-column info section -->
+    <div class="footer-info">
+        <div class="info-col logo-col">
+            <img src="logo.png" alt="Modern School Logo" class="footer-logo">
+           
+            <p>Excellence in Education Since 1973</p>
+        </div>
+        <div class="info-col address-col">
+            <h3>Our Address</h3>
+            <p>Modern School</p>
+            <p>Sector - A Talwandi,</p>
+            <p>Kota, Rajasthan 324005</p>
+            <p>India</p>
+        </div>
+        <div class="info-col contact-col">
+            <h3>Contact Information</h3>
+            <p><i class="fas fa-phone"></i> +91-744-24211167</p>
+            <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
+            <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
+            <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
+        </div>
+    </div>
+
+    <!-- New 6-column footer section -->
+    <div class="footer-columns">
+        <div class="footer-col">
+            <h3>Academics</h3>
+            <ul>
+                <li><a href="#">Curriculum</a></li>
+                <li><a href="#">Exam & Result</a></li>
+                <li><a href="#">Calendar</a></li>
+                <li><a href="#">Counselling</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Admissions</h3>
+            <ul>
+                <li><a href="#">Apply Now</a></li>
+                <li><a href="#">Tuition & Fees</a></li>
+                <li><a href="#">RTE</a></li>
+                <li><a href="#">Campus Tours</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Campus Life</h3>
+            <ul>
+                <li><a href="#">Student Activities</a></li>
+                <li><a href="#">ModFest</a></li>
+                <li><a href="#">Athletics</a></li>
+                <li><a href="#">Campus Facilities</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="#">Our History</a></li>
+                <li><a href="#">Vision & Mission</a></li>
+                <li><a href="#">Leadership</a></li>
+                <li><a href="#">Our Core Team</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#">Alumni Network</a></li>
+                <li><a href="#">CBSE Corner</a></li>
+                <li><a href="#">TC Verification</a></li>
+                <li><a href="#">Mandatory Disclosures</a></li>
+                
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="#">Faculty</a></li>
+                <li><a href="#">Campus Location</a></li>
+                <li><a href="#">Career</a></li>
+                <li><a href="#">General Inquiry</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom footer section -->
+    <div class="footer-bottom">
+        <div class="copyright">
+            <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
+          
+        </div>  <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+            </div>
+        <div class="footer-bottom-right">
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const hamburger = document.getElementById('hamburger');
+        const overlayMenu = document.getElementById('overlayMenu');
+        const mainMenu = document.getElementById('mainMenu');
+        const submenuScreen = document.getElementById('submenuScreen');
+        const backButton = document.getElementById('backButton');
+        const body = document.body;
+        
+        // Define all submenu data
+        const submenus = {
+            'about-us': [
+                { text: 'Our History', href: '#' },
+                { text: 'Vision & Mission', href: '#' },
+                { text: 'Leadership', href: '#' },
+                { text: 'Our Core Team', href: '#' },
+            ],
+            'academics': [
+                { text: 'Curriculum', href: '#' },
+                { text: 'Exam &amp; Result', href: '#' },
+                { text: 'Calendar', href: '#' },
+                { text: 'Counselling', href: '#' },
+            ],
+            'campus-life': [
+                { text: 'Student Activities', href: '#' },
+                { text: 'ModFest', href: '#' },
+                { text: 'Athletics', href: '#' },
+                { text: 'Campus Facilities', href: '#' },
+            ],
+            'contact-us': [
+                { text: 'Faculty ', href: '#' },
+                { text: 'Campus Location', href: '#' },
+                { text: 'Career', href: '#' },
+                { text: 'General Inquiry', href: '#' },
+            ]
+        };
+
+        // Function to close the entire menu and reset the view
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            overlayMenu.classList.remove('active');
+            body.classList.remove('menu-open');
+            // Ensure menu returns to the main screen view
+            overlayMenu.classList.remove('submenu-active');
+            submenuScreen.innerHTML = ''; // Clear submenu content
+        }
+
+        // Toggle main menu when hamburger is clicked
+        hamburger.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                closeMenu();
+            } else {
+                this.classList.add('active');
+                overlayMenu.classList.add('active');
+                body.classList.add('menu-open');
+            }
+        });
+
+        // Handle clicks on main menu items with submenus (drill-down)
+        document.querySelectorAll('.main-menu-screen a.has-submenu').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const menuItem = this.closest('.menu-item-with-submenu');
+                const submenuKey = menuItem.getAttribute('data-submenu');
+                const submenuData = submenus[submenuKey];
+
+                if (!submenuData) return;
+
+                // 1. Build the submenu content
+                submenuScreen.innerHTML = ''; // Clear previous content
+                submenuData.forEach(item => {
+                    const li = document.createElement('li');
+                    // Add the 'close-menu' class to submenu links to close the entire menu on click
+                    li.innerHTML = `<a href="${item.href}" class="close-menu">${item.text}</a>`; 
+                    submenuScreen.appendChild(li);
+                });
+                
+                // Re-attach the closeMenu listener to the newly created links
+                submenuScreen.querySelectorAll('.close-menu').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        closeMenu(); // Close on click
+                        alert(`Navigating to: ${this.textContent}`);
+                    });
+                });
+
+                // 2. Trigger the slide transition
+                overlayMenu.classList.add('submenu-active');
+            });
+        });
+
+        // Handle the Back Button click
+        backButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Slide back to the main menu view
+            overlayMenu.classList.remove('submenu-active');
+            // Clear the submenu content after the transition starts
+            setTimeout(() => {
+                submenuScreen.innerHTML = '';
+            }, 400); // 400ms to match the CSS transition duration
+        });
+
+        // Close menu when clicking on a close-menu link (home, admissions, etc.)
+        document.querySelectorAll('.close-menu').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMenu();
+                alert(`Navigating to: ${this.textContent}`);
+            });
+        });
+        
+        // Close menu when clicking outside of menu content (overlay background)
+        overlayMenu.addEventListener('click', function(e) {
+            // Check if the click target is the overlay background itself
+            if (e.target === this) {
+                closeMenu();
+            }
+        });
+
+        // CAROUSEL SCRIPT
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const descriptionPanel = document.querySelector('.description-panel');
+            const panelHeading = document.querySelector('.panel-heading');
+            const panelDescription = document.querySelector('.panel-description');
+            const panelButton = document.querySelector('.panel-button');
+            const completionMessage = document.querySelector('.completion-message');
+            const scrollHint = document.querySelector('.scroll-hint');
+            const carouselInstructions = document.querySelector('.carousel-instructions');
+            const additionalContent = document.querySelector('.additional-content');
+            const progressBar = document.querySelector('.progress-bar');
+            
+            let currentCenterIndex = 0;
+            const totalSlides = slides.length;
+            let isTransitioning = false;
+            let scrollTimeout;
+            let carouselCompleted = false;
+            let reverseMode = false;
+            
+            // Slide data for description panel
+            const slideData = [
+                {
+                    heading: "Modern Campus",
+                    description: " with modern facilities and beautiful surroundings.",
+                    buttonText: "Explore Campus"
+                },
+                {
+                    heading: "Interactive Classes",
+                    description: "with modern technology and comfortable learning spaces.",
+                    buttonText: "View Classes"
+                },
+                {
+                    heading: "Extracurricular Activities",
+                    description: " discover their passions and develop important life skills beyond academics.",
+                    buttonText: "See Activities"
+                },
+                {
+                    heading: "Science Labs",
+                    description: "g experiences that bring scientific concepts to life.",
+                    buttonText: "Visit Labs"
+                }
+            ];
+            
+            // Initialize carousel
+            updateCarousel();
+            updateDescriptionPanel();
+            updateProgressBar();
+            
+            // Add scroll event listener
+            window.addEventListener('wheel', handleScroll, { passive: false });
+            
+            function handleScroll(e) {
+                // If carousel is completed, allow normal scrolling
+                if (carouselCompleted) {
+                    return;
+                }
+                
+                // Prevent default scroll behavior
+                e.preventDefault();
+                
+                // If already scrolling, ignore additional scroll events
+                if (isTransitioning) return;
+                
+                // Throttle scroll events
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    // Determine scroll direction
+                    const delta = e.deltaY;
+                    
+                    if (delta > 0) {
+                        // Scroll down - move to next slide
+                        nextSlide();
+                    } else if (delta < 0) {
+                        // Scroll up - move to previous slide
+                        prevSlide();
+                    }
+                }, 50);
+            }
+            
+            function updateCarousel() {
+                // Reset all slides
+                slides.forEach((slide, index) => {
+                    slide.classList.remove('active', 'center', 'left', 'right', 'hidden-left', 'hidden-right');
+                    
+                    // Calculate position based on current center index
+                    const position = (index - currentCenterIndex + totalSlides) % totalSlides;
+                    
+                    if (position === 0) {
+                        // Center slide
+                        slide.classList.add('active', 'center');
+                    } else if (position === 1 || position === totalSlides - 1) {
+                        // Side slides (right and left)
+                        slide.classList.add('active');
+                        if (position === 1) {
+                            slide.classList.add('right');
+                        } else {
+                            slide.classList.add('left');
+                        }
+                    } else if (position === 2 || position === totalSlides - 2) {
+                        // Hidden slides (just outside view)
+                        if (position === 2) {
+                            slide.classList.add('hidden-right');
+                        } else {
+                            slide.classList.add('hidden-left');
+                        }
+                    } else {
+                        // Further hidden slides
+                        if (position < totalSlides / 2) {
+                            slide.classList.add('hidden-right');
+                        } else {
+                            slide.classList.add('hidden-left');
+                        }
+                    }
+                });
+            }
+            
+            function updateDescriptionPanel() {
+                const data = slideData[currentCenterIndex];
+                panelHeading.textContent = data.heading;
+                panelDescription.textContent = data.description;
+                panelButton.textContent = data.buttonText;
+                descriptionPanel.classList.add('active');
+            }
+            
+            function nextSlide() {
+                if (isTransitioning) return;
+                
+                isTransitioning = true;
+                descriptionPanel.classList.remove('active');
+                
+                setTimeout(() => {
+                    currentCenterIndex = (currentCenterIndex + 1) % totalSlides;
+                    updateCarousel();
+                    updateDescriptionPanel();
+                    updateProgressBar();
+                    
+                    setTimeout(() => {
+                        isTransitioning = false;
+                        checkCarouselCompletion();
+                    }, 100);
+                }, 300);
+            }
+            
+            function prevSlide() {
+                if (isTransitioning) return;
+                
+                isTransitioning = true;
+                descriptionPanel.classList.remove('active');
+                
+                setTimeout(() => {
+                    currentCenterIndex = (currentCenterIndex - 1 + totalSlides) % totalSlides;
+                    updateCarousel();
+                    updateDescriptionPanel();
+                    updateProgressBar();
+                    
+                    setTimeout(() => {
+                        isTransitioning = false;
+                        checkCarouselCompletion();
+                    }, 100);
+                }, 300);
+            }
+            
+            function updateProgressBar() {
+                const progress = ((currentCenterIndex + 1) / totalSlides) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+            
+            function checkCarouselCompletion() {
+                if (currentCenterIndex === totalSlides - 1 && !carouselCompleted) {
+                    completeCarousel();
+                } else if (carouselCompleted && currentCenterIndex === 0) {
+                    // If we're back at the first slide after completion, re-enable carousel mode
+                    reverseMode = true;
+                    carouselCompleted = false;
+                    completionMessage.classList.remove('show');
+                    additionalContent.classList.remove('show');
+                    scrollHint.textContent = "Scroll up or down to navigate the carousel";
+                    carouselInstructions.textContent = " creating space for the description panel. Scroll down to move forward and up to move backward through the carousel.";
+                    window.addEventListener('wheel', handleScroll, { passive: false });
+                }
+            }
+            
+            function completeCarousel() {
+                carouselCompleted = true;
+                reverseMode = false;
+                
+                // Show completion message
+                setTimeout(() => {
+                    completionMessage.classList.add('show');
+                    additionalContent.classList.add('show');
+                    
+                    // Update instructions
+                    scrollHint.textContent = "Normal scrolling is now enabled";
+                    carouselInstructions.textContent = "You've completed the carousel. You can now scroll normally to view additional content about our school. Scroll back to the top to reactivate the carousel.";
+                    
+                    // Remove the scroll event listener that prevents default behavior
+                    window.removeEventListener('wheel', handleScroll);
+                }, 500);
+            }
+            
+            // Panel button click handler
+            panelButton.addEventListener('click', function() {
+                alert(`You clicked: ${slideData[currentCenterIndex].buttonText}\n\nThis would typically navigate to more details about "${slideData[currentCenterIndex].heading}"`);
+            });
+            
+            // Add scroll detection to reactivate carousel when scrolling back to top
+            window.addEventListener('scroll', function() {
+                if (carouselCompleted && window.scrollY === 0 && !reverseMode) {
+                    reverseMode = true;
+                    carouselCompleted = false;
+                    completionMessage.classList.remove('show');
+                    additionalContent.classList.remove('show');
+                    scrollHint.textContent = "Scroll up or down to navigate the carousel";
+                    carouselInstructions.textContent = "The center image is positioned lower, creating space for the description panel. Scroll down to move forward and up to move backward through the carousel.";
+                    window.addEventListener('wheel', handleScroll, { passive: false });
+                }
+            });
+            
+            // IMAGE ARC ANIMATION SCRIPT
+            gsap.registerPlugin(ScrollTrigger);
+
+            // Calculate distances for image collapse (Based on 500px offset)
+            const targetX = 500; 
+
+            const dx1_to_target = targetX - (-500); // 1000
+            const dx2_to_target = targetX - (-350); // 750
+            const dx3_to_target = targetX - 10;      // 500
+            const dx4_to_target = targetX - 350;     // 250
+
+            // Create the main animation timeline
+            let tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: ".scroll-area", 
+                    start: "top top",   
+                    end: "bottom bottom", 
+                    scrub: 1,       
+                    pin: ".sticky-container" 
+                }
+            });
+
+            // PHASE 1: HEADER FADE OUT
+            tl.to(".header-reveal", {
+                opacity: 0, 
+                y: -50, 
+                duration: 1, 
+                ease: "power1.in"
+            }, 0) 
+
+            // PHASE 2: IMAGES COLLAPSE AND SHIFT (0% to 50% of scroll)
+
+            // 1. Animate images 1-4 to stack behind image-5's original position (x=500)
+            tl.to(".image-1", { x: dx1_to_target, rotationY: 0, z: -10, opacity: 0, ease: "power1.inOut" }, 0) 
+            tl.to(".image-2", { x: dx2_to_target, rotationY: 0, z: -20, opacity: 0, ease: "power1.inOut" }, 0)
+            tl.to(".image-3", { x: dx3_to_target, rotationY: 0, z: -30, opacity: 0, ease: "power1.inOut" }, 0)
+            tl.to(".image-4", { x: dx4_to_target, rotationY: 0, z: -40, opacity: 0, ease: "power1.inOut" }, 0)
+            
+            // 2. Image 5: Only flattens its rotation and z-depth 
+            tl.to(".image-5", { rotationY: 0, z: 0, ease: "power1.inOut" }, 0)
+
+            // 3. Shift the WHOLE arc-container to move the stacked image right
+            tl.to(".arc-container", {
+                x: "10%", 
+                ease: "power2.inOut"
+            }, 0)
+            
+            // PHASE 3: TEXT REVEAL (Starts at 50% of scroll)
+
+            // Animate the opacity of the text container to make it visible
+            tl.to(".text-reveal-container", {
+                opacity: 1,
+                duration: 0.5,
+            }, 0.5) 
+
+            // Stagger the reveal of the individual words from left to right
+            tl.to(".text-reveal-container .word", {
+                x: 0, 
+                opacity: 1,
+                stagger: 0.15, 
+                duration: 0.5,
+                ease: "power2.out"
+            }, 0.5) 
+        });
+    </script>
+</body>
+</html>

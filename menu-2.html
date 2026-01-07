@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School, Kota</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        /* ===== GLOBAL FIXES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        body {
+            background-color: #fefaf0;
+            color: #5d2a2a;
+            line-height: 1.6;
+            overflow-x: hidden;
+            width: 100%;
+            position: relative;
+        }
+
+        /* ===== NAVBAR & MENU STYLES (FIXED & WORKING) ===== */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+        body.menu-open .navbar {
+            transform: translateY(-100%);
+        }
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: space-between;
+            position: fixed;
+            top: 25px;
+            left: 20px;
+            z-index: 1002;
+        }
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #5d2a2a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .admission-btn {
+            background-color: transparent;
+            color: #5d2a2a;
+            border: 2px solid #5d2a2a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1002;
+        }
+        .admission-btn:hover { background-color: #5d2a2a; color: white; }
+
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1001;
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            overflow: hidden;
+        }
+        .overlay-menu.active { transform: translateX(0); }
+
+        .menu-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.4s ease-in-out;
+            margin-top: 80px;
+        }
+        .overlay-menu.submenu-active .menu-wrapper { transform: translateX(-100%); }
+
+        .main-menu-screen, .submenu-screen {
+            width: 100%;
+            height: 100%;
+            list-style: none;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .submenu-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 1003;
+        }
+        .overlay-menu.submenu-active .submenu-header { opacity: 1; visibility: visible; }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #5d2a2a;
+            font-size: 28px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 15px 10px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .back-btn:hover { color: #8b4513; }
+        .back-btn i { margin-right: 8px; }
+
+        .main-menu-screen li, .submenu-screen li {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        .main-menu-screen a, .submenu-screen a {
+            text-decoration: none;
+            color: #5d2a2a;
+            font-weight: 600;
+            display: block;
+            padding: 15px 10px;
+            margin-bottom: 5px;
+            transition: color 0.3s;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            font-size: 28px;
+            text-align: center;
+        }
+        .main-menu-screen a.has-submenu::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+        .main-menu-screen a:hover, .submenu-screen a:hover { color: #8b4513; }
+
+        /* ===== INTRO PAGE STYLES ===== */
+        #introPage {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(to bottom, #ffffff, #f5f5dc);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 9999;
+            width: 100%;
+        }
+        #introPage .text-container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            transform: translateY(-80px);
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        #introPage .main-text {
+            font-family: Tahoma, Geneva, sans-serif;
+            color: #800000;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            animation: moveUpFadeOut 2s 4s ease-in-out forwards;
+        }
+        #introPage .word {
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+            white-space: nowrap;
+        }
+        #introPage .truth { animation-delay: 0.5s; font-size: 3.5rem; }
+        #introPage .devote { animation-delay: 1.3s; font-size: 3.5rem; }
+        #introPage .dedicate { animation-delay: 2.1s; font-size: 3.5rem; }
+        #introPage .orange-dot {
+            width: 8px; height: 8px; background-color: #FF8C00; border-radius: 50%;
+            display: inline-block; animation: pulseDot 1.5s infinite; box-shadow: 0 0 6px rgba(255,140,0,0.5);
+            opacity: 0; flex-shrink: 0;
+        }
+        #introPage .dot-1 { animation: fadeIn 0.3s 1.1s forwards, pulseDot 1.5s infinite 1.1s; }
+        #introPage .dot-2 { animation: fadeIn 0.3s 1.9s forwards, pulseDot 1.5s infinite 1.9s; }
+        #introPage .line-container { position: relative; width: 85%; margin: 0 auto; height: 2px; animation: moveUpFadeOut 2s 4s ease-in-out forwards; }
+        #introPage .orange-line {
+            width: 0; height: 2px;
+            background: linear-gradient(90deg, transparent, #FFA500, #FF8C00, #FFA500, transparent);
+            border-radius: 1px;
+            animation: drawLine 1s 2.9s ease-out forwards, fadeOutLine 0.8s 4s forwards;
+            box-shadow: 0 0 6px rgba(255,140,0,0.3);
+        }
+        #introPage .maroon-dot {
+            position: absolute; top: 50%; left: 0; transform: translate(-50%, -50%);
+            width: 12px; height: 12px; background-color: #800000; border-radius: 50%;
+            opacity: 0;
+            animation: followLine 1s 2.9s ease-out forwards, fadeOutDot 0.8s 4s forwards;
+            box-shadow: 0 0 8px rgba(128,0,0,0.6); z-index: 2;
+        }
+        @keyframes fadeInUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes moveUpFadeOut { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-100px); } }
+        @keyframes drawLine { 0% { width: 0; opacity: 0; } 50% { opacity: 1; } 100% { width: 100%; opacity: 1; } }
+        @keyframes followLine { 0% { left: 0; opacity: 0; } 50% { opacity: 1; } 100% { left: 100%; opacity: 1; } }
+        @keyframes fadeOutLine { 0% { opacity: 1; } 100% { opacity: 0; } }
+        @keyframes fadeOutDot { 0% { opacity: 1; } 100% { opacity: 0; } }
+        @keyframes pulseDot { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.2); opacity: 1; } }
+
+        #introPage .students-container {
+            position: absolute; bottom: -300px; left: 50%; transform: translateX(-50%);
+            display: flex; justify-content: center; align-items: flex-end;
+            height: 250px; width: 100%; animation: riseAndFall 3s 0.8s forwards;
+        }
+        #introPage .student {
+            width: 180px; height: 220px; position: absolute;
+            background-size: contain; background-repeat: no-repeat; background-position: center bottom;
+        }
+        #introPage .student-1 { background-image: url('1.png'); left: 50%; transform: translateX(-50%); z-index: 5; }
+        #introPage .student-2, #introPage .student-3 { opacity: 0; }
+        #introPage .students-container.final-position .student-2 { transform: translateX(calc(-50% - 150px)); opacity: 1; }
+        #introPage .students-container.final-position .student-3 { transform: translateX(calc(-50% + 150px)); opacity: 1; }
+        @keyframes riseAndFall { 0% { bottom: -300px; opacity: 0; } 20% { bottom: 100px; opacity: 1; } 60% { bottom: 100px; opacity: 1; } 80% { bottom: 100px; opacity: 0.7; } 100% { bottom: -300px; opacity: 0; } }
+
+        #introPage .logo-container {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            opacity: 0; animation: fadeInLogo 2s 4s ease-out forwards; z-index: 20;
+        }
+        #introPage .logo { width: 300px; height: 300px; background-image: url('ms_logo.png'); background-size: contain; background-repeat: no-repeat; background-position: center; }
+        @keyframes fadeInLogo { 0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); } 100% { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+
+        #introPage .skip-button {
+            position: absolute; bottom: 20px; right: 20px; padding: 12px 24px;
+            background: transparent; color: #800000; border: 2px solid #800000; border-radius: 8px;
+            font-size: 1rem; font-weight: 600; cursor: pointer; z-index: 100;
+        }
+        #introPage .skip-button:hover { background: #800000; color: white; }
+
+        /* Fade out intro */
+        #introPage.fade-out { animation: fadeOut 1.2s ease-out forwards; }
+        @keyframes fadeOut { to { opacity: 0; visibility: hidden; } }
+
+        /* ===== MAIN CONTENT STYLES (kept minimal for brevity, add your full styles here) ===== */
+        .content { padding-top: 80px; }
+
+        /* Add your full carousel, GSAP, blog, testimonial, leadership, footer styles here */
+        /* ... (paste your remaining CSS from the original code) ... */
+    </style>
+</head>
+<body style="overflow: hidden;">
+    <!-- INTRO PAGE -->
+    <div id="introPage">
+        <div class="text-container">
+            <h1 class="main-text">
+                <span class="word truth">Truth</span>
+                <span class="orange-dot dot-1"></span>
+                <span class="word devote">Devote</span>
+                <span class="orange-dot dot-2"></span>
+                <span class="word dedicate">Dedicate</span>
+            </h1>
+            <div class="line-container">
+                <div class="orange-line"></div>
+                <div class="maroon-dot"></div>
+            </div>
+        </div>
+        <div class="students-container" id="studentsContainer">
+            <div class="student student-1"></div>
+            <div class="student student-2"></div>
+            <div class="student student-3"></div>
+        </div>
+        <div class="logo-container" id="logoContainer">
+            <div class="logo"></div>
+        </div>
+        <button class="skip-button" id="skipIntro">Skip Intro</button>
+    </div>
+
+    <!-- MAIN SITE -->
+    <div id="mainSite" style="opacity: 0; visibility: hidden;">
+        <div class="hamburger" id="hamburger">
+            <span></span><span></span><span></span>
+        </div>
+        <button class="admission-btn">Enquiry</button>
+        <nav class="navbar">
+            <img src="ms_logo_n.png" style="height:100px;margin-top:-10px;">
+        </nav>
+
+        <!-- FULLY WORKING OVERLAY MENU -->
+        <div class="overlay-menu" id="overlayMenu">
+            <div class="submenu-header" id="submenuHeader">
+                <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+            </div>
+            <div class="menu-wrapper" id="menuWrapper">
+                <ul class="main-menu-screen" id="mainMenu">
+                    <li><a href="#" class="close-menu">Home</a></li>
+                    <li class="menu-item-with-submenu" data-submenu="about-us">
+                        <a href="#" class="has-submenu">About Us</a>
+                    </li>
+                    <li class="menu-item-with-submenu" data-submenu="academics">
+                        <a href="#" class="has-submenu">Academics</a>
+                    </li>
+                    <li><a href="#" class="close-menu">Admissions</a></li>
+                    <li class="menu-item-with-submenu" data-submenu="campus-life">
+                        <a href="#" class="has-submenu">Campus Life</a>
+                    </li>
+                    <li class="menu-item-with-submenu" data-submenu="contact-us">
+                        <a href="#" class="has-submenu">Contact Us</a>
+                    </li>
+                </ul>
+                <ul class="submenu-screen" id="submenuScreen"></ul>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- Your full content (carousel, scroll-area, blog, testimonials, leadership, footer) goes here -->
+            <!-- Paste all your original sections here -->
+        </div>
+    </div>
+
+    <script>
+        // ===== INTRO LOGIC =====
+        const introPage = document.getElementById('introPage');
+        const mainSite = document.getElementById('mainSite');
+        const skipIntro = document.getElementById('skipIntro');
+        const studentsContainer = document.getElementById('studentsContainer');
+
+        setTimeout(() => {
+            studentsContainer.classList.add('final-position');
+            document.querySelectorAll('.student-2, .student-3').forEach(s => s.style.opacity = '1');
+        }, 1500);
+
+        const autoTransition = setTimeout(endIntro, 6000);
+
+        function endIntro() {
+            clearTimeout(autoTransition);
+            introPage.classList.add('fade-out');
+            setTimeout(() => {
+                introPage.style.display = 'none';
+                mainSite.style.opacity = '1';
+                mainSite.style.visibility = 'visible';
+                document.body.style.overflow = 'auto';
+                initAllComponents();
+            }, 1200);
+        }
+
+        skipIntro.onclick = () => {
+            document.querySelectorAll('#introPage *').forEach(el => el.style.animation = 'none');
+            document.querySelector('.text-container').style.display = 'none';
+            document.querySelector('.students-container').style.display = 'none';
+            document.querySelector('.skip-button').style.display = 'none';
+            document.getElementById('logoContainer').style.opacity = '1';
+            document.getElementById('logoContainer').style.transform = 'translate(-50%, -50%) scale(1)';
+            setTimeout(endIntro, 500);
+        };
+
+        // ===== INITIALIZE ALL =====
+        function initAllComponents() {
+            initNavigation();
+            // initCarousel(); initBlogCarousel(); etc. — add your other inits here
+        }
+
+        // ===== FULLY FIXED NAVIGATION =====
+        function initNavigation() {
+            const hamburger = document.getElementById('hamburger');
+            const overlayMenu = document.getElementById('overlayMenu');
+            const submenuScreen = document.getElementById('submenuScreen');
+            const backButton = document.getElementById('backButton');
+            const body = document.body;
+
+            const submenus = {
+                'about-us': [
+                    { text: 'Our History', href: '#' },
+                    { text: 'Vision & Mission', href: '#' },
+                    { text: 'Our Core Team', href: '#' },
+                    { text: 'Awards & Recognition', href: '#' }
+                ],
+                'academics': [
+                    { text: 'Curriculum', href: '#' },
+                    { text: 'Exam & Result', href: '#' },
+                    { text: 'Academic Calendar', href: '#' },
+                    { text: 'Counselling', href: '#' },
+                    { text: 'Library', href: '#' },
+                    { text: 'Labs & Facilities', href: '#' }
+                ],
+                'campus-life': [
+                    { text: 'Student Activities', href: '#' },
+                    { text: 'ModFest', href: '#' },
+                    { text: 'Athletics', href: '#' },
+                    { text: 'Campus Facilities', href: '#' },
+                    { text: 'Clubs & Societies', href: '#' },
+                    { text: 'Annual Events', href: '#' }
+                ],
+                'contact-us': [
+                    { text: 'Faculty Directory', href: '#' },
+                    { text: 'Campus Location', href: '#' },
+                    { text: 'Career Opportunities', href: '#' },
+                    { text: 'General Inquiry', href: '#' },
+                    { text: 'Feedback', href: '#' },
+                    { text: 'Emergency Contact', href: '#' }
+                ]
+            };
+
+            function closeMenu() {
+                hamburger.classList.remove('active');
+                overlayMenu.classList.remove('active');
+                body.classList.remove('menu-open');
+                overlayMenu.classList.remove('submenu-active');
+                submenuScreen.innerHTML = '';
+            }
+
+            hamburger.addEventListener('click', () => {
+                if (hamburger.classList.contains('active')) {
+                    closeMenu();
+                } else {
+                    hamburger.classList.add('active');
+                    overlayMenu.classList.add('active');
+                    body.classList.add('menu-open');
+                }
+            });
+
+            document.querySelectorAll('.menu-item-with-submenu').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const key = this.dataset.submenu;
+                    const data = submenus[key];
+                    if (!data) return;
+
+                    submenuScreen.innerHTML = '';
+                    data.forEach(i => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="${i.href}" class="close-menu">${i.text}</a>`;
+                        submenuScreen.appendChild(li);
+                    });
+
+                    submenuScreen.querySelectorAll('.close-menu').forEach(link => {
+                        link.addEventListener('click', e => {
+                            e.preventDefault();
+                            closeMenu();
+                            // Replace alert with real navigation if needed
+                            console.log('Navigate to:', link.textContent);
+                        });
+                    });
+
+                    overlayMenu.classList.add('submenu-active');
+                });
+            });
+
+            backButton.addEventListener('click', e => {
+                e.preventDefault();
+                overlayMenu.classList.remove('submenu-active');
+                setTimeout(() => submenuScreen.innerHTML = '', 400);
+            });
+
+            document.querySelectorAll('.main-menu-screen .close-menu').forEach(link => {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    closeMenu();
+                    console.log('Navigate to:', link.textContent);
+                });
+            });
+
+            overlayMenu.addEventListener('click', e => {
+                if (e.target === overlayMenu) closeMenu();
+            });
+        }
+
+        // DOM Loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            if (introPage.style.display === 'none') initAllComponents();
+        });
+    </script>
+</body>
+</html>

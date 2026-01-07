@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nurturing Young Minds</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #fefefe;
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 2rem;
+            background-color: rgba(255, 255, 255, 0.95);
+            z-index: 100;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+        
+        .changing-text {
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: #7d8c9e;
+            height: 3rem;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .text-item {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transform: translateY(100%);
+            transition: all 0.8s ease;
+        }
+        
+        .text-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .text-item.leaving {
+            opacity: 0;
+            transform: translateY(-100%);
+        }
+        
+        .section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            margin-top: 10rem;
+        }
+        
+        .section-content {
+            max-width: 800px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease;
+        }
+        
+        .section.active .section-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+        }
+        
+        .section p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: #555;
+        }
+        
+        .section-1 {
+            background-color: #f8f5f0;
+        }
+        
+        .section-2 {
+            background-color: #f0efe8;
+        }
+        
+        .section-3 {
+            background-color: #f5f3ee;
+        }
+        
+        .section-4 {
+            background-color: #f0f0e8;
+        }
+
+        /* Chairman Section Styles */
+        .chairman-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1000px;
+            gap: 3rem;
+        }
+        
+        .logo-chairman {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 200px;
+            order: 2; /* Move images to right side */
+        }
+        
+        .chairman-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            opacity: 0.7;
+        }
+        
+        .chairman-logo-img {
+            max-width: 150px;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .chairman-photo {
+            position: absolute;
+            top: 50%;
+            left: 40%; /* Adjusted position for right side layout */
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+        
+        .chairman-img {
+            max-width: 160px;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .chairman-quote {
+            flex: 1;
+            text-align: left;
+            order: 1; /* Move text to left side */
+        }
+        
+        /* Director Section Styles */
+        .director-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1000px;
+            gap: 3rem;
+        }
+        
+        .logo-director {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 200px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            opacity: 0.7;
+        }
+        
+        .logo-img {
+            max-width: 150px;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .director-photo {
+            position: absolute;
+            top: 50%;
+            left: 60%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
+        
+        .director-img {
+            max-width: 160px;
+            height: auto;
+            object-fit: contain;
+        }
+        
+        .director-quote {
+            flex: 1;
+            text-align: left;
+        }
+        
+        .quote {
+            font-size: 1.4rem;
+            line-height: 1.8;
+            color: #800000;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding: 0 3rem;
+            text-align: center;
+        }
+        
+        .quote::before {
+            content: "❝";
+            font-size: 5rem;
+            position: absolute;
+            left: 0;
+            top: -1rem;
+            color: #800000;
+            opacity: 0.7;
+            line-height: 1;
+        }
+        
+        .quote::after {
+            content: "❞";
+            font-size: 5rem;
+            position: absolute;
+            right: 0;
+            bottom: -2rem;
+            color: #800000;
+            opacity: 0.7;
+            line-height: 1;
+        }
+        
+        .director-name, .chairman-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-top: 2rem;
+        }
+        
+        .director-title, .chairman-title {
+            font-size: 1rem;
+            color: #7d8c9e;
+            margin-bottom: 0.25rem;
+        }
+        
+        .school-affiliation {
+            font-size: 0.9rem;
+            color: #7d8c9e;
+            font-style: italic;
+        }
+        
+        .school-locations {
+            font-size: 0.9rem;
+            color: #7d8c9e;
+            font-weight: 500;
+        }
+        
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .header h1, .changing-text {
+                font-size: 2rem;
+            }
+            
+            .section h2 {
+                font-size: 2rem;
+            }
+            
+            .director-container, .chairman-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .logo-director, .logo-chairman {
+                order: 1;
+                margin-bottom: 1rem;
+                min-height: 150px;
+            }
+            
+            .director-quote, .chairman-quote {
+                order: 2;
+                text-align: center;
+            }
+            
+            .logo-img, .chairman-logo-img {
+                max-width: 120px;
+            }
+            
+            .director-img, .chairman-img {
+                max-width: 130px;
+            }
+            
+            .quote {
+                padding: 0 2rem;
+                font-size: 1.2rem;
+            }
+            
+            .quote::before, .quote::after {
+                font-size: 3.5rem;
+            }
+            
+            .quote::before {
+                top: -0.5rem;
+            }
+            
+            .quote::after {
+                bottom: -1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-director, .logo-chairman {
+                min-height: 120px;
+            }
+            
+            .logo-img, .chairman-logo-img {
+                max-width: 100px;
+            }
+            
+            .director-img, .chairman-img {
+                max-width: 110px;
+            }
+            
+            .quote {
+                font-size: 1.1rem;
+                padding: 0 1.5rem;
+            }
+            
+            .quote::before, .quote::after {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>nurturing young minds</h1>
+        <div class="changing-text">
+            <div class="text-item active">beyond classroom</div>
+            <div class="text-item">beyond boundaries</div>
+            <div class="text-item">that build the country</div>
+        </div>
+    </div>
+    
+    <section class="section section-1" id="section1">
+        <div class="section-content">
+            <h2>Beyond Classroom</h2>
+            <p>Education extends far beyond the four walls of a classroom. We believe in creating learning experiences that connect students with the world around them.</p>
+            <p>Through hands-on activities, community engagement, and real-world problem solving, we help young minds develop critical thinking skills and a lifelong love for learning.</p>
+        </div>
+    </section>
+    
+    <section class="section section-2" id="section2">
+        <div class="section-content">
+            <h2>Beyond Boundaries</h2>
+            <p>We break down barriers to education, reaching students regardless of their location, background, or circumstances.</p>
+            <p>Our programs are designed to be inclusive and accessible, ensuring that every child has the opportunity to reach their full potential.</p>
+        </div>
+    </section>
+    
+    <section class="section section-3" id="section3">
+        <div class="section-content">
+            <h2>Leadership & Vision</h2>
+            <div class="chairman-container">
+                <div class="logo-chairman">
+                    <div class="chairman-logo">
+                        <img src="ms_logo.png" alt="MS Logo" class="chairman-logo-img" onerror="this.style.display='none'">
+                    </div>
+                    <div class="chairman-photo">
+                        <img src="chairman.png" alt="Chairman" class="chairman-img" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <div class="chairman-quote">
+                    <p class="quote">True education is about awakening curiosity, nurturing creativity, and building character. We are committed to creating an environment where young minds can flourish beyond conventional boundaries.</p>
+                    <p class="chairman-name">Dr. Deepak Singh</p>
+                    <p class="chairman-title">Chairman, Modern School</p>
+                    <p class="school-locations">Baran | Bharatpur | Jaipur | Kota</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section section-4" id="section4">
+        <div class="section-content">
+            <h2>That Build The Country</h2>
+            <div class="director-container">
+                <div class="logo-director">
+                    <div class="logo">
+                        <img src="ms_logo.png" alt="MS Logo" class="logo-img" onerror="this.style.display='none'">
+                    </div>
+                    <div class="director-photo">
+                        <img src="director.png" alt="Director" class="director-img" onerror="this.style.display='none'">
+                    </div>
+                </div>
+                <div class="director-quote">
+                    <p class="quote">Education is the most powerful weapon which you can use to change the world. Our mission is to nurture young minds that will shape the future of our nation.</p>
+                    <p class="director-name">Mr. Vaibhav Singh</p>
+                    <p class="director-title">Director, Modern School</p>
+                    <p class="school-locations">Baran | Bharatpur | Jaipur | Kota</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textItems = document.querySelectorAll('.text-item');
+            const sections = document.querySelectorAll('.section');
+            
+            // Function to update active text based on scroll position
+            function updateActiveText() {
+                const scrollPosition = window.scrollY;
+                const windowHeight = window.innerHeight;
+                
+                // Determine which section is currently in view
+                let activeIndex = 0;
+                
+                sections.forEach((section, index) => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.offsetHeight;
+                    
+                    if (scrollPosition >= sectionTop - windowHeight/2 && 
+                        scrollPosition < sectionTop + sectionHeight - windowHeight/2) {
+                        activeIndex = index;
+                    }
+                });
+                
+                // Update text items
+                textItems.forEach((item, index) => {
+                    if (index === activeIndex) {
+                        item.classList.add('active');
+                        item.classList.remove('leaving');
+                    } else if (item.classList.contains('active')) {
+                        item.classList.remove('active');
+                        item.classList.add('leaving');
+                    } else {
+                        item.classList.remove('active', 'leaving');
+                    }
+                });
+                
+                // Update section visibility
+                sections.forEach((section, index) => {
+                    if (index === activeIndex) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Initial call to set correct state
+            updateActiveText();
+            
+            // Update on scroll
+            window.addEventListener('scroll', updateActiveText);
+            
+            // Create fallback placeholders if images don't load
+            function createPlaceholders() {
+                const logoImg = document.querySelector('.logo-img');
+                const directorImg = document.querySelector('.director-img');
+                const chairmanLogoImg = document.querySelector('.chairman-logo-img');
+                const chairmanImg = document.querySelector('.chairman-img');
+                
+                // Check if logo image failed to load
+                if (!logoImg.complete || logoImg.naturalHeight === 0) {
+                    const logo = document.querySelector('.logo');
+                    logo.innerHTML = '<span style="color: #7d8c9e; font-weight: 500;">MS Logo</span>';
+                }
+                
+                // Check if director image failed to load
+                if (!directorImg.complete || directorImg.naturalHeight === 0) {
+                    const directorPhoto = document.querySelector('.director-photo');
+                    directorPhoto.innerHTML = '<span style="color: #7d8c9e; font-weight: 500; display: flex; align-items: center; justify-content: center;">Director</span>';
+                }
+                
+                // Check if chairman logo image failed to load
+                if (!chairmanLogoImg.complete || chairmanLogoImg.naturalHeight === 0) {
+                    const chairmanLogo = document.querySelector('.chairman-logo');
+                    chairmanLogo.innerHTML = '<span style="color: #7d8c9e; font-weight: 500;">MS Logo</span>';
+                }
+                
+                // Check if chairman image failed to load
+                if (!chairmanImg.complete || chairmanImg.naturalHeight === 0) {
+                    const chairmanPhoto = document.querySelector('.chairman-photo');
+                    chairmanPhoto.innerHTML = '<span style="color: #7d8c9e; font-weight: 500; display: flex; align-items: center; justify-content: center;">Chairman</span>';
+                }
+            }
+            
+            // Check images after they load or timeout
+            window.addEventListener('load', function() {
+                setTimeout(createPlaceholders, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

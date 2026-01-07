@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School, Kota</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fefaf0;
+            color: #5d2a2a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Fixed Navbar */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: space-between;
+            position: fixed;
+            top: 25px;
+            left: 20px;
+            z-index: 1002;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #5d2a2a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .admission-btn {
+            background-color: transparent;
+            color: #5d2a2a;
+            border: 2px solid #5d2a2a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1002;
+        }
+        .admission-btn:hover { background-color: #5d2a2a; color: white; }
+
+        /* Overlay Menu */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1001;
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            overflow: hidden;
+        }
+
+        .overlay-menu.active {
+            transform: translateX(0);
+        }
+
+        .menu-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.4s ease-in-out;
+            margin-top: 80px;
+        }
+
+        .overlay-menu.submenu-active .menu-wrapper {
+            transform: translateX(-100%);
+        }
+
+        .main-menu-screen, .submenu-screen {
+            width: 100%;
+            height: 100%;
+            list-style: none;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .submenu-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 1003;
+        }
+
+        .overlay-menu.submenu-active .submenu-header {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #5d2a2a;
+            font-size: 28px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 15px 10px;
+            border-radius: 5px;
+            transition: color 0.3s;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            color: #8b4513;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+
+        .main-menu-screen li, .submenu-screen li {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-menu-screen a, .submenu-screen a {
+            text-decoration: none;
+            color: #5d2a2a;
+            font-weight: 600;
+            display: block;
+            padding: 15px 10px;
+            margin-bottom: 5px;
+            transition: color 0.3s;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .main-menu-screen a.has-submenu::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        .main-menu-screen a:hover, .submenu-screen a:hover {
+            color: #8b4513;
+        }
+
+        .submenu-screen {
+            background-color: white;
+        }
+
+        /* History Section */
+        .history-section {
+            background-color: #5d2a2a;
+            color: white;
+            padding: 120px 20px 60px;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+            margin-top: 0;
+        }
+
+        .history-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .history-content {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 40px;
+            z-index: 2;
+        }
+
+        .history-image {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .history-image.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .history-image img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+        }
+
+        .history-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #f8d7b3;
+        }
+
+        /* Horizontal Scroll Section */
+        .horizontal-scroll-section {
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            left: 0;
+            background: #5d2a2a;
+            color: #f8d7b3;
+            position: relative;
+        }
+
+        .pin-wrap {
+            height: 100vh;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0;
+        }
+
+        .pin-wrap > * {
+            min-width: 100vw;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .milestone-card {
+            background-color: #f8d7b3;
+            color: #5d2a2a;
+            padding: 60px 80px;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .milestone-card h3 {
+            font-size: 3rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+        }
+
+        .milestone-card p {
+            font-size: 1.5rem;
+            line-height: 1.7;
+            margin-bottom: 35px;
+            max-width: 800px;
+        }
+
+        .milestone-image {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .milestone-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .milestone-year {
+            display: inline-block;
+            background-color: #5d2a2a;
+            color: #f8d7b3;
+            padding: 10px 25px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        /* Content Section */
+        .content {
+            padding: 80px 20px;
+            background: linear-gradient(to bottom, white, #fefaf0);
+        }
+
+        .description-frame {
+            background-color: white;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 1200px;
+            border-left: 5px solid #5d2a2a;
+        }
+
+        .description-frame h2 {
+            color: #5d2a2a;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        .description-frame p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .features {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .feature-card {
+            flex: 1;
+            min-width: 250px;
+            background-color: white;
+            padding: 20px;
+            margin: 10px;
+            text-align: center;
+        }
+
+        .feature-card i {
+            font-size: 40px;
+            color: #5d2a2a;
+            margin-bottom: 15px;
+        }
+
+        /* Footer */
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-col {
+            flex: 0 0 33.33%;
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-col.logo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .info-col.address-col {
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-col.contact-col {
+            text-align: right;
+        }
+
+        .footer-logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .info-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #f8d7b3;
+        }
+
+        .info-col p {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .info-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .info-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .footer-col {
+            flex: 0 0 16.66%;
+            min-width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            color: #f8d7b3;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            background-color: #4a1f1f;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .copyright {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+
+        .footer-bottom-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-media {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-media a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-media a:hover {
+            color: #f8d7b3;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .info-col {
+                flex: 0 0 100%;
+                text-align: center !important;
+                border: none !important;
+                margin-bottom: 30px;
+            }
+            
+            .info-col.logo-col {
+                align-items: center;
+            }
+            
+            .footer-col {
+                flex: 0 0 33.33%;
+            }
+            
+            .history-container {
+                flex-direction: column;
+            }
+            
+            .history-content {
+                padding-right: 0;
+                margin-bottom: 40px;
+                text-align: center;
+            }
+            
+            .history-image {
+                text-align: center;
+                align-self: center;
+            }
+            
+            .milestone-card {
+                height: 100vh;
+                padding: 40px;
+            }
+            
+            .milestone-card h3 {
+                font-size: 2.5rem;
+            }
+            
+            .milestone-card p {
+                font-size: 1.3rem;
+            }
+            
+            .milestone-image {
+                height: 300px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .footer-col {
+                flex: 0 0 50%;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .footer-bottom-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .social-media {
+                margin-right: 0;
+            }
+            
+            .copyright {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .history-title {
+                font-size: 2rem;
+            }
+            
+            .description-frame {
+                padding: 25px;
+            }
+            
+            .history-section {
+                padding: 100px 15px 40px;
+            }
+            
+            .milestone-card {
+                height: 100vh;
+                padding: 30px;
+            }
+            
+            .milestone-card h3 {
+                font-size: 2rem;
+            }
+            
+            .milestone-card p {
+                font-size: 1.1rem;
+            }
+            
+            .milestone-image {
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-col {
+                flex: 0 0 100%;
+            }
+            
+            .history-section {
+                padding: 90px 15px 40px;
+            }
+            
+            .description-frame {
+                padding: 20px;
+            }
+            
+            .milestone-card {
+                height: 100vh;
+                padding: 20px;
+            }
+            
+            .milestone-card h3 {
+                font-size: 1.8rem;
+            }
+            
+            .milestone-card p {
+                font-size: 1rem;
+            }
+            
+            .milestone-image {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Navbar -->
+    <nav class="navbar">
+        <img src="https://via.placeholder.com/70x40?text=MS+Logo" alt="Modern School Logo">
+    </nav>
+
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <button class="admission-btn">Enquiry</button>
+
+    <!-- Overlay Menu -->
+    <div class="overlay-menu" id="overlayMenu">
+        <div class="submenu-header" id="submenuHeader">
+            <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="menu-wrapper" id="menuWrapper">
+            <ul class="main-menu-screen" id="mainMenu">
+                <li><a href="#" class="close-menu">Home</a></li>
+                <li class="menu-item-with-submenu" data-submenu="about-us">
+                    <a href="#" class="has-submenu">About Us</a> 
+                </li>
+                <li class="menu-item-with-submenu" data-submenu="academics">
+                    <a href="#" class="has-submenu">Academics</a>
+                </li>
+                <li><a href="#" class="close-menu">Admissions</a></li>
+                <li class="menu-item-with-submenu" data-submenu="campus-life">
+                    <a href="#" class="has-submenu">Campus Life</a>
+                </li>
+                <li class="menu-item-with-submenu" data-submenu="contact-us">
+                    <a href="#" class="has-submenu">Contact Us</a>
+                </li>
+            </ul>
+            
+            <ul class="submenu-screen" id="submenuScreen">
+            </ul>
+        </div>
+    </div>
+
+    <!-- History Section -->
+    <section class="history-section" id="historySection">
+        <div class="history-container">
+            <div class="history-content">
+                <h2 class="history-title">Our vision to nurture minds,<br>Our mission to continue it...</h2>
+            </div>
+            <div class="history-image" id="historyImage">
+                <img src="https://via.placeholder.com/500x300?text=Vision+Image" alt="Modern School Campus">
+            </div>
+        </div>
+    </section>
+
+    <!-- Horizontal Scroll Section -->
+    <section class="horizontal-scroll-section" id="sectionPin">
+        <div class="pin-wrap">
+            <div class="milestone-card">
+                <span class="milestone-year">1973</span>
+                <h3>Foundation of Modern School</h3>
+                <div class="milestone-image">
+                    <img src="https://images.pexels.com/photos/159775/library-la-trobe-study-students-159775.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="School Foundation">
+                </div>
+                <p>Modern School was established with a vision to provide quality education that combines traditional values with modern teaching methodologies.</p>
+            </div>
+            <div class="milestone-card">
+                <span class="milestone-year">1985</span>
+                <h3>Expansion of Campus</h3>
+                <div class="milestone-image">
+                    <img src="https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Campus Expansion">
+                </div>
+                <p>The school expanded its infrastructure with new buildings, laboratories, and sports facilities to accommodate the growing student population.</p>
+            </div>
+            <div class="milestone-card">
+                <span class="milestone-year">1998</span>
+                <h3>Introduction of Digital Learning</h3>
+                <div class="milestone-image">
+                    <img src="https://images.pexels.com/photos/4145354/pexels-photo-4145354.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Digital Learning">
+                </div>
+                <p>Modern School became one of the first institutions in Kota to integrate computer education and digital learning tools into the curriculum.</p>
+            </div>
+            <div class="milestone-card">
+                <span class="milestone-year">2010</span>
+                <h3>Recognition for Excellence</h3>
+                <div class="milestone-image">
+                    <img src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Award Ceremony">
+                </div>
+                <p>The school received the "Best Educational Institution" award from the Rajasthan Education Board for outstanding academic performance.</p>
+            </div>
+            <div class="milestone-card">
+                <span class="milestone-year">2020</span>
+                <h3>Modern Digital Infrastructure</h3>
+                <div class="milestone-image">
+                    <img src="https://images.pexels.com/photos/5904932/pexels-photo-5904932.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Digital Infrastructure">
+                </div>
+                <p>Implementation of state-of-the-art digital classrooms, online learning platforms, and smart campus initiatives to enhance the learning experience.</p>
+            </div>
+        </div>
+    </section>
+
+   
+   
+    <!-- Footer -->
+    <div class="footer-info">
+        <div class="info-col logo-col">
+            <img src="https://via.placeholder.com/80x50?text=Logo" alt="Modern School Logo" class="footer-logo">
+            <p>Excellence in Education Since 1973</p>
+        </div>
+        <div class="info-col address-col">
+            <h3>Our Address</h3>
+            <p>Modern School</p>
+            <p>Sector - A Talwandi,</p>
+            <p>Kota, Rajasthan 324005</p>
+            <p>India</p>
+        </div>
+        <div class="info-col contact-col">
+            <h3>Contact Information</h3>
+            <p><i class="fas fa-phone"></i> +91-744-24211167</p>
+            <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
+            <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
+            <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
+        </div>
+    </div>
+
+    <div class="footer-columns">
+        <div class="footer-col">
+            <h3>Academics</h3>
+            <ul>
+                <li><a href="#">Curriculum</a></li>
+                <li><a href="#">Exam & Result</a></li>
+                <li><a href="#">Calendar</a></li>
+                <li><a href="#">Counselling</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Admissions</h3>
+            <ul>
+                <li><a href="#">Apply Now</a></li>
+                <li><a href="#">Tuition & Fees</a></li>
+                <li><a href="#">RTE</a></li>
+                <li><a href="#">Campus Tours</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Campus Life</h3>
+            <ul>
+                <li><a href="#">Student Activities</a></li>
+                <li><a href="#">ModFest</a></li>
+                <li><a href="#">Athletics</a></li>
+                <li><a href="#">Campus Facilities</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="#">Our History</a></li>
+                <li><a href="#">Vision & Mission</a></li>
+                <li><a href="#">Leadership</a></li>
+                <li><a href="#">Our Core Team</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#">Alumni Network</a></li>
+                <li><a href="#">CBSE Corner</a></li>
+                <li><a href="#">TC Verification</a></li>
+                <li><a href="#">Mandatory Disclosures</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="#">Faculty</a></li>
+                <li><a href="#">Campus Location</a></li>
+                <li><a href="#">Career</a></li>
+                <li><a href="#">General Inquiry</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="copyright">
+            <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+        <div class="footer-bottom-right">
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src='https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js'></script>
+    
+    <script>
+        // Menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const overlayMenu = document.getElementById('overlayMenu');
+        const mainMenu = document.getElementById('mainMenu');
+        const submenuScreen = document.getElementById('submenuScreen');
+        const backButton = document.getElementById('backButton');
+        const historyImage = document.getElementById('historyImage');
+        
+        const submenus = {
+            'about-us': [
+                { text: 'Our History', href: '#' },
+                { text: 'Vision & Mission', href: '#' },
+                { text: 'Leadership', href: '#' },
+                { text: 'Our Core Team', href: '#' },
+            ],
+            'academics': [
+                { text: 'Curriculum', href: '#' },
+                { text: 'Exam & Result', href: '#' },
+                { text: 'Calendar', href: '#' },
+                { text: 'Counselling', href: '#' },
+            ],
+            'campus-life': [
+                { text: 'Student Activities', href: '#' },
+                { text: 'ModFest', href: '#' },
+                { text: 'Athletics', href: '#' },
+                { text: 'Campus Facilities', href: '#' },
+            ],
+            'contact-us': [
+                { text: 'Faculty', href: '#' },
+                { text: 'Campus Location', href: '#' },
+                { text: 'Career', href: '#' },
+                { text: 'General Inquiry', href: '#' },
+            ]
+        };
+
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            overlayMenu.classList.remove('active');
+            overlayMenu.classList.remove('submenu-active');
+            submenuScreen.innerHTML = '';
+        }
+
+        hamburger.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                closeMenu();
+            } else {
+                this.classList.add('active');
+                overlayMenu.classList.add('active');
+            }
+        });
+
+        document.querySelectorAll('.main-menu-screen a.has-submenu').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const menuItem = this.closest('.menu-item-with-submenu');
+                const submenuKey = menuItem.getAttribute('data-submenu');
+                const submenuData = submenus[submenuKey];
+
+                if (!submenuData) return;
+
+                submenuScreen.innerHTML = '';
+                submenuData.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${item.href}" class="close-menu">${item.text}</a>`; 
+                    submenuScreen.appendChild(li);
+                });
+                
+                submenuScreen.querySelectorAll('.close-menu').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        closeMenu();
+                    });
+                });
+
+                overlayMenu.classList.add('submenu-active');
+            });
+        });
+
+        backButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            overlayMenu.classList.remove('submenu-active');
+            setTimeout(() => {
+                submenuScreen.innerHTML = '';
+            }, 400);
+        });
+
+        document.querySelectorAll('.close-menu').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMenu();
+            });
+        });
+        
+        overlayMenu.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeMenu();
+            }
+        });
+        
+        // History image animation
+        function animateHistoryImage() {
+            const historySection = document.getElementById('historySection');
+            const rect = historySection.getBoundingClientRect();
+            
+            if (rect.top < (window.innerHeight - 100) && rect.bottom >= 0) {
+                historyImage.classList.add('animate');
+                window.removeEventListener('scroll', animateHistoryImage);
+            }
+        }
+        
+        window.addEventListener('scroll', animateHistoryImage);
+        window.addEventListener('load', animateHistoryImage);
+
+        // Horizontal Scroll Section with GSAP and Locomotive Scroll
+        gsap.registerPlugin(ScrollTrigger);
+
+        const scroller = new LocomotiveScroll({
+            el: document.querySelector("body"),
+            smooth: true
+        });
+
+        scroller.on("scroll", ScrollTrigger.update);
+
+        ScrollTrigger.scrollerProxy("body", {
+            scrollTop(value) {
+                return arguments.length
+                    ? scroller.scrollTo(value, 0, 0)
+                    : scroller.scroll.instance.scroll.y;
+            },
+            getBoundingClientRect() {
+                return {
+                    left: 0,
+                    top: 0,
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                };
+            },
+            pinType: document.body.style.transform ? "transform" : "fixed"
+        });
+
+        // Horizontal Scroll Animation
+        window.addEventListener("load", function () {
+            let pinWrap = document.querySelector(".pin-wrap");
+            let pinWrapWidth = pinWrap.offsetWidth;
+            let horizontalScrollLength = pinWrapWidth - window.innerWidth;
+
+            gsap.to(".pin-wrap", {
+                scrollTrigger: {
+                    scroller: "body",
+                    scrub: true,
+                    trigger: "#sectionPin",
+                    pin: true,
+                    start: "top top",
+                    end: pinWrapWidth
+                },
+                x: -horizontalScrollLength,
+                ease: "none"
+            });
+
+            ScrollTrigger.addEventListener("refresh", () => scroller.update());
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+</html>

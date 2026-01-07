@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandatory Public Disclosure - [School Name]</title>
+    <style>
+        /* --- Basic Reset and Typography --- */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: #004d99; /* School Blue */
+            text-align: center;
+            border-bottom: 2px solid #004d99;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        /* --- Accordion/Disclosure Section Styling --- */
+        .disclosure-section {
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background-color: #e9ecef; /* Light Gray Header */
+            color: #004d99;
+            padding: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header:hover {
+            background-color: #dcdfe3;
+        }
+
+        .arrow {
+            font-size: 1.2em;
+            transition: transform 0.3s;
+        }
+
+        .content {
+            padding: 0 15px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out, padding 0.4s ease-out;
+            background-color: #ffffff;
+        }
+
+        /* --- Active/Open State --- */
+        .disclosure-section.active .section-header {
+            background-color: #004d99;
+            color: white;
+        }
+
+        .disclosure-section.active .arrow {
+            transform: rotate(90deg);
+        }
+
+        .disclosure-section.active .content {
+            max-height: 1000px; /* Adjust this value if content is very long */
+            padding: 15px;
+            border-top: 1px solid #ddd;
+        }
+
+        /* --- Table Styling --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+        }
+
+        /* --- Link Styling for documents --- */
+        .document-link {
+            color: #d9534f; /* Prominent Red/Danger color for links */
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .document-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Mandatory Public Disclosure</h1>
+        <p>In compliance with the guidelines of the regulatory body, the following information is made publicly available for the stakeholders of **[Insert School Name Here]**.</p>
+        
+        <div class="disclosure-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                A. General Information <span class="arrow">&#9658;</span>
+            </div>
+            <div class="content">
+                <table>
+                    <tr><th>Information</th><th>Details</th></tr>
+                    <tr><td>Name of the School</td><td>[Your School Name]</td></tr>
+                    <tr><td>Affiliation No. (If Applicable)</td><td>[XXXXXX]</td></tr>
+                    <tr><td>School Code (If Applicable)</td><td>[XXXXX]</td></tr>
+                    <tr><td>Complete Address with Pin Code</td><td>[School Address, City - Pin Code]</td></tr>
+                    <tr><td>Principal Name & Qualification</td><td>[Mr./Ms. Principal Name, Qualification]</td></tr>
+                    <tr><td>School Email ID</td><td>[school@email.com]</td></tr>
+                    <tr><td>Contact Details (Landline/Mobile)</td><td>[0123-4567890 / 9876543210]</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="disclosure-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                B. Documents and Information <span class="arrow">&#9658;</span>
+            </div>
+            <div class="content">
+                <p>Click on the links below to view the uploaded documents (PDF format is recommended).</p>
+                <table>
+                    <tr><th>S.No.</th><th>Document/Information</th><th>Link to Document</th></tr>
+                    <tr><td>1.</td><td>Copies of Affiliation/Upgradation Letter</td><td><a href="[URL_Affiliation_Letter]" target="_blank" class="document-link">View Affiliation Letter</a></td></tr>
+                    <tr><td>2.</td><td>Copies of Trust/Society Registration Certificate</td><td><a href="[URL_Trust_Certificate]" target="_blank" class="document-link">View Trust Certificate</a></td></tr>
+                    <tr><td>3.</td><td>Copy of No Objection Certificate (NOC)</td><td><a href="[URL_NOC]" target="_blank" class="document-link">View NOC</a></td></tr>
+                    <tr><td>4.</td><td>Copy of Valid Building Safety Certificate</td><td><a href="[URL_Building_Certificate]" target="_blank" class="document-link">View Building Safety Certificate</a></td></tr>
+                    <tr><td>5.</td><td>Copy of Valid Fire Safety Certificate</td><td><a href="[URL_Fire_Certificate]" target="_blank" class="document-link">View Fire Safety Certificate</a></td></tr>
+                    <tr><td>6.</td><td>Self-Certification/DEO Certificate</td><td><a href="[URL_DEO_Certificate]" target="_blank" class="document-link">View DEO Certificate</a></td></tr>
+                    <tr><td>7.</td><td>Water, Health and Sanitation Certificates</td><td><a href="[URL_Water_Health]" target="_blank" class="document-link">View Health Certificates</a></td></tr>
+                </table>
+            </div>
+        </div>
+        
+        <div class="disclosure-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                C. Results and Academics <span class="arrow">&#9658;</span>
+            </div>
+            <div class="content">
+                <p>Key academic and result-related links:</p>
+                <ul>
+                    <li><a href="[URL_Fee_Structure]" target="_blank" class="document-link">Fee Structure of the School</a></li>
+                    <li><a href="[URL_Academic_Calendar]" target="_blank" class="document-link">Annual Academic Calendar</a></li>
+                    <li><a href="[URL_SMC_List]" target="_blank" class="document-link">List of School Management Committee (SMC)</a></li>
+                    <li><a href="[URL_PTA_List]" target="_blank" class="document-link">List of Parents Teachers Association (PTA) Members</a></li>
+                    <li><a href="[URL_Book_List]" target="_blank" class="document-link">List of Prescribed Textbooks (Class-wise)</a></li>
+                </ul>
+                <hr>
+                
+                <h4>Last Three-Year Board Examination Result (Class X & XII)</h4>
+                <p>Detailed result analysis and pass percentages for the last three years:</p>
+                <a href="[URL_3_Year_Result]" target="_blank" class="document-link">View Last Three-Year Result Analysis</a>
+            </div>
+        </div>
+
+        <div class="disclosure-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                D. Staff (Teaching) Details <span class="arrow">&#9658;</span>
+            </div>
+            <div class="content">
+                <p>Information on teaching staff and student/teacher ratio:</p>
+                <table>
+                    <tr><th>Information</th><th>Details</th></tr>
+                    <tr><td>Total No. of Teachers</td><td>[Total Number]</td></tr>
+                    <tr><td>Teachers Section Ratio</td><td>[e.g., 1:15]</td></tr>
+                    <tr><td>Details of Special Educator</td><td>[Name/Qualification or Link]</td></tr>
+                    <tr><td>Details of Counsellor and Wellness Teacher</td><td>[Name/Qualification or Link]</td></tr>
+                    <tr><td>Salary Paid to Staff Through</td><td>[e.g., Bank Transfer/NEFT]</td></tr>
+                </table>
+                <p>For a complete list of all teaching staff (Name, Designation, Qualification, Pay Scale):</p>
+                <a href="[URL_Staff_Details]" target="_blank" class="document-link">View Complete Staff Statement (PDF)</a>
+            </div>
+        </div>
+
+        <div class="disclosure-section">
+            <div class="section-header" onclick="toggleSection(this)">
+                E. School Infrastructure <span class="arrow">&#9658;</span>
+            </div>
+            <div class="content">
+                <table>
+                    <tr><th>Information</th><th>Details</th></tr>
+                    <tr><td>Total Campus Area (in Square Mtr)</td><td>[XXXXX Sq. Mtr]</td></tr>
+                    <tr><td>No. and Size of Class Rooms (in Sq Mtr)</td><td>[No. of Rooms] Rooms, [Avg Size] Sq. Mtr each</td></tr>
+                    <tr><td>No. and Size of Laboratories (incl. Computer Lab)</td><td>[No. of Labs] Labs, [Avg Size] Sq. Mtr each</td></tr>
+                    <tr><td>Internet Facility</td><td>Yes/No</td></tr>
+                    <tr><td>No. of Girls Toilets</td><td>[Number]</td></tr>
+                    <tr><td>No. of Boys Toilets</td><td>[Number]</td></tr>
+                    <tr><td>Link of YouTube Video for Infrastructure Tour</td><td><a href="[URL_YouTube_Video]" target="_blank" class="document-link">Watch Infrastructure Video Tour</a></td></tr>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleSection(header) {
+            const section = header.parentElement;
+            // Check if the clicked section is already active
+            const wasActive = section.classList.contains('active');
+
+            // Close all open sections
+            document.querySelectorAll('.disclosure-section').forEach(sec => {
+                sec.classList.remove('active');
+            });
+
+            // Toggle the clicked section (open it if it was not active)
+            if (!wasActive) {
+                section.classList.add('active');
+            }
+        }
+    </script>
+
+</body>
+</html>

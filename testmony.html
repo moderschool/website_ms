@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Single Testimonial Carousel - Bootstrap Caret Controls</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+ :root{
+  --card-bg: #fff;
+  --page-bg: #f4f4f4;
+  --accent: #004aad;
+  --text: #333;
+  --maroon: #800000; /* Defined Maroon color */
+ }
+
+ body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--page-bg);
+  padding: 40px 20px;
+  display:flex;
+  justify-content:center;
+ }
+
+ .testimonial-carousel{
+  width: 90%;
+  max-width: 720px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+  overflow: hidden;
+  position: relative;
+  /* Added space at the bottom for controls */
+  padding-bottom: 50px;
+ }
+
+ .viewport{
+  width: 100%;
+  overflow: hidden;
+ }
+
+ .testimonial-track{
+  display:flex;
+  transition: transform 0.6s ease;
+  will-change: transform;
+ }
+
+ .testimonial-slide{
+  box-sizing: border-box;
+  padding: 34px 36px 28px 36px;
+  flex: 0 0 100%;
+  min-width: 100%;
+  position: relative;
+ }
+
+ .quote-start{
+  font-size: 240px;
+  color: #5d2a2a;
+  position: absolute;
+  left: 10px;
+  top: 0px;
+  line-height: 0.9;
+  pointer-events: none;
+ }
+
+ .testimonial-text{
+  margin: 8px 10px 0px 20px;
+  font-size: 20px;
+  color: var(--text);
+  line-height: 1.6;
+  padding-left: 30px;
+ }
+
+ .quote-end{
+  font-size: 160px;
+  color: #5d2a2a;
+  text-align: right;
+  margin: 0 12px -30px 0;
+  line-height: 0.8;
+  display:block;
+ }
+
+ .parent-details{
+  text-align: right;
+  margin-top: -20px;
+  padding-right: 12px;
+  color: var(--text);
+ }
+
+ .parent-details .parent{
+  font-weight: 700;
+  font-size: 17px;
+ }
+
+ .parent-details .student{
+  display:block;
+  font-size: 14px;
+  opacity: 0.85;
+ }
+
+ /* --- Styles for Controls (Maroon Carets, Transparent) --- */
+ .controls{
+  position: absolute;
+  bottom: 0;
+  right: 20px; /* Aligns controls to the right */
+  padding: 10px 0;
+  display: flex;
+  gap: 15px;
+ }
+
+ .nav-button{
+  /* Transparent/Invisible Button Style */
+  background: transparent;
+  border: none;
+  color: var(--maroon); /* Set caret color to Maroon */
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px; /* Make carets larger */
+  cursor: pointer;
+  line-height: 1;
+  transition: opacity 0.2s, transform 0.2s;
+ }
+
+ .nav-button:hover{
+  opacity: 0.8;
+  transform: scale(1.1); /* Slight zoom on hover */
+ }
+
+ .nav-button:disabled{
+  color: #bdbdbd; /* Light gray when disabled */
+  cursor: not-allowed;
+  opacity: 0.5;
+  transform: scale(1);
+ }
+ /* ------------------------------------------------------------------- */
+
+
+ /* Responsive: slightly smaller text on small screens */
+ @media (max-width:420px){
+  .testimonial-text{ font-size:18px; }
+  .quote-start{ font-size:44px; left:18px; top:16px; }
+  .quote-end{ font-size:44px; }
+ }
+</style>
+</head>
+<body>
+
+ <div class="testimonial-carousel" id="carousel">
+  <div class="viewport">
+   <div class="testimonial-track" id="track">
+
+        <div class="testimonial-slide">
+     <div class="quote-start">“</div>
+
+     <p class="testimonial-text">
+      The school has truly transformed my child’s learning experience. The teachers are caring and the environment is very encouraging.
+     </p>
+
+     <div class="quote-end">”</div>
+
+     <div class="parent-details">
+      <div class="parent">Mr. Rajesh Sharma</div>
+      <div class="student">(Parent of Aarav Sharma, Class 4)</div>
+     </div>
+    </div>
+
+        <div class="testimonial-slide">
+     <div class="quote-start">“</div>
+
+     <p class="testimonial-text">
+      Excellent academic support and extracurricular activities. My daughter enjoys coming to school every day.
+     </p>
+
+     <div class="quote-end">”</div>
+
+     <div class="parent-details">
+      <div class="parent">Mrs. Priya Verma</div>
+      <div class="student">(Parent of Rhea Verma, Class 2)</div>
+     </div>
+    </div>
+
+        <div class="testimonial-slide">
+     <div class="quote-start">“</div>
+
+     <p class="testimonial-text">
+      The discipline and values taught here are truly commendable. We are very happy with the school's overall approach.
+     </p>
+
+     <div class="quote-end">”</div>
+
+     <div class="parent-details">
+      <div class="parent">Mr. Amit Gupta</div>
+      <div class="student">(Parent of Kabir Gupta, Class 6)</div>
+     </div>
+    </div>
+
+   </div>
+  </div>
+
+    <div class="controls">
+   <button class="nav-button" id="prevBtn" aria-label="Previous Testimonial">
+    <i class="fa fa-caret-left"></i>
+   </button>
+   <button class="nav-button" id="nextBtn" aria-label="Next Testimonial">
+    <i class="fa fa-caret-right"></i>
+   </button>
+  </div>
+ </div>
+
+<script>
+ (function(){
+  const track = document.getElementById('track');
+  const slides = Array.from(track.children);
+  const carousel = document.getElementById('carousel');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+
+  let index = 0;
+  let autoTimer = null;
+  const AUTO_MS = 5000;
+
+  // --- Event Listeners for controls ---
+  prevBtn.addEventListener('click', () => {
+   prev();
+   restartAuto();
+  });
+
+  nextBtn.addEventListener('click', () => {
+   next();
+   restartAuto();
+  });
+  // ------------------------------------
+
+
+  // Ensure each slide exactly matches carousel viewport width
+  function setSlideWidths(){
+   const viewportWidth = carousel.clientWidth;
+   slides.forEach(slide => {
+    slide.style.minWidth = viewportWidth + 'px';
+    slide.style.flexBasis = viewportWidth + 'px';
+   });
+   // after resizing, reposition track to current index
+   updateTrack();
+  }
+
+  function updateTrack(){
+   const viewportWidth = carousel.clientWidth;
+   track.style.transform = `translateX(-${index * viewportWidth}px)`;
+   updateControls();
+  }
+
+  function updateControls(){
+   // Controls state management is currently commented out to allow infinite loop
+  }
+
+  function moveTo(i){
+   // Infinite looping logic
+   index = (i + slides.length) % slides.length;
+   updateTrack();
+  }
+
+  function next(){
+   moveTo(index + 1);
+  }
+
+  function prev(){
+   moveTo(index - 1);
+  }
+
+
+  function startAuto(){
+   if(autoTimer) clearInterval(autoTimer);
+   autoTimer = setInterval(next, AUTO_MS);
+  }
+
+  function restartAuto(){
+   startAuto();
+  }
+
+  // initial setup
+  window.addEventListener('resize', setSlideWidths);
+  setSlideWidths();
+  startAuto();
+
+  // accessibility: pause on hover and resume on leave
+  carousel.addEventListener('mouseenter', () => { if(autoTimer) clearInterval(autoTimer); });
+  carousel.addEventListener('mouseleave', () => startAuto());
+
+  window.__testimonial_moveTo = moveTo;
+ })();
+</script>
+
+</body>
+</html>

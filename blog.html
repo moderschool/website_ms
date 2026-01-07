@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Multi-Item Blog Carousel - Redesign (Circular Yellow Button)</title>
+<style>
+/* --- 1. NEW COLOR PALETTE (Incorporating Yellow) --- */
+:root{
+--card-bg: #ffffff;
+--page-bg: #f0f3f8; /* Light blue-gray background */
+--accent: #007bff; /* Primary Blue for brand/links (kept for text links/titles) */
+--yellow-accent: #ffc107; /* Bright Yellow for button */
+--text: #2c3e50; /* Darker text for readability */
+--secondary-text: #6c757d;
+--shadow-light: rgba(0, 0, 0, 0.08);
+--shadow-heavy: rgba(0, 0, 0, 0.15);
+--indicator-active: #ffc107; /* Use Yellow for indicators */
+}
+
+body{
+margin:0;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+background: var(--page-bg);
+padding: 40px 20px;
+display:flex;
+justify-content:center;
+}
+
+.blog-carousel-container{
+width: 100%;
+max-width: 1200px;
+position: relative;
+padding: 0 0 60px 0;
+}
+
+.viewport{
+width: 100%;
+overflow: hidden;
+border-radius: 12px;
+box-shadow: 0 10px 30px var(--shadow-light);
+background: var(--card-bg);
+}
+
+/* The track and slide structure remains the same for carousel functionality */
+.carousel-track{
+display:flex;
+transition: transform 0.6s ease;
+will-change: transform;
+}
+
+.carousel-slide{
+flex: 0 0 100%;
+min-width: 100%;
+display: flex;
+flex-wrap: wrap;
+box-sizing: border-box;
+padding: 15px; /* Reduced padding here */
+}
+
+/* Item Styling */
+.blog-item{
+flex: 0 0 100%;
+max-width: 100%;
+box-sizing: border-box;
+padding: 10px;
+transition: all 0.3s ease;
+cursor: pointer;
+text-decoration: none;
+color: var(--text);
+position: relative;
+}
+
+.blog-item:hover{
+transform: translateY(-3px); /* Lift effect on hover */
+box-shadow: 0 8px 20px var(--shadow-light);
+}
+
+.item-content{
+background: var(--card-bg);
+border: 1px solid #e9ecef; /* Light border */
+border-radius: 8px;
+overflow: hidden;
+height: 100%;
+display: flex;
+flex-direction: column;
+box-shadow: 0 2px 10px var(--shadow-light);
+position: relative;
+}
+
+.blog-image-wrapper{
+width: 100%;
+position: relative; /* For button placement */
+}
+
+.blog-image{
+width: 100%;
+height: 200px;
+object-fit: cover;
+background-color: #ddd;
+display: block;
+}
+
+.text-body{
+padding: 15px 20px;
+flex-grow: 1;
+}
+
+.blog-topic{
+font-size: 1.15rem; /* Slightly larger topic */
+font-weight: 600;
+color: var(--text); /* Topic color changed to dark text */
+margin-top: 0;
+margin-bottom: 8px;
+}
+
+/* --- Truncated Text Styles --- */
+.blog-description{
+font-size: 0.9rem;
+color: var(--secondary-text);
+margin-bottom: 5px;
+line-height: 1.5;
+position: relative;
+}
+
+.blog-description.truncated{
+display: -webkit-box;
+-webkit-line-clamp: 3;
+-webkit-box-orient: vertical;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+/* --- UPDATED: Show More Button (Circular Yellow, No Zoom) --- */
+.show-more-btn{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 34px; /* Increased size slightly */
+    height: 34px;
+    font-size: 26px; 
+    font-weight: 700;
+    color: var(--text); /* Dark text for contrast on yellow */
+    background: var(--yellow-accent); /* Yellow background */
+    border: none; 
+    border-radius: 50%; /* Made circular */
+    padding: 0;
+    cursor: pointer;
+    text-decoration: none;
+    line-height: 1;
+    z-index: 10;
+    box-shadow: 0 2px 4px var(--shadow-heavy);
+    transition: background-color 0.2s ease; /* Removed transform transition */
+}
+
+.show-more-btn::before {
+    content: "+"; 
+    font-size: 26px; 
+    line-height: 1;
+    /* Adjust for perfect center alignment */
+    position: relative; 
+    top: -1px; 
+}
+
+.show-more-btn:hover{
+    background: #e6b100; /* Darker yellow on hover */
+    /* transform: scale(1.1) removed to stop zoom */
+}
+
+/* --- Modal Styles (Updated Colors) --- */
+.full-detail-overlay{
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background: rgba(0,0,0,0.85);
+display: none;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+padding: 20px;
+overflow-y: auto;
+}
+
+.full-detail-overlay.active{
+display: flex;
+}
+
+.modal-content{
+background: var(--card-bg);
+border-radius: 12px;
+max-width: 800px;
+width: 100%;
+position: relative;
+padding: 30px 40px;
+box-shadow: 0 10px 50px rgba(0,0,0,0.4);
+}
+
+.modal-image{
+width: 100%;
+height: auto;
+max-height: 400px;
+object-fit: cover;
+border-radius: 8px;
+margin-bottom: 25px;
+background-color: #ccc;
+}
+
+.modal-title{
+color: var(--accent);
+margin-top: 0;
+font-size: 1.8rem;
+}
+
+.modal-description{
+color: var(--text);
+line-height: 1.7;
+font-size: 1.05rem;
+margin-bottom: 20px;
+}
+
+.close-btn{
+position: absolute;
+top: 15px;
+right: 15px;
+background: none;
+border: none;
+font-size: 36px;
+font-weight: 300; /* Lighter weight X */
+color: var(--secondary-text);
+cursor: pointer;
+line-height: 1;
+}
+
+/* --- Line Map Indicator Styles (Updated Colors to Yellow) --- */
+.line-map-container{
+position: absolute;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+display: flex;
+gap: 12px;
+}
+
+.line-map-indicator{
+width: 25px; /* Slightly smaller */
+height: 5px;
+background: #adb5bd;
+border-radius: 3px;
+cursor: pointer;
+transition: background-color 0.3s, width 0.3s;
+}
+
+.line-map-indicator.active{
+background: var(--indicator-active); /* Yellow */
+width: 35px;
+}
+
+/* --- Responsive Layout Adjustments --- */
+@media (min-width: 600px) {
+.blog-item {
+flex: 0 0 50%;
+max-width: 50%;
+}
+}
+
+@media (min-width: 900px) {
+.blog-item {
+flex: 0 0 calc(100% / 3);
+max-width: calc(100% / 3);
+}
+.blog-image {
+height: 140px;
+}
+/* NEW: Side-by-Side Layout for 2-Item view (Example for larger cards) */
+.item-content.side-by-side {
+    flex-direction: row;
+    align-items: stretch;
+}
+.blog-image-wrapper.side-by-side {
+    flex: 0 0 40%;
+    max-width: 40%;
+    height: 100%;
+}
+.blog-image.side-by-side {
+    height: 100%; /* Fill the card height */
+    border-radius: 8px 0 0 8px;
+}
+.text-body.side-by-side {
+    flex: 0 0 60%;
+    max-width: 60%;
+}
+}
+
+@media (min-width: 1200px) {
+.blog-item {
+flex: 0 0 25%;
+max-width: 25%;
+}
+/* Revert to vertical stack for 4-item layout */
+.item-content.side-by-side {
+    flex-direction: column;
+}
+.blog-image-wrapper.side-by-side,
+.text-body.side-by-side {
+    flex: none;
+    max-width: none;
+}
+.blog-image.side-by-side {
+    height: 180px; /* New height for vertical stack */
+    border-radius: 8px 8px 0 0;
+}
+}
+</style>
+</head>
+<body>
+
+<div class="blog-carousel-container" id="carouselContainer">
+
+<div class="viewport">
+<div class="carousel-track" id="track">
+
+ <div class="carousel-slide">
+ <div class="blog-item" data-topic="Annual Day Event Report 2024" data-desc="A recap of the spectacular performances and prize distribution ceremony held last month. This longer description provides more details about the event, including the chief guest, the major award winners, and the theme of the cultural program. It was a huge success enjoyed by students, parents, and teachers alike." data-image="
+
+[Image of a school stage with students performing]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Annual Day Event">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Annual Day Event Report 2024</p>
+ <p class="blog-description truncated">A recap of the spectacular performances and prize distribution ceremony held last month. This longer description provides more details about the event, including the chief guest, the major award winners, and the theme of the cultural program. It was a huge success enjoyed by students, parents, and teachers alike.</p>
+</div>
+</div>
+</div>
+
+ <div class="blog-item" data-topic="The Future of STEM Education" data-desc="Our latest blog discusses the new curriculum focus on robotics and coding for classes 7-9. We are integrating advanced labs and project-based learning to prepare students for the demands of a technology-driven world, encouraging innovation and critical thinking from a young age." data-image="
+
+[Image of students doing a science experiment]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="STEM Education">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">The Future of STEM Education</p>
+ <p class="blog-description truncated">Our latest blog discusses the new curriculum focus on robotics and coding for classes 7-9. We are integrating advanced labs and project-based learning to prepare students for the demands of a technology-driven world, encouraging innovation and critical thinking from a young age.</p>
+</div>
+</div>
+</div>
+
+ <div class="blog-item" data-topic="Reading Habits: Tips for Parents" data-desc="Simple ways to encourage a lifelong love for reading in primary school children at home. Suggestions include setting aside dedicated reading time, creating a cozy reading nook, and leading by example by reading yourself. Early literacy is crucial for overall academic success." data-image="
+
+[Image of a large stack of diverse library books]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Reading Habits">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Reading Habits: Tips for Parents</p>
+ <p class="blog-description truncated">Simple ways to encourage a lifelong love for reading in primary school children at home. Suggestions include setting aside dedicated reading time, creating a cozy reading nook, and leading by example by reading yourself. Early literacy is crucial for overall academic success.</p>
+</div>
+</div>
+</div>
+
+ <div class="blog-item" data-topic="Inter-School Sports Day Success" data-desc="Highlights from the competitive day where our school secured the overall championship trophy. Our students showed exemplary teamwork and sportsmanship across all track and field events. Read more about the star performers in detail." data-image="
+
+[Image of a soccer team celebrating a goal]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Sports Day">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Inter-School Sports Day Success</p>
+ <p class="blog-description truncated">Highlights from the competitive day where our school secured the overall championship trophy. Our students showed exemplary teamwork and sportsmanship across all track and field events. Read more about the star performers in detail.</p>
+</div>
+</div>
+</div>
+</div>
+
+ <div class="carousel-slide">
+<div class="blog-item" data-topic="Mastering Blended Learning" data-desc="How our educators are using technology to enhance classroom engagement and productivity. This includes utilizing interactive whiteboards, online assignment platforms, and virtual reality tools to create a dynamic and effective hybrid learning environment." data-image="
+
+[Image of a teacher using an interactive whiteboard]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Blended Learning">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Mastering Blended Learning</p>
+ <p class="blog-description truncated">How our educators are using technology to enhance classroom engagement and productivity. This includes utilizing interactive whiteboards, online assignment platforms, and virtual reality tools to create a dynamic and effective hybrid learning environment.</p>
+</div>
+</div>
+</div>
+
+<div class="blog-item" data-topic="Green Initiative: Tree Planting Drive" data-desc="Details on our environmental awareness campaign and future sustainable goals. Over 500 saplings were planted by students and staff, raising awareness about climate change and local biodiversity. We plan to expand this to a year-long program." data-image="
+
+[Image of students planting trees]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Tree Planting Drive">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Green Initiative: Tree Planting Drive</p>
+ <p class="blog-description truncated">Details on our environmental awareness campaign and future sustainable goals. Over 500 saplings were planted by students and staff, raising awareness about climate change and local biodiversity. We plan to expand this to a year-long program.</p>
+</div>
+</div>
+</div>
+
+<div class="blog-item" data-topic="Effective Communication with Teachers" data-desc="A guide for parents on maximizing the benefits of regular parent-teacher meetings. Tips include preparing questions in advance, focusing on solutions, and maintaining open communication channels throughout the semester for better student support." data-image="
+
+[Image of a parent-teacher conference handshake]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Parent Teacher Communication">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Effective Communication with Teachers</p>
+ <p class="blog-description truncated">A guide for parents on maximizing the benefits of regular parent-teacher meetings. Tips include preparing questions in advance, focusing on solutions, and maintaining open communication channels throughout the semester for better student support.</p>
+</div>
+</div>
+</div>
+
+<div class="blog-item" data-topic="Exam Stress Management Workshop" data-desc="Summary of the recent workshop aimed at helping students cope with academic pressure. The session covered time management techniques, mindfulness exercises, and healthy study habits to ensure a balanced approach to their final examinations." data-image="
+
+[Image of high school students studying]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Exam Stress Workshop">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Exam Stress Management Workshop</p>
+ <p class="blog-description truncated">Summary of the recent workshop aimed at helping students cope with academic pressure. The session covered time management techniques, mindfulness exercises, and healthy study habits to ensure a balanced approach to their final examinations.</p>
+</div>
+</div>
+</div>
+</div>
+
+ <div class="carousel-slide">
+<div class="blog-item" data-topic="The Power of Collaborative Learning" data-desc="Exploring the benefits of teamwork and group projects in fostering social skills. Research shows that collaboration significantly improves problem-solving abilities and communication among peers, preparing them for future workplace demands." data-image="
+
+[Image of school students working on a group project]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Collaborative Learning">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">The Power of Collaborative Learning</p>
+ <p class="blog-description truncated">Exploring the benefits of teamwork and group projects in fostering social skills. Research shows that collaboration significantly improves problem-solving abilities and communication among peers, preparing them for future workplace demands.</p>
+</div>
+</div>
+</div>
+
+<div class="blog-item" data-topic="Our Recent Achievements" data-desc="Celebrating the students who excelled in district-level academic and sports competitions. We highlight the individuals and teams who brought home medals and recognition, showcasing the dedication of both students and coaches." data-image="
+
+[Image of a trophy cabinet]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Recent Achievements">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Our Recent Achievements</p>
+ <p class="blog-description truncated">Celebrating the students who excelled in district-level academic and sports competitions. We highlight the individuals and teams who brought home medals and recognition, showcasing the dedication of both students and coaches.</p>
+</div>
+</div>
+</div>
+
+<div class="blog-item" data-topic="Importance of Mental Health in Schools" data-desc="An overview of the wellness programs and counseling services available to our students. We detail the signs parents should look for and how the school proactively supports student emotional and psychological well-being through workshops and dedicated staff." data-image="">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Mental Health in Schools">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Importance of Mental Health in Schools</p>
+ <p class="blog-description truncated">An overview of the wellness programs and counseling services available to our students. We detail the signs parents should look for and how the school proactively supports student emotional and psychological well-being through workshops and dedicated staff.</p>
+</div>
+</div>
+</div>
+
+<div class="blog-item" data-topic="Culinary Arts Club Launch" data-desc="The successful launch of our new extracurricular club, focusing on nutrition and cooking skills. Students are learning basic culinary techniques, food safety, and the importance of a balanced diet from a certified chef who volunteers their time." data-image="
+
+[Image of students cooking in a kitchen]
+">
+<div class="item-content">
+ <div class="blog-image-wrapper">
+    <img src="placeholder.jpg" class="blog-image" alt="Culinary Arts Club">
+   <button class="show-more-btn"></button>
+  </div>
+ <div class="text-body">
+ <p class="blog-topic">Culinary Arts Club Launch</p>
+ <p class="blog-description truncated">The successful launch of our new extracurricular club, focusing on nutrition and cooking skills. Students are learning basic culinary techniques, food safety, and the importance of a balanced diet from a certified chef who volunteers their time.</p>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+
+<div class="line-map-container" id="lineMap">
+</div>
+
+</div>
+
+<div class="full-detail-overlay" id="fullDetailOverlay">
+<div class="modal-content">
+<button class="close-btn" id="closeModal">&times;</button>
+<img src="" class="modal-image" id="modalImage" alt="Blog Detail Image">
+<h2 class="modal-title" id="modalTitle"></h2>
+<p class="modal-description" id="modalDescription"></p>
+</div>
+</div>
+
+<script>
+(function(){
+const track = document.getElementById('track');
+const slides = Array.from(document.getElementsByClassName('carousel-slide'));
+const container = document.getElementById('carouselContainer');
+const lineMapContainer = document.getElementById('lineMap');
+const blogItems = document.querySelectorAll('.blog-item');
+const overlay = document.getElementById('fullDetailOverlay');
+const closeModalBtn = document.getElementById('closeModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalDescription = document.getElementById('modalDescription');
+const modalImage = document.getElementById('modalImage');
+
+let slideIndex = 0;
+const TOTAL_SLIDES = slides.length;
+
+// --- Line Map Generation ---
+slides.forEach((s, i) => {
+const indicator = document.createElement('div');
+indicator.className = 'line-map-indicator';
+indicator.dataset.index = i;
+indicator.addEventListener('click', (e) => {
+e.stopPropagation(); // Stop event from propagating to the item's click handler
+moveTo(i);
+});
+lineMapContainer.appendChild(indicator);
+});
+
+const indicators = Array.from(lineMapContainer.children);
+
+// --- Core Carousel Functions (Unchanged) ---
+
+function updateTrack(){
+const viewportWidth = container.clientWidth;
+track.style.transform = `translateX(-${slideIndex * viewportWidth}px)`;
+updateIndicators();
+}
+
+function updateIndicators(){
+indicators.forEach(i => i.classList.remove('active'));
+if(indicators[slideIndex]) indicators[slideIndex].classList.add('active');
+}
+
+function moveTo(i){
+if (i < 0 || i >= TOTAL_SLIDES) return;
+slideIndex = i;
+updateTrack();
+}
+
+// --- Modal Functions ---
+function showModal(topic, description, imageTag) {
+modalTitle.textContent = topic;
+modalDescription.textContent = description;
+// In a real application, you'd fetch the actual image URL here.
+modalImage.src = 'placeholder.jpg';
+modalImage.alt = topic + ' image';
+overlay.classList.add('active');
+document.body.style.overflow = 'hidden'; // Prevent scrolling on the background
+}
+
+function hideModal() {
+overlay.classList.remove('active');
+document.body.style.overflow = ''; // Restore scrolling
+}
+
+// Event Listener for "Show Full Detail" button
+document.querySelectorAll('.show-more-btn').forEach(button => {
+button.addEventListener('click', (e) => {
+e.preventDefault(); // Prevent default link behavior
+e.stopPropagation(); // Prevent event bubbling up to the .blog-item link
+
+const item = button.closest('.blog-item');
+const topic = item.dataset.topic;
+const desc = item.dataset.desc;
+const image = item.dataset.image;
+
+showModal(topic, desc, image);
+});
+});
+
+// Event Listener for "Close" button
+closeModalBtn.addEventListener('click', hideModal);
+
+// Close modal when clicking outside (on the overlay itself)
+overlay.addEventListener('click', (e) => {
+if (e.target === overlay) {
+hideModal();
+}
+});
+
+// Initial Setup
+window.addEventListener('resize', updateTrack);
+updateTrack();
+})();
+</script>
+
+</body>
+</html>

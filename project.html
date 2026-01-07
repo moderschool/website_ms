@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Data Dashboard | GraphQL POC</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Lucide Icons for aesthetic UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom styles for professional aesthetics and better readability */
+        :root {
+            --primary-color: #5a00a0; /* A deep purple, often associated with GraphQL */
+            --primary-light: #8b5cf6; /* Violet-500 for secondary */
+            --graphql-bg: #E10098; /* GraphQL pink */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f9;
+        }
+        .text-graphql {
+            color: var(--graphql-bg);
+        }
+        .bg-graphql {
+            background-color: var(--graphql-bg);
+        }
+        /* Custom scrollbar for a clean look */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1; /* Slate-300 */
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background-color: #f1f5f9; /* Slate-100 */
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- GraphQL API Configuration (Mock Endpoint) -->
+    <script>
+        // In a real application, this would be your server's GraphQL endpoint
+        const GRAPHQL_ENDPOINT = 'https://hypothetical.api/graphql'; 
+    </script>
+
+    <!-- Firebase SDK Imports (Kept for environment compatibility, but not used for main data) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, setLogLevel } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global environment variables check
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        if (firebaseConfig) {
+            const app = initializeApp(firebaseConfig);
+            window.db = getFirestore(app);
+            window.auth = getAuth(app);
+            setLogLevel('debug'); // Enable logging
+
+            // Authentication
+            async function authenticate() {
+                try {
+                    if (initialAuthToken) {
+                        await signInWithCustomToken(window.auth, initialAuthToken);
+                        console.log("Signed in with custom token.");
+                    } else {
+                        await signInAnonymously(window.auth);
+                        console.log("Signed in anonymously.");
+                    }
+                    window.userId = window.auth.currentUser?.uid || crypto.randomUUID();
+                } catch (error) {
+                    console.error("Firebase Auth Error:", error);
+                }
+            }
+            authenticate();
+        }
+    </script>
+
+    <!-- Main Application Container -->
+    <div id="app" class="flex flex-col min-h-screen">
+        <!-- Header & Horizontal Menu -->
+        <header class="bg-white shadow-md sticky top-0 z-40">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <!-- Logo/Title -->
+                <div class="flex items-center space-x-2">
+                    <button id="hamburgerBtn" class="lg:hidden text-gray-700 hover:text-primary-light transition-colors p-1 -ml-1 rounded-md">
+                        <i id="hamburgerIcon" data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <h1 class="text-2xl font-extrabold text-gray-900 tracking-tight">Staff Portal <span class="text-xs font-medium text-graphql ml-2"> (GraphQL Client)</span></h1>
+                </div>
+
+                <!-- Horizontal Menu (Desktop) -->
+                <nav class="hidden lg:flex space-x-6">
+                    <a href="#" class="text-gray-600 hover:text-primary-light font-medium transition-colors p-2 rounded-lg">Dashboard</a>
+                    <div class="group relative">
+                        <button class="flex items-center text-gray-600 hover:text-primary-light font-medium transition-colors p-2 rounded-lg">
+                            Employees <i data-lucide="chevron-down" class="w-4 h-4 ml-1 transition-transform group-hover:rotate-180"></i>
+                        </button>
+                        <!-- Sub-Menu (One level deep) -->
+                        <div class="absolute right-0 mt-2 w-48 rounded-lg shadow-xl bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-200 transform origin-top-right z-50">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg">Active Staff</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Performance</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg">Attendance</a>
+                        </div>
+                    </div>
+                    <a href="#" class="text-gray-600 hover:text-primary-light font-medium transition-colors p-2 rounded-lg">Reports</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-light font-medium transition-colors p-2 rounded-lg">Settings</a>
+                </nav>
+
+                <!-- User/Actions -->
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-600 hover:text-primary-light transition-colors p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                    </button>
+                    <div class="h-10 w-10 bg-primary-light text-white flex items-center justify-center rounded-full font-bold text-sm shadow-md">
+                        JD
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sidebar/Hamburger Menu (Mobile) -->
+        <div id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full lg:hidden z-50 w-64 bg-white shadow-xl transition-transform duration-300">
+            <div class="p-6">
+                <h2 class="text-xl font-bold mb-6 text-gray-800">Menu</h2>
+                <nav class="space-y-2">
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"><i data-lucide="layout-dashboard" class="w-5 h-5 mr-3"></i> Dashboard</a>
+                    
+                    <!-- Menu Item with Sub-Menu -->
+                    <div class="relative">
+                        <button id="subMenuToggle" class="flex items-center w-full justify-between p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                            <span class="flex items-center"><i data-lucide="users" class="w-5 h-5 mr-3"></i> Employees</span>
+                            <i id="subMenuIcon" data-lucide="chevron-right" class="w-4 h-4 transition-transform duration-300"></i>
+                        </button>
+                        <div id="subMenu" class="pl-6 pt-2 space-y-1 hidden">
+                            <a href="#" class="block p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">Active Staff</a>
+                            <a href="#" class="block p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">Performance</a>
+                            <a href="#" class="block p-2 text-sm text-gray-600 hover:bg-gray-50 rounded-lg">Attendance</a>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"><i data-lucide="file-text" class="w-5 h-5 mr-3"></i> Reports</a>
+                    <a href="#" class="flex items-center p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"><i data-lucide="settings" class="w-5 h-5 mr-3"></i> Settings</a>
+                </nav>
+            </div>
+        </div>
+        <!-- Sidebar Backdrop -->
+        <div id="sidebarBackdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden transition-opacity duration-300 opacity-0"></div>
+
+
+        <!-- Main Content Area -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+                <h2 class="text-3xl font-bold text-gray-800">Employee Directory</h2>
+                
+                <!-- Action Buttons: Add New and View Toggle -->
+                <div class="flex items-center space-x-3">
+                    <button onclick="openNewEmployeeModal()" class="flex items-center px-4 py-2 bg-graphql text-white rounded-xl shadow-lg hover:bg-pink-700 transition-colors font-medium text-sm">
+                        <i data-lucide="plus-circle" class="w-5 h-5 mr-2"></i> Add New Employee
+                    </button>
+
+                    <!-- View Toggle Button -->
+                    <div class="bg-white p-1 rounded-xl shadow-inner flex space-x-1">
+                        <button id="gridViewBtn" data-view="grid" class="view-toggle p-2 rounded-lg transition-all flex items-center justify-center text-sm font-medium bg-primary-light text-white shadow-md">
+                            <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                        </button>
+                        <button id="tileViewBtn" data-view="tile" class="view-toggle p-2 rounded-lg transition-all flex items-center justify-center text-sm font-medium text-gray-600 hover:bg-gray-100">
+                            <i data-lucide="list-collapse" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filter Bar -->
+            <div class="mb-6 flex space-x-4">
+                <!-- Search Input -->
+                <div class="relative flex-grow">
+                    <i data-lucide="search" class="w-5 h-5 text-gray-400 absolute left-3 top-1/2 transform -translate-y-1/2"></i>
+                    <input type="text" id="searchInput" oninput="filterEmployees(event.target.value)" placeholder="Search by name, ID, or class..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-xl shadow-sm focus:ring-primary-light focus:border-primary-light transition-all">
+                </div>
+                
+                <!-- Filter Dropdown (Mock) -->
+                <select onchange="filterEmployees(document.getElementById('searchInput').value, event.target.value)" class="py-2 px-4 border border-gray-300 rounded-xl shadow-sm focus:ring-primary-light focus:border-primary-light transition-all text-sm appearance-none cursor-pointer">
+                    <option value="">Filter by Status</option>
+                    <option value="High Performer">High Performer</option>
+                    <option value="On Track">On Track</option>
+                    <option value="Needs Review">Needs Review</option>
+                    <option value="New Hire">New Hire</option>
+                </select>
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loadingIndicator" class="text-center py-10 hidden">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-t-4 border-graphql border-t-transparent"></div>
+                <p class="mt-2 text-gray-600 font-medium">Fetching data via GraphQL...</p>
+            </div>
+
+
+            <!-- Content Container -->
+            <div id="contentContainer">
+                <!-- Grid View (Table) -->
+                <div id="gridView" class="bg-white rounded-xl shadow-lg overflow-x-auto custom-scrollbar">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50 sticky top-0">
+                            <tr>
+                                <th onclick="sortEmployees('id')" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors rounded-tl-xl">ID <i data-lucide="arrow-up-down" class="w-3 h-3 ml-1 inline"></i></th>
+                                <th onclick="sortEmployees('name')" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">Name <i data-lucide="arrow-up-down" class="w-3 h-3 ml-1 inline"></i></th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Age</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Class</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Subjects (Top)</th>
+                                <th onclick="sortEmployees('attendance')" class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100 transition-colors">Attendance (%) <i data-lucide="arrow-up-down" class="w-3 h-3 ml-1 inline"></i></th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Flag Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Last Login</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider rounded-tr-xl">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gridBody" class="bg-white divide-y divide-gray-200">
+                            <!-- Employee rows injected here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Tile View (Cards) - Initially Hidden -->
+                <div id="tileView" class="hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <!-- Employee tiles injected here by JavaScript -->
+                </div>
+            </div>
+        </main>
+        
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white p-4 mt-8">
+            <div class="container mx-auto text-center text-sm">
+                &copy; 2025 Staff Portal POC. Data managed via hypothetical GraphQL API.
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- Detail Modal (Pop-up Style View) -->
+    <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="modalContent" class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform scale-95 transition-transform duration-300 relative">
+            
+            <!-- Close Button (Navigation Back) -->
+            <button onclick="closeDetailModal()" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full bg-gray-100 z-10">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <!-- Modal Content (Injected by JS) -->
+            <div id="modalBody" class="p-8 sm:p-12">
+                <!-- Employee details will be rendered here -->
+            </div>
+        </div>
+    </div>
+    
+    <!-- New Employee Modal (Pop-up for Creation) -->
+    <div id="newEmployeeModal" class="fixed inset-0 bg-black bg-opacity-60 z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Create New Employee</h2>
+            <button onclick="closeNewEmployeeModal()" class="absolute top-4 right-4 text-gray-500 hover:text-red-500 transition-colors p-2 rounded-full bg-gray-100">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+            <form id="newEmployeeForm" class="space-y-4">
+                <div>
+                    <label for="new_name" class="block text-sm font-medium text-gray-700">Full Name</label>
+                    <input type="text" id="new_name" required class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-primary-light focus:border-primary-light">
+                </div>
+                <div>
+                    <label for="new_class" class="block text-sm font-medium text-gray-700">Role/Class</label>
+                    <input type="text" id="new_class" required class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-primary-light focus:border-primary-light">
+                </div>
+                <div>
+                    <label for="new_age" class="block text-sm font-medium text-gray-700">Age</label>
+                    <input type="number" id="new_age" required class="mt-1 block w-full border border-gray-300 rounded-lg shadow-sm p-3 focus:ring-primary-light focus:border-primary-light">
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="w-full flex items-center justify-center px-4 py-3 bg-graphql text-white rounded-xl shadow-lg hover:bg-pink-700 transition-colors font-semibold">
+                        <i data-lucide="save" class="w-5 h-5 mr-2"></i> Save Employee
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // --- Mock Data (Initial State - will be replaced by GraphQL fetch) ---
+        let employees = []; 
+
+        // Global State
+        const state = {
+            currentView: 'grid', // 'grid' or 'tile'
+            sortKey: 'id',
+            sortDirection: 'asc', // 'asc' or 'desc'
+            filteredEmployees: [],
+            isLoading: false,
+        };
+        
+        // --- GraphQL Client Simulation Functions ---
+        
+        /**
+         * Simulates a GraphQL Fetch request using the standard Fetch API.
+         * @param {string} query The GraphQL query or mutation string.
+         * @param {Object} variables Optional variables for the query/mutation.
+         */
+        async function graphqlFetch(query, variables = {}) {
+            console.log("GraphQL Request:", { query, variables });
+            
+            // Simulation: Delay to mimic network latency
+            await new Promise(resolve => setTimeout(resolve, 800)); 
+
+            // Hardcode a successful response structure
+            const mockResponse = {
+                data: null,
+                errors: null,
+            };
+
+            // --- Query for Fetching Employees ---
+            if (query.includes('getEmployees')) {
+                // Simulate fetched data
+                mockResponse.data = {
+                    getEmployees: [
+                        { id: 'E001', name: 'Alina Petrova', age: 28, class: 'Manager', subjects: ['Leadership', 'Finance', 'Strategy'], attendance: { totalDays: 200, daysPresent: 195, percentage: 97.5 }, role: 'Admin', flagStatus: 'High Performer', lastLogin: '2025-11-29', profilePic: 'https://placehold.co/400x400/1e40af/ffffff?text=AP' },
+                        { id: 'E002', name: 'John Doe', age: 35, class: 'Senior Developer', subjects: ['Node.js', 'React', 'GraphQL'], attendance: { totalDays: 200, daysPresent: 180, percentage: 90.0 }, role: 'Employee', flagStatus: 'On Track', lastLogin: '2025-11-30', profilePic: 'https://placehold.co/400x400/065f46/ffffff?text=JD' },
+                        { id: 'E003', name: 'Sarah Connor', age: 22, class: 'Junior Analyst', subjects: ['Data Science', 'Python', 'Statistics'], attendance: { totalDays: 200, daysPresent: 199, percentage: 99.5 }, role: 'Employee', flagStatus: 'New Hire', lastLogin: '2025-12-01', profilePic: 'https://placehold.co/400x400/9d174d/ffffff?text=SC' },
+                        { id: 'E004', name: 'Michael Chan', age: 41, class: 'Lead Architect', subjects: ['System Design', 'Cloud', 'Security'], attendance: { totalDays: 200, daysPresent: 160, percentage: 80.0 }, role: 'Admin', flagStatus: 'Needs Review', lastLogin: '2025-11-28', profilePic: 'https://placehold.co/400x400/84cc16/ffffff?text=MC' },
+                        // Note: Only the fields requested in the query would be returned. This simulation returns all mock data.
+                    ].concat(employees.filter(e => e.isNew)) // Include newly added employees
+                };
+            } 
+            
+            // --- Mutation for Adding Employee ---
+            else if (query.includes('addEmployee')) {
+                const newId = 'E' + (employees.length + 1).toString().padStart(3, '0');
+                const newEmployee = {
+                    ...variables.input, // Get data from the form input
+                    id: newId,
+                    subjects: ['Pending'],
+                    attendance: { totalDays: 0, daysPresent: 0, percentage: 0 },
+                    role: 'Employee',
+                    flagStatus: 'New Hire',
+                    lastLogin: new Date().toISOString().split('T')[0],
+                    profilePic: `https://placehold.co/400x400/8b5cf6/ffffff?text=${variables.input.name.charAt(0)}`,
+                    isNew: true, // Mark as newly added mock data
+                };
+                
+                // Add to mock data list
+                employees.push(newEmployee);
+                
+                mockResponse.data = {
+                    addEmployee: newEmployee
+                };
+                showActionMessage(`Successfully added employee ${newEmployee.name} via GraphQL Mutation.`, 'success');
+            }
+
+            if (mockResponse.errors) {
+                console.error("GraphQL Error:", mockResponse.errors);
+                throw new Error("GraphQL API Error");
+            }
+            return mockResponse;
+        }
+
+
+        /**
+         * Main function to fetch employee data using a GraphQL Query.
+         */
+        async function fetchEmployeeData() {
+            state.isLoading = true;
+            document.getElementById('loadingIndicator').classList.remove('hidden');
+            document.getElementById('contentContainer').classList.add('hidden');
+
+            const GET_EMPLOYEES_QUERY = `
+                query getEmployees {
+                    getEmployees {
+                        id
+                        name
+                        age
+                        class
+                        subjects
+                        attendance {
+                            percentage
+                        }
+                        role
+                        flagStatus
+                        lastLogin
+                        profilePic
+                    }
+                }
+            `;
+
+            try {
+                const result = await graphqlFetch(GET_EMPLOYEES_QUERY);
+                
+                if (result.data && result.data.getEmployees) {
+                    // Update global state with fetched data
+                    employees = result.data.getEmployees; 
+                    renderEmployees();
+                } else {
+                    console.error("No employee data returned from GraphQL.");
+                    employees = [];
+                    renderEmployees();
+                }
+
+            } catch (error) {
+                console.error("Error fetching employees:", error);
+                showActionMessage("Failed to load data from GraphQL endpoint.", 'error');
+            } finally {
+                state.isLoading = false;
+                document.getElementById('loadingIndicator').classList.add('hidden');
+                document.getElementById('contentContainer').classList.remove('hidden');
+            }
+        }
+        
+        /**
+         * GraphQL Mutation to add a new employee record.
+         */
+        async function addNewEmployee(name, empClass, age) {
+            const ADD_EMPLOYEE_MUTATION = `
+                mutation addEmployee($input: NewEmployeeInput!) {
+                    addEmployee(input: $input) {
+                        id
+                        name
+                        class
+                    }
+                }
+            `;
+            const variables = {
+                input: {
+                    name: name,
+                    class: empClass,
+                    age: parseInt(age, 10),
+                    // In a real scenario, more fields would be passed
+                }
+            };
+            
+            try {
+                // Show loading state for submission
+                document.querySelector('#newEmployeeForm button[type="submit"]').disabled = true;
+                
+                const result = await graphqlFetch(ADD_EMPLOYEE_MUTATION, variables);
+                
+                if (result.data && result.data.addEmployee) {
+                    console.log("Mutation successful:", result.data.addEmployee);
+                    // Re-fetch data to update the UI with the new employee
+                    await fetchEmployeeData(); 
+                    return true;
+                } else {
+                    showActionMessage("GraphQL Mutation failed or returned no data.", 'error');
+                    return false;
+                }
+
+            } catch (error) {
+                console.error("Error executing mutation:", error);
+                showActionMessage("An error occurred during employee creation.", 'error');
+                return false;
+            } finally {
+                 document.querySelector('#newEmployeeForm button[type="submit"]').disabled = false;
+            }
+        }
+
+
+        // --- Utility Functions ---
+        const getStatusBadge = (status) => {
+            let color = 'bg-gray-100 text-gray-800';
+            if (status === 'High Performer') color = 'bg-green-100 text-green-800';
+            else if (status === 'Needs Review' || status === 'Potential Risk') color = 'bg-red-100 text-red-800';
+            else if (status === 'New Hire') color = 'bg-yellow-100 text-yellow-800';
+            else if (status === 'Executive') color = 'bg-blue-100 text-blue-800';
+            return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${color}">${status}</span>`;
+        };
+
+        const getRoleBadge = (role) => {
+            let color = role === 'Admin' ? 'bg-graphql text-white' : 'bg-gray-500 text-white';
+            return `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${color}">${role}</span>`;
+        };
+
+        // --- Core Render Function (Re-renders based on state.filteredEmployees) ---
+
+        function renderEmployees() {
+            // Sort data before rendering
+            let sorted = [...employees];
+            
+            // Apply sorting
+            if (state.sortKey) {
+                sorted.sort((a, b) => {
+                    let valA, valB;
+
+                    if (state.sortKey === 'attendance') {
+                        // Handle potential undefined attendance if data fetching failed or was incomplete
+                        valA = a.attendance?.percentage || 0;
+                        valB = b.attendance?.percentage || 0;
+                    } else {
+                        valA = (a[state.sortKey] || '').toString().toLowerCase();
+                        valB = (b[state.sortKey] || '').toString().toLowerCase();
+                    }
+
+                    if (valA < valB) return state.sortDirection === 'asc' ? -1 : 1;
+                    if (valA > valB) return state.sortDirection === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            }
+            
+            state.filteredEmployees = sorted;
+
+            // Apply filtering (always filter the sorted array)
+            const searchInput = document.getElementById('searchInput');
+            const filterSelect = document.querySelector('select'); // The status filter
+
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            const statusFilter = filterSelect ? filterSelect.value : '';
+            
+            state.filteredEmployees = sorted.filter(employee => {
+                const matchesSearch = searchTerm === '' || 
+                    employee.name.toLowerCase().includes(searchTerm) || 
+                    employee.id.toLowerCase().includes(searchTerm) || 
+                    employee.class.toLowerCase().includes(searchTerm);
+
+                const matchesStatus = statusFilter === '' || employee.flagStatus === statusFilter;
+                
+                return matchesSearch && matchesStatus;
+            });
+
+
+            // Render Grid View
+            const gridBody = document.getElementById('gridBody');
+            
+            if (state.filteredEmployees.length === 0 && !state.isLoading) {
+                 gridBody.innerHTML = `
+                    <tr>
+                        <td colspan="10" class="px-6 py-8 text-center text-gray-500 text-lg">
+                            No employees found matching your criteria.
+                        </td>
+                    </tr>
+                 `;
+            } else {
+                gridBody.innerHTML = state.filteredEmployees.map(employee => {
+                    const attendanceRate = employee.attendance?.percentage || 0;
+                    const topSubject = employee.subjects?.[0] || 'N/A';
+                    const subjectCount = employee.subjects?.length || 0;
+                    
+                    return `
+                        <tr class="hover:bg-gray-50 cursor-pointer transition-colors" onclick="showDetailModal('${employee.id}')">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${employee.id}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 font-medium">${employee.name}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${employee.age}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${employee.class}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${topSubject} (${subjectCount} Total)</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <div class="w-16 h-2 bg-gray-200 rounded-full overflow-hidden">
+                                    <div class="h-full bg-primary-light" style="width: ${attendanceRate}%"></div>
+                                </div>
+                                <span class="text-xs text-gray-600">${attendanceRate}%</span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">${getRoleBadge(employee.role)}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">${getStatusBadge(employee.flagStatus)}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${employee.lastLogin}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <button class="text-gray-500 hover:text-primary-light p-1 rounded-full hover:bg-gray-100 transition-colors" onclick="event.stopPropagation(); showActionMessage('Actions for ${employee.name}: Edit, Flag, Delete')">
+                                    <i data-lucide="more-horizontal" class="w-5 h-5"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+
+            // Render Tile View
+            const tileView = document.getElementById('tileView');
+            tileView.innerHTML = state.filteredEmployees.map(employee => {
+                const attendanceRate = employee.attendance?.percentage || 0;
+
+                return `
+                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer flex flex-col justify-between" onclick="showDetailModal('${employee.id}')">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <!-- Avatar and Name/Role -->
+                            <div class="flex items-center space-x-4">
+                                <img src="${employee.profilePic}" alt="${employee.name}" onerror="this.onerror=null;this.src='https://placehold.co/60x60/cccccc/000000?text=${employee.name.charAt(0)}';" class="h-14 w-14 rounded-full object-cover shadow-inner border-2 border-primary-light">
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900">${employee.name}</h3>
+                                    <p class="text-sm text-gray-500">${employee.class}</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Bun Button (Ellipsis Menu) -->
+                            <div class="relative inline-block text-left" onclick="event.stopPropagation()">
+                                <button type="button" class="bun-button text-gray-500 hover:text-gray-800 p-1 rounded-full hover:bg-gray-100 transition-colors" onclick="showActionMessage('Actions for ${employee.name}: Edit, Flag, Delete')">
+                                    <i data-lucide="more-vertical" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Necessary Fields (ID, Age, Attendance) -->
+                        <div class="grid grid-cols-3 gap-4 border-t pt-4 mt-4 text-center">
+                            <div>
+                                <p class="text-xs font-medium text-gray-500">ID</p>
+                                <p class="text-sm font-semibold text-gray-800">${employee.id}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-500">Age</p>
+                                <p class="text-sm font-semibold text-gray-800">${employee.age}</p>
+                            </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-500">Attendance</p>
+                                <p class="text-sm font-semibold text-primary-light">${attendanceRate}%</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Footer Badge -->
+                    <div class="p-4 bg-gray-50 rounded-b-xl border-t border-gray-100 flex justify-between items-center">
+                        ${getStatusBadge(employee.flagStatus)}
+                        ${getRoleBadge(employee.role)}
+                    </div>
+                </div>
+            `;
+            }).join('');
+
+            // Ensure icons are rendered
+            lucide.createIcons();
+        }
+
+        // --- Search, Filter, Sort Logic ---
+        
+        function filterEmployees(searchTerm = '', statusFilter = '') {
+            // Re-render will handle the filtering based on current input values
+            renderEmployees();
+        }
+
+        function sortEmployees(key) {
+            if (state.sortKey === key) {
+                // Toggle direction if same key is clicked
+                state.sortDirection = state.sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                // Default to ascending for a new key
+                state.sortKey = key;
+                state.sortDirection = 'asc';
+            }
+            renderEmployees();
+        }
+
+        // --- UI Control Functions ---
+
+        function toggleView(view) {
+            state.currentView = view;
+            const gridView = document.getElementById('gridView');
+            const tileView = document.getElementById('tileView');
+            const gridBtn = document.getElementById('gridViewBtn');
+            const tileBtn = document.getElementById('tileViewBtn');
+
+            if (view === 'grid') {
+                gridView.classList.remove('hidden');
+                tileView.classList.add('hidden');
+                gridBtn.classList.add('bg-primary-light', 'text-white', 'shadow-md');
+                gridBtn.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                tileBtn.classList.remove('bg-primary-light', 'text-white', 'shadow-md');
+                tileBtn.classList.add('text-gray-600', 'hover:bg-gray-100');
+            } else { // tile view
+                tileView.classList.remove('hidden');
+                gridView.classList.add('hidden');
+                tileBtn.classList.add('bg-primary-light', 'text-white', 'shadow-md');
+                tileBtn.classList.remove('text-gray-600', 'hover:bg-gray-100');
+                gridBtn.classList.remove('bg-primary-light', 'text-white', 'shadow-md');
+                gridBtn.classList.add('text-gray-600', 'hover:bg-gray-100');
+            }
+        }
+
+        function renderDetailModalContent(employee) {
+            const modalBody = document.getElementById('modalBody');
+            
+            // Handle missing data due to selective GraphQL fetching
+            const daysPresent = employee.attendance?.daysPresent || 'N/A';
+            const totalDays = employee.attendance?.totalDays || 'N/A';
+            const attendanceRate = employee.attendance?.percentage || 0;
+            const subjectsList = employee.subjects || [];
+
+            // Find a color based on the first character of the name for the header
+            const initialColor = { A: 'bg-red-500', J: 'bg-green-500', S: 'bg-purple-500', M: 'bg-yellow-500', D: 'bg-indigo-500', O: 'bg-pink-500', R: 'bg-teal-500', E: 'bg-cyan-500', default: 'bg-primary-light' }[employee.name.charAt(0)] || 'bg-primary-light';
+
+            // Beautiful, entire details view (expanded tile/pop-up style)
+            modalBody.innerHTML = `
+                <!-- Header with Banner -->
+                <div class="flex flex-col items-center p-6 -mt-12 -mx-8 sm:-mx-12 rounded-t-xl text-white ${initialColor} shadow-lg">
+                    <img src="${employee.profilePic}" alt="${employee.name}" class="h-24 w-24 rounded-full object-cover ring-4 ring-white shadow-xl mb-4" onerror="this.onerror=null;this.src='https://placehold.co/100x100/ffffff/${initialColor.replace('bg-', '')}?text=${employee.name.charAt(0)}';" loading="lazy">
+                    <h2 class="text-3xl font-extrabold">${employee.name}</h2>
+                    <p class="text-lg font-medium opacity-80">${employee.class} | ${employee.role}</p>
+                </div>
+
+                <!-- Main Content Cards -->
+                <div class="grid md:grid-cols-2 gap-8 mt-8">
+                    <!-- Card 1: Personal/Basic Info -->
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-inner">
+                        <h3 class="flex items-center text-xl font-bold text-gray-800 mb-4 border-b pb-2"><i data-lucide="user" class="w-5 h-5 mr-2 text-graphql"></i> Personal Information</h3>
+                        <dl class="space-y-3 text-sm">
+                            <div class="flex justify-between border-b pb-1">
+                                <dt class="text-gray-500 font-medium">Employee ID:</dt>
+                                <dd class="font-semibold text-gray-700">${employee.id}</dd>
+                            </div>
+                            <div class="flex justify-between border-b pb-1">
+                                <dt class="text-gray-500 font-medium">Age:</dt>
+                                <dd class="font-semibold text-gray-700">${employee.age}</dd>
+                            </div>
+                            <div class="flex justify-between border-b pb-1">
+                                <dt class="text-gray-500 font-medium">Status:</dt>
+                                <dd>${getStatusBadge(employee.flagStatus)}</dd>
+                            </div>
+                            <div class="flex justify-between">
+                                <dt class="text-gray-500 font-medium">Last Activity:</dt>
+                                <dd class="font-semibold text-gray-700">${employee.lastLogin}</dd>
+                            </div>
+                        </dl>
+                    </div>
+
+                    <!-- Card 2: Academic/Skill Info -->
+                    <div class="bg-gray-50 p-6 rounded-xl shadow-inner">
+                        <h3 class="flex items-center text-xl font-bold text-gray-800 mb-4 border-b pb-2"><i data-lucide="book-open-text" class="w-5 h-5 mr-2 text-graphql"></i> Core Skills & Subjects</h3>
+                        <ul class="space-y-2">
+                            ${subjectsList.map(sub => `<li class="flex items-center text-sm text-gray-700"><i data-lucide="check-circle" class="w-4 h-4 mr-2 text-green-500"></i> ${sub}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <!-- Card 3: Attendance Metrics -->
+                    <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                        <h3 class="flex items-center text-xl font-bold text-gray-800 mb-4 border-b pb-2"><i data-lucide="calendar-check" class="w-5 h-5 mr-2 text-graphql"></i> Attendance Summary</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+                            <div>
+                                <p class="text-4xl font-extrabold text-primary-light">${daysPresent}</p>
+                                <p class="text-sm text-gray-500">Days Present</p>
+                            </div>
+                            <div>
+                                <p class="text-4xl font-extrabold text-gray-700">${totalDays}</p>
+                                <p class="text-sm text-gray-500">Total Working Days</p>
+                            </div>
+                            <div>
+                                <p class="text-4xl font-extrabold text-green-500">${attendanceRate}%</p>
+                                <p class="text-sm text-gray-500">Attendance Rate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Actions -->
+                <div class="mt-8 pt-6 border-t flex justify-end space-x-4">
+                    <button class="flex items-center px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition-colors" onclick="showActionMessage('Delete functionality simulated.')">
+                        <i data-lucide="trash-2" class="w-4 h-4 mr-2"></i> Delete
+                    </button>
+                    <button class="flex items-center px-4 py-2 bg-yellow-500 text-white rounded-lg shadow-md hover:bg-yellow-600 transition-colors" onclick="showActionMessage('Flag functionality simulated.')">
+                        <i data-lucide="flag" class="w-4 h-4 mr-2"></i> Flag
+                    </button>
+                    <button class="flex items-center px-4 py-2 bg-graphql text-white rounded-lg shadow-md hover:bg-pink-700 transition-colors" onclick="showActionMessage('Edit functionality simulated.')">
+                        <i data-lucide="square-pen" class="w-4 h-4 mr-2"></i> Edit Record
+                    </button>
+                </div>
+            `;
+            // Ensure icons are rendered
+            lucide.createIcons();
+        }
+
+        function showDetailModal(employeeId) {
+            const employee = employees.find(e => e.id === employeeId);
+            if (!employee) return;
+            state.selectedEmployee = employee;
+            renderDetailModalContent(employee);
+
+            const modal = document.getElementById('detailModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            // Show modal with transition
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
+            modalContent.classList.remove('scale-95');
+            modalContent.classList.add('scale-100');
+        }
+
+        function closeDetailModal() {
+            const modal = document.getElementById('detailModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            // Hide modal with transition
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+
+            // Wait for transition to finish before disabling pointer events
+            setTimeout(() => {
+                modal.classList.add('pointer-events-none');
+                state.selectedEmployee = null;
+            }, 300);
+        }
+        
+        // --- New Employee Modal Functions ---
+        function openNewEmployeeModal() {
+            const modal = document.getElementById('newEmployeeModal');
+            modal.classList.remove('pointer-events-none', 'opacity-0');
+            modal.classList.add('opacity-100');
+        }
+
+        function closeNewEmployeeModal() {
+            const modal = document.getElementById('newEmployeeModal');
+            modal.classList.remove('opacity-100');
+            modal.classList.add('opacity-0');
+            setTimeout(() => {
+                modal.classList.add('pointer-events-none');
+            }, 300);
+        }
+
+        function showActionMessage(message, type = 'info') {
+            // Function to show a clean message box instead of alert()
+            const color = type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-primary-light';
+            const messageBox = document.createElement('div');
+            messageBox.className = `fixed top-4 right-4 ${color} text-white p-4 rounded-lg shadow-xl transition-all duration-300 transform translate-x-full opacity-0 z-[60]`;
+            messageBox.innerHTML = `<p class="font-semibold">${message}</p>`;
+            document.body.appendChild(messageBox);
+            
+            // Animate in
+            setTimeout(() => {
+                messageBox.classList.remove('translate-x-full', 'opacity-0');
+                messageBox.classList.add('translate-x-0', 'opacity-100');
+            }, 10);
+
+            // Animate out and remove
+            setTimeout(() => {
+                messageBox.classList.remove('translate-x-0', 'opacity-100');
+                messageBox.classList.add('translate-x-full', 'opacity-0');
+                setTimeout(() => messageBox.remove(), 300);
+            }, 3000);
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            const icon = document.getElementById('hamburgerIcon'); // Get the icon element
+            state.isSidebarOpen = !state.isSidebarOpen;
+
+            if (state.isSidebarOpen) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.remove('hidden', 'opacity-0');
+                backdrop.classList.add('opacity-100');
+                icon.setAttribute('data-lucide', 'x'); // Change to X icon
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                backdrop.classList.remove('opacity-100');
+                backdrop.classList.add('opacity-0');
+                setTimeout(() => backdrop.classList.add('hidden'), 300); // Hide after transition
+                icon.setAttribute('data-lucide', 'menu'); // Change back to menu icon
+            }
+            // Re-render the icons to apply the data-lucide change
+            lucide.createIcons();
+        }
+
+        function toggleSubMenu() {
+            const subMenu = document.getElementById('subMenu');
+            const subMenuIcon = document.getElementById('subMenuIcon');
+            const isExpanded = subMenu.classList.contains('hidden');
+
+            if (isExpanded) {
+                subMenu.classList.remove('hidden');
+                subMenuIcon.classList.add('rotate-90');
+            } else {
+                subMenu.classList.add('hidden');
+                subMenuIcon.classList.remove('rotate-90');
+            }
+        }
+
+        // --- Initialization ---
+
+        window.onload = function() {
+            // Initial GraphQL data fetch
+            fetchEmployeeData();
+            
+            // Setup Event Listeners
+            document.getElementById('gridViewBtn').addEventListener('click', () => toggleView('grid'));
+            document.getElementById('tileViewBtn').addEventListener('click', () => toggleView('tile'));
+            document.getElementById('hamburgerBtn').addEventListener('click', toggleSidebar);
+            document.getElementById('sidebarBackdrop').addEventListener('click', toggleSidebar);
+            document.getElementById('subMenuToggle').addEventListener('click', toggleSubMenu);
+            
+            // Handle form submission for new employee (using GraphQL Mutation)
+            document.getElementById('newEmployeeForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const newName = document.getElementById('new_name').value;
+                const newClass = document.getElementById('new_class').value;
+                const newAge = document.getElementById('new_age').value;
+
+                const success = await addNewEmployee(newName, newClass, newAge);
+                
+                if (success) {
+                    // Reset form and close modal only on success
+                    document.getElementById('newEmployeeForm').reset();
+                    closeNewEmployeeModal();
+                }
+            });
+
+            // Close modal on outside click (Detail Modal)
+            document.getElementById('detailModal').addEventListener('click', function(e) {
+                if (e.target.id === 'detailModal') {
+                    closeDetailModal();
+                }
+            });
+            
+            // Close modal on outside click (New Employee Modal)
+            document.getElementById('newEmployeeModal').addEventListener('click', function(e) {
+                if (e.target.id === 'newEmployeeModal') {
+                    closeNewEmployeeModal();
+                }
+            });
+        };
+
+        // Expose functions globally for button clicks
+        window.closeDetailModal = closeDetailModal;
+        window.openNewEmployeeModal = openNewEmployeeModal;
+        window.closeNewEmployeeModal = closeNewEmployeeModal;
+        window.filterEmployees = filterEmployees;
+        window.sortEmployees = sortEmployees;
+        window.showActionMessage = showActionMessage;
+    </script>
+
+</body>
+</html>

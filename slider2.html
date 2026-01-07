@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School, Kota - Scroll Animation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        /* =======================================
+        GLOBAL HEADER/FOOTER STYLES (Provided by user)
+        ======================================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fefaf0; /* Light background for general content */
+            color: #5d2a2a; /* Main text color */
+            line-height: 1.6;
+            /* Added for GSAP: Ensure no overflow from fixed content */
+            overflow-x: hidden; 
+        }
+        
+        /* GSAP Content Overrides (To integrate the animation style) */
+        /* Set the total height for the scrollable content area */
+        body { 
+            /* Base height + GSAP scroll area + footer height */
+            height: 1400vh; 
+        }
+        .scroll-area {
+            /* DURATION: 900vh scroll before the pin releases (Includes buffer) */
+            height: 900vh; 
+            position: relative;
+            background-color: #f4f4f4; /* Match body for initial look */
+            z-index: 1; /* Ensure animation is above other sections */
+        }
+
+        .sticky-container {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            background-color: #f4f4f4; 
+        }
+
+        /* SCENE 2 STYLES (Buffer/Message Area) - MOVED TO BOTTOM */
+        .timeline-scroll-section {
+            /* DURATION: 500vh scroll for the buffer section */
+            height: 500vh; 
+            background-color: #800000;
+            position: relative;
+            z-index: 0; /* Place below the animation */
+            margin-top: -1px; /* Ensure no gap between sections */
+        }
+
+        .timeline-sticky-content {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            background: #800000; 
+        }
+        /* End GSAP Overrides */
+
+
+        /* Header/Navigation Styles */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: space-between;
+            position: fixed;
+            top: 25px;
+            left: 20px;
+            z-index: 1002;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #5d2a2a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .admission-btn {
+            background-color: transparent;
+            color: #5d2a2a;
+            border: 2px solid #5d2a2a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1002;
+        }
+        .admission-btn:hover { background-color: #5d2a2a; color: white; }
+
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1001;
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            overflow: hidden;
+        }
+
+        .overlay-menu.active {
+            transform: translateX(0);
+        }
+
+        .menu-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.4s ease-in-out;
+            margin-top: 80px;
+        }
+
+        .overlay-menu.submenu-active .menu-wrapper {
+            transform: translateX(-100%);
+        }
+        
+        .main-menu-screen, .submenu-screen {
+            width: 100%;
+            height: 100%;
+            list-style: none;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .submenu-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 1003;
+        }
+        
+        .overlay-menu.submenu-active .submenu-header {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #5d2a2a;
+            font-size: 28px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 15px 10px;
+            border-radius: 5px;
+            transition: color 0.3s;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            color: #8b4513;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+
+        .main-menu-screen li, .submenu-screen li {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .main-menu-screen a, .submenu-screen a {
+            text-decoration: none;
+            color: #5d2a2a;
+            font-weight: 600;
+            display: block;
+            padding: 15px 10px;
+            margin-bottom: 5px;
+            transition: color 0.3s;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .main-menu-screen a.has-submenu::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        .main-menu-screen a:hover, .submenu-screen a:hover {
+            color: #8b4513;
+        }
+        
+        .submenu-screen {
+            background-color: white;
+        }
+        
+        .content {
+            /* Adjusted padding to accommodate the fixed header */
+            padding-top: 80px; 
+            min-height: 100vh; /* Ensure content pushes footer down */
+            /* Removed padding-left/right so GSAP content can be full width */
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Footer Styles */
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .info-col {
+            flex: 0 0 33.33%;
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-col.logo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .info-col.address-col {
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .info-col.contact-col {
+            text-align: right;
+        }
+        
+        .footer-logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        
+        .info-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #f8d7b3;
+        }
+        
+        .info-col p {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .info-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .info-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+        }
+        
+        .footer-col {
+            flex: 0 0 16.66%;
+            min-width: 150px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            color: #f8d7b3;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            background-color: #4a1f1f;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        .footer-bottom-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .social-media {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .social-media a:hover {
+            color: #f8d7b3;
+        }
+        
+        @media (max-width: 992px) {
+            .info-col {
+                flex: 0 0 100%;
+                text-align: center !important;
+                border: none !important;
+                margin-bottom: 30px;
+            }
+            
+            .info-col.logo-col {
+                align-items: center;
+            }
+            
+            .footer-col {
+                flex: 0 0 33.33%;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .footer-col {
+                flex: 0 0 50%;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .footer-bottom-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .copyright {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-col {
+                flex: 0 0 100%;
+            }
+        }
+        
+        /* =======================================
+        GSAP CONTENT STYLES (from previous request)
+        ======================================= */
+
+        /* Header Reveal */
+        .header-reveal {
+            position: absolute;
+            top: 10vh;
+            font-family: sans-serif; 
+            font-size: 3vw; 
+            font-weight: 600;
+            color: #000;
+            text-align: center;
+            width: 100%;
+            opacity: 1; 
+            z-index: 50; 
+            letter-spacing: 0.1em;
+            will-change: transform, opacity; 
+        }
+
+        /* Arc Container */
+        .arc-container {
+            position: absolute;
+            width: 90%; 
+            height: 60%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+            will-change: transform;
+            top: 55%; 
+            transform: translateY(-50%); 
+        }
+
+        .arc-image {
+            position: absolute;
+            width: 220px;
+            height: 280px;
+            background: #fff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            overflow: hidden;
+            backface-visibility: hidden; 
+            will-change: transform, opacity;
+        }
+        .arc-image img { width: 100%; height: 100%; object-fit: cover; }
+        .image-1 { transform: translate3d(-500px, 0, 0px) rotateY(30deg); z-index: 10; }
+        .image-2 { transform: translate3d(-250px, 0, 10px) rotateY(15deg); z-index: 20; }
+        .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); z-index: 30; } 
+        .image-4 { transform: translate3d(250px, 0, 10px) rotateY(-15deg); z-index: 20; }
+        .image-5 { transform: translate3d(500px, 0, 0px) rotateY(-30deg); z-index: 40; } 
+
+        /* Text Reveal */
+        .text-reveal-container {
+            position: absolute;
+            font-size: 3.3vw;
+            font-weight: 600;
+            color: #0077b6; 
+            text-align: left;
+            white-space: nowrap;
+            opacity: 0; 
+            z-index: 30; 
+            left: 25%; 
+            top: 50%;
+            transform: translateY(-50%);
+            will-change: opacity, transform;
+        }
+
+        .text-reveal-container .word {
+            display: inline-block;
+            margin-right: 1.5vw;
+            transform: translateX(-50px); 
+            opacity: 0;
+            will-change: transform, opacity;
+        }
+
+        /* Milestones Scene */
+        .milestones-scene {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform: translateX(100%); 
+            will-change: transform;
+            z-index: 60; 
+            background-color: transparent;
+        }
+
+        .milestones-scene .container { max-width: 800px; padding: 40px; z-index: 10; position: relative; text-align: center; }
+        .milestones-scene .text-container { display: flex; flex-direction: column; align-items: center; position: relative; z-index: 1; }
+        .milestones-scene .small-text { font-size: 1.2rem; color: #000; margin-bottom: 10px; letter-spacing: 2px; will-change: transform; }
+        .milestones-scene .main-text { display: flex; align-items: center; justify-content: center; font-size: 4rem; color: #000; margin: 20px 0; font-weight: 700; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); }
+
+        .milestones-scene .maroon-dot {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background-color: #800000;
+            border-radius: 50%;
+            overflow: visible; 
+            mix-blend-mode: normal; 
+            z-index: 10; 
+            margin: 0 15px;
+            opacity: 0; 
+            position: relative;
+            will-change: transform, opacity, scale; 
+        }
+
+        /* Legacy Text inside the Expanding Dot */
+        .legacy-text-in-dot {
+            position: absolute;
+            font-size: 3vw;
+            font-weight: 800;
+            color: #FFFDD0; /* Cream color for contrast */
+            text-align: center;
+            width: 100%;
+            opacity: 0;
+            z-index: 70;
+            pointer-events: none;
+            will-change: opacity;
+            /* Center the text over where the dot will expand */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .legacy-text-in-dot .number {
+            font-size: 1.5em;
+            font-weight: 900;
+            display: block;
+        }
+
+
+        .milestones-scene .sub-text { font-size: 1.4rem; color: #000; margin-top: 10px; font-style: italic; will-change: transform; }
+        .milestones-scene .decoration { height: 4px; width: 100px; background: linear-gradient(to right, transparent, #800000, transparent); margin: 30px auto; }
+        
+        /* Footer Content styles (for GSAP section) */
+        .timeline-content-wrapper {
+            max-width: 1200px;
+            width: 90%; 
+            height: 90%; 
+            margin: auto; 
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end; 
+            align-items: center;
+        }
+
+        .footer {
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.8rem;
+            color: #FFFDD0; 
+        }
+        /* =======================================
+        END GSAP CONTENT STYLES
+        ======================================= */
+    </style>
+</head>
+<body>
+    
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <button class="admission-btn">Enquiry</button>
+
+    <nav class="navbar">
+        <img src="ms_logo.png" alt="Modern School Logo" style="height:70px;margin-top:-10px;"> 
+    </nav>
+
+    <div class="overlay-menu" id="overlayMenu">
+        
+        <div class="submenu-header" id="submenuHeader">
+            <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="menu-wrapper" id="menuWrapper">
+            
+            <ul class="main-menu-screen" id="mainMenu">
+                <li><a href="#" class="close-menu">Home</a></li>
+                
+                <li class="menu-item-with-submenu" data-submenu="about-us">
+                    <a href="#" class="has-submenu">About Us</a> 
+                </li>
+                
+                <li class="menu-item-with-submenu" data-submenu="academics">
+                    <a href="#" class="has-submenu">Academics</a>
+                </li>
+                
+                <li><a href="#" class="close-menu">Admissions</a></li>
+                
+                <li class="menu-item-with-submenu" data-submenu="campus-life">
+                    <a href="#" class="has-submenu">Campus Life</a>
+                </li>
+                
+                <li class="menu-item-with-submenu" data-submenu="contact-us">
+                    <a href="#" class="has-submenu">Contact Us</a>
+                </li>
+            </ul>
+            
+            <ul class="submenu-screen" id="submenuScreen">
+            </ul>
+
+        </div>
+    </div>
+
+    <div class="content">
+        <section class="scroll-area">
+            <div class="sticky-container">
+
+                <h1 class="header-reveal">Forging a highly significant impact</h1>
+                <div class="text-reveal-container scene1-text">
+                    <span class="word">Excellence</span>
+                    <span class="word">beyond</span>
+                    <span class="word">the</span>
+                    <span class="word">boundaries</span>
+                </div>
+
+                <div class="arc-container">
+                    <div class="arc-image image-1"><img src="https://picsum.photos/id/10/200/300" alt="Photo 1"></div>
+                    <div class="arc-image image-2"><img src="https://picsum.photos/id/20/200/300" alt="Photo 2"></div>
+                    <div class="arc-image image-3"><img src="https://picsum.photos/id/30/200/300" alt="Photo 3"></div>
+                    <div class="arc-image image-4"><img src="https://picsum.photos/id/40/200/300" alt="Photo 4"></div>
+                    <div class="arc-image image-5 last-image"><img src="https://picsum.photos/id/50/200/300" alt="Photo 5"></div>
+                </div>
+
+                <div class="milestones-scene">
+                    <div class="container">
+                        <div class="text-container">
+                            <p class="small-text scene2-small-text">a little steps</p>
+                            <div class="main-text">
+                                <span class="left-text scene2-left-text">setting</span>
+                                <span class="maroon-dot" id="animatedDot"></span>
+                                <span class="right-text scene2-right-text">milestones</span>
+                            </div>
+                            <p class="sub-text scene2-sub-text">in education standards</p>
+                        </div>
+                        <div class="decoration"></div>
+                    </div>
+                    
+                    <div class="legacy-text-in-dot">
+                        <span class="number">53</span>
+                        <span>years of legacy</span>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Moved maroon section to be separate and after the animation -->
+        <section class="timeline-scroll-section" style="margin-top: 900vh;">
+            <div class="timeline-sticky-content">
+                <div class="timeline-content-wrapper">
+                    <h2 style="font-size: 4rem; margin-bottom: 30px;">Our Journey</h2>
+                    <p style="font-size: 1.5rem; max-width: 800px; margin: 0 auto;">
+                        Since 1973, Modern School Kota has been shaping futures and building leaders. 
+                        Our legacy continues to grow with each passing year.
+                    </p>
+                    <div class="footer">
+                        Modern School Kota © 2025 - Continuing the legacy of excellence
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="footer-info">
+        <div class="info-col logo-col">
+            <img src="logo.png" alt="Modern School Logo" class="footer-logo">
+            
+            <p>Excellence in Education Since 1973</p>
+        </div>
+        <div class="info-col address-col">
+            <h3>Our Address</h3>
+            <p>Modern School</p>
+            <p>Sector - A Talwandi,</p>
+            <p>Kota, Rajasthan 324005</p>
+            <p>India</p>
+        </div>
+        <div class="info-col contact-col">
+            <h3>Contact Information</h3>
+            <p><i class="fas fa-phone"></i> +91-744-24211167</p>
+            <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
+            <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
+            <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
+        </div>
+    </div>
+
+    <div class="footer-columns">
+        <div class="footer-col">
+            <h3>Academics</h3>
+            <ul>
+                <li><a href="#">Curriculum</a></li>
+                <li><a href="#">Exam & Result</a></li>
+                <li><a href="#">Calendar</a></li>
+                <li><a href="#">Counselling</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Admissions</h3>
+            <ul>
+                <li><a href="#">Apply Now</a></li>
+                <li><a href="#">Tuition & Fees</a></li>
+                <li><a href="#">RTE</a></li>
+                <li><a href="#">Campus Tours</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Campus Life</h3>
+            <ul>
+                <li><a href="#">Student Activities</a></li>
+                <li><a href="#">ModFest</a></li>
+                <li><a href="#">Athletics</a></li>
+                <li><a href="#">Campus Facilities</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="#">Our History</a></li>
+                <li><a href="#">Vision & Mission</a></li>
+                <li><a href="#">Leadership</a></li>
+                <li><a href="#">Our Core Team</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#">Alumni Network</a></li>
+                <li><a href="#">CBSE Corner</a></li>
+                <li><a href="#">TC Verification</a></li>
+                <li><a href="#">Mandatory Disclosures</a></li>
+                
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="#">Faculty</a></li>
+                <li><a href="#">Campus Location</a></li>
+                <li><a href="#">Career</a></li>
+                <li><a href="#">General Inquiry</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="copyright">
+            <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
+            
+        </div>  
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+        <div class="footer-bottom-right">
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+     // --- HEADER / OVERLAY MENU LOGIC ---
+const hamburger = document.getElementById('hamburger');
+const overlayMenu = document.getElementById('overlayMenu');
+const mainMenu = document.getElementById('mainMenu');
+const submenuScreen = document.getElementById('submenuScreen');
+const backButton = document.getElementById('backButton');
+const body = document.body;
+
+const submenus = {
+    'about-us': [
+        { text: 'Our History', href: '#' },
+        { text: 'Vision & Mission', href: '#' },
+        { text: 'Leadership', href: '#' },
+        { text: 'Our Core Team', href: '#' },
+    ],
+    'academics': [
+        { text: 'Curriculum', href: '#' },
+        { text: 'Exam &amp; Result', href: '#' },
+        { text: 'Calendar', href: '#' },
+        { text: 'Counselling', href: '#' },
+    ],
+    'campus-life': [
+        { text: 'Student Activities', href: '#' },
+        { text: 'ModFest', href: '#' },
+        { text: 'Athletics', href: '#' },
+        { text: 'Campus Facilities', href: '#' },
+    ],
+    'contact-us': [
+        { text: 'Faculty ', href: '#' },
+        { text: 'Campus Location', href: '#' },
+        { text: 'Career', href: '#' },
+        { text: 'General Inquiry', href: '#' },
+    ]
+};
+
+function closeMenu() {
+    hamburger.classList.remove('active');
+    overlayMenu.classList.remove('active');
+    body.classList.remove('menu-open');
+    overlayMenu.classList.remove('submenu-active');
+    submenuScreen.innerHTML = '';
+}
+
+hamburger.addEventListener('click', function() {
+    if (this.classList.contains('active')) {
+        closeMenu();
+    } else {
+        this.classList.add('active');
+        overlayMenu.classList.add('active');
+        body.classList.add('menu-open');
+    }
+});
+
+document.querySelectorAll('.main-menu-screen a.has-submenu').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const menuItem = this.closest('.menu-item-with-submenu');
+        const submenuKey = menuItem.getAttribute('data-submenu');
+        const submenuData = submenus[submenuKey];
+
+        if (!submenuData) return;
+
+        submenuScreen.innerHTML = '';
+        submenuData.forEach(item => {
+            const li = document.createElement('li');
+            li.innerHTML = `<a href="${item.href}" class="close-menu">${item.text}</a>`;
+            submenuScreen.appendChild(li);
+        });
+        
+        submenuScreen.querySelectorAll('.close-menu').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMenu();
+                alert(`Navigating to: ${this.textContent}`);
+            });
+        });
+
+        overlayMenu.classList.add('submenu-active');
+    });
+});
+
+backButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    overlayMenu.classList.remove('submenu-active');
+    setTimeout(() => {
+        submenuScreen.innerHTML = '';
+    }, 400);
+});
+
+document.querySelectorAll('.close-menu').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeMenu();
+        alert(`Navigating to: ${this.textContent}`);
+    });
+});
+
+overlayMenu.addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeMenu();
+    }
+});
+
+// --- GSAP SCROLL ANIMATION LOGIC ---
+gsap.registerPlugin(ScrollTrigger);
+
+// Scene 1 Variables
+const targetX = 500; 
+const dx1_to_target = targetX - (-500); 
+const dx2_to_target = targetX - (-250); 
+const dx3_to_target = targetX - 0; 
+const dx4_to_target = targetX - 250; 
+const maxDistance = 60;
+const maxScale = 600;
+const scene1Duration = 10000; // 10 seconds total
+
+// Create the main animation timeline 
+let tl = gsap.timeline({
+    scrollTrigger: {
+        trigger: ".scroll-area", 
+        start: "top top", 
+        end: "+=" + scene1Duration, 
+        scrub: 1, 
+        pin: ".sticky-container",
+        pinSpacing: false,
+        anticipatePin: 1
+    }
+});
+
+// MAIN SCROLLTRIGGER TIMELINE - UPDATED
+// 0.0 - 1.0: Image collapse
+tl.to(".header-reveal", { opacity: 0, y: -50, duration: 0.5, ease: "power1.in" }, 0) 
+tl.to(".image-1", { x: dx1_to_target, rotationY: 0, z: -10, opacity: 0, ease: "power1.inOut" }, 0) 
+tl.to(".image-2", { x: dx2_to_target, rotationY: 0, z: -20, opacity: 0, ease: "power1.inOut" }, 0)
+tl.to(".image-3", { x: dx3_to_target, rotationY: 0, z: -30, opacity: 0, ease: "power1.inOut" }, 0)
+tl.to(".image-4", { x: dx4_to_target, rotationY: 0, z: -40, opacity: 0, ease: "power1.inOut" }, 0)
+tl.to(".image-5", { rotationY: 0, z: 0, ease: "power1.inOut" }, 0) 
+tl.to(".arc-container", { x: "10%", opacity: 0, ease: "power2.inOut", duration: 1.0 }, 0)
+
+// 0.5 - 2.5: Excellence reveal
+tl.to(".text-reveal-container", { 
+    opacity: 1, 
+    duration: 1.0,
+    ease: "power2.out" 
+}, 0.5) 
+
+tl.to(".text-reveal-container .word", { 
+    x: 0, 
+    opacity: 1, 
+    stagger: 0.2,
+    duration: 0.6,
+    ease: "power2.out" 
+}, 0.5)
+
+// 2.0 - 3.0: Excellence fades out
+tl.to(".scene1-text", { 
+    x: -200, 
+    opacity: 0, 
+    duration: 0.8,
+    ease: "power2.in" 
+}, 2.0) 
+
+// 2.5 - 3.0: Milestones scene slides in
+tl.to(".milestones-scene", { 
+    x: "0%", 
+    duration: 0.5,
+    ease: "power2.out" 
+}, 2.5)
+
+// 3.0 - 4.0: Milestones text separates
+tl.to(".scene2-small-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
+tl.to(".scene2-left-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
+tl.to(".scene2-right-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
+tl.to(".scene2-sub-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
+
+// 4.0 - 4.3: Maroon Dot appears immediately
+tl.to("#animatedDot", { opacity: 1, duration: 0.3, ease: "power2.out" }, 4.0)
+
+// Dot expands to cover the milestones text gradually
+// 4.3 - 6.3: Dot expands to cover text (2 seconds)
+tl.to("#animatedDot", { 
+    scale: 150, // Scale to cover the text
+    duration: 2.0, 
+    ease: "power1.inOut" 
+}, 4.3)
+
+// Milestones text fades out gradually as dot covers it
+// 4.8 - 6.3: Text fades out as dot expands
+tl.to([".scene2-small-text", ".scene2-left-text", ".scene2-right-text", ".scene2-sub-text", ".decoration"], 
+    { 
+        opacity: 0, 
+        duration: 1.5,
+        ease: "power2.out" 
+    }, 4.8)
+
+// 6.3 - 7.0: Dot expands to fill entire screen
+tl.to("#animatedDot", { 
+    scale: maxScale, 
+    duration: 0.7, 
+    ease: "power2.in" 
+}, 6.3)
+
+// 6.8 - 7.5: Legacy text appears with enhanced effects
+tl.fromTo(".legacy-text-in-dot", 
+    { 
+        opacity: 0, 
+        scale: 0.5,
+        filter: "blur(10px)"
+    }, 
+    { 
+        opacity: 1, 
+        scale: 1.3, // Bigger scale
+        filter: "blur(0px)",
+        duration: 0.7, 
+        ease: "power3.out" 
+    }, 6.8)
+
+// Add glow effect to legacy text
+tl.to(".legacy-text-in-dot", {
+    textShadow: "0 0 25px rgba(255, 255, 255, 0.9), 0 0 50px rgba(255, 255, 255, 0.6)",
+    duration: 0.5,
+    ease: "power2.out"
+}, 7.0)
+
+// 7.5 - 8.5: Hold legacy text visible
+tl.to({}, { duration: 1.0 }, 7.5)
+
+// 8.5 - 9.0: Legacy text fades out
+tl.to(".legacy-text-in-dot", { 
+    opacity: 0, 
+    scale: 1.0,
+    textShadow: "0 0 0px rgba(255, 255, 255, 0)",
+    duration: 0.5, 
+    ease: "power2.in" 
+}, 8.5)
+
+// 9.0 - 9.5: Milestones scene fades out
+tl.to(".milestones-scene", { 
+    opacity: 0, 
+    duration: 0.5, 
+    ease: "power2.in" 
+}, 9.0)
+
+// 9.5 - 10.0: Buffer zone
+tl.to({}, { duration: 0.5 }, 9.5)
+
+// Create separate ScrollTrigger for the maroon section
+gsap.to(".timeline-scroll-section", {
+    scrollTrigger: {
+        trigger: ".timeline-scroll-section",
+        start: "top 80%",
+        end: "bottom top",
+        scrub: 1,
+        toggleActions: "play none none reverse"
+    },
+    opacity: 1,
+    duration: 1
+});
+
+// Update legacy text styling for bigger and more attractive appearance
+document.addEventListener('DOMContentLoaded', function() {
+    const legacyText = document.querySelector('.legacy-text-in-dot');
+    if (legacyText) {
+        // Make the container more prominent
+        legacyText.style.fontSize = '5vw'; // Bigger font
+        legacyText.style.fontWeight = '900';
+        legacyText.style.letterSpacing = '0.15em';
+        legacyText.style.color = '#FFFFFF';
+        legacyText.style.textShadow = '0 0 15px rgba(255, 253, 208, 0.7)';
+        legacyText.style.display = 'flex';
+        legacyText.style.flexDirection = 'column';
+        legacyText.style.alignItems = 'center';
+        legacyText.style.justifyContent = 'center';
+        legacyText.style.textAlign = 'center';
+        legacyText.style.lineHeight = '1.2';
+        
+        // Style the number specifically
+        const numberElement = legacyText.querySelector('.number');
+        if (numberElement) {
+            numberElement.style.fontSize = '2.2em'; // Much bigger number
+            numberElement.style.fontWeight = '900';
+            numberElement.style.color = '#FFD700'; // Gold color
+            numberElement.style.textShadow = '0 0 20px rgba(255, 215, 0, 0.9), 0 0 40px rgba(255, 215, 0, 0.6)';
+            numberElement.style.marginBottom = '15px';
+            numberElement.style.letterSpacing = '0.05em';
+        }
+        
+        // Style the text part
+        const textSpan = legacyText.querySelector('span:not(.number)');
+        if (textSpan) {
+            textSpan.style.fontSize = '0.8em';
+            textSpan.style.letterSpacing = '0.2em';
+            textSpan.style.textTransform = 'uppercase';
+            textSpan.style.opacity = '0.95';
+        }
+    }
+});
+
+// Also add some CSS updates for the legacy text
+const style = document.createElement('style');
+style.textContent = `
+    .legacy-text-in-dot {
+        font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+        transition: all 0.3s ease;
+    }
+    
+    .legacy-text-in-dot .number {
+        animation: pulse 2s infinite alternate;
+    }
+    
+    @keyframes pulse {
+        from {
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.7);
+        }
+        to {
+            text-shadow: 0 0 25px rgba(255, 215, 0, 0.9), 0 0 50px rgba(255, 215, 0, 0.6);
+        }
+    }
+`;
+document.head.appendChild(style);
+    </script>
+</body>
+</html>

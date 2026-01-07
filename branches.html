@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School Branch Selector</title>
+
+    <style>
+        /* Base Styles and Typography */
+        body {
+            font-family: 'Inter', sans-serif; /* A sharp, modern typeface */
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8; /* Very light, cool background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Container for the Grid */
+        .school-selector-container {
+            width: 90%;
+            max-width: 1100px;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 24px; /* More rounded, softer look */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header Styling with Logo */
+        .selector-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .selector-header img {
+            height: 80px; /* Size of the logo */
+            margin-bottom: 15px;
+        }
+
+        .selector-header h1 {
+            color: #5d2a2a;
+            font-size: 2em;
+            font-weight: 800; /* Extra bold for modernity */
+            margin: 0;
+        }
+
+        .selector-header p {
+            color: #6c757d;
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+
+        /* The Grid System */
+        .branch-grid {
+            display: grid;
+            /* Creates 3 columns for desktop, adapting to smaller screens */
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 20px;
+        }
+
+        /* Base style for all links/buttons */
+        .school-button {
+            display: flex;
+            flex-direction: column; /* Stacks text and potential subtext */
+            justify-content: center;
+            align-items: center;
+            height: 150px; /* Tall button for impact */
+            text-decoration: none;
+            font-size: 1.6em; /* Large, clean font */
+            font-weight: 700;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle default shadow */
+        }
+
+        /* UNSELECTED BUTTON: Outline Style */
+        .school-button:not(.selected) {
+            color: #5d2a2a; /* Primary text color */
+            background-color: #ffffff;
+            border: 2px solid #a3b1c6; /* Light gray border for outline */
+        }
+
+        /* Hover effect for UNSELECTED BUTTONS */
+        .school-button:not(.selected):hover {
+            border-color: #5d2a2a; /* Darker blue border on hover */
+            color: #5d2a2a;
+            transform: translateY(-5px); /* Lift and grow on hover */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* SELECTED BUTTON: Solid Color Style */
+        .school-button.selected {
+            order: -1; /* PLACES KOTA FIRST */
+            background-color: #5d2a2a; /* Solid Primary Blue */
+            color: #ffffff; /* White text */
+            border: 2px solid #5d2a2a;
+            box-shadow: 0 8px 16px rgba(26, 79, 120, 0.4); /* Stronger shadow for selection */
+            cursor: default;
+        }
+        
+        /* Ensure selected button doesn't change color on hover */
+        .school-button.selected:hover {
+            background-color: #5d2a2a;
+            transform: scale(1); /* No scale change on hover */
+        }
+
+        /* Helper class for secondary text/location */
+        .school-button span {
+            display: block;
+            font-size: .75em; /* Smaller subtext */
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        .school-button.selected span {
+            color: rgba(255, 255, 255, 0.8); /* Light subtext in solid button */
+        }
+    </style>
+</head>
+<body>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <div class="school-selector-container">
+        
+        <header class="selector-header">
+            
+            <img src="ms_logo.png" alt="Modern School Logo">
+            <h1>Select Your Campus</h1>
+            <p>Please choose the branch you wish to visit.</p>
+        </header>
+
+        <div class="branch-grid">
+            
+            <a href="kota.html" class="school-button selected">
+                Modern School
+                <span>Location: Kota- Talwandi</span>
+            </a>
+            
+            <a href="naya-nohra.html" class="school-button">
+                Modern School
+                <span>Location: Kota- Naya Nohra</span>
+            </a>
+            <a href="baran.html" class="school-button">
+                Modern School
+                <span>Location: Baran</span>
+            </a>
+            <a href="jaipur.html" class="school-button">
+                Modern School
+                <span>Location: Jaipur</span>
+            </a>
+            <a href="bharatpur.html" class="school-button">
+                Modern School
+                <span>Location: Bharatpur</span>
+            </a>
+            
+            <a href="steps-kota.html" class="school-button">
+                Steps Pre School
+               <span>Location: Kota</span>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Exam Portal (Final Toggle)</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
+    <style>
+        /* --- 1. GLOBAL & RESET STYLING --- */
+        body {
+            font-family: 'Segoe UI', Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e9ecef;
+            color: #212529;
+            line-height: 1.5;
+        }
+
+        header {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+        }
+        
+        h1 { margin-bottom: 0.5rem; font-weight: 300; }
+        
+        /* --- 2. LAYOUT & ALIGNMENT --- */
+        #main-wrapper {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+        
+        .content-section {
+            display: none;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        
+        h2 {
+            color: #007bff;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        /* --- 3. REVISED TOGGLE SWITCH STYLING (Labels Separated) --- */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+            padding: 10px;
+        }
+
+        /* External text labels for clarity */
+        .toggle-text {
+            font-weight: 600;
+            margin: 0 20px;
+            color: #6c757d;
+            cursor: pointer;
+            transition: color 0.3s;
+            padding: 5px 0;
+            font-size: 1em;
+            white-space: nowrap; /* Prevents text wrap */
+        }
+
+        .toggle-text.active { color: #007bff; }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 280px; /* Adjusted width for internal spacing */
+            height: 40px;
+            border-radius: 20px;
+            background-color: #e9ecef;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: transparent;
+            border-radius: 20px;
+            /* Inner styling for separating the labels */
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 10px; 
+            font-weight: 600;
+            color: #6c757d;
+        }
+        
+        /* Inner Text Labels inside the slider track */
+        .slider::before {
+            content: "TIME TABLE";
+            display: block;
+            width: 120px;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+        .slider::after {
+            content: "RESULTS";
+            display: block;
+            width: 120px;
+            text-align: center;
+            transition: color 0.3s ease;
+        }
+
+        /* The actual pill selector */
+        .selector-pill {
+            position: absolute;
+            height: 34px;
+            width: 140px; /* Half the width plus padding */
+            left: 3px;
+            bottom: 3px;
+            background-color: #007bff; 
+            color: white; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 17px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            font-weight: bold;
+            font-size: 0.9em;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+            z-index: 1; /* Ensure pill is on top */
+        }
+
+        /* Shift pill when checked */
+        input:checked + .slider .selector-pill {
+            transform: translateX(134px); /* (280 - 140 - 6px) */
+            background-color: #28a745;
+        }
+        
+        /* Highlight text underneath the pill */
+        input:checked + .slider::before {
+             color: transparent; /* Text under pill is white/hidden */
+        }
+        input:not(:checked) + .slider::after {
+             color: transparent; /* Text under pill is white/hidden */
+        }
+
+        /* --- 4. CONTROL & FORM ALIGNMENT (Retained) --- */
+        #schedule-controls, #results-search-form > div {
+            display: flex; align-items: flex-end; gap: 15px; margin-bottom: 1rem;
+        }
+        #schedule-controls { padding: 1rem; background-color: #f8f9fa; border-radius: 0.25rem; border: 1px solid #e9ecef; flex-wrap: wrap; }
+        .input-group { display: flex; flex-direction: column; min-width: 180px; }
+        
+        input[type="text"], select { padding: 0.375rem 0.75rem; font-size: 1rem; line-height: 1.5; color: #495057; background-color: #fff; border: 1px solid #ced4da; border-radius: 0.25rem; }
+        #pdf-download-btn, #search-results-btn { padding: 0.5rem 1rem; border-radius: 0.25rem; font-weight: 600; }
+        #pdf-download-btn { background-color: #dc3545; color: white; border: none; }
+        #search-results-btn { background-color: #007bff; color: white; border: none; }
+        
+        /* Results Form Specifics */
+        #results-search-form { flex-direction: column; gap: 1.5rem; padding: 1.5rem; border: 1px solid #ced4da; border-radius: 0.25rem; }
+        #results-search-form > .input-group { flex-direction: row; align-items: center; }
+        #results-search-form label { min-width: 150px; }
+        #results-search-form input, #results-search-form select { flex-grow: 1; }
+
+        #recaptcha-placeholder { height: 70px; background-color: #f8f9fa; border: 1px solid #ced4da; border-radius: 0.25rem; display: flex; align-items: center; justify-content: center; color: #6c757d; font-style: italic; margin-top: 1rem; }
+
+        /* --- 5. TABLE & RESULTS STYLING (Retained) --- */
+        #time-table { width: 100%; border-collapse: collapse; margin-top: 1rem; border: 1px solid #dee2e6; }
+        #time-table th, #time-table td { border: 1px solid #dee2e6; padding: 0.75rem; text-align: center; }
+        #time-table thead th { background-color: #6c757d; color: white; }
+        #time-table tbody tr:nth-child(even) { background-color: #f8f9fa; }
+        .exam-time { font-size: 0.85em; color: #6c757d; }
+        #results-display { margin-top: 25px; padding: 20px; border-left: 5px solid #28a745; background-color: #f7fff7; display: none; }
+        #results-display th { background-color: #28a745 !important; color: white; }
+        
+        /* --- 6. PRINT STYLES --- */
+        @media print {
+            body { background-color: white; }
+            header, .toggle-container, #schedule-controls, #results-search-form, #results-display:empty { display: none; }
+            #main-wrapper { margin: 0; padding: 0; max-width: 100%; }
+            .content-section { padding: 0; box-shadow: none; display: block !important; border: none; }
+            #time-table { border: 1px solid #000; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Centralized Academic Portal</h1>
+        <p>Your streamlined access to Exam Schedules and Results.</p>
+    </header>
+
+    <div id="main-wrapper">
+        <div class="toggle-container">
+            <span id="schedule-label" class="toggle-text active" onclick="document.getElementById('content-toggle').checked=false; toggleContent();">Exam Time Table</span>
+            
+            <label class="switch">
+                <input type="checkbox" id="content-toggle" onchange="toggleContent()">
+                <span class="slider">
+                    <span class="selector-pill" id="selector-pill">TIME TABLE</span>
+                </span>
+            </label>
+            
+            <span id="results-label" class="toggle-text" onclick="document.getElementById('content-toggle').checked=true; toggleContent();">Search Results</span>
+        </div>
+
+        <section id="schedule-content" class="content-section">
+            <h2>View Exam Schedule</h2>
+            
+            <div id="schedule-controls">
+                <div class="input-group">
+                    <label for="exam-name-filter">Select Exam:</label>
+                    <select id="exam-name-filter" onchange="renderTimeTable()">
+                        <option value="Final">Final Examination</option>
+                        <option value="HalfYearly">Half Yearly</option>
+                        <option value="FirstTerm">First Term</option>
+                        <option value="Quarterly">Quarterly</option>
+                    </select>
+                </div>
+                
+                <div class="input-group">
+                    <label for="class-filter">Select Class:</label>
+                    <select id="class-filter" onchange="renderTimeTable()">
+                        <option value="12" selected>Class 12</option>
+                        <option value="Nursery">Nursery</option>
+                        <option value="9">Class 9</option>
+                    </select>
+                </div>
+                
+                <button id="pdf-download-btn" onclick="downloadPDF()">⬇️ Download Schedule (PDF)</button>
+            </div>
+
+            <div id="timetable-view">
+                <h3 id="timetable-title"></h3>
+                
+                <table id="time-table">
+                    <thead>
+                        <tr>
+                            <th>Day & Date</th>
+                            <th>Morning Session (09:00 - 12:00)</th>
+                            <th>Afternoon Session (01:00 - 04:00)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="timetable-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="results-content" class="content-section">
+            <h2>Search Student Results</h2>
+            
+            <form id="results-search-form" onsubmit="event.preventDefault(); searchResults();">
+                <div class="input-group">
+                    <label for="admission-no-input">Admission Number (5 digits):</label>
+                    <input type="text" id="admission-no-input" placeholder="e.g., 12345" maxlength="5" pattern="\d{5}" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="exam-name-search">Select Exam:</label>
+                    <select id="exam-name-search" required>
+                        <option value="">-- Select Exam --</option>
+                        <option value="Final">Final Examination</option>
+                        <option value="HalfYearly">Half Yearly</option>
+                        <option value="FirstTerm">First Term</option>
+                        <option value="Quarterly">Quarterly</option>
+                    </select>
+                </div>
+
+                <div id="recaptcha-placeholder">
+                    [Google reCAPTCHA Placeholder]
+                </div>
+
+                <button type="submit" id="search-results-btn">🔍 Get Results</button>
+            </form>
+            
+            <div id="results-display">
+                <p>Enter your details above and click 'Get Results'.</p>
+            </div>
+        </section>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // --- DATA STRUCTURES (Same as previous) ---
+        const scheduleData = {
+            'Final': {
+                '12': [
+                    { day: 'Mon', date: 'Dec 16', morning: { subject: 'Physics', time: '09:00 AM - 12:00 PM' }, afternoon: null },
+                    { day: 'Tue', date: 'Dec 17', morning: { subject: 'English', time: '09:00 AM - 12:00 PM' }, afternoon: { subject: 'Chemistry', time: '01:00 PM - 04:00 PM' } },
+                ],
+                '9': [
+                    { day: 'Mon', date: 'Dec 16', morning: { subject: 'Social Science', time: '10:00 AM - 01:00 PM' }, afternoon: null },
+                    { day: 'Wed', date: 'Dec 18', morning: { subject: 'Mathematics', time: '10:00 AM - 01:00 PM' }, afternoon: null },
+                ]
+            },
+            'HalfYearly': {
+                '12': [
+                    { day: 'Mon', date: 'Sep 2', morning: { subject: 'Maths', time: '09:00 AM - 12:00 PM' }, afternoon: null },
+                    { day: 'Fri', date: 'Sep 6', morning: { subject: 'Biology', time: '09:00 AM - 12:00 PM' }, afternoon: null },
+                ],
+                'Nursery': [
+                    { day: 'Mon', date: 'Sep 2', morning: { subject: 'Oral Test', time: '10:00 AM - 11:00 AM' }, afternoon: null },
+                ]
+            }
+        };
+
+        const resultsDatabase = {
+            '12345': { 
+                name: 'Anushka Sharma', exam: 'Final', class: '12',
+                marks: [{ subject: 'Physics', obtained: 88, status: 'Passed' }, { subject: 'Chemistry', obtained: 92, status: 'Passed' }]
+            },
+            '54321': {
+                name: 'Rohit Verma', exam: 'HalfYearly', class: '9',
+                marks: [{ subject: 'Mathematics', obtained: 42, status: 'Failed' }, { subject: 'Science', obtained: 78, status: 'Passed' }]
+            },
+            '11111': { 
+                name: 'Suresh Kumar', exam: 'Final', class: '10',
+                marks: [
+                    { subject: 'Science', obtained: 75, status: 'Passed' }, 
+                    { subject: 'Social Science', obtained: 80, status: 'Passed' },
+                    { subject: 'Hindi', obtained: 60, status: 'Passed' }
+                ]
+            }
+        };
+
+
+        // --- JAVASCRIPT FUNCTIONS ---
+
+        function createCellContent(session) {
+            if (!session) {
+                return '<td class="no-exam"></td>';
+            }
+            return `
+                <td>
+                    <strong>${session.subject}</strong>
+                    <span class="exam-time">${session.time}</span>
+                </td>
+            `;
+        }
+
+        // Function 1: Handle Toggle Switch (Updated to manage external labels and pill text)
+        function toggleContent() {
+            const toggleSwitch = document.getElementById('content-toggle');
+            const scheduleContent = document.getElementById('schedule-content');
+            const resultsContent = document.getElementById('results-content');
+            const scheduleLabel = document.getElementById('schedule-label');
+            const resultsLabel = document.getElementById('results-label');
+            const selectorPill = document.getElementById('selector-pill');
+
+            if (toggleSwitch.checked) {
+                scheduleContent.style.display = 'none';
+                resultsContent.style.display = 'block';
+                scheduleLabel.classList.remove('active');
+                resultsLabel.classList.add('active');
+                selectorPill.textContent = 'RESULTS';
+            } else {
+                scheduleContent.style.display = 'block';
+                resultsContent.style.display = 'none';
+                resultsLabel.classList.remove('active');
+                scheduleLabel.classList.add('active');
+                selectorPill.textContent = 'TIME TABLE';
+            }
+        }
+
+        // Function 2: Render Time Table
+        function renderTimeTable() {
+            const selectedExam = document.getElementById('exam-name-filter').value;
+            const selectedClass = document.getElementById('class-filter').value;
+            const timetableBody = document.getElementById('timetable-body');
+            const timetableTitle = document.getElementById('timetable-title');
+            
+            timetableBody.innerHTML = '';
+            timetableTitle.textContent = `${selectedExam} Time Table for Class ${selectedClass}`;
+
+            const exams = scheduleData[selectedExam] ? scheduleData[selectedExam][selectedClass] : null;
+
+            if (!exams || exams.length === 0) {
+                timetableBody.innerHTML = '<tr><td colspan="3">No schedule found for this exam and class.</td></tr>';
+                return;
+            }
+
+            exams.forEach(exam => {
+                const row = document.createElement('tr');
+                let rowHTML = `
+                    <td>
+                        ${exam.day}
+                        <br>(${exam.date})
+                    </td>
+                    ${createCellContent(exam.morning)}
+                    ${createCellContent(exam.afternoon)}
+                `;
+                row.innerHTML = rowHTML;
+                timetableBody.appendChild(row);
+            });
+        }
+        
+        // Function 3: Search Results (Uses SweetAlert)
+        async function searchResults() {
+            const rollNo = document.getElementById('admission-no-input').value.trim();
+            const examName = document.getElementById('exam-name-search').value;
+            const resultDisplay = document.getElementById('results-display');
+            resultDisplay.style.display = 'block';
+            
+            if (rollNo.length !== 5 || isNaN(rollNo) || examName === "") {
+                resultDisplay.innerHTML = `<p>Enter your details above and click 'Get Results'.</p>`;
+                await Swal.fire({
+                    icon: 'warning',
+                    title: 'Input Error',
+                    text: 'Please check the 5-digit Admission No. and select an Exam.',
+                    confirmButtonColor: '#ffc107'
+                });
+                return;
+            }
+
+            const studentData = resultsDatabase[rollNo];
+
+            if (!studentData || studentData.exam !== examName) {
+                resultDisplay.innerHTML = `<p>Enter your details above and click 'Get Results'.</p>`;
+                await Swal.fire({
+                    icon: 'error',
+                    title: 'No Results Found',
+                    text: `Admission No. ${rollNo} not found for the ${examName} exam.`,
+                    confirmButtonColor: '#dc3545'
+                });
+                return;
+            }
+            
+            // Success Alert (Before rendering)
+             await Swal.fire({
+                icon: 'success',
+                title: 'Results Found!',
+                text: `Fetching results for ${studentData.name}...`,
+                timer: 1500,
+                showConfirmButton: false
+            });
+
+            // Display Results
+            let tableRows = studentData.marks.map(mark => {
+                const statusColor = mark.status === 'Passed' ? '#d4edda' : '#f8d7da';
+                const statusText = mark.status === 'Passed' ? '✅ Passed' : '❌ Failed';
+                return `
+                    <tr style="background-color:${statusColor};">
+                        <td>${mark.subject}</td>
+                        <td>${mark.obtained}</td>
+                        <td><strong>${statusText}</strong></td>
+                    </tr>
+                `;
+            }).join('');
+            
+            resultDisplay.innerHTML = `
+                <h3>Results: ${examName}</h3>
+                <p><strong>Name:</strong> ${studentData.name}</p>
+                <p><strong>Admission No:</strong> ${rollNo} | <strong>Class:</strong> ${studentData.class}</p>
+                <table style="width:100%; border-collapse:collapse; margin-top:15px; border: 1px solid #ddd;">
+                    <thead>
+                        <tr style="background-color:#007bff; color:white;"><th>Subject</th><th>Marks Scored</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>${tableRows}</tbody>
+                </table>
+                <p style="margin-top: 15px; color:#28a745; font-weight: 500;">Successfully retrieved results for the ${examName} exam.</p>
+            `;
+        }
+
+        function downloadPDF() {
+            window.print();
+        }
+
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Set initial state
+            document.getElementById('content-toggle').checked = false; 
+            toggleContent();
+            renderTimeTable();
+        });
+    </script>
+
+</body>
+</html>

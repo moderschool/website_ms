@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Schools - Leadership</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', sans-serif; 
+            background: #000; 
+            color: white; 
+            overflow-x: hidden; 
+        }
+
+        header, footer {
+            position: fixed; 
+            width: 100%; 
+            height: 70px;
+            background: rgba(0,0,0,0.85); 
+            backdrop-filter: blur(10px);
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            z-index: 1000; 
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        header { top: 0; }
+        footer { bottom: 0; height: 50px; font-size: 0.9rem; }
+
+        .spacer { 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 2rem; 
+            background: #111; 
+        }
+
+        #leadershipSection {
+            height: 100vh; 
+            width: 100%; 
+            overflow: hidden; 
+            position: relative; 
+            background: #000;
+            padding-top: 35px; 
+        }
+
+        /* Common image frame for desktop */
+        .common-image-frame {
+            position: absolute;
+            width: 500px;
+            height: 520px; 
+            top: calc(50% + 8px); 
+            transform: translateY(-50%);
+            z-index: 50;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+        
+        .common-image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 25%; 
+        }
+
+        /* Mobile-only separate images - hidden by default */
+        .mobile-chairman-image,
+        .mobile-director-image {
+            display: none;
+            position: absolute;
+            z-index: 50;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .horizontal-container {
+            display: flex;
+            height: calc(100vh - 35px); 
+            width: 200vw;
+            will-change: transform;
+            margin-top: 20px; 
+        }
+
+        .leadership-slide {
+            width: 100vw; 
+            height: calc(100vh - 35px); 
+            display: flex; 
+            align-items: flex-start; 
+            padding: 10px 80px 30px; 
+            flex-shrink: 0;
+        }
+        
+        .leadership-content-wrapper {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            align-items: flex-start;
+            gap: 80px;
+            padding-top: 10px; 
+        }
+        
+        .leadership-description-area {
+            flex: 1;
+            max-width: 580px;
+            padding: 5px 0; 
+            margin-top: -15px; 
+        }
+        
+        .leadership-description-area h2 {
+            font-size: 2.2rem; 
+            margin: 12px 0 5px; 
+            font-weight: 600;
+            color: #fff;
+        }
+        
+        .leadership-description-area h3 {
+            font-size: 1.3rem; 
+            color: #f8c471;
+            margin-bottom: 18px; 
+            font-weight: 400;
+        }
+        
+        .leadership-description-area p {
+            font-size: 1rem; 
+            line-height: 1.6; 
+            margin-bottom: 14px; 
+            opacity: 0.85;
+        }
+        
+        .leadership-description-area p strong {
+            color: #f8c471;
+            font-weight: 600;
+            opacity: 1;
+            display: block;
+            margin-bottom: 14px; 
+            font-size: 1.1rem; 
+        }
+        
+        .leadership-location-separator {
+            margin: 18px 0 25px; 
+        }
+        
+        .leadership-location-separator hr {
+            border: none;
+            height: 1px;
+            background: rgba(255,255,255,0.2);
+            margin: 10px 0; 
+        }
+        
+        .leadership-city-list {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            padding: 0 10px;
+        }
+        
+        .leadership-city-text {
+            font-size: 0.9rem; 
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .leadership-city-dot {
+            width: 4px; 
+            height: 4px; 
+            background: #f8c471;
+            border-radius: 50%;
+        }
+        
+        /* First slide - Content on left */
+        .slide-1 { 
+            background: #000; 
+        }
+        
+        /* Second slide - Content on right */
+        .slide-2 { 
+            background: #000; 
+            justify-content: flex-end;
+        }
+        
+        .slide-2 .leadership-content-wrapper {
+            justify-content: flex-end;
+        }
+
+        .footer-content { 
+            background: #fff; 
+            color: #000; 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        
+        /* Mobile View (768px and below) - Use separate images */
+        @media (max-width: 768px) {
+            /* Hide desktop common image frame on mobile */
+            .common-image-frame {
+                display: none !important;
+            }
+            
+            /* Show mobile-specific images */
+            .mobile-chairman-image,
+            .mobile-director-image {
+                display: block;
+                width: 140px; /* Smaller for mobile */
+                height: 180px; /* Smaller for mobile */
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            /* Position Chairman image on right */
+            .mobile-chairman-image {
+                right: 20px;
+                left: auto;
+            }
+            
+            /* Position Director image on left */
+            .mobile-director-image {
+                left: 20px;
+                right: auto;
+            }
+            
+            .mobile-chairman-image img,
+            .mobile-director-image img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center top;
+            }
+            
+            #leadershipSection {
+                padding-top: 25px;
+                height: 100vh;
+            }
+            
+            .horizontal-container {
+                height: calc(100vh - 25px);
+                margin-top: 10px;
+                width: 200vw;
+            }
+            
+            .leadership-slide {
+                height: calc(100vh - 25px);
+                padding: 10px 25px 15px; /* Reduced padding */
+                align-items: center;
+            }
+            
+            .leadership-content-wrapper {
+                gap: 20px; /* Reduced gap */
+                padding-top: 0;
+                align-items: center;
+                max-width: 100%;
+            }
+            
+            .leadership-description-area {
+                max-width: calc(100% - 160px); /* Account for smaller image */
+                margin-top: 0;
+                text-align: center;
+                padding: 5px 0; /* Small padding */
+            }
+            
+            /* REDUCED FONT SIZES FOR MOBILE - to ensure text is visible */
+            .leadership-description-area h2 {
+                font-size: 1.3rem; /* Reduced from 1.6rem */
+                margin: 8px 0 3px; /* Reduced margins */
+            }
+            
+            .leadership-description-area h3 {
+                font-size: 0.85rem; /* Reduced from 1rem */
+                margin-bottom: 12px; /* Reduced margin */
+            }
+            
+            .leadership-description-area p {
+                font-size: 0.75rem; /* Reduced from 0.9rem */
+                line-height: 1.4; /* Tighter line height */
+                margin-bottom: 8px; /* Reduced margin */
+            }
+            
+            .leadership-description-area p strong {
+                font-size: 0.8rem; /* Reduced from 1rem */
+                margin-bottom: 8px; /* Reduced margin */
+                line-height: 1.3;
+            }
+            
+            .leadership-location-separator {
+                margin: 10px 0 15px; /* Reduced margins */
+            }
+            
+            .leadership-location-separator hr {
+                margin: 6px 0; /* Reduced margin */
+            }
+            
+            .leadership-city-list {
+                gap: 8px; /* Reduced gap */
+            }
+            
+            .leadership-city-text {
+                font-size: 0.65rem; /* Reduced from 0.8rem */
+                letter-spacing: 0.5px;
+            }
+            
+            .leadership-city-dot {
+                width: 3px; /* Smaller */
+                height: 3px; /* Smaller */
+            }
+            
+            /* Adjust layout for each slide on mobile */
+            .slide-1 .leadership-content-wrapper {
+                justify-content: flex-start;
+            }
+            
+            .slide-2 .leadership-content-wrapper {
+                justify-content: flex-end;
+            }
+        }
+        
+        /* Small Mobile View (480px and below) */
+        @media (max-width: 480px) {
+            .mobile-chairman-image,
+            .mobile-director-image {
+                width: 110px; /* Even smaller */
+                height: 150px; /* Even smaller */
+            }
+            
+            .leadership-slide {
+                padding: 8px 18px 12px; /* Even smaller padding */
+            }
+            
+            .leadership-content-wrapper {
+                gap: 15px; /* Even smaller gap */
+            }
+            
+            .leadership-description-area {
+                max-width: calc(100% - 125px); /* Account for smaller image */
+            }
+            
+            /* Even smaller font sizes for very small screens */
+            .leadership-description-area h2 {
+                font-size: 1.1rem;
+            }
+            
+            .leadership-description-area h3 {
+                font-size: 0.75rem;
+            }
+            
+            .leadership-description-area p {
+                font-size: 0.7rem;
+                line-height: 1.35;
+            }
+            
+            .leadership-description-area p strong {
+                font-size: 0.75rem;
+            }
+            
+            .leadership-city-text {
+                font-size: 0.6rem;
+            }
+            
+            /* Adjust image positions */
+            .mobile-chairman-image {
+                right: 18px;
+            }
+            
+            .mobile-director-image {
+                left: 18px;
+            }
+        }
+        
+        /* Extra Small Mobile View (360px and below) */
+        @media (max-width: 360px) {
+            .mobile-chairman-image,
+            .mobile-director-image {
+                width: 90px;
+                height: 130px;
+            }
+            
+            .leadership-slide {
+                padding: 6px 15px 10px;
+            }
+            
+            .leadership-content-wrapper {
+                gap: 12px;
+            }
+            
+            .leadership-description-area {
+                max-width: calc(100% - 102px);
+            }
+            
+            .leadership-description-area h2 {
+                font-size: 1rem;
+            }
+            
+            .leadership-description-area h3 {
+                font-size: 0.7rem;
+            }
+            
+            .leadership-description-area p {
+                font-size: 0.65rem;
+                line-height: 1.3;
+            }
+            
+            .leadership-description-area p strong {
+                font-size: 0.7rem;
+            }
+            
+            .leadership-city-text {
+                font-size: 0.55rem;
+            }
+            
+            /* Adjust image positions */
+            .mobile-chairman-image {
+                right: 15px;
+            }
+            
+            .mobile-director-image {
+                left: 15px;
+            }
+        }
+        
+        /* Tablet View (769px - 1024px) - Still use common image */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .common-image-frame {
+                width: 350px;
+                height: 420px;
+                top: calc(50% + 10px);
+            }
+            
+            .leadership-slide {
+                padding: 5px 40px 20px;
+            }
+            
+            .leadership-content-wrapper {
+                gap: 40px;
+            }
+            
+            .leadership-description-area {
+                max-width: 500px;
+            }
+            
+            .leadership-description-area h2 {
+                font-size: 1.8rem;
+            }
+            
+            .leadership-description-area h3 {
+                font-size: 1.1rem;
+            }
+            
+            .leadership-description-area p {
+                font-size: 0.95rem;
+            }
+            
+            .leadership-description-area p strong {
+                font-size: 1.05rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>LEADERSHIP - MODERN SCHOOLS</header>
+
+<div class="spacer">Scroll Down to Meet Our Leadership ↓</div>
+
+<section class="leadership-section" id="leadershipSection">
+    <!-- Desktop: Common image frame that moves between sides -->
+    <div class="common-image-frame" id="commonImageFrame">
+        <img src="flip.png" alt="Modern Schools Leadership">
+    </div>
+    
+    <!-- Mobile: Separate Chairman image (right side) -->
+    <div class="mobile-chairman-image" id="mobileChairmanImage">
+        <img src="chairman.png" alt="Dr. Deepak Singh - Chairman">
+    </div>
+    
+    <!-- Mobile: Separate Director image (left side) -->
+    <div class="mobile-director-image" id="mobileDirectorImage">
+        <img src="director.png" alt="Mr. Vaibhav Singh - Director">
+    </div>
+    
+    <div class="horizontal-container" id="leadershipHorizontalContainer">
+        <!-- Slide 1 - Chairman -->
+        <div class="leadership-slide slide-1" id="leadership-slide-1">
+            <div class="leadership-content-wrapper">
+                <div class="leadership-description-area">
+                    <p><strong>"Innovation is the bridge between aspiration and achievement."</strong></p>
+                    <p>Goal setting is not a mind game. It is a process of developing the internal willpower to accomplish what you have set out to do. I wish that all the Modernites look beyond the internal barriers and push through on the road to success. Face the challenges with courage, as challenges are goals pursued with conviction. So, propel yourself forward with a vision. Be strong and steady and develop yourselves with the human values inculcated for making a difference in this world. I wish all Modernites become strong pillars of humanity and spread positivity wherever they go. Your words have incredible power. They reinforce your beliefs, and your beliefs create your reality.</p>
+                    <h2>Dr. Deepak Singh</h2>
+                    <h3>Chairman, Modern Schools</h3>
+                    <div class="leadership-location-separator">
+                        <hr>
+                        <div class="leadership-city-list">
+                            <div class="leadership-city-text">Baran</div> 
+                            <div class="leadership-city-dot"></div>
+                            <div class="leadership-city-text">Bharatpur</div> 
+                            <div class="leadership-city-dot"></div>
+                            <div class="leadership-city-text">Kota</div> 
+                            <div class="leadership-city-dot"></div>
+                            <div class="leadership-city-text">Jaipur</div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2 - Director -->
+        <div class="leadership-slide slide-2" id="leadership-slide-2">
+            <div class="leadership-content-wrapper">
+                <div class="leadership-description-area">
+                    <p><strong>"If you are trying to find out what you want to do with your life, look for sparks. There is no passion to be found playing small in settling for a life that is less than the one you are capable of living." - Nelson Mandela</strong></p>
+                    <p>When you set sail in search of your life's work, you must seek passion, not fame or rewards or riches, but a willingness to quietly do your work, trusting life's sowing and reaping nature. Strive to do your work with gratitude and conviction. Make a difference in your own way, as nobody else has what you have, your voice, your mind, and your vision. Just don't give up on your dreams. I wish all the Modernites a bright present and an inspiring future.</p>
+                    <h2>Mr. Vaibhav Singh</h2>
+                    <h3>Director, Modern Schools</h3>
+                    <div class="leadership-location-separator">
+                        <hr>
+                        <div class="leadership-city-list">
+                            <div class="leadership-city-text">Baran</div> 
+                            <div class="leadership-city-dot"></div>
+                            <div class="leadership-city-text">Bharatpur</div> 
+                            <div class="leadership-city-dot"></div>
+                            <div class="leadership-city-text">Kota</div> 
+                            <div class="leadership-city-dot"></div>
+                            <div class="leadership-city-text">Jaipur</div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="footer-content"><h1>MODERN SCHOOLS LEADERSHIP</h1></div>
+
+<footer>&copy; 2026 Modern Schools. All rights reserved.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    const container = document.querySelector(".horizontal-container");
+    const imageFrame = document.getElementById("commonImageFrame");
+    const mobileChairmanImage = document.getElementById("mobileChairmanImage");
+    const mobileDirectorImage = document.getElementById("mobileDirectorImage");
+    
+    const isMobile = window.innerWidth <= 768;
+
+    if (!isMobile) {
+        // DESKTOP/TABLET: Use moving image frame
+        gsap.set(imageFrame, {
+            right: window.innerWidth <= 1024 ? "40px" : "80px",
+            left: "auto"
+        });
+
+        const holdPower = 1.5;
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#leadershipSection",
+                start: "top 35px",
+                end: "bottom bottom",
+                pin: true,
+                scrub: 1,
+                end: () => "+=" + (container.scrollWidth - window.innerWidth + 1500), 
+                invalidateOnRefresh: true,
+                markers: false,
+                onUpdate: (self) => {
+                    const progress = self.progress;
+                    const position = window.innerWidth <= 1024 ? "40px" : "80px";
+                    
+                    if (progress < 0.5) {
+                        // First slide (Chairman) - Image on right
+                        gsap.to(imageFrame, {
+                            right: position,
+                            left: "auto",
+                            duration: 0.6,
+                            ease: "power2.out"
+                        });
+                    } else {
+                        // Second slide (Director) - Image on left
+                        gsap.to(imageFrame, {
+                            left: position,
+                            right: "auto",
+                            duration: 0.6,
+                            ease: "power2.out"
+                        });
+                    }
+                }
+            }
+        });
+
+        // Animation for the second slide
+        const slides = gsap.utils.toArray(".leadership-slide");
+        slides.forEach((slide, i) => {
+            if (i > 0) {
+                tl.to(container, {
+                    x: () => -(slide.offsetLeft),
+                    duration: 1.2, 
+                    ease: "power2.inOut"
+                });
+            }
+            tl.to({}, { duration: holdPower }); 
+        });
+    } else {
+        // MOBILE: Use separate fixed images
+        // Hide Director image initially (only show on second slide)
+        gsap.set(mobileDirectorImage, { opacity: 0 });
+        
+        const holdPower = 1.2;
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#leadershipSection",
+                start: "top 25px",
+                end: "bottom bottom",
+                pin: true,
+                scrub: 1,
+                end: () => "+=" + (container.scrollWidth - window.innerWidth + 1200), 
+                invalidateOnRefresh: true,
+                markers: false,
+                onUpdate: (self) => {
+                    const progress = self.progress;
+                    
+                    if (progress < 0.5) {
+                        // First slide (Chairman) - Show Chairman, hide Director
+                        gsap.to(mobileChairmanImage, {
+                            opacity: 1,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                        gsap.to(mobileDirectorImage, {
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    } else {
+                        // Second slide (Director) - Show Director, hide Chairman
+                        gsap.to(mobileChairmanImage, {
+                            opacity: 0,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                        gsap.to(mobileDirectorImage, {
+                            opacity: 1,
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    }
+                }
+            }
+        });
+
+        // Animation for the second slide
+        const slides = gsap.utils.toArray(".leadership-slide");
+        slides.forEach((slide, i) => {
+            if (i > 0) {
+                tl.to(container, {
+                    x: () => -(slide.offsetLeft),
+                    duration: 1, 
+                    ease: "power2.inOut"
+                });
+            }
+            tl.to({}, { duration: holdPower }); 
+        });
+    }
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        // Reload the page when switching between mobile/desktop
+        const newIsMobile = window.innerWidth <= 768;
+        if ((isMobile && !newIsMobile) || (!isMobile && newIsMobile)) {
+            location.reload();
+        } else {
+            ScrollTrigger.refresh();
+        }
+    });
+
+</script>
+
+</body>
+</html>

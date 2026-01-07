@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School, Kota</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/locomotive-scroll@3.5.4/dist/locomotive-scroll.css'>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fefaf0;
+            color: #5d2a2a;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Fixed Navbar */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: space-between;
+            position: fixed;
+            top: 25px;
+            left: 20px;
+            z-index: 1002;
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #5d2a2a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .admission-btn {
+            background-color: transparent;
+            color: #5d2a2a;
+            border: 2px solid #5d2a2a;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1002;
+        }
+        .admission-btn:hover { background-color: #5d2a2a; color: white; }
+
+        /* Overlay Menu */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1001;
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            overflow: hidden;
+        }
+
+        .overlay-menu.active {
+            transform: translateX(0);
+        }
+
+        .menu-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.4s ease-in-out;
+            margin-top: 80px;
+        }
+
+        .overlay-menu.submenu-active .menu-wrapper {
+            transform: translateX(-100%);
+        }
+
+        .main-menu-screen, .submenu-screen {
+            width: 100%;
+            height: 100%;
+            list-style: none;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .submenu-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 1003;
+        }
+
+        .overlay-menu.submenu-active .submenu-header {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #5d2a2a;
+            font-size: 28px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 15px 10px;
+            border-radius: 5px;
+            transition: color 0.3s;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            color: #8b4513;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+
+        .main-menu-screen li, .submenu-screen li {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .main-menu-screen a, .submenu-screen a {
+            text-decoration: none;
+            color: #5d2a2a;
+            font-weight: 600;
+            display: block;
+            padding: 15px 10px;
+            margin-bottom: 5px;
+            transition: color 0.3s;
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            font-size: 28px;
+            text-align: center;
+        }
+
+        .main-menu-screen a.has-submenu::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        .main-menu-screen a:hover, .submenu-screen a:hover {
+            color: #8b4513;
+        }
+
+        .submenu-screen {
+            background-color: white;
+        }
+
+        /* History Section */
+        .history-section {
+            background-color: #5d2a2a;
+            color: white;
+            padding: 120px 20px 60px;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+            margin-top: 0;
+        }
+
+        .history-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+
+        .history-content {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 40px;
+            z-index: 2;
+        }
+
+        .history-image {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s ease-out;
+            align-self: flex-end;
+            text-align: right;
+        }
+
+        .history-image.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .history-image img {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .history-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #f8d7b3;
+        }
+
+        .history-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            color: #f0e6d6;
+        }
+
+        /* Horizontal Scroll Section - Leadership - FIXED */
+        .horizontal-scroll-section {
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            left: 0;
+            background: #5d2a2a;
+            color: #f8d7b3;
+            position: relative;
+        }
+
+        .pin-wrap {
+            height: 100vh;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0;
+            gap: 0 !important;
+        }
+
+        .pin-wrap > * {
+            min-width: 100vw;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 !important;
+            flex-shrink: 0;
+        }
+
+        .leader-card {
+            background-color: #f8d7b3;
+            color: #5d2a2a;
+            padding: 20px;
+            height: 100%;
+            width: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .leader-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            width: 100%;
+            gap: 30px;
+        }
+
+        .leader-image {
+            flex: 1;
+            max-width: 450px;
+            height: 450px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .leader-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .leader-info {
+            flex: 1;
+            max-width: 600px;
+            text-align: left;
+        }
+
+        .leader-year {
+            display: inline-block;
+            background-color: #5d2a2a;
+            color: #f8d7b3;
+            padding: 8px 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border: none !important;
+            border-radius: 20px;
+        }
+
+        .leader-name {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .leader-designation {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
+            color: #8b4513;
+            font-weight: 600;
+        }
+
+        .leader-quote {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        /* Executive Officers Section */
+        .executive-section {
+            padding: 80px 20px;
+            background: linear-gradient(to bottom, #f8d7b3, #fefaf0);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #5d2a2a;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: #8b4513;
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+        .executive-slider {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .executive-slides {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .executive-slide {
+            min-width: 100%;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .executive-card {
+            width: 22%;
+            min-width: 250px;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .executive-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .executive-image {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .executive-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .executive-card:hover .executive-image img {
+            transform: scale(1.05);
+        }
+
+        .expand-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(93, 42, 42, 0.8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            border: none;
+        }
+
+        .expand-btn:hover {
+            background: #5d2a2a;
+            transform: scale(1.1);
+        }
+
+        .executive-info {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .executive-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #5d2a2a;
+            margin-bottom: 5px;
+        }
+
+        .executive-designation {
+            font-size: 1rem;
+            color: #8b4513;
+            font-weight: 600;
+        }
+
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 15px;
+        }
+
+        .slider-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #5d2a2a;
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-btn:hover {
+            background: #8b4513;
+            transform: scale(1.1);
+        }
+
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #d9c7a7;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: #5d2a2a;
+            transform: scale(1.2);
+        }
+
+        /* FIXED MODAL STYLES - Positioned relative to viewport */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-container {
+            background: white;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 40px;
+            height: 40px;
+            background: rgba(93, 42, 42, 0.8);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+            border: none;
+            font-size: 18px;
+        }
+
+        .modal-close:hover {
+            background: #5d2a2a;
+            transform: scale(1.1);
+        }
+
+        .modal-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 30px;
+            max-height: calc(90vh - 60px);
+            overflow-y: auto;
+        }
+
+        .modal-image {
+            flex: 1;
+            min-width: 250px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .modal-info {
+            flex: 2;
+            min-width: 300px;
+        }
+
+        .modal-name {
+            font-size: 1.8rem;
+            color: #5d2a2a;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .modal-designation {
+            font-size: 1.3rem;
+            color: #8b4513;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .modal-quote {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #5d2a2a;
+            border-left: 3px solid #8b4513;
+            padding-left: 15px;
+        }
+
+        .modal-bio {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Footer */
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-col {
+            flex: 0 0 33.33%;
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-col.logo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .info-col.address-col {
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .info-col.contact-col {
+            text-align: right;
+        }
+
+        .footer-logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+
+        .info-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #f8d7b3;
+        }
+
+        .info-col p {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+
+        .info-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .info-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .footer-col {
+            flex: 0 0 16.66%;
+            min-width: 150px;
+            margin-bottom: 20px;
+        }
+
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            color: #f8d7b3;
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            background-color: #4a1f1f;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .copyright {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+
+        .footer-bottom-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .social-media {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-media a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .social-media a:hover {
+            color: #f8d7b3;
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .info-col {
+                flex: 0 0 100%;
+                text-align: center !important;
+                border: none !important;
+                margin-bottom: 30px;
+            }
+            
+            .info-col.logo-col {
+                align-items: center;
+            }
+            
+            .footer-col {
+                flex: 0 0 33.33%;
+            }
+            
+            .history-container {
+                flex-direction: column;
+            }
+            
+            .history-content {
+                padding-right: 0;
+                margin-bottom: 40px;
+                text-align: center;
+            }
+            
+            .history-image {
+                text-align: center;
+                align-self: center;
+            }
+            
+            .leader-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+            
+            .leader-info {
+                text-align: center;
+            }
+            
+            .leader-image {
+                max-width: 350px;
+                height: 350px;
+            }
+            
+            .leader-name {
+                font-size: 1.8rem;
+            }
+            
+            .leader-designation {
+                font-size: 1.3rem;
+            }
+            
+            .leader-quote {
+                font-size: 1.1rem;
+            }
+            
+            .executive-card {
+                width: 45%;
+            }
+            
+            .modal-content {
+                flex-direction: column;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .footer-col {
+                flex: 0 0 50%;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .footer-bottom-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .social-media {
+                margin-right: 0;
+            }
+            
+            .copyright {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .history-title {
+                font-size: 2rem;
+            }
+            
+            .history-section {
+                padding: 100px 15px 40px;
+            }
+            
+            .leader-card {
+                padding: 15px;
+            }
+            
+            .leader-image {
+                max-width: 300px;
+                height: 300px;
+            }
+            
+            .leader-name {
+                font-size: 1.6rem;
+            }
+            
+            .leader-designation {
+                font-size: 1.2rem;
+            }
+            
+            .leader-quote {
+                font-size: 1rem;
+            }
+            
+            .executive-card {
+                width: 100%;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-col {
+                flex: 0 0 100%;
+            }
+            
+            .history-section {
+                padding: 90px 15px 40px;
+            }
+            
+            .leader-card {
+                padding: 10px;
+            }
+            
+            .leader-image {
+                max-width: 250px;
+                height: 250px;
+            }
+            
+            .leader-name {
+                font-size: 1.4rem;
+            }
+            
+            .leader-designation {
+                font-size: 1rem;
+            }
+            
+            .leader-quote {
+                font-size: 0.9rem;
+            }
+            
+            .modal-name {
+                font-size: 1.6rem;
+            }
+            
+            .modal-designation {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fixed Navbar -->
+    <nav class="navbar">
+        <img src="https://via.placeholder.com/70x40?text=MS+Logo" alt="Modern School Logo">
+    </nav>
+
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <button class="admission-btn">Enquiry</button>
+
+    <!-- Overlay Menu -->
+    <div class="overlay-menu" id="overlayMenu">
+        <div class="submenu-header" id="submenuHeader">
+            <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="menu-wrapper" id="menuWrapper">
+            <ul class="main-menu-screen" id="mainMenu">
+                <li><a href="#" class="close-menu">Home</a></li>
+                <li class="menu-item-with-submenu" data-submenu="about-us">
+                    <a href="#" class="has-submenu">About Us</a> 
+                </li>
+                <li class="menu-item-with-submenu" data-submenu="academics">
+                    <a href="#" class="has-submenu">Academics</a>
+                </li>
+                <li><a href="#" class="close-menu">Admissions</a></li>
+                <li class="menu-item-with-submenu" data-submenu="campus-life">
+                    <a href="#" class="has-submenu">Campus Life</a>
+                </li>
+                <li class="menu-item-with-submenu" data-submenu="contact-us">
+                    <a href="#" class="has-submenu">Contact Us</a>
+                </li>
+            </ul>
+            
+            <ul class="submenu-screen" id="submenuScreen">
+            </ul>
+        </div>
+    </div>
+
+    <!-- History Section -->
+    <section class="history-section" id="historySection">
+        <div class="history-container">
+            <div class="history-content">
+                <h2 class="history-title">Our vision to nurture minds,<br>Our mission to continue it...</h2>
+                <p class="history-description">Founded in 1973, Modern School Kota has been at the forefront of providing quality education that combines academic excellence with character building. Our institution has grown from humble beginnings to become one of the most respected educational establishments in Rajasthan.</p>
+            </div>
+            <div class="history-image" id="historyImage">
+                <img src="https://images.pexels.com/photos/207692/pexels-photo-207692.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Modern School Campus">
+            </div>
+        </div>
+    </section>
+
+    <!-- Horizontal Scroll Section - Leadership - FIXED -->
+    <section class="horizontal-scroll-section" id="sectionPin">
+        <div class="pin-wrap">
+            <!-- Principal -->
+            <div class="leader-card">
+                <div class="leader-content">
+                    <div class="leader-image">
+                        <img src="https://images.pexels.com/photos/3760518/pexels-photo-3760518.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Principal">
+                    </div>
+                    <div class="leader-info">
+                        <span class="leader-year">Principal</span>
+                        <h3 class="leader-name">Mr. R K Jain</h3>
+                        <p class="leader-designation">Principal</p>
+                        <p class="leader-quote">"Education is the most powerful weapon which you can use to change the world. At Modern School, we strive to create an environment where every student can discover their potential and develop into responsible global citizens."</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vice Principal 1 -->
+            <div class="leader-card">
+                <div class="leader-content">
+                    <div class="leader-image">
+                        <img src="https://images.pexels.com/photos/3760519/pexels-photo-3760519.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Vice Principal">
+                    </div>
+                    <div class="leader-info">
+                        <span class="leader-year">Vice Principal</span>
+                        <h3 class="leader-name">Mr. Nasim Mohhammd</h3>
+                        <p class="leader-designation">Vice Principal</p>
+                        <p class="leader-quote">"Our academic approach combines the best of traditional teaching methodologies with modern pedagogical techniques, creating a dynamic educational experience that prepares students for the complexities of the 21st century."</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vice Principal 2 -->
+            <div class="leader-card">
+                <div class="leader-content">
+                    <div class="leader-image">
+                        <img src="https://images.pexels.com/photos/3760520/pexels-photo-3760520.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Vice Principal">
+                    </div>
+                    <div class="leader-info">
+                        <span class="leader-year">Vice Principal</span>
+                        <h3 class="leader-name">Ms. Priti Banda</h3>
+                        <p class="leader-designation">Vice Principal</p>
+                        <p class="leader-quote">"Effective administration is the backbone of any successful educational institution. We ensure that our systems support both our students' learning journey and our teachers' professional growth."</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vice Principal 3 -->
+            <div class="leader-card">
+                <div class="leader-content">
+                    <div class="leader-image">
+                        <img src="https://images.pexels.com/photos/3760521/pexels-photo-3760521.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Vice Principal">
+                    </div>
+                    <div class="leader-info">
+                        <span class="leader-year">Vice Principal</span>
+                        <h3 class="leader-name">Ms. Raveen Aanand</h3>
+                        <p class="leader-designation">Vice Principal</p>
+                        <p class="leader-quote">"Student development extends beyond academics. We focus on holistic growth through extracurricular activities, sports, and cultural programs that help students discover their passions and talents."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Executive Officers Section -->
+    <section class="executive-section">
+        <h2 class="section-title">Executive Officers</h2>
+        <div class="executive-slider">
+            <div class="executive-slides" id="executiveSlides">
+                <!-- Slide 1 -->
+                <div class="executive-slide">
+                    <!-- Executive Officer 1 -->
+                    <div class="executive-card" data-id="1">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760522/pexels-photo-3760522.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Mr. Anil Sharma</h3>
+                            <p class="executive-designation">Head of Academics</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 2 -->
+                    <div class="executive-card" data-id="2">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760523/pexels-photo-3760523.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Ms. Priya Singh</h3>
+                            <p class="executive-designation">Head of Student Affairs</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 3 -->
+                    <div class="executive-card" data-id="3">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760524/pexels-photo-3760524.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Mr. Rajesh Kumar</h3>
+                            <p class="executive-designation">Head of Administration</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 4 -->
+                    <div class="executive-card" data-id="4">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760525/pexels-photo-3760525.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Ms. Sunita Mehta</h3>
+                            <p class="executive-designation">Head of Finance</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 2 -->
+                <div class="executive-slide">
+                    <!-- Executive Officer 5 -->
+                    <div class="executive-card" data-id="5">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760526/pexels-photo-3760526.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Mr. Vikas Gupta</h3>
+                            <p class="executive-designation">Head of Infrastructure</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 6 -->
+                    <div class="executive-card" data-id="6">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760527/pexels-photo-3760527.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Ms. Neha Joshi</h3>
+                            <p class="executive-designation">Head of Sports</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 7 -->
+                    <div class="executive-card" data-id="7">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760528/pexels-photo-3760528.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Mr. Sanjay Patel</h3>
+                            <p class="executive-designation">Head of Science Department</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 8 -->
+                    <div class="executive-card" data-id="8">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760529/pexels-photo-3760529.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Ms. Anita Reddy</h3>
+                            <p class="executive-designation">Head of Humanities</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 3 -->
+                <div class="executive-slide">
+                    <!-- Executive Officer 9 -->
+                    <div class="executive-card" data-id="9">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760530/pexels-photo-3760530.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Mr. Deepak Malhotra</h3>
+                            <p class="executive-designation">Head of IT Department</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 10 -->
+                    <div class="executive-card" data-id="10">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760531/pexels-photo-3760531.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Ms. Kavita Sharma</h3>
+                            <p class="executive-designation">Head of Arts & Culture</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 11 -->
+                    <div class="executive-card" data-id="11">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760532/pexels-photo-3760532.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Mr. Ramesh Iyer</h3>
+                            <p class="executive-designation">Head of Library Services</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 12 -->
+                    <div class="executive-card" data-id="12">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760533/pexels-photo-3760533.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Ms. Sonal Mehta</h3>
+                            <p class="executive-designation">Head of Counseling</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Slide 4 -->
+                <div class="executive-slide">
+                    <!-- Executive Officer 13 -->
+                    <div class="executive-card" data-id="13">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760534/pexels-photo-3760534.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Mr. Amit Verma</h3>
+                            <p class="executive-designation">Head of Transportation</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Executive Officer 14 -->
+                    <div class="executive-card" data-id="14">
+                        <div class="executive-image">
+                            <img src="https://images.pexels.com/photos/3760535/pexels-photo-3760535.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Executive Officer">
+                            <div class="expand-btn">
+                                <i class="fas fa-plus"></i>
+                            </div>
+                        </div>
+                        <div class="executive-info">
+                            <h3 class="executive-name">Ms. Pooja Nair</h3>
+                            <p class="executive-designation">Head of Alumni Relations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slider-controls">
+                <button class="slider-btn" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="slider-btn" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            
+            <div class="slider-dots" id="sliderDots">
+                <!-- Dots will be generated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FIXED MODAL - Positioned relative to viewport -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-content" id="modalContent">
+                <!-- Modal content will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-info">
+        <div class="info-col logo-col">
+            <img src="https://via.placeholder.com/80x50?text=Logo" alt="Modern School Logo" class="footer-logo">
+            <p>Excellence in Education Since 1973</p>
+        </div>
+        <div class="info-col address-col">
+            <h3>Our Address</h3>
+            <p>Modern School</p>
+            <p>Sector - A Talwandi,</p>
+            <p>Kota, Rajasthan 324005</p>
+            <p>India</p>
+        </div>
+        <div class="info-col contact-col">
+            <h3>Contact Information</h3>
+            <p><i class="fas fa-phone"></i> +91-744-24211167</p>
+            <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
+            <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
+            <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
+        </div>
+    </div>
+
+    <div class="footer-columns">
+        <div class="footer-col">
+            <h3>Academics</h3>
+            <ul>
+                <li><a href="#">Curriculum</a></li>
+                <li><a href="#">Exam & Result</a></li>
+                <li><a href="#">Calendar</a></li>
+                <li><a href="#">Counselling</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Admissions</h3>
+            <ul>
+                <li><a href="#">Apply Now</a></li>
+                <li><a href="#">Tuition & Fees</a></li>
+                <li><a href="#">Campus Tours</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Campus Life</h3>
+            <ul>
+                <li><a href="#">Student Activities</a></li>
+                <li><a href="#">Blogs &amp; Podcast</a></li>
+                <li><a href="#">Athletics</a></li>
+                <li><a href="#">Campus Facilities</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="#">Our History</a></li>
+                <li><a href="#">Vision & Mission</a></li>
+                <li><a href="#">Leadership</a></li>
+                <li><a href="#">Our Core Team</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#">Alumni Network</a></li>
+                <li><a href="#">CBSE Corner</a></li>
+                <li><a href="#">TC Verification</a></li>
+                <li><a href="#">Mandatory Disclosures</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="#">Campus Location</a></li>
+                <li><a href="#">Career</a></li>
+                <li><a href="#">General Inquiry</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="copyright">
+            <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+        <div class="footer-bottom-right">
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src='https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js'></script>
+    
+    <script>
+        // Menu functionality
+        const hamburger = document.getElementById('hamburger');
+        const overlayMenu = document.getElementById('overlayMenu');
+        const mainMenu = document.getElementById('mainMenu');
+        const submenuScreen = document.getElementById('submenuScreen');
+        const backButton = document.getElementById('backButton');
+        const historyImage = document.getElementById('historyImage');
+        
+        const submenus = {
+            'about-us': [
+                { text: 'Our History', href: '#' },
+                { text: 'Vision & Mission', href: '#' },
+                { text: 'Leadership', href: '#' },
+                { text: 'Our Core Team', href: '#' },
+            ],
+            'academics': [
+                { text: 'Curriculum', href: '#' },
+                { text: 'Exam & Result', href: '#' },
+                { text: 'Calendar', href: '#' },
+                { text: 'Counselling', href: '#' },
+            ],
+            'campus-life': [
+                { text: 'Student Activities', href: '#' },
+                { text: 'ModFest', href: '#' },
+                { text: 'Athletics', href: '#' },
+                { text: 'Campus Facilities', href: '#' },
+            ],
+            'contact-us': [
+                { text: 'Campus Location', href: '#' },
+                { text: 'Career', href: '#' },
+                { text: 'General Inquiry', href: '#' },
+            ]
+        };
+
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            overlayMenu.classList.remove('active');
+            overlayMenu.classList.remove('submenu-active');
+            submenuScreen.innerHTML = '';
+        }
+
+        hamburger.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                closeMenu();
+            } else {
+                this.classList.add('active');
+                overlayMenu.classList.add('active');
+            }
+        });
+
+        document.querySelectorAll('.main-menu-screen a.has-submenu').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const menuItem = this.closest('.menu-item-with-submenu');
+                const submenuKey = menuItem.getAttribute('data-submenu');
+                const submenuData = submenus[submenuKey];
+
+                if (!submenuData) return;
+
+                submenuScreen.innerHTML = '';
+                submenuData.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="${item.href}" class="close-menu">${item.text}</a>`; 
+                    submenuScreen.appendChild(li);
+                });
+                
+                submenuScreen.querySelectorAll('.close-menu').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        closeMenu();
+                    });
+                });
+
+                overlayMenu.classList.add('submenu-active');
+            });
+        });
+
+        backButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            overlayMenu.classList.remove('submenu-active');
+            setTimeout(() => {
+                submenuScreen.innerHTML = '';
+            }, 400);
+        });
+
+        document.querySelectorAll('.close-menu').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMenu();
+            });
+        });
+        
+        overlayMenu.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeMenu();
+            }
+        });
+        
+        // History image animation
+        function animateHistoryImage() {
+            const historySection = document.getElementById('historySection');
+            const rect = historySection.getBoundingClientRect();
+            
+            if (rect.top < (window.innerHeight - 100) && rect.bottom >= 0) {
+                historyImage.classList.add('animate');
+                window.removeEventListener('scroll', animateHistoryImage);
+            }
+        }
+        
+        window.addEventListener('scroll', animateHistoryImage);
+        window.addEventListener('load', animateHistoryImage);
+
+        // Horizontal Scroll Section with GSAP and Locomotive Scroll - FIXED
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Initialize Locomotive Scroll first
+        const scroller = new LocomotiveScroll({
+            el: document.querySelector("body"),
+            smooth: true
+        });
+
+        scroller.on("scroll", ScrollTrigger.update);
+
+        ScrollTrigger.scrollerProxy("body", {
+            scrollTop(value) {
+                return arguments.length
+                    ? scroller.scrollTo(value, 0, 0)
+                    : scroller.scroll.instance.scroll.y;
+            },
+            getBoundingClientRect() {
+                return {
+                    left: 0,
+                    top: 0,
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                };
+            },
+            pinType: document.body.style.transform ? "transform" : "fixed"
+        });
+
+        // Horizontal Scroll Animation for Leadership Section - FIXED
+        window.addEventListener("load", function () {
+            let pinWrap = document.querySelector(".pin-wrap");
+            let totalWidth = pinWrap.scrollWidth;
+            let horizontalScrollLength = totalWidth - window.innerWidth;
+
+            // Reset position to ensure first slide is visible
+            gsap.set(".pin-wrap", { x: 0 });
+
+            gsap.to(".pin-wrap", {
+                scrollTrigger: {
+                    scroller: "body",
+                    scrub: true,
+                    trigger: "#sectionPin",
+                    pin: true,
+                    start: "top top",
+                    end: () => `+=${totalWidth}`,
+                    invalidateOnRefresh: true
+                },
+                x: -horizontalScrollLength,
+                ease: "none"
+            });
+
+            ScrollTrigger.addEventListener("refresh", () => scroller.update());
+            ScrollTrigger.refresh();
+            
+            // Force scroll to top to ensure first slide is visible
+            setTimeout(() => {
+                scroller.scrollTo(0);
+            }, 100);
+        });
+
+        // Executive Officers Slider
+        const executiveSlides = document.getElementById('executiveSlides');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const sliderDots = document.getElementById('sliderDots');
+        
+        let currentSlide = 0;
+        const totalSlides = document.querySelectorAll('.executive-slide').length;
+        
+        // Create dots
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (i === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(i));
+            sliderDots.appendChild(dot);
+        }
+        
+        function goToSlide(slideIndex) {
+            currentSlide = slideIndex;
+            executiveSlides.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // Update active dot
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+        
+        prevBtn.addEventListener('click', () => {
+            if (currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+            }
+        });
+        
+        nextBtn.addEventListener('click', () => {
+            if (currentSlide < totalSlides - 1) {
+                goToSlide(currentSlide + 1);
+            }
+        });
+        
+        // Executive Officers Data
+        const executiveData = {
+            1: {
+                name: "Mr. Anil Sharma",
+                designation: "Head of Academics",
+                image: "https://images.pexels.com/photos/3760522/pexels-photo-3760522.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Our curriculum is designed to foster critical thinking and creativity, preparing students not just for exams but for life's challenges.\"",
+                bio: "Mr. Anil Sharma has over 15 years of experience in academic leadership. He holds a Ph.D. in Education and has been instrumental in developing our innovative curriculum that balances traditional knowledge with modern pedagogical approaches."
+            },
+            2: {
+                name: "Ms. Priya Singh",
+                designation: "Head of Student Affairs",
+                image: "https://images.pexels.com/photos/3760523/pexels-photo-3760523.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"We believe in creating a supportive environment where every student feels valued and empowered to achieve their full potential.\"",
+                bio: "Ms. Priya Singh specializes in student development and has been with Modern School for 12 years. She has implemented numerous programs that support student well-being and holistic development."
+            },
+            3: {
+                name: "Mr. Rajesh Kumar",
+                designation: "Head of Administration",
+                image: "https://images.pexels.com/photos/3760524/pexels-photo-3760524.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Efficient administration ensures that our educational processes run smoothly, allowing teachers and students to focus on learning.\"",
+                bio: "With a background in educational management, Mr. Rajesh Kumar has streamlined our administrative processes to create a more efficient and responsive system that serves the needs of our school community."
+            },
+            4: {
+                name: "Ms. Sunita Mehta",
+                designation: "Head of Finance",
+                image: "https://images.pexels.com/photos/3760525/pexels-photo-3760525.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Financial stewardship is crucial for maintaining the quality of education while ensuring accessibility for all deserving students.\"",
+                bio: "Ms. Sunita Mehta brings over 20 years of financial management experience to Modern School. She has implemented transparent financial systems that ensure responsible use of resources."
+            },
+            5: {
+                name: "Mr. Vikas Gupta",
+                designation: "Head of Infrastructure",
+                image: "https://images.pexels.com/photos/3760526/pexels-photo-3760526.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Our campus facilities are designed to provide a safe, stimulating environment that supports diverse learning needs.\"",
+                bio: "Mr. Vikas Gupta oversees the maintenance and development of our campus infrastructure. Under his leadership, we've upgraded our facilities to include state-of-the-art laboratories and learning spaces."
+            },
+            6: {
+                name: "Ms. Neha Joshi",
+                designation: "Head of Sports",
+                image: "https://images.pexels.com/photos/3760527/pexels-photo-3760527.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Sports teach valuable life lessons about teamwork, discipline, and resilience that complement academic learning.\"",
+                bio: "A former national-level athlete, Ms. Neha Joshi has developed our sports program into one of the most comprehensive in the region, offering students opportunities in over 15 different sports."
+            },
+            7: {
+                name: "Mr. Sanjay Patel",
+                designation: "Head of Science Department",
+                image: "https://images.pexels.com/photos/3760528/pexels-photo-3760528.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Our science programs emphasize hands-on learning and experimentation to cultivate scientific temper among students.\"",
+                bio: "Mr. Sanjay Patel holds a Master's degree in Physics and has been teaching for 18 years. He has revitalized our science curriculum to include more practical experiments and research opportunities."
+            },
+            8: {
+                name: "Ms. Anita Reddy",
+                designation: "Head of Humanities",
+                image: "https://images.pexels.com/photos/3760529/pexels-photo-3760529.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"The humanities help students develop empathy, critical thinking, and a deeper understanding of human society and culture.\"",
+                bio: "Ms. Anita Reddy specializes in literature and social sciences. She has introduced innovative teaching methods that make humanities subjects more engaging and relevant to students' lives."
+            },
+            9: {
+                name: "Mr. Deepak Malhotra",
+                designation: "Head of IT Department",
+                image: "https://images.pexels.com/photos/3760530/pexels-photo-3760530.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Technology integration in education prepares students for a digital future while enhancing teaching and learning experiences.\"",
+                bio: "Mr. Deepak Malhotra has overseen the digital transformation of our school. Under his guidance, we've implemented smart classrooms and a comprehensive digital learning platform."
+            },
+            10: {
+                name: "Ms. Kavita Sharma",
+                designation: "Head of Arts & Culture",
+                image: "https://images.pexels.com/photos/3760531/pexels-photo-3760531.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Arts education fosters creativity, self-expression, and cultural appreciation that enrich students' overall development.\"",
+                bio: "Ms. Kavita Sharma is an accomplished artist and educator. She has expanded our arts program to include visual arts, music, dance, and theater, providing students with diverse creative outlets."
+            },
+            11: {
+                name: "Mr. Ramesh Iyer",
+                designation: "Head of Library Services",
+                image: "https://images.pexels.com/photos/3760532/pexels-photo-3760532.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Our library is not just a repository of books but a vibrant learning hub that encourages reading and research.\"",
+                bio: "Mr. Ramesh Iyer has transformed our library into a modern learning resource center. He has digitized our catalog and introduced reading programs that have significantly increased student engagement with literature."
+            },
+            12: {
+                name: "Ms. Sonal Mehta",
+                designation: "Head of Counseling",
+                image: "https://images.pexels.com/photos/3760533/pexels-photo-3760533.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Student well-being is our priority. Our counseling services support emotional, social, and academic development.\"",
+                bio: "Ms. Sonal Mehta is a licensed counselor with expertise in adolescent psychology. She has developed comprehensive counseling programs that address the diverse needs of our student body."
+            },
+            13: {
+                name: "Mr. Amit Verma",
+                designation: "Head of Transportation",
+                image: "https://images.pexels.com/photos/3760534/pexels-photo-3760534.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Safe and reliable transportation ensures that students can focus on their education without worrying about commute challenges.\"",
+                bio: "Mr. Amit Verma manages our fleet of school buses and transportation logistics. He has implemented GPS tracking and safety protocols that ensure timely and secure transportation for all students."
+            },
+            14: {
+                name: "Ms. Pooja Nair",
+                designation: "Head of Alumni Relations",
+                image: "https://images.pexels.com/photos/3760535/pexels-photo-3760535.jpeg?auto=compress&cs=tinysrgb&w=600",
+                quote: "\"Our alumni network strengthens the school community and provides valuable mentorship opportunities for current students.\"",
+                bio: "Ms. Pooja Nair has built a robust alumni network that connects former students with current ones. She organizes regular alumni events and mentorship programs that benefit our school community."
+            }
+        };
+        
+        // FIXED MODAL FUNCTIONALITY - Positioned relative to viewport
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalContent = document.getElementById('modalContent');
+        const modalClose = document.getElementById('modalClose');
+        
+        // Add click events to expand buttons
+        document.querySelectorAll('.expand-btn').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const card = this.closest('.executive-card');
+                const officerId = card.getAttribute('data-id');
+                const officerData = executiveData[officerId];
+                
+                if (!officerData) {
+                    console.error('No data found for officer ID:', officerId);
+                    return;
+                }
+                
+                // Populate modal with officer data
+                modalContent.innerHTML = `
+                    <div class="modal-image">
+                        <img src="${officerData.image}" alt="${officerData.name}">
+                    </div>
+                    <div class="modal-info">
+                        <h2 class="modal-name">${officerData.name}</h2>
+                        <p class="modal-designation">${officerData.designation}</p>
+                        <p class="modal-quote">${officerData.quote}</p>
+                        <div class="modal-bio">
+                            <p>${officerData.bio}</p>
+                        </div>
+                    </div>
+                `;
+                
+                // Show modal - this will now appear in the center of the viewport
+                modalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                
+                // Stop Locomotive Scroll when modal is open
+                if (scroller) {
+                    scroller.stop();
+                }
+            });
+        });
+        
+        // Close modal
+        modalClose.addEventListener('click', function() {
+            modalOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Resume Locomotive Scroll when modal is closed
+            if (scroller) {
+                scroller.start();
+            }
+        });
+        
+        // Close modal when clicking outside content
+        modalOverlay.addEventListener('click', function(e) {
+            if (e.target === this) {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                // Resume Locomotive Scroll when modal is closed
+                if (scroller) {
+                    scroller.start();
+                }
+            }
+        });
+        
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+                
+                // Resume Locomotive Scroll when modal is closed
+                if (scroller) {
+                    scroller.start();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
