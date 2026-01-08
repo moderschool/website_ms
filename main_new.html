@@ -3572,7 +3572,7 @@ body.menu-open .navbar {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 40px;
+    height: 32px;
 }
 
 .navbar-logo-text {
@@ -3629,7 +3629,7 @@ body.menu-open .navbar {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 4px;
+    height: 3px;
     background-color: transparent;
     overflow: hidden;
 }
@@ -3649,7 +3649,7 @@ body.menu-open .navbar {
         var(--primary-maroon) 100%
     );
     background-size: 200% 100%;
-    animation: progressTrackFlow 3s linear infinite;
+    animation: progressTrackFlow 0s linear infinite;
 }
 
 @keyframes progressTrackFlow {
@@ -4171,6 +4171,241 @@ body.menu-open .admission-btn.menu-only {
         font-size: 14px;
     }
 }
+/* Add to existing enquiry modal styles */
+@media (max-width: 768px) {
+    .enquiry-modal-overlay {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 40px;
+    }
+    
+    .enquiry-modal-content {
+        padding: 20px 15px;
+        max-width: 95%;
+        max-height: 85vh;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .enquiry-modal-overlay {
+        padding: 5px;
+        padding-top: 30px;
+    }
+    
+    .enquiry-modal-content {
+        padding: 18px 12px;
+        max-width: 98%;
+        max-height: 90vh;
+    }
+}
+/* Tour Navigation for other pages */
+#tourNavigation {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: var(--primary-maroon);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    z-index: 10000;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+}
+
+#tourNavigation button {
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+#tourNavigation button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+#backToTour {
+    background: white;
+    color: var(--primary-maroon);
+}
+
+#endTour {
+    background: transparent;
+    color: white;
+    border: 1px solid white !important;
+}
+/* Compact Tour Options */
+.tour-options-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 25px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom scrollbar for tour options */
+.tour-options-grid-compact::-webkit-scrollbar {
+    width: 6px;
+}
+
+.tour-options-grid-compact::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.tour-options-grid-compact::-webkit-scrollbar-thumb {
+    background: var(--primary-maroon);
+    border-radius: 3px;
+}
+
+.tour-options-grid-compact::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-dark-maroon);
+}
+
+.tour-option-btn-compact {
+    position: relative;
+    background: var(--primary-white);
+    border: 1.5px solid var(--border-light);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--secondary-dark-maroon);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+}
+
+.tour-option-btn-compact:hover,
+.tour-option-btn-compact.selected {
+    border: 2px solid var(--border-maroon);
+    padding: 11px 7px;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.15);
+}
+
+.tour-option-btn-compact i {
+    font-size: 18px;
+    margin-bottom: 6px;
+    color: var(--text-maroon);
+    display: block;
+}
+
+.tour-option-btn-compact span {
+    display: block;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tour-check-mark-compact {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 16px;
+    height: 16px;
+    background: var(--primary-maroon);
+    color: var(--text-white);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.tour-option-btn-compact.selected .tour-check-mark-compact {
+    display: flex;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .tour-options-grid-compact {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        max-height: 250px;
+    }
+    
+    .tour-option-btn-compact {
+        padding: 10px 6px;
+        height: 75px;
+        font-size: 11px;
+    }
+    
+    .tour-option-btn-compact i {
+        font-size: 16px;
+        margin-bottom: 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tour-options-grid-compact {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        max-height: 220px;
+    }
+    
+    .tour-option-btn-compact {
+        padding: 8px 4px;
+        height: 70px;
+        font-size: 10px;
+        border-radius: 10px;
+    }
+    
+    .tour-option-btn-compact i {
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+    
+    .tour-check-mark-compact {
+        width: 14px;
+        height: 14px;
+        font-size: 9px;
+        top: 4px;
+        right: 4px;
+    }
+}
+
+/* Tour Modal Sheet adjustments for compact grid */
+.tour-modal-sheet {
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#tour-selection-modal .tour-modal-sheet {
+    padding: 20px 15px 25px;
+}
+
+#tour-selection-modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+}
+
+#tour-selection-modal .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+    color: var(--text-light-maroon);
+}
 </style>
 </head>
 <body style="overflow: hidden;">
@@ -4599,6 +4834,7 @@ body.menu-open .admission-btn.menu-only {
 <!-- Website Tour Modals -->
 <!-- Intro Modal (Centered) -->
 <!-- Website Tour Modals -->
+<!-- Website Tour Modals -->
 <!-- Intro Modal (Centered) -->
 <div id="intro-tour-modal" class="tour-modal-backdrop">
     <div class="tour-modal-content">
@@ -4613,46 +4849,105 @@ body.menu-open .admission-btn.menu-only {
 </div>
 
 <!-- Tour Selection Modal (Bottom Center) -->
+<!-- Tour Selection Modal (Bottom Center) -->
 <div id="tour-selection-modal" class="tour-modal-backdrop">
     <div class="tour-modal-sheet">
         <div class="sheet-handle"></div>
         <h2>Explore Our School</h2>
         <p class="subtitle">Select one section to begin the tour</p>
-       <div class="tour-options-grid">
-    <button class="tour-option-btn" data-topic="address" data-link="campus_location.html"><i class="fas fa-map-marker-alt"></i>Our Address<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="contact" data-link="contact.html"><i class="fas fa-phone-alt"></i>Contact Info<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="social" data-link="#"><i class="fas fa-share-alt"></i>Social Connect<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="academics" data-link="Curriculum.html"><i class="fas fa-book"></i>Academics<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="information" data-link="fees.html"><i class="fas fa-info-circle"></i>Information<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="campus-life" data-link="student_counsel.html"><i class="fas fa-university"></i>Campus Life<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="about-us" data-link="history.html"><i class="fas fa-users"></i>About Us<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="connect" data-link="campus_location.html"><i class="fas fa-link"></i>Connect<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="admissions" data-link="#enquiry-form"><i class="fas fa-graduation-cap"></i>Admissions<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="infrastructure" data-link="campus_facilities.html"><i class="fas fa-building"></i>Infrastructure<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="leadership" data-link="leadership.html"><i class="fas fa-star"></i>Leadership<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="faculty" data-link="admin.html"><i class="fas fa-chalkboard-teacher"></i>Faculty<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="curriculum" data-link="Curriculum.html"><i class="fas fa-book-open"></i>Curriculum<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="extracurriculars" data-link="sport.html"><i class="fas fa-futbol"></i>Activities<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="testimonials" data-link="#testimonials"><i class="fas fa-quote-left"></i>Testimonials<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="blog" data-link="#blog"><i class="fas fa-newspaper"></i>Blog<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="events" data-link="event.html"><i class="fas fa-calendar-alt"></i>Events<div class="tour-check-mark">✓</div></button>
-    <button class="tour-option-btn" data-topic="gallery" data-link="gallery.html"><i class="fas fa-images"></i>Gallery<div class="tour-check-mark">✓</div></button>
-</div>
+        
+        <div class="tour-options-grid-compact">
+            <button class="tour-option-btn-compact" data-topic="curriculum" data-link="Curriculum.html">
+                <i class="fas fa-book-open"></i>
+                <span>Curriculum</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="calendar" data-link="calendar.html">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Calendar</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="timetable" data-link="exam.html">
+                <i class="fas fa-clock"></i>
+                <span>Time Table</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="fees" data-link="fees.html">
+                <i class="fas fa-money-bill"></i>
+                <span>Tuition Fees</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="cbse" data-link="cbse.html">
+                <i class="fas fa-graduation-cap"></i>
+                <span>CBSE Corner</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="disclosures" data-link="mandatory_disc.html">
+                <i class="fas fa-file-alt"></i>
+                <span>Mandatory Disclosures</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="alumni" data-link="alumni.html">
+                <i class="fas fa-users"></i>
+                <span>Alumni Network</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="student-counsel" data-link="student_council.html">
+                <i class="fas fa-user-friends"></i>
+                <span>Student Counsel</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="events" data-link="event.html">
+                <i class="fas fa-calendar-check"></i>
+                <span>Events</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="athletics" data-link="sport.html">
+                <i class="fas fa-running"></i>
+                <span>Athletics</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="facilities" data-link="campus_facilities.html">
+                <i class="fas fa-building"></i>
+                <span>Campus Facilities</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="history" data-link="history.html">
+                <i class="fas fa-history"></i>
+                <span>Our History</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="vision" data-link="vision.html">
+                <i class="fas fa-eye"></i>
+                <span>Vision & Direction</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="leadership" data-link="leadership.html">
+                <i class="fas fa-star"></i>
+                <span>Leadership</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="admin" data-link="admin.html">
+                <i class="fas fa-user-tie"></i>
+                <span>Admin Team</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="location" data-link="campus_location.html">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Campus Location</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+            <button class="tour-option-btn-compact" data-topic="branches" data-link="branches.html">
+                <i class="fas fa-code-branch"></i>
+                <span>Other Branches</span>
+                <div class="tour-check-mark-compact">✓</div>
+            </button>
+        </div>
+        
         <div class="tour-actions">
             <button id="start-selected-tour" class="tour-primary-btn" disabled>Start Tour</button>
             <button id="skip-tour-selection" class="tour-secondary-btn">Skip</button>
         </div>
-    </div>
-</div>
-
-<!-- Active Tour View -->
-<div id="active-tour-view" class="tour-view">
-    <div class="tour-view-content">
-        <!-- Dynamic content injected here -->
-    </div>
-    <div class="tour-controls">
-        <button id="back-to-tour-modal"><i class="fas fa-arrow-left"></i> Back to Tour</button>
-        <button id="end-tour-btn"><i class="fas fa-times"></i> End Tour</button>
     </div>
 </div>
 
@@ -4673,20 +4968,69 @@ body.menu-open .admission-btn.menu-only {
         <div class="sheet-handle"></div>
         <h2>Explore Our School</h2>
         <p class="subtitle">Select one section to begin the tour</p>
-        <div class="tour-options-grid">
-            <button class="tour-option-btn" data-topic="about-us"><i class="fas fa-info-circle"></i>About Us<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="admissions"><i class="fas fa-graduation-cap"></i>Admissions<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="infrastructure"><i class="fas fa-building"></i>Infrastructure<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="leadership"><i class="fas fa-star"></i>Leadership<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="faculty"><i class="fas fa-chalkboard-teacher"></i>Faculty<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="curriculum"><i class="fas fa-book"></i>Curriculum<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="extracurriculars"><i class="fas fa-futbol"></i>Activities<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="testimonials"><i class="fas fa-quote-left"></i>Testimonials<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="blog"><i class="fas fa-newspaper"></i>Blog<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="contact"><i class="fas fa-phone"></i>Contact<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="events"><i class="fas fa-calendar-alt"></i>Events<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="gallery"><i class="fas fa-images"></i>Gallery<div class="tour-check-mark">✓</div></button>
-        </div>
+        <!-- In tour-selection-modal, replace the entire grid with: -->
+<div class="tour-options-grid">
+    <button class="tour-option-btn" data-topic="curriculum" data-link="Curriculum.html">
+        <i class="fas fa-book-open"></i>Curriculum<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="calendar" data-link="calendar.html">
+        <i class="fas fa-calendar-alt"></i>Calendar<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="timetable" data-link="exam.html">
+        <i class="fas fa-clock"></i>Time Table<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="fees" data-link="fees.html">
+        <i class="fas fa-money-bill"></i>Tuition Fees<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="cbse" data-link="cbse.html">
+        <i class="fas fa-graduation-cap"></i>CBSE Corner<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="disclosures" data-link="mandatory_disc.html">
+        <i class="fas fa-file-alt"></i>Disclosures<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="alumni" data-link="alumni.html">
+        <i class="fas fa-users"></i>Alumni Network<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="student-counsel" data-link="student_council.html">
+        <i class="fas fa-user-friends"></i>Student Counsel<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="events" data-link="event.html">
+        <i class="fas fa-calendar-check"></i>Events<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="athletics" data-link="sport.html">
+        <i class="fas fa-running"></i>Athletics<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="facilities" data-link="campus_facilities.html">
+        <i class="fas fa-building"></i>Campus Facilities<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="history" data-link="history.html">
+        <i class="fas fa-history"></i>Our History<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="vision" data-link="vision.html">
+        <i class="fas fa-eye"></i>Vision & Direction<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="leadership" data-link="leadership.html">
+        <i class="fas fa-star"></i>Leadership<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="admin" data-link="admin.html">
+        <i class="fas fa-user-tie"></i>Admin Team<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="connect" data-link="#">
+        <i class="fas fa-link"></i>Connect<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="location" data-link="campus_location.html">
+        <i class="fas fa-map-marker-alt"></i>Campus Location<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="career" data-link="career.html">
+        <i class="fas fa-briefcase"></i>Career<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="tc-verification" data-link="tc_verification.html">
+        <i class="fas fa-file-certificate"></i>TC Verification<div class="tour-check-mark">✓</div>
+    </button>
+    <button class="tour-option-btn" data-topic="branches" data-link="branches.html">
+        <i class="fas fa-code-branch"></i>Other Branches<div class="tour-check-mark">✓</div>
+    </button>
+</div>
         <div class="tour-actions">
             <button id="start-selected-tour" class="tour-primary-btn" disabled>Start Tour</button>
             <button id="skip-tour-selection" class="tour-secondary-btn">Skip</button>
@@ -4911,7 +5255,7 @@ body.menu-open .admission-btn.menu-only {
                     <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
                     <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
                     <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
-                     <h3>Social Connect</h3>
+                    
                         <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-facebook"></i></a>
                         <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-twitter"></i></a>
                         <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-instagram"></i></a>
@@ -5756,15 +6100,19 @@ function initNavigation() {
                 submenuScreen.appendChild(li);
             });
 
-            submenuScreen.querySelectorAll('.close-menu').forEach(link => {
-                link.addEventListener('click', e => {
-                    e.preventDefault();
-                    closeMenu();
-                    // Replace alert with real navigation if needed
-                    console.log('Navigate to:', link.textContent);
-                });
-            });
-
+           submenuScreen.querySelectorAll('.close-menu').forEach(link => {
+    link.addEventListener('click', function(e) {
+        // Allow normal navigation for actual links
+        if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
+            closeMenu();
+            // Link will navigate normally
+            return true;
+        }
+        e.preventDefault();
+        closeMenu();
+        console.log('Navigate to:', link.textContent);
+    });
+});
             overlayMenu.classList.add('submenu-active');
         });
     });
@@ -6784,6 +7132,7 @@ function initEnquiryModal() {
 }
 
 // ===== WEBSITE TOUR LOGIC =====
+// ===== WEBSITE TOUR LOGIC =====
 function initWebsiteTour() {
     const introTourModal = document.getElementById('intro-tour-modal');
     const tourSelectionModal = document.getElementById('tour-selection-modal');
@@ -6795,119 +7144,97 @@ function initWebsiteTour() {
     let hasSeenIntro = false;
     let isUserActive = false;
     let lastInteractionTime = Date.now();
+    let isTourActive = false;
 
     // Topic descriptions for the tour
-    // Topic descriptions for the tour with actual links
-const tourTopics = {
-    'address': {
-        title: 'Our School Address',
-        description: 'Find our campus location at Sector A, Talwandi, Kota, Rajasthan 324005. Get directions and visit our beautiful campus.',
-        targetElement: '.footer-info',
-        link: 'campus_location.html'
-    },
-    'contact': {
-        title: 'Contact Information',
-        description: 'Reach us at +91-744-24211167, +91-744-2411116, or email info@modernschool.ac.in. Visit our website: www.modernschool.ac.in',
-        targetElement: '.footer-info .contact-col',
-        link: 'contact.html'
-    },
-    'social': {
-        title: 'Social Media Connect',
-        description: 'Connect with us on Facebook, Twitter, Instagram, LinkedIn, and YouTube for updates and school news.',
-        targetElement: '.footer-info .social-media',
-        link: '#'
-    },
-    'academics': {
-        title: 'Academic Programs',
-        description: 'Explore our comprehensive curriculum, academic calendar, and timetable for all classes.',
-        targetElement: '.footer-columns .footer-col:nth-child(1)',
-        link: 'Curriculum.html'
-    },
-    'information': {
-        title: 'Important Information',
-        description: 'Access tuition fees details, CBSE corner information, mandatory disclosures, and alumni network.',
-        targetElement: '.footer-columns .footer-col:nth-child(2)',
-        link: 'fees.html'
-    },
-    'campus-life': {
-        title: 'Campus Life & Activities',
-        description: 'Discover student council, events, athletics, and campus facilities that enrich student life.',
-        targetElement: '.footer-columns .footer-col:nth-child(3)',
-        link: 'student_counsel.html'
-    },
-    'about-us': {
-        title: 'About Modern School',
-        description: 'Learn about our history since 1973, vision & direction, leadership team, and administration.',
-        targetElement: '.footer-columns .footer-col:nth-child(4)',
-        link: 'history.html'
-    },
-    'connect': {
-        title: 'Connect With Us',
-        description: 'Find campus location, career opportunities, TC verification, and other branch information.',
-        targetElement: '.footer-columns .footer-col:nth-child(5)',
-        link: 'campus_location.html'
-    },
-    'admissions': {
-        title: 'Admissions Process',
-        description: 'Learn about our admission criteria, application process, and important dates for session 2026-2027.',
-        targetElement: '.admission-btn',
-        link: '#enquiry-form'
-    },
-    'infrastructure': {
-        title: 'Modern Infrastructure',
-        description: 'Explore our state-of-the-art facilities including smart classrooms, labs, libraries, and sports complexes.',
-        targetElement: '.carousel-container',
-        link: 'campus_facilities.html'
-    },
-    'leadership': {
-        title: 'School Leadership',
-        description: 'Meet our visionary Chairman Dr. Deepak Singh and Director Mr. Vaibhav Singh who guide our educational philosophy.',
-        targetElement: '#leadershipSection',
-        link: 'leadership.html'
-    },
-    'faculty': {
-        title: 'Expert Faculty Team',
-        description: 'Meet our dedicated teaching staff committed to nurturing young minds with excellence.',
-        targetElement: '.testimonial-section',
-        link: 'admin.html'
-    },
-    'curriculum': {
-        title: 'Comprehensive Curriculum',
-        description: 'Discover our CBSE-aligned curriculum that balances academic excellence with holistic development.',
-        targetElement: '.scroll-area',
-        link: 'Curriculum.html'
-    },
-    'extracurriculars': {
-        title: 'Extracurricular Activities',
-        description: 'Explore sports, arts, music, dance, and club activities that develop well-rounded personalities.',
-        targetElement: '.carousel-container .slide[data-index="2"]',
-        link: 'sport.html'
-    },
-    'testimonials': {
-        title: 'Parent Testimonials',
-        description: 'Read what parents say about their children\'s transformative journey at Modern School.',
-        targetElement: '.testimonial-section',
-        link: '#testimonials'
-    },
-    'blog': {
-        title: 'School Blog & News',
-        description: 'Stay updated with latest events, achievements, and insights from our school community.',
-        targetElement: '.blog-section',
-        link: '#blog'
-    },
-    'events': {
-        title: 'School Events Calendar',
-        description: 'Check out our annual events, celebrations, competitions, and cultural programs.',
-        targetElement: '.blog-section',
-        link: 'event.html'
-    },
-    'gallery': {
-        title: 'Photo Gallery',
-        description: 'Browse through pictures capturing memorable moments from school life and activities.',
-        targetElement: '.carousel-container',
-        link: 'gallery.html'
-    }
-};
+    const tourTopics = {
+        'curriculum': {
+            title: 'Curriculum',
+            description: 'Explore our comprehensive curriculum designed for holistic development and academic excellence.',
+            link: 'Curriculum.html'
+        },
+        'calendar': {
+            title: 'Academic Calendar',
+            description: 'Check our academic calendar for important dates, holidays, and school events throughout the year.',
+            link: 'calendar.html'
+        },
+        'timetable': {
+            title: 'Time Table',
+            description: 'View daily schedules and class timings for all grades and subjects.',
+            link: 'exam.html'
+        },
+        'fees': {
+            title: 'Tuition Fees',
+            description: 'Access detailed information about tuition fees, payment schedules, and financial policies.',
+            link: 'fees.html'
+        },
+        'cbse': {
+            title: 'CBSE Corner',
+            description: 'Important CBSE-related information, guidelines, and resources for students and parents.',
+            link: 'cbse.html'
+        },
+        'disclosures': {
+            title: 'Mandatory Disclosures',
+            description: 'Official disclosures and information as required by education authorities.',
+            link: 'mandatory_disc.html'
+        },
+        'alumni': {
+            title: 'Alumni Network',
+            description: 'Connect with our alumni community and stay updated with alumni activities.',
+            link: 'alumni.html'
+        },
+        'student-counsel': {
+            title: 'Student Counsel',
+            description: 'Learn about our student council, leadership opportunities, and student activities.',
+            link: 'student_council.html'
+        },
+        'events': {
+            title: 'School Events',
+            description: 'Discover upcoming events, celebrations, competitions, and cultural programs.',
+            link: 'event.html'
+        },
+        'athletics': {
+            title: 'Athletics & Sports',
+            description: 'Explore our sports facilities, athletic programs, and achievements in sports.',
+            link: 'sport.html'
+        },
+        'facilities': {
+            title: 'Campus Facilities',
+            description: 'Tour our state-of-the-art facilities including labs, library, and sports complexes.',
+            link: 'campus_facilities.html'
+        },
+        'history': {
+            title: 'Our History',
+            description: 'Learn about our rich history, legacy, and journey since establishment.',
+            link: 'history.html'
+        },
+        'vision': {
+            title: 'Vision & Direction',
+            description: 'Understand our vision, mission, and educational philosophy that guides us.',
+            link: 'vision.html'
+        },
+        'leadership': {
+            title: 'Leadership',
+            description: 'Meet our visionary leadership team guiding Modern School towards excellence.',
+            link: 'leadership.html'
+        },
+        'admin': {
+            title: 'Admin Team',
+            description: 'Meet our dedicated administration team committed to school management.',
+            link: 'admin.html'
+        },
+        'location': {
+            title: 'Campus Location',
+            description: 'Find our campus location, directions, and visit information.',
+            link: 'campus_location.html'
+        },
+        'branches': {
+            title: 'Other Branches',
+            description: 'Information about other branches of Modern School.',
+            link: 'branches.html'
+        }
+    };
+
     // Simple function to update last interaction time
     function updateLastInteraction() {
         lastInteractionTime = Date.now();
@@ -7028,41 +7355,35 @@ const tourTopics = {
     });
 
     // Tour Selection Logic
-   // Tour Selection Logic
-const startTourBtn = document.getElementById('start-selected-tour');
-const tourOptionBtns = document.querySelectorAll('.tour-option-btn');
+    const startTourBtn = document.getElementById('start-selected-tour');
+    const tourOptionBtns = document.querySelectorAll('.tour-option-btn-compact');
 
-if (tourOptionBtns.length > 0 && startTourBtn) {
-    tourOptionBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            tourOptionBtns.forEach(b => b.classList.remove('selected'));
-            btn.classList.add('selected');
-            selectedTourTopic = btn.dataset.topic;
-            startTourBtn.disabled = false;
-            
-            // Store the link in a data attribute on the button
-            startTourBtn.dataset.link = btn.dataset.link;
+    if (tourOptionBtns.length > 0 && startTourBtn) {
+        tourOptionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tourOptionBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+                selectedTourTopic = btn.dataset.topic;
+                startTourBtn.disabled = false;
+                
+                // Store the link in a data attribute on the button
+                startTourBtn.dataset.link = btn.dataset.link;
+            });
         });
-    });
 
-    startTourBtn.addEventListener('click', () => {
-        if (!selectedTourTopic) return;
-        
-        // Get the link from the selected button
-        const selectedBtn = document.querySelector('.tour-option-btn.selected');
-        const link = selectedBtn ? selectedBtn.dataset.link : null;
-        
-        // If there's a direct link and it's not a tour page, navigate directly
-        if (link && !link.startsWith('#')) {
-            window.location.href = link;
-            return;
-        }
-        
-        // Otherwise show the tour view
-        tourSelectionModal.style.display = 'none';
-        startTour(selectedTourTopic);
-    });
-}
+        startTourBtn.addEventListener('click', () => {
+            if (!selectedTourTopic) return;
+            
+            // Get the link from the selected button
+            const selectedBtn = document.querySelector('.tour-option-btn-compact.selected');
+            const link = selectedBtn ? selectedBtn.dataset.link : null;
+            
+            // Start the tour
+            tourSelectionModal.style.display = 'none';
+            startTour(selectedTourTopic, link);
+        });
+    }
+    
     document.getElementById('skip-tour-selection')?.addEventListener('click', () => {
         tourSelectionModal.style.display = 'none';
         localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
@@ -7072,77 +7393,44 @@ if (tourOptionBtns.length > 0 && startTourBtn) {
     });
 
     // Start the actual tour
- // Start the actual tour
-function startTour(topic) {
-    const tourData = tourTopics[topic];
-    if (!tourData) return;
+    function startTour(topic, link) {
+        const tourData = tourTopics[topic];
+        if (!tourData) return;
 
-    console.log('Starting tour for topic:', topic);
-    
-    // Update tour view content
-    const tourContent = document.querySelector('.tour-view-content');
-    if (tourContent) {
-        tourContent.innerHTML = `
-            <h2>${tourData.title}</h2>
-            <p>${tourData.description}</p>
-            <button class="tour-navigate-btn" style="margin-top: 20px; padding: 12px 24px; background: var(--primary-maroon); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                <i class="fas fa-external-link-alt" style="margin-right: 8px;"></i>
-                Navigate to ${tourData.title}
-            </button>
-        `;
+        console.log('Starting tour for topic:', topic);
         
-        // Add click event to navigate button
-        const navigateBtn = tourContent.querySelector('.tour-navigate-btn');
-        if (navigateBtn) {
-            navigateBtn.addEventListener('click', function() {
-                // Close tour view
-                activeTourView.style.display = 'none';
-                document.body.classList.remove('tour-modal-open');
-                
-                // Navigate to the page
-                if (tourData.link.startsWith('#')) {
-                    // It's an anchor link on same page
-                    window.location.href = tourData.link;
-                } else if (tourData.link === '#') {
-                    // No link specified
-                    alert('Page under construction. Coming soon!');
-                } else {
-                    // It's a different page
-                    window.location.href = tourData.link;
-                }
-            });
+        // Update tour view content
+        const tourContent = document.querySelector('.tour-view-content');
+        if (tourContent) {
+            tourContent.innerHTML = `
+                <h2>${tourData.title}</h2>
+                <p>${tourData.description}</p>
+                <button class="tour-navigate-btn" style="margin-top: 20px; padding: 12px 24px; background: var(--primary-maroon); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                    <i class="fas fa-external-link-alt" style="margin-right: 8px;"></i>
+                    Navigate to ${tourData.title}
+                </button>
+            `;
+            
+            // Add click event to navigate button
+            const navigateBtn = tourContent.querySelector('.tour-navigate-btn');
+            if (navigateBtn) {
+                navigateBtn.addEventListener('click', function() {
+                    // Store tour info in localStorage for the next page
+                    localStorage.setItem('tourActive', 'true');
+                    localStorage.setItem('currentTourTopic', topic);
+                    localStorage.setItem('tourReturnUrl', window.location.href);
+                    
+                    // Navigate to the page
+                    window.location.href = link;
+                });
+            }
         }
+
+        // Show tour view
+        activeTourView.style.display = 'flex';
+        isTourActive = true;
     }
 
-    // Show tour view
-    activeTourView.style.display = 'flex';
-    
-    // Scroll to the relevant section on current page (if it exists)
-    if (tourData.targetElement) {
-        const target = document.querySelector(tourData.targetElement);
-        if (target) {
-            setTimeout(() => {
-                try {
-                    target.scrollIntoView({ 
-                        behavior: 'smooth', 
-                        block: 'center' 
-                    });
-                    
-                    // Add highlight effect
-                    const originalBoxShadow = target.style.boxShadow;
-                    target.style.boxShadow = '0 0 0 4px rgba(128, 0, 0, 0.3)';
-                    target.style.transition = 'box-shadow 0.3s ease';
-                    
-                    setTimeout(() => {
-                        target.style.boxShadow = originalBoxShadow;
-                    }, 3000);
-                } catch (e) {
-                    console.error('Error scrolling to target:', e);
-                }
-            }, 500);
-        }
-    }
-}
     // Tour View Controls
     document.getElementById('back-to-tour-modal')?.addEventListener('click', () => {
         activeTourView.style.display = 'none';
@@ -7154,13 +7442,19 @@ function startTour(topic) {
         if (startTourBtn) startTourBtn.disabled = true;
     });
 
-    document.getElementById('end-tour-btn')?.addEventListener('click', () => {
+    document.getElementById('end-tour-btn')?.addEventListener('click', endTour);
+
+    function endTour() {
         activeTourView.style.display = 'none';
+        localStorage.removeItem('tourActive');
+        localStorage.removeItem('currentTourTopic');
+        localStorage.removeItem('tourReturnUrl');
         localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
         document.body.classList.remove('tour-modal-open');
+        isTourActive = false;
         // Reset for future visits
         hasSeenIntro = false;
-    });
+    }
 
     // Close tour modals when clicking outside
     [introTourModal, tourSelectionModal].forEach(modal => {
@@ -7191,43 +7485,71 @@ function startTour(topic) {
                 localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
                 document.body.classList.remove('tour-modal-open');
             } else if (activeTourView.style.display === 'flex') {
-                activeTourView.style.display = 'none';
-                localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
-                document.body.classList.remove('tour-modal-open');
+                endTour();
             }
-            // Reset for future visits
-            hasSeenIntro = false;
         }
     });
 
-    // Manual tour trigger (can be called from console for testing)
-    window.startWebsiteTour = function() {
-        console.log('Manual tour trigger called');
-        tourSelectionModal.style.display = 'flex';
-        document.body.classList.add('tour-modal-open');
-    };
-
-    // For debugging - expose some functions
-    window.debugTour = {
-        showModal: () => showIntroModal(),
-        resetTour: () => {
-            hasSeenIntro = false;
-            localStorage.removeItem('modernSchoolLastTourDate');
-            updateLastInteraction();
-        },
-        checkTimer: () => {
-            const timeSince = Date.now() - lastInteractionTime;
-            console.log(`Time since last interaction: ${timeSince}ms`);
-            return timeSince;
+    // Check if we're returning from a tour page
+    function checkTourReturn() {
+        const tourActive = localStorage.getItem('tourActive') === 'true';
+        const tourTopic = localStorage.getItem('currentTourTopic');
+        
+        if (tourActive && tourTopic) {
+            // Show tour navigation options
+            showTourNavigation(tourTopic);
         }
-    };
+    }
+    
+    function showTourNavigation(topic) {
+        // Create a simple navigation bar for tour pages
+        const tourNav = document.createElement('div');
+        tourNav.id = 'tourNavigation';
+        tourNav.style.cssText = `
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-maroon);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            z-index: 10000;
+            display: flex;
+            gap: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        `;
+        
+        tourNav.innerHTML = `
+            <span style="margin-right: 10px;">Tour: ${tourTopics[topic]?.title || topic}</span>
+            <button id="backToTour" style="background: white; color: var(--primary-maroon); border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Back to Tour</button>
+            <button id="endTour" style="background: transparent; color: white; border: 1px solid white; padding: 5px 10px; border-radius: 3px; cursor: pointer;">End Tour</button>
+        `;
+        
+        document.body.appendChild(tourNav);
+        
+        // Add event listeners
+        document.getElementById('backToTour').addEventListener('click', () => {
+            const returnUrl = localStorage.getItem('tourReturnUrl') || 'index.html';
+            localStorage.removeItem('tourActive');
+            localStorage.removeItem('currentTourTopic');
+            window.location.href = returnUrl;
+        });
+        
+        document.getElementById('endTour').addEventListener('click', () => {
+            localStorage.removeItem('tourActive');
+            localStorage.removeItem('currentTourTopic');
+            localStorage.removeItem('tourReturnUrl');
+            localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
+            document.getElementById('tourNavigation').remove();
+        });
+    }
 
     // Initialize
     setTimeout(() => {
         initInactivityDetection();
+        checkTourReturn();
     }, 1000); // Wait 1 second after page loads
 }
-
 // ===== INITIALIZE ON DOM CONTENT LOADED =====
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize navbar scroll effect immediately
