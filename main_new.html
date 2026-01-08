@@ -7,8 +7,78 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-   < <style>
-   /* ===== GLOBAL FIXES ===== */
+   <style>/* ===== COLOR VARIABLES (EDIT HERE TO CHANGE ENTIRE WEBSITE THEME) ===== */
+:root {
+    /* Primary Colors - Edit these to change the entire website theme */
+    --primary-maroon: #800000;
+    --primary-cream: #fefaf0;
+    --primary-white: #ffffff;
+      --light-maroon: #A63232;
+    
+    /* Secondary Colors */
+    --secondary-dark-maroon: #5d2a2a;
+    --secondary-light-maroon: #8b4513;
+    --secondary-orange: #FF8C00;
+    --secondary-gold: #c5a059;
+    --secondary-light-cream: #fffcf0;
+    --secondary-gold-light: #FFD700;
+    
+    /* Background Colors */
+    --bg-cream: var(--primary-cream);
+    --bg-white: var(--primary-white);
+    --bg-light-cream: #f5f2e9;
+    --bg-footer: var(--secondary-dark-maroon);
+    --bg-footer-dark: #4a1f1f;
+    --bg-light-gray: #f4f4f4;
+    
+    /* Text Colors */
+    --text-maroon: var(--primary-maroon);
+    --text-dark-maroon: var(--secondary-dark-maroon);
+    --text-light-maroon: var(--secondary-light-maroon);
+    --text-white: var(--primary-white);
+    --text-light: #FFFDD0;
+    --text-gray: #6c757d;
+    --text-dark-gray: #2c3e50;
+    --text-light-gray: #6c757d;
+    
+    /* Border & Shadow Colors */
+    --border-light: #e0d6c2;
+    --border-maroon: var(--primary-maroon);
+    --border-light-gray: #e9ecef;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --shadow-maroon: rgba(128, 0, 0, 0.2);
+    --shadow-dark: rgba(0, 0, 0, 0.15);
+    
+    /* Interactive Colors */
+    --hover-maroon: #990000;
+    --active-maroon: #5d2a2a;
+    --success-color: #4CAF50;
+    --error-color: #ff4444;
+    --warning-color: #ffc107;
+    
+    /* Chat Assistant Colors */
+    --chat-bg: var(--primary-maroon);
+    --chat-bubble-user: var(--primary-maroon);
+    --chat-bubble-bot: var(--primary-white);
+    --chat-bubble-bot-border: #eee;
+    
+    /* Progress & Indicator Colors */
+    --progress-fill: linear-gradient(90deg, var(--secondary-gold-light), var(--secondary-orange));
+    --dot-color: var(--primary-maroon);
+    --active-dot: var(--secondary-gold-light);
+    
+    /* Button Colors */
+    --btn-maroon: var(--primary-maroon);
+    --btn-maroon-hover: var(--hover-maroon);
+    --btn-gold: var(--secondary-gold);
+    
+    /* Accent Colors */
+    --accent-orange: #FFA500;
+    --accent-red: #ff0000;
+    --accent-green: #2ecc71;
+}
+
+/* ===== GLOBAL FIXES ===== */
 * {
     margin: 0;
     padding: 0;
@@ -25,8 +95,8 @@ html, body {
 }
 
 body {
-    background-color: #fefaf0;
-    color: #5d2a2a;
+    background-color: var(--bg-cream);
+    color: var(--text-dark-maroon);
     line-height: 1.6;
     overflow-x: hidden;
     width: 100%;
@@ -37,7 +107,7 @@ body {
 #introPage {
     position: fixed;
     inset: 0;
-    background: linear-gradient(to bottom, #ffffff, #f5f5dc);
+    background: linear-gradient(to bottom, var(--primary-white), #f5f5dc);
     height: 100vh;
     display: flex;
     justify-content: center;
@@ -65,7 +135,7 @@ body {
 
 #introPage .main-text {
     font-family: Tahoma, Geneva, sans-serif;
-    color: #800000;
+    color: var(--text-maroon);
     font-weight: 600;
     letter-spacing: 1px;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
@@ -102,7 +172,7 @@ body {
 #introPage .orange-dot {
     width: 8px;
     height: 8px;
-    background-color: #FF8C00;
+    background-color: var(--secondary-orange);
     border-radius: 50%;
     display: inline-block;
     animation: pulseDot 1.5s infinite;
@@ -130,7 +200,7 @@ body {
 #introPage .orange-line {
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, #FFA500, #FF8C00, #FFA500, transparent);
+    background: linear-gradient(90deg, transparent, var(--accent-orange), var(--secondary-orange), var(--accent-orange), transparent);
     border-radius: 1px;
     animation: drawLine 1s 2.9s ease-out forwards, fadeOutLine 0.8s 4s forwards;
     box-shadow: 0 0 6px rgba(255, 140, 0, 0.3);
@@ -143,7 +213,7 @@ body {
     transform: translate(-50%, -50%);
     width: 12px;
     height: 12px;
-    background-color: #800000;
+    background-color: var(--dot-color);
     border-radius: 50%;
     opacity: 0;
     animation: followLine 1s 2.9s ease-out forwards, fadeOutDot 0.8s 4s forwards;
@@ -292,8 +362,8 @@ body {
     right: 20px;
     padding: 12px 24px;
     background-color: transparent;
-    color: #800000;
-    border: 2px solid #800000;
+    color: var(--text-maroon);
+    border: 2px solid var(--border-maroon);
     border-radius: 8px;
     font-family: Tahoma, Geneva, sans-serif;
     font-size: 1rem;
@@ -301,12 +371,12 @@ body {
     cursor: pointer;
     z-index: 100;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(128, 0, 0, 0.2);
+    box-shadow: 0 2px 8px var(--shadow-maroon);
 }
 
 #introPage .skip-button:hover {
-    background-color: #800000;
-    color: white;
+    background-color: var(--btn-maroon);
+    color: var(--text-white);
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(128, 0, 0, 0.3);
 }
@@ -318,7 +388,7 @@ body {
 
 #introPage .asterisk {
     position: absolute;
-    color: #800000;
+    color: var(--text-maroon);
     opacity: 0.7;
     font-size: 3.2rem;
     display: flex;
@@ -419,12 +489,12 @@ body {
     position: fixed;
     right: 30px;
     bottom: 0;
-    background: #800000;
-    color: white;
+    background: var(--chat-bg);
+    color: var(--text-white);
     padding: 7px 15px;
     border-radius: 10px 10px 0 0;
     cursor: pointer;
-    box-shadow: 0 -4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 -4px 12px var(--shadow-dark);
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -442,7 +512,7 @@ body {
 }
 
 #launcher:hover { 
-    background: #990000; 
+    background: var(--btn-maroon-hover); 
     padding-bottom: 15px; 
 }
 
@@ -458,24 +528,24 @@ body {
     right: 30px;
     width: 330px; 
     height: 420px;
-    background: white; 
+    background: var(--primary-white); 
     border-radius: 12px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     display: none; 
     flex-direction: column; 
     z-index: 1001; 
     overflow: hidden;
-    border: 1px solid #eee;
+    border: 1px solid var(--chat-bubble-bot-border);
 }
 
 .chat-header {
-    background: #800000; 
-    color: white; 
+    background: var(--chat-bg); 
+    color: var(--text-white); 
     padding: 7px 18px;
     display: flex; 
     align-items: center; 
     gap: 8px; 
-    border-bottom: 2px solid #c5a059;
+    border-bottom: 2px solid var(--secondary-gold);
     position: relative;
 }
 
@@ -493,7 +563,7 @@ body {
 #exec-img-container { 
     width: 35px; 
     height: 35px; 
-    background: white; 
+    background: var(--primary-white); 
     border-radius: 50%; 
     display: none; 
     align-items: center; 
@@ -513,15 +583,15 @@ body {
 
 #feature-bar {
     display: none; 
-    background: #fffcf0; 
+    background: var(--secondary-light-cream); 
     padding: 8px;
-    border-bottom: 1px solid #eee; 
+    border-bottom: 1px solid var(--chat-bubble-bot-border); 
     justify-content: space-around;
 }
 .bar-link { 
     font-size: 11px; 
     font-weight: 600; 
-    color: #800000; 
+    color: var(--text-maroon); 
     cursor: pointer; 
     display: flex; 
     align-items: center; 
@@ -545,14 +615,14 @@ body {
     border-radius: 10px; 
 }
 .chat-bot { 
-    background: white; 
-    border: 1px solid #eee; 
+    background: var(--chat-bubble-bot); 
+    border: 1px solid var(--chat-bubble-bot-border); 
     align-self: flex-start; 
     color: #333; 
 }
 .chat-user { 
-    background: #800000; 
-    color: white; 
+    background: var(--chat-bubble-user); 
+    color: var(--text-white); 
     align-self: flex-end; 
 }
 
@@ -562,9 +632,9 @@ body {
     gap: 6px; 
 }
 .chip {
-    background: white; 
-    border: 1px solid #800000; 
-    color: #800000;
+    background: var(--primary-white); 
+    border: 1px solid var(--border-maroon); 
+    color: var(--text-maroon);
     padding: 5px 12px; 
     border-radius: 15px; 
     cursor: pointer; 
@@ -572,8 +642,8 @@ body {
     font-weight: 500;
 }
 .chip:hover { 
-    background: #800000; 
-    color: white; 
+    background: var(--primary-maroon); 
+    color: var(--text-white); 
 }
 
 .rating-box { 
@@ -587,12 +657,12 @@ body {
     margin: 0 4px; 
 }
 .chat-stars.active { 
-    color: #c5a059; 
+    color: var(--secondary-gold); 
 }
 
 .chat-footer { 
     padding: 10px; 
-    border-top: 1px solid #eee; 
+    border-top: 1px solid var(--chat-bubble-bot-border); 
     display: flex; 
     gap: 8px; 
     align-items: center; 
@@ -609,7 +679,7 @@ body {
 .blink-dot {
     height: 8px;
     width: 8px;
-    background-color: #2ecc71;
+    background-color: var(--accent-green);
     border-radius: 50%;
     display: inline-block;
     margin-left: 5px;
@@ -630,8 +700,8 @@ body {
     justify-content: center;
     align-items: center;
     padding: 15px 20px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--primary-white);
+    box-shadow: 0 2px 10px var(--shadow-color);
     position: fixed;
     top: 0;
     left: 0;
@@ -661,7 +731,7 @@ body.menu-open .navbar {
     display: block;
     height: 3px;
     width: 100%;
-    background-color: #5d2a2a;
+    background-color: var(--text-dark-maroon);
     border-radius: 2px;
     transition: all 0.3s ease;
 }
@@ -680,8 +750,8 @@ body.menu-open .navbar {
 
 .admission-btn {
     background-color: transparent;
-    color: #5d2a2a;
-    border: 2px solid #5d2a2a;
+    color: var(--text-dark-maroon);
+    border: 2px solid var(--border-maroon);
     padding: 8px 18px;
     border-radius: 20px;
     cursor: pointer;
@@ -693,68 +763,70 @@ body.menu-open .navbar {
     z-index: 1002;
 }
 
-.admission-btn:hover { background-color: #5d2a2a; color: white; }
+.admission-btn:hover { 
+    background-color: var(--btn-maroon); 
+    color: var(--text-white); 
+}
 
-  .overlay-menu {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            z-index: 1001;
-            transform: translateX(-100%);
-            transition: transform 0.5s ease;
-            overflow: hidden;
-        }
-        .overlay-menu.active { transform: translateX(0); }
+.overlay-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--primary-white);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 1001;
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+    overflow: hidden;
+}
+.overlay-menu.active { transform: translateX(0); }
 
+.menu-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    transition: transform 0.4s ease-in-out;
+    margin-top: 80px;
+}
+.overlay-menu.submenu-active .menu-wrapper { transform: translateX(-100%); }
 
- .menu-wrapper {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            transition: transform 0.4s ease-in-out;
-            margin-top: 80px;
-        }
-        .overlay-menu.submenu-active .menu-wrapper { transform: translateX(-100%); }
+.main-menu-screen, .submenu-screen {
+    width: 100%;
+    height: 100%;
+    list-style: none;
+    text-align: center;
+    padding: 20px;
+    flex-shrink: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 
-        .main-menu-screen, .submenu-screen {
-            width: 100%;
-            height: 100%;
-            list-style: none;
-            text-align: center;
-            padding: 20px;
-            flex-shrink: 0;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        /* BACK BUTTON Container - Now positioned at top of submenu */
-        .submenu-header {
-            position: absolute;
-            top: 20px;
-            left: 0;
-            width: 100%;
-            text-align: left;
-            padding: 10px 20px;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.4s, visibility 0.4s;
-            z-index: 1003;
-        }
-        .overlay-menu.submenu-active .submenu-header { opacity: 1; visibility: visible; }
+/* BACK BUTTON Container - Now positioned at top of submenu */
+.submenu-header {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 100%;
+    text-align: left;
+    padding: 10px 20px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s, visibility 0.4s;
+    z-index: 1003;
+}
+.overlay-menu.submenu-active .submenu-header { opacity: 1; visibility: visible; }
 
 .back-btn {
     background: none;
     border: none;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     font-size: 28px;
     font-weight: 600;
     cursor: pointer;
@@ -769,7 +841,7 @@ body.menu-open .navbar {
     justify-content: center;
 }
 
-.back-btn:hover { color: #8b4513; }
+.back-btn:hover { color: var(--secondary-light-maroon); }
 
 .back-btn i { margin-right: 8px; }
 
@@ -783,7 +855,7 @@ body.menu-open .navbar {
 
 .main-menu-screen a, .submenu-screen a {
     text-decoration: none;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     font-weight: 600;
     display: block;
     padding: 15px 10px;
@@ -807,9 +879,9 @@ body.menu-open .navbar {
     font-size: 18px;
 }
 
-.main-menu-screen a:hover, .submenu-screen a:hover { color: #8b4513; }
+.main-menu-screen a:hover, .submenu-screen a:hover { color: var(--secondary-light-maroon); }
 
-.submenu-screen { background-color: white; }
+.submenu-screen { background-color: var(--primary-white); }
 
 .content {
     padding-top: 80px;
@@ -839,17 +911,17 @@ body.menu-open .navbar {
 .feature-card {
     flex: 1;
     min-width: 250px;
-    background-color: white;
+    background-color: var(--primary-white);
     padding: 20px;
     margin: 10px;
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px var(--shadow-color);
     text-align: center;
 }
 
 .feature-card i {
     font-size: 40px;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     margin-bottom: 15px;
 }
 
@@ -922,7 +994,7 @@ body.menu-open .navbar {
     height: 220px;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 25px var(--shadow-dark);
     margin-bottom: 15px;
     transition: all 0.4s ease;
 }
@@ -943,14 +1015,14 @@ body.menu-open .navbar {
 
 .slide-title {
     font-size: 1.1rem;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     margin-bottom: 3px;
     font-weight: 500;
 }
 
 .slide-description {
     font-size: 0.75rem;
-    color: #8b4513;
+    color: var(--text-light-maroon);
     line-height: 0.8;
     max-width: 250px;
 }
@@ -972,14 +1044,14 @@ body.menu-open .navbar {
 
 .panel-heading {
     font-size: 1.2rem;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     margin-bottom: 4px;
     font-weight: 500;
 }
 
 .panel-description {
     font-size: 1rem;
-    color: #8b4513;
+    color: var(--text-light-maroon);
     line-height: 1.5;
     margin-bottom: 20px;
 }
@@ -990,7 +1062,7 @@ body.menu-open .navbar {
     border: none;
     border-radius: 25px;
     position: center;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -1000,12 +1072,12 @@ body.menu-open .navbar {
 .panel-button:hover {
     background: #b8ad8e;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 12px var(--shadow-dark);
 }
 
 .carousel-instructions {
     margin-top: 150px;
-    color: #8b4513;
+    color: var(--text-light-maroon);
     font-size: 0.9rem;
     max-width: 600px;
     margin-left: auto;
@@ -1049,7 +1121,7 @@ body.menu-open .navbar {
 
 .content-section h2 {
     font-size: 2rem;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     margin-bottom: 20px;
     font-weight: 400;
 }
@@ -1057,7 +1129,7 @@ body.menu-open .navbar {
 .content-section p {
     font-size: 1.1rem;
     line-height: 1.7;
-    color: #8b4513;
+    color: var(--text-light-maroon);
     margin-bottom: 20px;
 }
 
@@ -1067,13 +1139,13 @@ body.menu-open .navbar {
     object-fit: cover;
     border-radius: 12px;
     margin: 30px 0;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 25px var(--shadow-dark);
 }
 
 .completion-message {
     margin-top: 40px;
     padding: 20px;
-    background-color: #f5f2e9;
+    background-color: var(--bg-light-cream);
     border-radius: 12px;
     max-width: 600px;
     text-align: center;
@@ -1089,12 +1161,12 @@ body.menu-open .navbar {
 
 .completion-message h3 {
     font-size: 1.5rem;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     margin-bottom: 15px;
 }
 
 .completion-message p {
-    color: #8b4513;
+    color: var(--text-light-maroon);
     line-height: 1.6;
 }
 
@@ -1109,7 +1181,7 @@ body.menu-open .navbar {
 
 .progress-bar {
     height: 100%;
-    background-color: #b8ad8e;
+    background-color: var(--secondary-gold);
     width: 0%;
     transition: width 0.3s ease;
 }
@@ -1118,7 +1190,7 @@ body.menu-open .navbar {
 .scroll-area {
     height: 1300vh;
     position: relative;
-    background-color: #fefaf0;
+    background-color: var(--bg-cream);
     z-index: 1;
     margin-top: 40px;
     margin-bottom: 40px;
@@ -1140,7 +1212,7 @@ body.menu-open .navbar {
     justify-content: center;
     align-items: center;
     perspective: 1000px;
-    background-color: #f4f4f4;
+    background-color: var(--bg-light-gray);
 }
 
 .clearfix {
@@ -1154,7 +1226,7 @@ body.menu-open .navbar {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 3vw;
     font-weight: 900;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     text-align: center;
     width: 100%;
     opacity: 1;
@@ -1180,7 +1252,7 @@ body.menu-open .navbar {
     position: absolute;
     width: 220px;
     height: 280px;
-    background: #fff;
+    background: var(--primary-white);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     border-radius: 8px;
     overflow: hidden;
@@ -1204,7 +1276,7 @@ body.menu-open .navbar {
     position: absolute;
     font-size: 3.3vw;
     font-weight: 800;
-    color: #8b4513;
+    color: var(--text-light-maroon);
     text-align: left;
     white-space: nowrap;
     opacity: 0;
@@ -1254,7 +1326,7 @@ body.menu-open .navbar {
 
 .milestones-scene .small-text {
     font-size: 1.2rem;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     margin-bottom: 10px;
     letter-spacing: 2px;
     will-change: transform;
@@ -1265,7 +1337,7 @@ body.menu-open .navbar {
     align-items: center;
     justify-content: center;
     font-size: 4rem;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     margin: 20px 0;
     font-weight: 700;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -1303,7 +1375,7 @@ body.menu-open .navbar {
 }
 
 .legacy-text {
-    color: #FFFDD0;
+    color: var(--text-light);
     font-size: 3.5rem;
     font-weight: 900;
     text-align: center;
@@ -1317,7 +1389,7 @@ body.menu-open .navbar {
 .legacy-text .number {
     font-size: 5rem;
     display: block;
-    color: #FFD700;
+    color: var(--secondary-gold-light);
     margin-bottom: 10px;
     text-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
 }
@@ -1353,7 +1425,7 @@ body.menu-open .navbar {
 
 .final-text {
     font-size: 2rem;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     font-weight: 600;
     white-space: nowrap;
 }
@@ -1389,7 +1461,7 @@ body.menu-open .navbar {
 
 .milestones-scene .sub-text {
     font-size: 1.4rem;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     margin-top: 10px;
     font-style: italic;
     will-change: transform;
@@ -1398,7 +1470,7 @@ body.menu-open .navbar {
 .milestones-scene .decoration {
     height: 4px;
     width: 100px;
-    background: linear-gradient(to right, transparent, #800000, transparent);
+    background: linear-gradient(to right, transparent, var(--primary-maroon), transparent);
     margin: 30px auto;
 }
 
@@ -1473,7 +1545,7 @@ body.menu-open .navbar {
     top: 50%;
     left: 0;
     height: 8px;
-    background: linear-gradient(90deg, #FFD700, #FF8C00);
+    background: var(--progress-fill);
     transform: translateY(-50%);
     border-radius: 99px;
     z-index: 1;
@@ -1505,26 +1577,26 @@ body.menu-open .navbar {
 }
 
 .step-point.completed {
-    background-color: #FFD700;
-    border-color: #FFD700;
+    background-color: var(--active-dot);
+    border-color: var(--active-dot);
 }
 
 .step-point.active {
-    background-color: #FFD700;
-    border-color: #FFD700;
+    background-color: var(--active-dot);
+    border-color: var(--active-dot);
     border-width: 3px;
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 6px #FFD700;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 6px var(--active-dot);
 }
 
 .step-point.completed:not(.active) {
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 6px #FFD700;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.9), 0 0 0 6px var(--active-dot);
 }
 
 .check-icon {
     display: none;
     width: 18px;
     height: 18px;
-    stroke: #800000;
+    stroke: var(--primary-maroon);
     stroke-width: 3;
     fill: none;
     stroke-linecap: round;
@@ -1562,7 +1634,7 @@ body.menu-open .navbar {
 .info-label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #FFFDD0;
+    color: var(--text-light);
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
@@ -1575,14 +1647,13 @@ body.menu-open .navbar {
     display: block;
     object-fit: cover;
     object-position: center;
-    
     padding: 8px;
-   border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 .timeline-scroll-section {
     height: 500vh;
-    background-color: #800000;
+    background-color: var(--primary-maroon);
     position: relative;
     z-index: 0;
     margin-top: -1px;
@@ -1598,8 +1669,8 @@ body.menu-open .navbar {
     display: flex;
     justify-content: center;
     align-items: center;
-    color: white;
-    background: #800000;
+    color: var(--text-white);
+    background: var(--primary-maroon);
 }
 
 .timeline-content-wrapper {
@@ -1630,7 +1701,7 @@ body.menu-open .navbar {
     padding-top: 10px;
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     font-size: 0.8rem;
-    color: #FFFDD0;
+    color: var(--text-light);
     margin-top: auto;
 }
 
@@ -1647,8 +1718,8 @@ body.menu-open .navbar {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    background-color: #5d2a2a;
-    color: white;
+    background-color: var(--bg-footer);
+    color: var(--text-white);
     padding: 40px 20px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     overflow-x: hidden;
@@ -1697,7 +1768,7 @@ body.menu-open .navbar {
 }
 
 .info-col a {
-    color: white;
+    color: var(--text-white);
     text-decoration: none;
     transition: color 0.3s;
 }
@@ -1711,8 +1782,8 @@ body.menu-open .navbar {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    background-color: #5d2a2a;
-    color: white;
+    background-color: var(--bg-footer);
+    color: var(--text-white);
     padding: 40px 20px;
     overflow-x: hidden;
     position: relative;
@@ -1743,7 +1814,7 @@ body.menu-open .navbar {
 }
 
 .footer-col a {
-    color: white;
+    color: var(--text-white);
     text-decoration: none;
     transition: color 0.3s;
 }
@@ -1754,8 +1825,8 @@ body.menu-open .navbar {
 }
 
 .footer-bottom {
-    background-color: #4a1f1f;
-    color: white;
+    background-color: var(--bg-footer-dark);
+    color: var(--text-white);
     padding: 20px;
     display: flex;
     justify-content: space-between;
@@ -1777,7 +1848,7 @@ body.menu-open .navbar {
 
 .spacer-before-footer {
     height: 50px;
-    background-color: #fefaf0;
+    background-color: var(--bg-cream);
     position: relative;
     z-index: 50;
     width: 100%;
@@ -1795,7 +1866,7 @@ body.menu-open .navbar {
 }
 
 .footer-links a {
-    color: white;
+    color: var(--text-white);
     text-decoration: none;
     font-size: 14px;
     transition: color 0.3s;
@@ -1817,7 +1888,7 @@ body.menu-open .navbar {
 }
 
 .social-media a {
-    color: white;
+    color: var(--text-white);
     font-size: 20px;
     transition: color 0.3s;
 }
@@ -1847,7 +1918,7 @@ body.menu-open .navbar {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: white;
+    color: var(--text-white);
     text-align: center;
     z-index: 201;
     opacity: 0;
@@ -1856,7 +1927,7 @@ body.menu-open .navbar {
 .maroon-curtain-content h2 {
     font-size: 3rem;
     margin-bottom: 20px;
-    color: #FFFDD0;
+    color: var(--text-light);
 }
 
 .maroon-curtain-content p {
@@ -1880,7 +1951,7 @@ body.menu-open .navbar {
 /* ===== BLOG CAROUSEL STYLES ===== */
 .blog-section {
     width: 100%;
-    background: #fefaf0;
+    background: var(--bg-cream);
     padding: 80px 0;
     position: relative;
     z-index: 100;
@@ -1896,7 +1967,7 @@ body.menu-open .navbar {
 
 .blog-header h2 {
     font-size: 3.5rem;
-    color: #800000;
+    color: var(--text-maroon);
     font-weight: 700;
     margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -1905,7 +1976,7 @@ body.menu-open .navbar {
 .blog-header-line {
     width: 200px;
     height: 3px;
-    background: linear-gradient(to right, transparent, #800000, transparent);
+    background: linear-gradient(to right, transparent, var(--primary-maroon), transparent);
     margin: 0 auto 30px;
     border-radius: 2px;
 }
@@ -1922,7 +1993,7 @@ body.menu-open .navbar {
     overflow: hidden;
     border-radius: 12px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-    background: #ffffff;
+    background: var(--primary-white);
 }
 
 .blog-track {
@@ -1948,7 +2019,7 @@ body.menu-open .navbar {
     transition: all 0.3s ease;
     cursor: pointer;
     text-decoration: none;
-    color: #2c3e50;
+    color: var(--text-dark-gray);
     position: relative;
 }
 
@@ -1957,8 +2028,8 @@ body.menu-open .navbar {
 }
 
 .blog-item-content {
-    background: #ffffff;
-    border: 1px solid #e9ecef;
+    background: var(--primary-white);
+    border: 1px solid var(--border-light-gray);
     border-radius: 12px;
     overflow: hidden;
     height: 100%;
@@ -1971,7 +2042,7 @@ body.menu-open .navbar {
 
 .blog-item:hover .blog-item-content {
     box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-    border-color: #800000;
+    border-color: var(--border-maroon);
 }
 
 .blog-image-wrapper {
@@ -2001,7 +2072,7 @@ body.menu-open .navbar {
 .blog-topic {
     font-size: 1.4rem;
     font-weight: 700;
-    color: #800000;
+    color: var(--text-maroon);
     margin-top: 0;
     margin-bottom: 12px;
     line-height: 1.3;
@@ -2009,7 +2080,7 @@ body.menu-open .navbar {
 
 .blog-description {
     font-size: 1rem;
-    color: #6c757d;
+    color: var(--text-light-gray);
     margin-bottom: 8px;
     line-height: 1.6;
     position: relative;
@@ -2034,8 +2105,8 @@ body.menu-open .navbar {
     height: 25px;
     font-size: 28px;
     font-weight: 700;
-    color: #ffffff;
-    background: #ffc107;
+    color: var(--text-white);
+    background: var(--warning-color);
     border: none;
     border-radius: 50%;
     padding: 0;
@@ -2088,7 +2159,7 @@ body.menu-open .navbar {
 }
 
 .modal-content {
-    background: #ffffff;
+    background: var(--primary-white);
     border-radius: 16px;
     max-width: 900px;
     width: 100%;
@@ -2114,7 +2185,7 @@ body.menu-open .navbar {
 }
 
 .modal-title {
-    color: #800000;
+    color: var(--text-maroon);
     margin-top: 0;
     font-size: 2.2rem;
     margin-bottom: 20px;
@@ -2122,7 +2193,7 @@ body.menu-open .navbar {
 }
 
 .modal-description {
-    color: #2c3e50;
+    color: var(--text-dark-gray);
     line-height: 1.8;
     font-size: 1.1rem;
     margin-bottom: 25px;
@@ -2136,7 +2207,7 @@ body.menu-open .navbar {
     border: none;
     font-size: 40px;
     font-weight: 300;
-    color: #6c757d;
+    color: var(--text-gray);
     cursor: pointer;
     line-height: 1;
     transition: color 0.3s;
@@ -2172,16 +2243,16 @@ body.menu-open .navbar {
 }
 
 .line-map-indicator.active {
-    background: #ffc107;
+    background: var(--warning-color);
     width: 40px;
 }
 
 /* ===== ADMISSION SCROLLING BANNER STYLES ===== */
 .full-width-banner {
     width: 100%;
-    background-color: #800000;
+    background-color: var(--primary-maroon);
     padding: 18px 0;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px var(--shadow-color);
     overflow: hidden;
     margin-top: 40px;
     position: relative;
@@ -2212,7 +2283,7 @@ body.menu-open .navbar {
 }
 
 .primary-text {
-    color: #ffffff;
+    color: var(--text-white);
     font-size: 1.8em;
     font-weight: bold;
     margin-right: 20px;
@@ -2227,7 +2298,7 @@ body.menu-open .navbar {
 .enquiry-button {
     display: inline-block;
     padding: 10px 20px;
-    color: #ffffff;
+    color: var(--text-white);
     background-color: transparent;
     border: 3px solid #ff9900;
     border-radius: 5px;
@@ -2262,7 +2333,7 @@ body.menu-open .navbar {
 
 .testimonial-header h2 {
     font-size: 3rem;
-    color: #800000;
+    color: var(--text-maroon);
     font-weight: 700;
     margin-bottom: 15px;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
@@ -2271,7 +2342,7 @@ body.menu-open .navbar {
 .testimonial-header-line {
     width: 200px;
     height: 3px;
-    background: linear-gradient(to right, transparent, #800000, transparent);
+    background: linear-gradient(to right, transparent, var(--primary-maroon), transparent);
     margin: 0 auto 30px;
     border-radius: 2px;
 }
@@ -2323,7 +2394,7 @@ body.menu-open .navbar {
     height: 150px;
     border-radius: 5%;
     overflow: hidden;
-    border: 1px solid #800000;
+    border: 1px solid var(--border-maroon);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     margin-bottom: 15px;
 }
@@ -2341,7 +2412,7 @@ body.menu-open .navbar {
 .parent-details-side .parent {
     font-weight: 700;
     font-size: 17px;
-    color: #800000;
+    color: var(--text-maroon);
     margin-bottom: 5px;
 }
 
@@ -2360,7 +2431,7 @@ body.menu-open .navbar {
 
 .quote-start {
     font-size: 120px;
-    color: #800000;
+    color: var(--text-maroon);
     position: absolute;
     left: -20px;
     top: -40px;
@@ -2383,7 +2454,7 @@ body.menu-open .navbar {
 
 .quote-end {
     font-size: 120px;
-    color: #800000;
+    color: var(--text-maroon);
     text-align: right;
     margin: -40px 12px 0 0;
     line-height: 0.8;
@@ -2406,7 +2477,7 @@ body.menu-open .navbar {
 .testimonial-nav-button {
     background: transparent;
     border: none;
-    color: #800000;
+    color: var(--text-maroon);
     padding: 0;
     width: 30px;
     height: 30px;
@@ -2431,1344 +2502,10 @@ body.menu-open .navbar {
     transform: scale(1);
 }
 
-/* ===== LEADERSHIP SECTION STYLES ===== */
+/* ===== LEADERSHIP SECTION STYLES - UPDATED ===== */
 .leadership-section {
     width: 100%;
-    background: #fefaf0;
-    padding: 40px 0 0 0; /* Reduced top padding */
-    position: relative;
-    z-index: 100;
-    margin-top: 0;
-}
-
-.leadership-header {
-    text-align: center;
-    margin-bottom: 30px; /* Reduced margin */
-    position: relative;
-    padding: 0 20px;
-}
-
-.leadership-header h2 {
-    font-size: 2.5rem; /* Reduced from 3.5rem */
-    color: #800000;
-    font-weight: 700;
-    margin-bottom: 15px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.leadership-header-line {
-    width: 150px; /* Reduced from 200px */
-    height: 2px; /* Reduced from 3px */
-    background: linear-gradient(to right, transparent, #800000, transparent);
-    margin: 0 auto 20px; /* Reduced margin */
-    border-radius: 2px;
-}
-
-/* Leadership Scroll Container */
-.leadership-scroll-container {
-    height: 150vh; /* Reduced from 200vh */
-    position: relative;
-    width: 100%;
-    background: #ffffff;
-    overflow: hidden;
-}
-
-.leadership-sticky-wrapper {
-    position: sticky;
-    top: 60px; /* Lowered from top: 0 to make room for header */
-    height: calc(100vh - 100px); /* Adjusted height */
-    width: 100%;
-    overflow: hidden;
-}
-
-.leadership-slide-track {
-    width: 200vw; /* Two slides side by side */
-    height: 100%;
-    display: flex;
-    position: relative;
-    transition: transform 0.3s ease-out;
-}
-
-.leadership-slide {
-    height: 100%;
-    width: 100vw;
-    padding: 30px 20px; /* Reduced padding */
-    box-sizing: border-box;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow-y: auto; /* Allow scrolling if content is too tall */
-}
-
-.leadership-content-wrapper {
-    max-width: 1200px;
-    width: 100%;
-    height: 85%; /* Reduced height to ensure content fits */
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    padding-top: 20px; /* Added padding */
-   
-}
-
-/* Slide 1 Layout: Text on Left (60%), Image on Right (40%) */
-.slide-1 .leadership-description-area {
-    flex: 0 0 65%;
-    max-width: 65%;
-    padding-right: 40px;
-    padding-left: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-     
-}
-
-.slide-1 .leadership-image-area {
-    flex: 0 0 35%;
-    max-width: 35%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.slide-1 .leadership-image-area img {
-    width: 70%; /* Reduced from 60% */
-    height: auto;
-    max-height: 400px; /* Reduced from 500px */
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* Slide 2 Layout: Text only */
-.slide-2 .leadership-description-area {
-    flex: 1;
-    max-width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 10px; /* Added horizontal padding */
-}
-
-/* Text and CTA Styling - Reduced font sizes */
-.leadership-description-area h2 {
-    font-size: 2em; /* Reduced from 2.5em */
-    color: #800000;
-    margin-top: 20px; /* Reduced from 25px */
-    margin-bottom: 5px;
-    font-weight: 700;
-}
-
-.leadership-description-area h3 {
-    font-size: 1.3em; /* Reduced from 1.5em */
-    color: #5d2a2a;
-    margin-top: 0;
-    margin-bottom: 15px; /* Reduced from 20px */
-    font-weight: 500;
-}
-
-.leadership-description-area p {
-    color: #5d2a2a;
-    line-height: 1.6; /* Reduced from 1.8 */
-    font-size: 1em; /* Reduced from 1.1em */
-    margin-bottom: 12px; /* Reduced from 15px */
-}
-
-.leadership-cta-button {
-    display: inline-block;
-    padding: 12px 25px; /* Reduced from 15px 30px */
-    background-color: #800000;
-    color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-    margin-top: 15px; /* Reduced from 20px */
-    box-shadow: 0 4px 10px rgba(128, 0, 0, 0.3);
-    font-size: 0.9em; /* Reduced font size */
-}
-
-.leadership-cta-button:hover {
-    background-color: #5d2a2a;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.4);
-}
-
-/* Location Separator */
-.leadership-location-separator {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 15px 0 20px 0; /* Reduced margins */
-}
-
-.leadership-location-separator hr {
-    flex-grow: 1;
-    border: none;
-    border-top: 1px solid #ccc;
-    margin: 0 10px; /* Reduced from 15px */
-}
-
-.leadership-city-list {
-    display: flex;
-    align-items: center;
-    font-size: 0.9em; /* Reduced from 1.1em */
-    color: #888;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.5px; /* Reduced from 1px */
-}
-
-.leadership-city-dot {
-    width: 5px; /* Reduced from 6px */
-    height: 5px;
-    background-color: #ff0000;
-    border-radius: 50%;
-    margin: 0 8px; /* Reduced from 10px */
-}
-
-.leadership-city-list > div:last-child .leadership-city-dot {
-    display: none;
-}
-
-.leadership-city-text {
-    font-weight: 600;
-    color: #800000;
-    font-size: 0.9em; /* Reduced size */
-}
-
-/* Leadership Scroll Indicator */
-.leadership-scroll-indicator {
-    position: absolute;
-    bottom: 20px; /* Raised from bottom */
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    z-index: 10;
-    opacity: 0;
-    animation: fadeInIndicator 1s ease-out 1s forwards;
-}
-
-@keyframes fadeInIndicator {
-    to { opacity: 1; }
-}
-
-.scroll-hint-text {
-    color: #800000;
-    font-size: 0.8rem; /* Reduced */
-    font-weight: 500;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.scroll-dots {
-    display: flex;
-    gap: 10px; /* Reduced from 12px */
-}
-
-.scroll-dot {
-    width: 6px; /* Reduced from 8px */
-    height: 6px;
-    border-radius: 50%;
-    background-color: rgba(128, 0, 0, 0.3);
-    transition: all 0.3s ease;
-}
-
-.scroll-dot.active {
-    background-color: #800000;
-    transform: scale(1.2);
-}
-
-/* Scroll Progress Bar */
-.scroll-progress-container {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px; /* Reduced from 4px */
-    background-color: rgba(128, 0, 0, 0.1);
-    z-index: 10;
-}
-
-.scroll-progress-bar {
-    height: 100%;
-    background-color: #800000;
-    width: 0%;
-    transition: width 0.1s ease;
-}
-
-/* Responsive Adjustments */
-@media (max-width: 992px) {
-    .info-col { flex: 0 0 100%; text-align: center !important; border: none !important; margin-bottom: 30px; }
-    .info-col.logo-col { align-items: center; }
-    .footer-col { flex: 0 0 33.33%; }
-    .arc-image { width: 180px; height: 240px; }
-    .image-1 { transform: translate3d(-400px, 0, 0px) rotateY(30deg); }
-    .image-2 { transform: translate3d(-200px, 0, 10px) rotateY(15deg); }
-    .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); }
-    .image-4 { transform: translate3d(200px, 0, 10px) rotateY(-15deg); }
-    .image-5 { transform: translate3d(400px, 0, 0px) rotateY(-30deg); }
-    .header-reveal { font-size: 5vw; }
-    .text-reveal-container { font-size: 4.5vw; }
-    .legacy-text { font-size: 3rem; }
-    .legacy-text .number { font-size: 4rem; }
-    .maroon-circle { width: 500px; height: 500px; }
-    .final-dot { width: 15px; height: 15px; }
-    .final-text { font-size: 1.8rem; }
-    .milestones-scene .main-text { font-size: 3rem; }
-    .parents-text { font-size: 2.2rem; }
-    .progress-header { max-width: 700px; }
-    /* Leadership Responsive */
-    .leadership-header h2 {
-        font-size: 2.2rem;
-    }
-    
-    .leadership-slide {
-        padding: 25px 15px;
-    }
-    
-    .slide-1 .leadership-description-area {
-        flex: 0 0 55%;
-        max-width: 55%;
-        padding-right: 30px;
-    }
-    
-    .slide-1 .leadership-image-area {
-        flex: 0 0 45%;
-        max-width: 45%;
-    }
-    
-    .slide-1 .leadership-image-area img {
-        width: 80%;
-        max-height: 350px;
-    }
-    
-    .leadership-description-area h2 {
-        font-size: 1.8em;
-    }
-    
-    .leadership-description-area h3 {
-        font-size: 1.2em;
-    }
-    
-    .leadership-description-area p {
-        font-size: 0.95em;
-    }
-    
-    .slide-2 .leadership-description-area {
-        padding: 0 30px;
-    }
-}
-
-@media (max-width: 768px) {
-    .footer-col { flex: 0 0 50%; }
-    .footer-bottom { flex-direction: column; text-align: center; gap: 15px; }
-    .footer-bottom-right { flex-direction: column; gap: 15px; }
-    .social-media { margin-right: 0; }
-    .copyright { flex-direction: column; gap: 10px; }
-    .arc-image { width: 150px; height: 200px; }
-    .image-1 { transform: translate3d(-300px, 0, 0px) rotateY(30deg); }
-    .image-2 { transform: translate3d(-150px, 0, 10px) rotateY(15deg); }
-    .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); }
-    .image-4 { transform: translate3d(150px, 0, 10px) rotateY(-15deg); }
-    .image-5 { transform: translate3d(300px, 0, 0px) rotateY(-30deg); }
-    .header-reveal { font-size: 7vw; }
-    .text-reveal-container { font-size: 5vw; left: 15%; }
-    .legacy-text { font-size: 2.5rem; }
-    .legacy-text .number { font-size: 3.5rem; }
-    .maroon-circle { width: 400px; height: 400px; }
-    .final-dot { width: 12px; height: 12px; }
-    .final-text { font-size: 1.5rem; }
-    .milestones-scene .main-text { font-size: 2.5rem; }
-    .timeline-content-wrapper h2 { font-size: 3rem; }
-    .timeline-content-wrapper p { font-size: 1.2rem; }
-    .parents-text { font-size: 1.8rem; }
-    .progress-header { max-width: 500px; }
-    .testimonial-slide { flex-direction: column; gap: 25px; padding: 25px 20px 20px 20px; text-align: center; }
-    .parent-photo { width: 130px; height: 130px; }
-    .quote-start { font-size: 80px; left: 10px; top: -20px; }
-    .testimonial-text { font-size: 18px; padding-left: 20px; text-align: left; }
-    .quote-end { font-size: 80px; margin-top: -20px; text-align: right; }
-    /* Leadership Responsive */
-    .leadership-scroll-container {
-        height: 130vh;
-    }
-    
-    .leadership-sticky-wrapper {
-        top: 50px;
-        height: calc(100vh - 80px);
-    }
-    
-    .leadership-slide {
-        padding: 20px 15px;
-        flex-direction: column;
-    }
-    
-    .leadership-content-wrapper {
-        flex-direction: column;
-        height: 90%;
-        padding-top: 10px;
-    }
-    
-    .slide-1 .leadership-description-area,
-    .slide-1 .leadership-image-area {
-        flex: 0 0 100%;
-        max-width: 100%;
-        padding: 0;
-        margin-bottom: 20px;
-        height: auto;
-    }
-    
-    .slide-1 .leadership-image-area img {
-        width: 250px;
-        max-width: 80%;
-        max-height: 300px;
-    }
-    
-    .slide-2 .leadership-description-area {
-        padding: 0 20px;
-    }
-    
-    .leadership-description-area h2 {
-        font-size: 1.6em;
-        margin-top: 15px;
-    }
-    
-    .leadership-description-area h3 {
-        font-size: 1.1em;
-        margin-bottom: 10px;
-    }
-    
-    .leadership-description-area p {
-        font-size: 0.9em;
-        line-height: 1.5;
-    }
-    
-    .leadership-location-separator {
-        flex-direction: column;
-        margin: 10px 0 15px 0;
-    }
-    
-    .leadership-city-list {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 5px;
-        margin: 8px 0;
-        font-size: 0.8em;
-    }
-    
-    .leadership-city-dot {
-        display: none;
-    }
-    
-    .leadership-cta-button {
-        padding: 10px 20px;
-        font-size: 0.85em;
-        margin-top: 10px;
-    }
-}
-
-@media (max-width: 576px) {
-    .footer-col { flex: 0 0 100%; }
-    .arc-image { width: 120px; height: 160px; }
-    .image-1 { transform: translate3d(-240px, 0, 0px) rotateY(30deg); }
-    .image-2 { transform: translate3d(-120px, 0, 10px) rotateY(15deg); }
-    .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); }
-    .image-4 { transform: translate3d(120px, 0, 10px) rotateY(-15deg); }
-    .image-5 { transform: translate3d(240px, 0, 0px) rotateY(-30deg); }
-    .text-reveal-container { 
-        white-space: normal; 
-        text-align: center; 
-        left: 5%; 
-        right: 5%;
-        font-size: 6vw;
-    }
-    .text-reveal-container .word { 
-        display: block; 
-        margin-right: 0; 
-        margin-bottom: 10px; 
-    }
-    .legacy-text { font-size: 2rem; }
-    .legacy-text .number { font-size: 2.8rem; }
-    .maroon-circle { width: 300px; height: 300px; }
-    .final-dot { width: 10px; height: 10px; }
-    .final-text { font-size: 1.2rem; }
-    .milestones-scene .main-text { font-size: 2rem; flex-direction: column; }
-    .milestones-scene .maroon-dot { margin: 15px 0; }
-    .timeline-content-wrapper h2 { font-size: 2.5rem; }
-    .timeline-content-wrapper p { font-size: 1rem; }
-    .parents-text { font-size: 1.4rem; white-space: normal; text-align: center; }
-    .parents-text-container { flex-direction: column; gap: 10px; }
-    .progress-header { max-width: 350px; height: 140px; }
-    .step-point { width: 30px; height: 30px; }
-    .info-image { width: 80px; height: 80px; }
-    .testimonial-header h2 { font-size: 2rem; }
-    .testimonial-slide { padding: 20px 15px 15px 15px; gap: 20px; }
-    .parent-photo { width: 100px; height: 100px; border-width: 3px; }
-    .quote-start { font-size: 60px; left: 5px; top: -15px; }
-    .testimonial-text { font-size: 16px; padding-left: 15px; margin-left: 5px; }
-    .quote-end { font-size: 60px; margin-top: -15px; }
-    .parent-details-side .parent { font-size: 15px; }
-    .parent-details-side .student { font-size: 13px; }
-    /* Leadership Responsive */
-    .leadership-section {
-        padding: 30px 0 0 0;
-    }
-    
-    .leadership-header h2 {
-        font-size: 1.8rem;
-        margin-bottom: 10px;
-    }
-    
-    .leadership-header-line {
-        width: 120px;
-        margin-bottom: 15px;
-    }
-    
-    .leadership-header p {
-        font-size: 1rem;
-    }
-    
-    .leadership-scroll-container {
-        height: 120vh;
-    }
-    
-    .leadership-sticky-wrapper {
-        top: 40px;
-        height: calc(100vh - 60px);
-    }
-    
-    .leadership-slide {
-        padding: 15px 10px;
-    }
-    
-    .leadership-description-area {
-        padding: 0 10px;
-    }
-    
-    .leadership-description-area h2 {
-        font-size: 1.4em;
-    }
-    
-    .leadership-description-area h3 {
-        font-size: 1em;
-    }
-    
-    .leadership-description-area p {
-        font-size: 0.85em;
-    }
-    
-    .leadership-cta-button {
-        padding: 8px 16px;
-        font-size: 0.8em;
-    }
-    
-    .leadership-scroll-indicator {
-        bottom: 15px;
-    }
-    
-    .scroll-hint-text {
-        font-size: 0.7rem;
-    }
-}
-
-@media (min-width: 768px) {
-    .blog-item {
-        flex: 0 0 50%;
-        max-width: 50%;
-    }
-    .blog-header h2 {
-        font-size: 4rem;
-    }
-}
-
-@media (min-width: 992px) {
-    .blog-item {
-        flex: 0 0 33.333%;
-        max-width: 33.333%;
-    }
-    .blog-img {
-        height: 220px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .blog-item {
-        flex: 0 0 25%;
-        max-width: 25%;
-    }
-    .blog-img {
-        height: 200px;
-    }
-}
-
-@media (max-width: 767px) {
-    .blog-section {
-        padding: 60px 0;
-    }
-    .blog-header h2 {
-        font-size: 2.8rem;
-    }
-    .blog-img {
-        height: 200px;
-    }
-    .blog-topic {
-        font-size: 1.2rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .blog-section {
-        padding: 50px 0;
-    }
-    .blog-header h2 {
-        font-size: 2.2rem;
-    }
-    .blog-slide {
-        padding: 10px;
-    }
-    .blog-item {
-        padding: 10px;
-    }
-    .blog-img {
-        height: 180px;
-    }
-    .modal-content {
-        padding: 25px 20px;
-    }
-    .modal-title {
-        font-size: 1.8rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .full-width-banner {
-        padding: 14px 0;
-    }
-    
-    .primary-text {
-        font-size: 1.4em;
-        margin-right: 15px;
-    }
-    
-    .secondary-text {
-        font-size: 1em;
-        margin-right: 20px;
-    }
-    
-    .enquiry-button {
-        padding: 8px 16px;
-        font-size: 0.9em;
-        margin-right: 30px;
-    }
-}
-
-@media (max-width: 480px) {
-    .full-width-banner {
-        padding: 12px 0;
-    }
-    
-    .primary-text {
-        font-size: 1.2em;
-        margin-right: 10px;
-    }
-    
-    .secondary-text {
-        font-size: 0.9em;
-        margin-right: 15px;
-    }
-    
-    .enquiry-button {
-        padding: 6px 12px;
-        font-size: 0.8em;
-        margin-right: 20px;
-    }
-    
-    .banner-content {
-        padding: 0 15px;
-    }
-}
-/* ===== ENQUIRY MODAL STYLES ===== */
-.enquiry-modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2001;
-    padding: 15px;
-}
-
-.enquiry-modal-overlay.active {
-    display: flex;
-    animation: fadeIn 0.2s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.enquiry-modal-content {
-    background: white;
-    border-radius: 12px;
-    max-width: 480px;
-    width: 100%;
-    position: relative;
-    padding: 25px;
-    box-shadow: 0 15px 40px rgba(128, 0, 0, 0.3);
-    animation: slideUpModal 0.3s ease;
-    max-height: 90vh;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-}
-
-@keyframes slideUpModal {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.enquiry-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    font-size: 24px;
-    font-weight: 300;
-    color: #800000;
-    cursor: pointer;
-    line-height: 1;
-    transition: all 0.2s;
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    z-index: 10;
-    padding: 0;
-}
-
-.enquiry-close-btn:hover {
-    background: rgba(128, 0, 0, 0.1);
-    transform: scale(1.1);
-}
-
-.enquiry-modal-header {
-    text-align: center;
-    margin-bottom: 20px;
-    padding: 0 5px;
-}
-
-.enquiry-modal-header h2 {
-    font-size: 1.8rem;
-    color: #800000;
-    margin-bottom: 8px;
-    font-weight: 700;
-    line-height: 1.2;
-}
-
-.enquiry-modal-header p {
-    color: #5d2a2a;
-    font-size: 0.9rem;
-    opacity: 0.8;
-    line-height: 1.4;
-    margin: 0;
-}
-
-.form-row {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 15px;
-}
-
-.form-group {
-    flex: 1;
-}
-
-.form-group.full-width {
-    flex: 0 0 100%;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: 600;
-    color: #5d2a2a;
-    font-size: 0.85rem;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1.5px solid #e0d6c2;
-    border-radius: 6px;
-    font-size: 0.9rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: white;
-    transition: all 0.2s;
-    color: #5d2a2a;
-    box-sizing: border-box;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-    outline: none;
-    border-color: #800000;
-    box-shadow: 0 0 0 2px rgba(128, 0, 0, 0.1);
-}
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-    color: #a88;
-    font-size: 0.85rem;
-}
-
-.form-group select {
-    appearance: none;
-    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23800000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-    background-repeat: no-repeat;
-    background-position: right 10px center;
-    background-size: 16px;
-    padding-right: 35px;
-    cursor: pointer;
-}
-
-.form-group textarea {
-    resize: vertical;
-    min-height: 70px;
-    max-height: 100px;
-}
-
-.submit-enquiry-btn {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #800000 0%, #5d2a2a 100%);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
-    margin-top: 10px;
-}
-
-.submit-enquiry-btn:hover:not(:disabled) {
-    background: linear-gradient(135deg, #5d2a2a 0%, #800000 100%);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.25);
-}
-
-.submit-enquiry-btn:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.loading-spinner {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.spinner {
-    width: 20px;
-    height: 20px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    border-top-color: white;
-    animation: spin 1s ease-in-out infinite;
-}
-
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-/* Success Animation Styles */
-.enquiry-success-container {
-    display: none;
-    text-align: center;
-    padding: 30px 15px;
-}
-
-.enquiry-success-container.active {
-    display: block;
-    animation: fadeInUp 0.5s ease;
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.success-animation {
-    margin-bottom: 20px;
-}
-
-.checkmark-circle {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.checkmark {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    display: block;
-    stroke-width: 2.5;
-    stroke: #fff;
-    stroke-miterlimit: 10;
-    box-shadow: inset 0px 0px 0px #4CAF50;
-    animation: fill-circle 0.3s ease-in-out 0.3s forwards, scale 0.2s ease-in-out 0.6s both;
-}
-
-.checkmark-circle-bg {
-    stroke: #54cc3c;
-    stroke-width: 2.5;
-    fill: none;
-}
-
-.checkmark-check {
-    transform-origin: 50% 50%;
-    stroke-dasharray: 48;
-    stroke-dashoffset: 48;
-    animation: stroke 0.25s cubic-bezier(0.65, 0, 0.45, 1) 0.5s forwards;
-}
-
-@keyframes stroke {
-    100% {
-        stroke-dashoffset: 0;
-    }
-}
-
-@keyframes scale {
-    0%, 100% {
-        transform: none;
-    }
-    50% {
-        transform: scale3d(1.1, 1.1, 1);
-    }
-}
-
-@keyframes fill-circle {
-    100% {
-        box-shadow: inset 0px 0px 0px 40px #4CAF50;
-    }
-}
-
-.success-message h3 {
-    font-size: 1.5rem;
-    color: #4CAF50;
-    margin-bottom: 10px;
-    font-weight: 700;
-}
-
-.success-message p {
-    color: #5d2a2a;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    max-width: 300px;
-    margin: 0 auto;
-}
-
-/* Responsive Styles for Enquiry Modal */
-@media (max-width: 768px) {
-    .enquiry-modal-content {
-        padding: 20px 15px;
-        max-width: 90%;
-        max-height: 80vh;
-    }
-    
-    .enquiry-modal-header h2 {
-        font-size: 1.6rem;
-    }
-    
-    .form-row {
-        flex-direction: column;
-        gap: 12px;
-        margin-bottom: 12px;
-    }
-    
-    .checkmark-circle {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .checkmark {
-        width: 70px;
-        height: 70px;
-    }
-    
-    .success-message h3 {
-        font-size: 1.3rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .enquiry-modal-content {
-        padding: 18px 12px;
-        max-width: 95%;
-    }
-    
-    .enquiry-modal-header h2 {
-        font-size: 1.4rem;
-    }
-    
-    .enquiry-modal-header p {
-        font-size: 0.85rem;
-    }
-    
-    .enquiry-close-btn {
-        top: 8px;
-        right: 8px;
-        font-size: 22px;
-        width: 26px;
-        height: 26px;
-    }
-    
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-        padding: 8px 10px;
-        font-size: 0.85rem;
-    }
-    
-    .submit-enquiry-btn {
-        padding: 10px;
-        font-size: 0.9rem;
-    }
-    
-    .checkmark-circle {
-        width: 60px;
-        height: 60px;
-    }
-    
-    .checkmark {
-        width: 60px;
-        height: 60px;
-    }
-}
-/* ===== BLOG MODAL STYLES ===== */
-.full-detail-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.9);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-.full-detail-overlay.active {
-    display: flex;
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-.modal-content {
-    background: #ffffff;
-    border-radius: 16px;
-    max-width: 600px; /* Reduced from 900px */
-    width: 100%;
-    max-height: 85vh; /* Added max-height */
-    position: relative;
-    padding: 30px; /* Reduced from 40px */
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    animation: slideUp 0.4s ease;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Ensures content stays within modal */
-}
-
-@keyframes slideUp {
-    from { transform: translateY(30px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-.modal-image {
-    width: 100%;
-    height: auto;
-    max-height: 250px; /* Reduced from 450px */
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 20px; /* Reduced from 30px */
-    background-color: #f5f5f5;
-}
-
-.modal-title {
-    color: #800000;
-    margin-top: 0;
-    font-size: 1.8rem; /* Reduced from 2.2rem */
-    margin-bottom: 15px; /* Reduced from 20px */
-    font-weight: 700;
-    line-height: 1.3;
-}
-
-.modal-description {
-    color: #2c3e50;
-    line-height: 1.6;
-    font-size: 1rem; /* Reduced from 1.1rem */
-    margin-bottom: 20px; /* Reduced from 25px */
-    flex-grow: 1;
-    overflow-y: auto; /* Enable scrolling for long content */
-    padding-right: 10px;
-    max-height: 300px; /* Limit height for very long content */
-}
-
-/* Custom scrollbar for modal description */
-.modal-description::-webkit-scrollbar {
-    width: 6px;
-}
-
-.modal-description::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-}
-
-.modal-description::-webkit-scrollbar-thumb {
-    background: #800000;
-    border-radius: 3px;
-}
-
-.modal-description::-webkit-scrollbar-thumb:hover {
-    background: #5d2a2a;
-}
-
-.close-btn {
-    position: absolute;
-    top: 15px; /* Reduced from 20px */
-    right: 15px; /* Reduced from 20px */
-    background: none;
-    border: none;
-    font-size: 30px; /* Reduced from 40px */
-    font-weight: 300;
-    color: #6c757d;
-    cursor: pointer;
-    line-height: 1;
-    transition: color 0.3s;
-    width: 35px; /* Reduced from 40px */
-    height: 35px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    z-index: 2;
-    padding: 0;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.close-btn:hover {
-    color: #333;
-    background: #f8f9fa;
-    transform: scale(1.05);
-}
-
-/* Responsive adjustments for modal */
-@media (max-width: 768px) {
-    .modal-content {
-        max-width: 90%;
-        padding: 25px 20px;
-        max-height: 80vh;
-    }
-    
-    .modal-title {
-        font-size: 1.6rem;
-    }
-    
-    .modal-description {
-        font-size: 0.95rem;
-        max-height: 250px;
-    }
-    
-    .modal-image {
-        max-height: 200px;
-    }
-    
-    .close-btn {
-        top: 10px;
-        right: 10px;
-        font-size: 25px;
-        width: 30px;
-        height: 30px;
-    }
-}
-
-@media (max-width: 480px) {
-    .modal-content {
-        max-width: 95%;
-        padding: 20px 15px;
-        max-height: 75vh;
-    }
-    
-    .modal-title {
-        font-size: 1.4rem;
-        margin-bottom: 12px;
-    }
-    
-    .modal-description {
-        font-size: 0.9rem;
-        line-height: 1.5;
-        max-height: 200px;
-    }
-    
-    .modal-image {
-        max-height: 150px;
-        margin-bottom: 15px;
-    }
-    
-    .close-btn {
-        top: 8px;
-        right: 8px;
-        font-size: 22px;
-        width: 28px;
-        height: 28px;
-    }
-}
-/* ===== UPDATED NAVBAR STYLES ===== */
-.navbar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px 20px;
-    background-color: white;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    transition: transform 0.3s ease;
-}
-
-.navbar-content {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.navbar-logo {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.navbar.scrolled .navbar-logo {
-    opacity: 0;
-    visibility: hidden;
-}
-
-.navbar-text {
-    position: absolute;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #5d2a2a;
-    letter-spacing: 1px;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-
-.navbar.scrolled .navbar-text {
-    opacity: 1;
-    visibility: visible;
-}
-
-body.menu-open .navbar {
-    transform: translateY(-100%);
-}
-
-/* Hamburger and admission button adjustments */
-.hamburger {
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    width: 30px;
-    height: 24px;
-    justify-content: space-between;
-    position: fixed;
-    top: 25px;
-    left: 20px;
-    z-index: 1002;
-}
-
-.hamburger span {
-    display: block;
-    height: 3px;
-    width: 100%;
-    background-color: #5d2a2a;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-}
-
-.hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
-.hamburger.active span:nth-child(2) { opacity: 0; }
-.hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
-
-.admission-btn {
-    background-color: transparent;
-    color: #5d2a2a;
-    border: 2px solid #5d2a2a;
-    padding: 8px 18px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: background-color 0.3s, color 0.3s;
-    position: fixed;
-    top: 15px;
-    right: 20px;
-    z-index: 1002;
-}
-
-.admission-btn:hover { background-color: #5d2a2a; color: white; }
-/* ===== LEADERSHIP SECTION STYLES ===== */
-/* ===== LEADERSHIP SECTION STYLES ===== */
-.leadership-section {
-    width: 100%;
-    background: #fefaf0;
+    background: var(--bg-cream);
     padding: 0;
     position: relative;
     z-index: 100;
@@ -3787,7 +2524,6 @@ body.menu-open .navbar {
     z-index: 99;
     border-radius: 10px;
     overflow: hidden;
-   
     display: block !important;
     
 }
@@ -3808,7 +2544,7 @@ body.menu-open .navbar {
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-    border: 2px solid #5d2a2a;
+    border: 2px solid var(--border-maroon);
 }
 
 /* Horizontal container for scrolling */
@@ -3828,7 +2564,7 @@ body.menu-open .navbar {
     align-items: center; 
     padding: 0 100px;
     flex-shrink: 0;
-    background: #fefaf0;
+    background: var(--bg-cream);
     position: relative;
 }
 
@@ -3837,36 +2573,36 @@ body.menu-open .navbar {
     width: 100%;
     margin: 0 auto;
     display: flex;
-    align-items: flex-start; /* Changed to flex-start */
+    align-items: flex-start;
     gap: 80px;
     position: relative;
     z-index: 30;
-    padding-top: 15px; /* Move entire content wrapper down */
+    padding-top: 15px;
 }
 
 .leadership-description-area {
     flex: 1;
     max-width: 580px;
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
     position: relative;
     z-index: 40;
     background: rgba(254, 250, 240, 0.9);
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-    margin-top: 0; /* Reset margin-top */
+    margin-top: 0;
 }
 
 .leadership-description-area h2 {
     font-size: 1.6rem; 
     margin: 12px 0 5px; 
     font-weight: 700;
-    color: #800000;
+    color: var(--text-maroon);
 }
 
 .leadership-description-area h3 {
     font-size: 1rem; 
-    color: #8b4513;
+    color: var(--text-light-maroon);
     margin-bottom: 18px; 
     font-weight: 600;
 }
@@ -3875,11 +2611,11 @@ body.menu-open .navbar {
     font-size: 1rem; 
     line-height: 1.6; 
     margin-bottom: 14px; 
-    color: #5d2a2a;
+    color: var(--text-dark-maroon);
 }
 
 .leadership-description-area p strong {
-    color: #800000;
+    color: var(--text-maroon);
     font-weight: 700;
     opacity: 1;
     display: block;
@@ -3894,7 +2630,7 @@ body.menu-open .navbar {
 .leadership-location-separator hr {
     border: none;
     height: 1px;
-    background: linear-gradient(to right, transparent, #800000, transparent);
+    background: linear-gradient(to right, transparent, var(--primary-maroon), transparent);
     margin: 10px 0; 
 }
 
@@ -3908,7 +2644,7 @@ body.menu-open .navbar {
 
 .leadership-city-text {
     font-size: 0.9rem; 
-    color: #8b4513;
+    color: var(--text-light-maroon);
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 600;
@@ -3917,7 +2653,7 @@ body.menu-open .navbar {
 .leadership-city-dot {
     width: 6px; 
     height: 6px; 
-    background: #800000;
+    background: var(--primary-maroon);
     border-radius: 50%;
 }
 
@@ -3958,10 +2694,12 @@ body.menu-open .navbar {
     /* Show mobile-specific images */
     .mobile-chairman-image,
     .mobile-director-image {
-        display: block;
+         display: block !important; /* Force display */
+        opacity: 1 !important;
+        visibility: visible !important;
         width: 140px;
         height: 180px;
-        top: 50%; /* Images stay centered */
+        top: 50%;
         transform: translateY(-50%);
         z-index: 10;
     }
@@ -3980,10 +2718,11 @@ body.menu-open .navbar {
     
     .mobile-chairman-image img,
     .mobile-director-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top;
+        display: block !important;
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+        object-position: center top !important;
     }
     
     .leadership-slide {
@@ -4198,6 +2937,819 @@ body.menu-open .navbar {
         margin-left: 700px;
     }
 }
+
+/* ===== RESPONSIVE STYLES ===== */
+@media (max-width: 992px) {
+    .info-col { flex: 0 0 100%; text-align: center !important; border: none !important; margin-bottom: 30px; }
+    .info-col.logo-col { align-items: center; }
+    .footer-col { flex: 0 0 33.33%; }
+    .arc-image { width: 180px; height: 240px; }
+    .image-1 { transform: translate3d(-400px, 0, 0px) rotateY(30deg); }
+    .image-2 { transform: translate3d(-200px, 0, 10px) rotateY(15deg); }
+    .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); }
+    .image-4 { transform: translate3d(200px, 0, 10px) rotateY(-15deg); }
+    .image-5 { transform: translate3d(400px, 0, 0px) rotateY(-30deg); }
+    .header-reveal { font-size: 5vw; }
+    .text-reveal-container { font-size: 4.5vw; }
+    .legacy-text { font-size: 3rem; }
+    .legacy-text .number { font-size: 4rem; }
+    .maroon-circle { width: 500px; height: 500px; }
+    .final-dot { width: 15px; height: 15px; }
+    .final-text { font-size: 1.8rem; }
+    .milestones-scene .main-text { font-size: 3rem; }
+    .parents-text { font-size: 2.2rem; }
+    .progress-header { max-width: 700px; }
+}
+
+@media (max-width: 768px) {
+    .footer-col { flex: 0 0 50%; }
+    .footer-bottom { flex-direction: column; text-align: center; gap: 15px; }
+    .footer-bottom-right { flex-direction: column; gap: 15px; }
+    .social-media { margin-right: 0; }
+    .copyright { flex-direction: column; gap: 10px; }
+    .arc-image { width: 150px; height: 200px; }
+    .image-1 { transform: translate3d(-300px, 0, 0px) rotateY(30deg); }
+    .image-2 { transform: translate3d(-150px, 0, 10px) rotateY(15deg); }
+    .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); }
+    .image-4 { transform: translate3d(150px, 0, 10px) rotateY(-15deg); }
+    .image-5 { transform: translate3d(300px, 0, 0px) rotateY(-30deg); }
+    .header-reveal { font-size: 7vw; }
+    .text-reveal-container { font-size: 5vw; left: 15%; }
+    .legacy-text { font-size: 2.5rem; }
+    .legacy-text .number { font-size: 3.5rem; }
+    .maroon-circle { width: 400px; height: 400px; }
+    .final-dot { width: 12px; height: 12px; }
+    .final-text { font-size: 1.5rem; }
+    .milestones-scene .main-text { font-size: 2.5rem; }
+    .timeline-content-wrapper h2 { font-size: 3rem; }
+    .timeline-content-wrapper p { font-size: 1.2rem; }
+    .parents-text { font-size: 1.8rem; }
+    .progress-header { max-width: 500px; }
+    
+    /* Testimonial Responsive */
+    .testimonial-slide { flex-direction: column; gap: 25px; padding: 25px 20px 20px 20px; text-align: center; }
+    .parent-photo { width: 130px; height: 130px; }
+    .quote-start { font-size: 80px; left: 10px; top: -20px; }
+    .testimonial-text { font-size: 18px; padding-left: 20px; text-align: left; }
+    .quote-end { font-size: 80px; margin-top: -20px; text-align: right; }
+}
+
+@media (max-width: 576px) {
+    .footer-col { flex: 0 0 100%; }
+    .arc-image { width: 120px; height: 160px; }
+    .image-1 { transform: translate3d(-240px, 0, 0px) rotateY(30deg); }
+    .image-2 { transform: translate3d(-120px, 0, 10px) rotateY(15deg); }
+    .image-3 { transform: translate3d(0, 0, 20px) rotateY(0deg); }
+    .image-4 { transform: translate3d(120px, 0, 10px) rotateY(-15deg); }
+    .image-5 { transform: translate3d(240px, 0, 0px) rotateY(-30deg); }
+    .text-reveal-container { white-space: normal; text-align: center; left: 5%; right: 5%; font-size: 6vw; }
+    .text-reveal-container .word { display: block; margin-right: 0; margin-bottom: 10px; }
+    .legacy-text { font-size: 2rem; }
+    .legacy-text .number { font-size: 2.8rem; }
+    .maroon-circle { width: 300px; height: 300px; }
+    .final-dot { width: 10px; height: 10px; }
+    .final-text { font-size: 1.2rem; }
+    .milestones-scene .main-text { font-size: 2rem; flex-direction: column; }
+    .milestones-scene .maroon-dot { margin: 15px 0; }
+    .timeline-content-wrapper h2 { font-size: 2.5rem; }
+    .timeline-content-wrapper p { font-size: 1rem; }
+    .parents-text { font-size: 1.4rem; white-space: normal; text-align: center; }
+    .parents-text-container { flex-direction: column; gap: 10px; }
+    .progress-header { max-width: 350px; height: 140px; }
+    .step-point { width: 30px; height: 30px; }
+    .info-image { width: 80px; height: 80px; }
+    
+    /* Testimonial Responsive */
+    .testimonial-header h2 { font-size: 2rem; }
+    .testimonial-slide { padding: 20px 15px 15px 15px; gap: 20px; }
+    .parent-photo { width: 100px; height: 100px; border-width: 3px; }
+    .quote-start { font-size: 60px; left: 5px; top: -15px; }
+    .testimonial-text { font-size: 16px; padding-left: 15px; margin-left: 5px; }
+    .quote-end { font-size: 60px; margin-top: -15px; }
+    .parent-details-side .parent { font-size: 15px; }
+    .parent-details-side .student { font-size: 13px; }
+}
+
+/* Blog Responsive */
+@media (min-width: 768px) {
+    .blog-item { flex: 0 0 50%; max-width: 50%; }
+    .blog-header h2 { font-size: 4rem; }
+}
+
+@media (min-width: 992px) {
+    .blog-item { flex: 0 0 33.333%; max-width: 33.333%; }
+    .blog-img { height: 220px; }
+}
+
+@media (min-width: 1200px) {
+    .blog-item { flex: 0 0 25%; max-width: 25%; }
+    .blog-img { height: 200px; }
+}
+
+@media (max-width: 767px) {
+    .blog-section { padding: 60px 0; }
+    .blog-header h2 { font-size: 2.8rem; }
+    .blog-img { height: 200px; }
+    .blog-topic { font-size: 1.2rem; }
+}
+
+@media (max-width: 480px) {
+    .blog-section { padding: 50px 0; }
+    .blog-header h2 { font-size: 2.2rem; }
+    .blog-slide { padding: 10px; }
+    .blog-item { padding: 10px; }
+    .blog-img { height: 180px; }
+    .modal-content { padding: 25px 20px; }
+    .modal-title { font-size: 1.8rem; }
+}
+
+/* Admission Banner Responsive */
+@media (max-width: 768px) {
+    .full-width-banner { padding: 14px 0; }
+    .primary-text { font-size: 1.4em; margin-right: 15px; }
+    .secondary-text { font-size: 1em; margin-right: 20px; }
+    .enquiry-button { padding: 8px 16px; font-size: 0.9em; margin-right: 30px; }
+}
+
+@media (max-width: 480px) {
+    .full-width-banner { padding: 12px 0; }
+    .primary-text { font-size: 1.2em; margin-right: 10px; }
+    .secondary-text { font-size: 0.9em; margin-right: 15px; }
+    .enquiry-button { padding: 6px 12px; font-size: 0.8em; margin-right: 20px; }
+    .banner-content { padding: 0 15px; }
+}
+
+/* ===== ENQUIRY MODAL STYLES ===== */
+.enquiry-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2001;
+    padding: 15px;
+}
+
+.enquiry-modal-overlay.active {
+    display: flex;
+    animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.enquiry-modal-content {
+    background: var(--primary-white);
+    border-radius: 12px;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    padding: 25px;
+    box-shadow: 0 15px 40px rgba(128, 0, 0, 0.3);
+    animation: slideUpModal 0.3s ease;
+    max-height: 90vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes slideUpModal {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.enquiry-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    font-weight: 300;
+    color: var(--text-maroon);
+    cursor: pointer;
+    line-height: 1;
+    transition: all 0.2s;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 10;
+    padding: 0;
+}
+
+.enquiry-close-btn:hover {
+    background: rgba(128, 0, 0, 0.1);
+    transform: scale(1.1);
+}
+
+.enquiry-modal-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 0 5px;
+}
+
+.enquiry-modal-header h2 {
+    font-size: 1.8rem;
+    color: var(--text-maroon);
+    margin-bottom: 8px;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.enquiry-modal-header p {
+    color: var(--secondary-dark-maroon);
+    font-size: 0.9rem;
+    opacity: 0.8;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group.full-width {
+    flex: 0 0 100%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    color: var(--secondary-dark-maroon);
+    font-size: 0.85rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border-light);
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--primary-white);
+    transition: all 0.2s;
+    color: var(--secondary-dark-maroon);
+    box-sizing: border-box;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--border-maroon);
+    box-shadow: 0 0 0 2px rgba(128, 0, 0, 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #a88;
+    font-size: 0.85rem;
+}
+
+.form-group select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23800000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px;
+    padding-right: 35px;
+    cursor: pointer;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 70px;
+    max-height: 100px;
+}
+
+.submit-enquiry-btn {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary-maroon) 0%, var(--secondary-dark-maroon) 100%);
+    color: var(--text-white);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.submit-enquiry-btn:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--secondary-dark-maroon) 0%, var(--primary-maroon) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.25);
+}
+
+.submit-enquiry-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.loading-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--text-white);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Success Animation Styles */
+.enquiry-success-container {
+    display: none;
+    text-align: center;
+    padding: 30px 15px;
+}
+
+.enquiry-success-container.active {
+    display: block;
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-animation {
+    margin-bottom: 20px;
+}
+
+.checkmark-circle {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.checkmark {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2.5;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px var(--success-color);
+    animation: fill-circle 0.3s ease-in-out 0.3s forwards, scale 0.2s ease-in-out 0.6s both;
+}
+
+.checkmark-circle-bg {
+    stroke: #54cc3c;
+    stroke-width: 2.5;
+    fill: none;
+}
+
+.checkmark-check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.25s cubic-bezier(0.65, 0, 0.45, 1) 0.5s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+
+@keyframes fill-circle {
+    100% {
+        box-shadow: inset 0px 0px 0px 40px var(--success-color);
+    }
+}
+
+.success-message h3 {
+    font-size: 1.5rem;
+    color: var(--success-color);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.success-message p {
+    color: var(--secondary-dark-maroon);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* Responsive Styles for Enquiry Modal */
+@media (max-width: 768px) {
+    .enquiry-modal-content {
+        padding: 20px 15px;
+        max-width: 90%;
+        max-height: 80vh;
+    }
+    .enquiry-modal-header h2 { font-size: 1.6rem; }
+    .form-row { flex-direction: column; gap: 12px; margin-bottom: 12px; }
+    .checkmark-circle { width: 70px; height: 70px; }
+    .checkmark { width: 70px; height: 70px; }
+    .success-message h3 { font-size: 1.3rem; }
+}
+
+@media (max-width: 480px) {
+    .enquiry-modal-content {
+        padding: 18px 12px;
+        max-width: 95%;
+    }
+    .enquiry-modal-header h2 { font-size: 1.4rem; }
+    .enquiry-modal-header p { font-size: 0.85rem; }
+    .enquiry-close-btn { top: 8px; right: 8px; font-size: 22px; width: 26px; height: 26px; }
+    .form-group input, .form-group select, .form-group textarea { padding: 8px 10px; font-size: 0.85rem; }
+    .submit-enquiry-btn { padding: 10px; font-size: 0.9rem; }
+    .checkmark-circle { width: 60px; height: 60px; }
+    .checkmark { width: 60px; height: 60px; }
+}
+
+/* ===== BLOG MODAL STYLES ===== */
+.full-detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.modal-content {
+    background: var(--primary-white);
+    border-radius: 16px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    position: relative;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: slideUp 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.modal-image {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+}
+
+.modal-title {
+    color: var(--text-maroon);
+    margin-top: 0;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.modal-description {
+    color: var(--text-dark-gray);
+    line-height: 1.6;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    max-height: 300px;
+}
+
+/* Custom scrollbar for modal description */
+.modal-description::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-description::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.modal-description::-webkit-scrollbar-thumb {
+    background: var(--primary-maroon);
+    border-radius: 3px;
+}
+
+.modal-description::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-dark-maroon);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--text-gray);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 2;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.close-btn:hover {
+    color: #333;
+    background: #f8f9fa;
+    transform: scale(1.05);
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 90%;
+        padding: 25px 20px;
+        max-height: 80vh;
+    }
+    .modal-title { font-size: 1.6rem; }
+    .modal-description { font-size: 0.95rem; max-height: 250px; }
+    .modal-image { max-height: 200px; }
+    .close-btn { top: 10px; right: 10px; font-size: 25px; width: 30px; height: 30px; }
+}
+
+@media (max-width: 480px) {
+    .modal-content {
+        max-width: 95%;
+        padding: 20px 15px;
+        max-height: 75vh;
+    }
+    .modal-title { font-size: 1.4rem; margin-bottom: 12px; }
+    .modal-description { font-size: 0.9rem; line-height: 1.5; max-height: 200px; }
+    .modal-image { max-height: 150px; margin-bottom: 15px; }
+    .close-btn { top: 8px; right: 8px; font-size: 22px; width: 28px; height: 28px; }
+}
+
+/* ===== UPDATED NAVBAR STYLES ===== */
+/* ===== UPDATED NAVBAR WITH TEXT LOGO & PROGRESS BAR ===== */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: var(--primary-white);
+    box-shadow: 0 2px 10px var(--shadow-color);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    flex-direction: column;
+}
+
+.navbar-content {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+}
+
+.navbar-logo-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-dark-maroon);
+    letter-spacing: 2px;
+    display: flex;
+    gap: 2px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    text-transform: uppercase;
+}
+
+.navbar-logo-text .letter {
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+    color: var(--text-dark-maroon);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-logo-text .letter.maroon {
+    color: var(--primary-maroon);
+    text-shadow: 0 0 10px rgba(128, 0, 0, 0.3);
+}
+
+.navbar.scrolled .navbar-logo-text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.navbar-text {
+    position: absolute;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--secondary-dark-maroon);
+    letter-spacing: 2px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    text-transform: uppercase;
+}
+
+.navbar.scrolled .navbar-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Navbar Progress Bar */
+.navbar-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.navbar-progress-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        var(--primary-maroon) 0%,
+        var(--secondary-gold) 25%,
+        var(--secondary-orange) 50%,
+        var(--secondary-gold) 75%,
+        var(--primary-maroon) 100%
+    );
+    background-size: 200% 100%;
+    animation: progressTrackFlow 3s linear infinite;
+}
+
+@keyframes progressTrackFlow {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.navbar-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        var(--primary-maroon) 0%, 
+        var(--secondary-dark-maroon) 50%, 
+        var(--primary-maroon) 100%);
+    transition: width 0.1s ease-out;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(128, 0, 0, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar-logo-text {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        gap: 1px;
+    }
+    
+    .navbar-text {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-logo-text {
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .navbar-text {
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+body.menu-open .navbar {
+    transform: translateY(-100%);
+}
+
+/* Hamburger and admission button adjustments */
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    width: 30px;
+    height: 24px;
+    justify-content: space-between;
+    position: fixed;
+    top: 25px;
+    left: 20px;
+    z-index: 1002;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: var(--text-dark-maroon);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+.admission-btn {
+    background-color: transparent;
+    color: var(--text-dark-maroon);
+    border: 2px solid var(--border-maroon);
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 1002;
+}
+
+.admission-btn:hover { background-color: var(--btn-maroon); color: var(--text-white); }
+
 /* Hide admission button by default */
 .admission-btn.menu-only {
     opacity: 0;
@@ -4210,7 +3762,7 @@ body.menu-open .admission-btn.menu-only {
     opacity: 1;
     visibility: visible;
 }
-/* ===== WEBSITE TOUR MODAL STYLES ===== */
+
 /* ===== WEBSITE TOUR MODAL STYLES ===== */
 /* Shared Backdrop */
 .tour-modal-backdrop {
@@ -4225,13 +3777,13 @@ body.menu-open .admission-btn.menu-only {
     display: none;
     align-items: center;
     justify-content: center;
-    z-index: 2002; /* Higher than other modals */
+    z-index: 2002;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Intro Modal - Centered */
 #intro-tour-modal .tour-modal-content {
-    background: #ffffff;
+    background: var(--primary-white);
     border-radius: 24px;
     width: 90%;
     max-width: 480px;
@@ -4248,20 +3800,20 @@ body.menu-open .admission-btn.menu-only {
 #intro-tour-modal h2 {
     font-size: 26px;
     font-weight: 700;
-    color: #5d2a2a;
+    color: var(--secondary-dark-maroon);
     margin: 0 0 16px;
 }
 
 #intro-tour-modal p {
     font-size: 16.5px;
-    color: #8b4513;
+    color: var(--secondary-light-maroon);
     line-height: 1.6;
     margin-bottom: 36px;
 }
 
 /* Tour Selection Modal - Bottom Center */
 #tour-selection-modal .tour-modal-sheet {
-    background: #ffffff;
+    background: var(--primary-white);
     border-radius: 28px 28px 0 0;
     width: 100%;
     max-width: 660px;
@@ -4278,7 +3830,7 @@ body.menu-open .admission-btn.menu-only {
 .sheet-handle {
     width: 42px;
     height: 5px;
-    background: #e0d6c2;
+    background: var(--border-light);
     border-radius: 3px;
     margin: 0 auto 24px;
 }
@@ -4288,12 +3840,12 @@ body.menu-open .admission-btn.menu-only {
     font-weight: 700;
     text-align: center;
     margin: 0 0 12px;
-    color: #5d2a2a;
+    color: var(--secondary-dark-maroon);
 }
 
 #tour-selection-modal .subtitle {
     text-align: center;
-    color: #8b4513;
+    color: var(--secondary-light-maroon);
     font-size: 16px;
     margin-bottom: 32px;
     font-weight: 500;
@@ -4308,14 +3860,14 @@ body.menu-open .admission-btn.menu-only {
 
 .tour-option-btn {
     position: relative;
-    background: #ffffff;
-    border: 2px solid #e0d6c2;
+    background: var(--primary-white);
+    border: 2px solid var(--border-light);
     border-radius: 18px;
     padding: 16px 10px;
     text-align: center;
     font-size: 14.5px;
     font-weight: 600;
-    color: #5d2a2a;
+    color: var(--secondary-dark-maroon);
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
@@ -4323,7 +3875,7 @@ body.menu-open .admission-btn.menu-only {
 
 .tour-option-btn:hover,
 .tour-option-btn.selected {
-    border: 3px solid #800000;
+    border: 3px solid var(--border-maroon);
     padding: 15px 9px;
     transform: translateY(-6px);
     box-shadow: 0 12px 24px rgba(128, 0, 0, 0.22);
@@ -4333,7 +3885,7 @@ body.menu-open .admission-btn.menu-only {
     display: block;
     font-size: 28px;
     margin-bottom: 10px;
-    color: #800000;
+    color: var(--text-maroon);
 }
 
 .tour-check-mark {
@@ -4342,8 +3894,8 @@ body.menu-open .admission-btn.menu-only {
     right: 10px;
     width: 22px;
     height: 22px;
-    background: #800000;
-    color: white;
+    background: var(--primary-maroon);
+    color: var(--text-white);
     border-radius: 50%;
     display: none;
     align-items: center;
@@ -4374,14 +3926,14 @@ body.menu-open .admission-btn.menu-only {
 }
 
 .tour-primary-btn {
-    background: #800000;
-    color: white;
+    background: var(--primary-maroon);
+    color: var(--text-white);
 }
 
 .tour-secondary-btn {
-    background: #f5f2e9;
-    color: #800000;
-    border: 2px solid #800000;
+    background: var(--bg-light-cream);
+    color: var(--text-maroon);
+    border: 2px solid var(--border-maroon);
 }
 
 .tour-primary-btn:disabled {
@@ -4403,7 +3955,7 @@ body.menu-open .admission-btn.menu-only {
     left: 0;
     width: 100%;
     height: 100%;
-    background: #ffffff;
+    background: var(--primary-white);
     display: none;
     flex-direction: column;
     z-index: 2003;
@@ -4422,13 +3974,13 @@ body.menu-open .admission-btn.menu-only {
 .tour-view-content h2 {
     font-size: 30px;
     font-weight: 700;
-    color: #5d2a2a;
+    color: var(--secondary-dark-maroon);
     margin-bottom: 20px;
 }
 
 .tour-view-content p {
     font-size: 18px;
-    color: #8b4513;
+    color: var(--secondary-light-maroon);
     max-width: 700px;
     line-height: 1.6;
 }
@@ -4445,7 +3997,7 @@ body.menu-open .admission-btn.menu-only {
     backdrop-filter: blur(12px);
     padding: 5px 5px;
     border-radius: 24px;
-    border: 1px solid #e0d6c2;
+    border: 1px solid var(--border-light);
     box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
@@ -4453,7 +4005,7 @@ body.menu-open .admission-btn.menu-only {
     padding: 12px 20px;
     border-radius: 24px;
     background: transparent;
-    border: 1px solid #e0d6c2;
+    border: 1px solid var(--border-light);
     cursor: pointer;
     font-size: 15.5px;
     font-weight: 600;
@@ -4469,7 +4021,7 @@ body.menu-open .admission-btn.menu-only {
 }
 
 #back-to-tour-modal {
-    color: #800000;
+    color: var(--text-maroon);
 }
 
 #end-tour-btn {
@@ -4491,60 +4043,135 @@ body.menu-open .admission-btn.menu-only {
     .tour-options-grid {
         grid-template-columns: repeat(3, 1fr);
     }
-    
-    .tour-view-content h2 {
-        font-size: 24px;
-    }
-    
-    .tour-view-content p {
-        font-size: 16px;
-    }
-    
+    .tour-view-content h2 { font-size: 24px; }
+    .tour-view-content p { font-size: 16px; }
     #tour-selection-modal .tour-modal-sheet {
         max-width: 100%;
         border-radius: 24px 24px 0 0;
     }
-    
-    .tour-controls {
-        width: 90%;
-        justify-content: center;
-    }
+    .tour-controls { width: 90%; justify-content: center; }
 }
 
 @media (max-width: 576px) {
-    .tour-options-grid {
+    .tour-options-grid { grid-template-columns: repeat(2, 1fr); }
+    #intro-tour-modal .tour-modal-content { padding: 30px 20px; width: 95%; }
+    .tour-view-content { padding: 30px 20px; }
+    .tour-controls { flex-direction: column; width: 90%; }
+    #tour-selection-modal .tour-modal-sheet { padding: 20px 15px; }
+    .tour-option-btn { padding: 14px 8px; font-size: 13px; }
+    .tour-option-btn i { font-size: 24px; }
+}
+@media (max-width: 768px) {
+    .footer-columns {
+        display: grid;
         grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        padding: 30px 15px;
     }
     
-    #intro-tour-modal .tour-modal-content {
-        padding: 30px 20px;
-        width: 95%;
+    .footer-col {
+        flex: 0 0 100%;
+        min-width: auto;
+        margin-bottom: 15px;
+        padding: 0 10px;
     }
-    
-    .tour-view-content {
-        padding: 30px 20px;
-    }
-    
-    .tour-controls {
-        flex-direction: column;
-        width: 90%;
-    }
-    
-    #tour-selection-modal .tour-modal-sheet {
-        padding: 20px 15px;
-    }
-    
-    .tour-option-btn {
-        padding: 14px 8px;
-        font-size: 13px;
-    }
-    
-    .tour-option-btn i {
-        font-size: 24px;
-    }
-} 
+}
 
-  </style>>
+@media (max-width: 480px) {
+    .footer-columns {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+.navbar-logo-text,
+.navbar-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    display: flex;
+    gap: 2px;
+    text-transform: uppercase;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.navbar-logo-text {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.navbar-text {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.navbar.scrolled .navbar-logo-text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.navbar.scrolled .navbar-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Letter styling for both versions */
+.navbar-logo-text .letter,
+.navbar-text .letter {
+    transition: color 0.5s ease, text-shadow 0.5s ease, transform 0.3s ease;
+    color: var(--text-dark-maroon);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.navbar-logo-text .letter.maroon,
+.navbar-text .letter.maroon {
+    color: var(--primary-maroon);
+    text-shadow: 0 0 10px rgba(128, 0, 0, 0.3);
+   
+}
+.navbar-logo-text .letter.maroon,
+.navbar-text .letter.maroon {
+    color: var(--light-maroon);
+    text-shadow: none;
+}
+/* Tour Navigation Button Styles */
+.tour-navigate-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: var(--primary-maroon);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.tour-navigate-btn:hover {
+    background: var(--hover-maroon);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.3);
+}
+
+/* Responsive for tour navigation */
+@media (max-width: 768px) {
+    .tour-navigate-btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+</style>
 </head>
 <body style="overflow: hidden;">
     <!-- INTRO PAGE -->
@@ -4615,10 +4242,14 @@ body.menu-open .admission-btn.menu-only {
             <span></span>
         </div>
         <button class="admission-btn menu-only">Enquiry</button>
-       <nav class="navbar">
+   <nav class="navbar">
     <div class="navbar-content">
-        <img src="ms_logo.png" class="navbar-logo" style="height:50px;margin-top:-10px;padding-bottom:0px;margin-bottom:0px;width:100px;">
-        <div class="navbar-text">MODERN SCHOOL</div>
+        <div class="navbar-logo-text" id="navbarLogoText"></div>
+        <div class="navbar-text" id="navbarScrolledText"></div>
+    </div>
+    <div class="navbar-progress-container">
+        <div class="navbar-progress-track"></div>
+        <div class="navbar-progress-fill" id="navbarProgressFill"></div>
     </div>
 </nav>
      <div class="overlay-menu" id="overlayMenu">
@@ -4987,20 +4618,26 @@ body.menu-open .admission-btn.menu-only {
         <div class="sheet-handle"></div>
         <h2>Explore Our School</h2>
         <p class="subtitle">Select one section to begin the tour</p>
-        <div class="tour-options-grid">
-            <button class="tour-option-btn" data-topic="about-us"><i class="fas fa-info-circle"></i>About Us<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="admissions"><i class="fas fa-graduation-cap"></i>Admissions<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="infrastructure"><i class="fas fa-building"></i>Infrastructure<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="leadership"><i class="fas fa-star"></i>Leadership<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="faculty"><i class="fas fa-chalkboard-teacher"></i>Faculty<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="curriculum"><i class="fas fa-book"></i>Curriculum<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="extracurriculars"><i class="fas fa-futbol"></i>Activities<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="testimonials"><i class="fas fa-quote-left"></i>Testimonials<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="blog"><i class="fas fa-newspaper"></i>Blog<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="contact"><i class="fas fa-phone"></i>Contact<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="events"><i class="fas fa-calendar-alt"></i>Events<div class="tour-check-mark">✓</div></button>
-            <button class="tour-option-btn" data-topic="gallery"><i class="fas fa-images"></i>Gallery<div class="tour-check-mark">✓</div></button>
-        </div>
+       <div class="tour-options-grid">
+    <button class="tour-option-btn" data-topic="address" data-link="campus_location.html"><i class="fas fa-map-marker-alt"></i>Our Address<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="contact" data-link="contact.html"><i class="fas fa-phone-alt"></i>Contact Info<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="social" data-link="#"><i class="fas fa-share-alt"></i>Social Connect<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="academics" data-link="Curriculum.html"><i class="fas fa-book"></i>Academics<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="information" data-link="fees.html"><i class="fas fa-info-circle"></i>Information<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="campus-life" data-link="student_counsel.html"><i class="fas fa-university"></i>Campus Life<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="about-us" data-link="history.html"><i class="fas fa-users"></i>About Us<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="connect" data-link="campus_location.html"><i class="fas fa-link"></i>Connect<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="admissions" data-link="#enquiry-form"><i class="fas fa-graduation-cap"></i>Admissions<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="infrastructure" data-link="campus_facilities.html"><i class="fas fa-building"></i>Infrastructure<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="leadership" data-link="leadership.html"><i class="fas fa-star"></i>Leadership<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="faculty" data-link="admin.html"><i class="fas fa-chalkboard-teacher"></i>Faculty<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="curriculum" data-link="Curriculum.html"><i class="fas fa-book-open"></i>Curriculum<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="extracurriculars" data-link="sport.html"><i class="fas fa-futbol"></i>Activities<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="testimonials" data-link="#testimonials"><i class="fas fa-quote-left"></i>Testimonials<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="blog" data-link="#blog"><i class="fas fa-newspaper"></i>Blog<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="events" data-link="event.html"><i class="fas fa-calendar-alt"></i>Events<div class="tour-check-mark">✓</div></button>
+    <button class="tour-option-btn" data-topic="gallery" data-link="gallery.html"><i class="fas fa-images"></i>Gallery<div class="tour-check-mark">✓</div></button>
+</div>
         <div class="tour-actions">
             <button id="start-selected-tour" class="tour-primary-btn" disabled>Start Tour</button>
             <button id="skip-tour-selection" class="tour-secondary-btn">Skip</button>
@@ -5274,13 +4911,13 @@ body.menu-open .admission-btn.menu-only {
                     <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
                     <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
                     <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
-                     <div class="social-media" style="margin-right:0 ;">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
+                     <h3>Social Connect</h3>
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-facebook"></i></a>
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-twitter"></i></a>
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-instagram"></i></a>
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-linkedin"></i></a>
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-youtube"></i></a>
+                   
                 </div>
             </div>
             <div class="footer-columns">
@@ -5289,8 +4926,7 @@ body.menu-open .admission-btn.menu-only {
                     <ul>
                         <li><a href="curriculum.html">Curriculum</a></li>
                         <li><a href="calendar.html">Calendar</a></li>
-                        <li><a href="student_council.html">Student Counsel</a></li>
-                         <li><a href="exam.html">Time Table</a></li>
+                       <li><a href="exam.html">Time Table</a></li>
                      </ul>
                 </div>
                 <div class="footer-col">
@@ -5305,8 +4941,8 @@ body.menu-open .admission-btn.menu-only {
                 <div class="footer-col">
                     <h3>Campus Life</h3>
                     <ul>
-                        <li><a href="student_activities.html">Student Activities</a></li>
-                        <li><a href="event.html">Events</a></li>
+                        <li><a href="student_council.html">Student Counsel</a></li>
+                         <li><a href="event.html">Events</a></li>
                         <li><a href="sport.html">Athletics</a></li>
                         <li><a href="campus_facilities.html">Campus Facilities</a></li>
                     </ul>
@@ -5318,7 +4954,7 @@ body.menu-open .admission-btn.menu-only {
                         <li><a href="vision.html">Vision & Direction</a></li>
                         <li><a href="leadership.html">Leadership</a></li>
                         <li><a href="admin.html">Admin Team</a></li>
-                         <li><a href="branches.html">Other Branches</a></li>
+                        
                     </ul>
                 </div>
                
@@ -5327,8 +4963,8 @@ body.menu-open .admission-btn.menu-only {
                     <ul>
                         <li><a href="campus_location.html">Campus Location</a></li>
                         <li><a href="career.html">Career</a></li>
-                        <li> <a href="#enquiry-form" > Enquiry</a></li>
-                         <li><a href="tc_verification.html">TC Verification</a></li>
+                        <li><a href="tc_verification.html">TC Verification</a></li>
+                         <li><a href="branches.html">Other Branches</a></li>
                       </ul>
                 </div>
             </div>
@@ -5718,10 +5354,173 @@ function initNavbarScrollEffect() {
     window.addEventListener('scroll', handleScroll);
 }
 
-// ===== INITIALIZE ALL COMPONENTS =====
+// ===== ACTIVATE FOOTER ENQUIRY LINKS =====
+function activateFooterEnquiryLinks() {
+    // Add click event to all enquiry links in footer
+    document.querySelectorAll('.enquiry-footer-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Close mobile menu if open
+            if (document.body.classList.contains('menu-open')) {
+                document.querySelector('.hamburger').click();
+            }
+            // Open enquiry modal
+            openEnquiryModal();
+        });
+    });
+}
+// ===== NAVBAR TEXT COLOR WAVE EFFECT =====
+// ===== NAVBAR TEXT COLOR WAVE EFFECT =====
+// ===== NAVBAR TEXT COLOR WAVE EFFECT =====
+function initNavbarTextEffect() {
+    const navbarLogoText = document.getElementById('navbarLogoText');
+    const navbarScrolledText = document.getElementById('navbarScrolledText');
+    const text = 'MODERN SCHOOL';
+    
+    // Clear existing content
+    navbarLogoText.innerHTML = '';
+    navbarScrolledText.innerHTML = '';
+    
+    // Create arrays to store all letter elements
+    const logoLetters = [];
+    const scrolledLetters = [];
+    
+    // Create letter spans for both versions
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        
+        // For navbar-logo-text (visible when not scrolled)
+        const logoLetter = document.createElement('span');
+        logoLetter.className = 'letter';
+        logoLetter.textContent = char;
+        logoLetter.dataset.index = i;
+        // Handle space differently
+        if (char === ' ') {
+            logoLetter.style.width = '8px'; // Space width
+            logoLetter.style.pointerEvents = 'none'; // Disable interaction for space
+        }
+        navbarLogoText.appendChild(logoLetter);
+        logoLetters.push(logoLetter);
+        
+        // For navbar-text (visible when scrolled)
+        const scrolledLetter = document.createElement('span');
+        scrolledLetter.className = 'letter';
+        scrolledLetter.textContent = char;
+        scrolledLetter.dataset.index = i;
+        // Handle space differently
+        if (char === ' ') {
+            scrolledLetter.style.width = '8px'; // Space width
+            scrolledLetter.style.pointerEvents = 'none'; // Disable interaction for space
+        }
+        navbarScrolledText.appendChild(scrolledLetter);
+        scrolledLetters.push(scrolledLetter);
+    }
+    
+    const totalLetters = text.length;
+    const progressFill = document.getElementById('navbarProgressFill');
+    
+    function updateNavbarEffects() {
+        const scrollY = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = scrollY / docHeight;
+        
+        // Update progress bar width
+        progressFill.style.width = `${scrollPercent * 100}%`;
+        
+        // Calculate which letters should be highlighted based on scroll position
+        const effectStart = 0.0;
+        const effectEnd = 0.8;
+        
+        if (scrollPercent < effectStart) {
+            // Reset all letters to original color at the top
+            logoLetters.forEach(letter => {
+                if (letter.textContent !== ' ') {
+                    letter.classList.remove('maroon');
+                }
+            });
+            scrolledLetters.forEach(letter => {
+                if (letter.textContent !== ' ') {
+                    letter.classList.remove('maroon');
+                }
+            });
+        } else if (scrollPercent > effectEnd) {
+            // At the end, keep only the last letter highlighted
+            logoLetters.forEach((letter, index) => {
+                if (letter.textContent !== ' ') {
+                    if (index === totalLetters - 1) {
+                        letter.classList.add('maroon');
+                    } else {
+                        letter.classList.remove('maroon');
+                    }
+                }
+            });
+            scrolledLetters.forEach((letter, index) => {
+                if (letter.textContent !== ' ') {
+                    if (index === totalLetters - 1) {
+                        letter.classList.add('maroon');
+                    } else {
+                        letter.classList.remove('maroon');
+                    }
+                }
+            });
+        } else {
+            // Calculate progress within the effect range
+            const effectProgress = (scrollPercent - effectStart) / (effectEnd - effectStart);
+            
+            // Determine which single letter should be highlighted
+            // Skip spaces when calculating position
+            const nonSpaceLetters = Array.from(text).filter(char => char !== ' ');
+            const highlightPosition = Math.floor(effectProgress * nonSpaceLetters.length);
+            
+            // Convert highlight position back to original string position
+            let currentPosition = -1;
+            let targetIndex = -1;
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] !== ' ') {
+                    currentPosition++;
+                    if (currentPosition === highlightPosition) {
+                        targetIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            // Apply maroon class to only one letter at a time
+            logoLetters.forEach((letter, index) => {
+                if (letter.textContent !== ' ') {
+                    if (index === targetIndex) {
+                        letter.classList.add('maroon');
+                    } else {
+                        letter.classList.remove('maroon');
+                    }
+                }
+            });
+            
+            scrolledLetters.forEach((letter, index) => {
+                if (letter.textContent !== ' ') {
+                    if (index === targetIndex) {
+                        letter.classList.add('maroon');
+                    } else {
+                        letter.classList.remove('maroon');
+                    }
+                }
+            });
+        }
+    }
+    
+    // Initial call to set colors
+    updateNavbarEffects();
+    
+    // Update effects on scroll
+    window.addEventListener('scroll', updateNavbarEffects);
+    
+    // Also update on resize
+    window.addEventListener('resize', updateNavbarEffects);
+}// ===== INITIALIZE ALL COMPONENTS =====
 function initAllComponents() {
     initNavigation();
     initNavbarScrollEffect();
+    initNavbarTextEffect(); // Make sure this line is here
     initCarousel();
     initProgressBar();
     initBlogCarousel();
@@ -5729,7 +5528,8 @@ function initAllComponents() {
     initGSAPScrollAnimation();
     initEnquiryModal();
     initLeadershipAnimation();
-    initWebsiteTour(); // Add website tour
+    initWebsiteTour();
+    activateFooterEnquiryLinks(); // Add this line to activate footer enquiry links
 }
 
 // ===== LEADERSHIP SECTION GSAP ANIMATION =====
@@ -5798,8 +5598,25 @@ function initLeadershipAnimation() {
         });
     } else {
         // MOBILE: Use separate fixed images
-        // Hide Director image initially (only show on second slide)
-        gsap.set(mobileDirectorImage, { opacity: 0 });
+        // Force display and visibility of mobile images
+        gsap.set(mobileChairmanImage, { 
+            display: "block",
+            opacity: 1,
+            visibility: "visible"
+        });
+        gsap.set(mobileDirectorImage, { 
+            display: "block",
+            opacity: 0,
+            visibility: "visible"
+        });
+        
+        // Ensure images are properly loaded
+        if (mobileChairmanImage.querySelector('img')) {
+            mobileChairmanImage.querySelector('img').style.display = "block";
+        }
+        if (mobileDirectorImage.querySelector('img')) {
+            mobileDirectorImage.querySelector('img').style.display = "block";
+        }
         
         const holdPower = 1.2;
         let tl = gsap.timeline({
@@ -5880,27 +5697,30 @@ function initNavigation() {
 
     const submenus = {
         'about-us': [
-            { text: 'Our History', href: '#' },
-            { text: 'Vision & Direction', href: '#' },
-            { text: 'Leadership', href: '#' },
-            { text: 'Admin Team', href: '#' },
+            { text: 'Our History', href: 'history.html' },
+            { text: 'Vision & Direction', href: 'vision.html' },
+            { text: 'Leadership', href: 'leadership.html' },
+            { text: 'Admin Team', href: 'admin.html' },
         ],
         'academics': [
-            { text: 'Curriculum', href: '#' },
-            { text: 'Exam &amp; Result', href: '#' },
-            { text: 'Calendar', href: '#' },
-            { text: 'Student Counsel', href: '#' },
+            { text: 'Curriculum', href: 'Curriculum.html' },
+            { text: 'Exam &amp; Result', href: 'timetable.html' },
+            { text: 'Calendar', href: 'calendar.html' },
+           
+           
         ],
         'campus-life': [
-            { text: 'Student Activities', href: '#' },
-            { text: 'Event', href: '#' },
-            { text: 'Athletics', href: '#' },
+             { text: 'Student Counsel', href: 'student_counsel.html' },
+            { text: 'Event', href: 'event.html' },
+            { text: 'Athletics', href: 'sport.html' },
             { text: 'Campus Facilities', href: '#' },
         ],
         'contact-us': [
             { text: 'Campus Location', href: '#' },
             { text: 'Career', href: '#' },
             { text: 'Enquiry', href: '#' },
+            { text: 'TC Verification', href: '#' },
+            { text: 'Other Branches', href: '#' },
         ]
     };
 
@@ -6964,7 +6784,6 @@ function initEnquiryModal() {
 }
 
 // ===== WEBSITE TOUR LOGIC =====
-// ===== WEBSITE TOUR LOGIC =====
 function initWebsiteTour() {
     const introTourModal = document.getElementById('intro-tour-modal');
     const tourSelectionModal = document.getElementById('tour-selection-modal');
@@ -6978,69 +6797,117 @@ function initWebsiteTour() {
     let lastInteractionTime = Date.now();
 
     // Topic descriptions for the tour
-    const tourTopics = {
-        'about-us': {
-            title: 'About Modern School',
-            description: 'Learn about our rich history, vision, mission, and the values that make Modern School a premier educational institution since 1973.',
-            targetElement: '.navbar-text'
-        },
-        'admissions': {
-            title: 'Admissions Process',
-            description: 'Discover our admission criteria, important dates, fee structure, and how to apply for the upcoming academic year.',
-            targetElement: '.admission-btn'
-        },
-        'infrastructure': {
-            title: 'State-of-the-Art Infrastructure',
-            description: 'Explore our modern campus facilities including smart classrooms, science labs, libraries, sports complexes, and more.',
-            targetElement: '.carousel-container'
-        },
-        'leadership': {
-            title: 'School Leadership',
-            description: 'Meet our visionary leaders - Dr. Deepak Singh (Chairman) and Mr. Vaibhav Singh (Director) who guide our educational philosophy.',
-            targetElement: '#leadershipSection'
-        },
-        'faculty': {
-            title: 'Expert Faculty',
-            description: 'Get to know our dedicated and qualified teaching staff who are committed to nurturing young minds.',
-            targetElement: '.testimonial-section'
-        },
-        'curriculum': {
-            title: 'Comprehensive Curriculum',
-            description: 'Learn about our CBSE-aligned curriculum that balances academic excellence with holistic development.',
-            targetElement: '.scroll-area'
-        },
-        'extracurriculars': {
-            title: 'Extracurricular Activities',
-            description: 'Discover our wide range of sports, arts, music, dance, and club activities that develop well-rounded personalities.',
-            targetElement: '.carousel-container .slide[data-index="2"]'
-        },
-        'testimonials': {
-            title: 'Parent Testimonials',
-            description: 'Read what parents say about their children\'s transformative journey at Modern School.',
-            targetElement: '.testimonial-section'
-        },
-        'blog': {
-            title: 'School Blog & News',
-            description: 'Stay updated with the latest events, achievements, and insights from our school community.',
-            targetElement: '.blog-section'
-        },
-        'contact': {
-            title: 'Contact Information',
-            description: 'Find our contact details, location, and how to reach us for any inquiries or visits.',
-            targetElement: '.footer-info'
-        },
-        'events': {
-            title: 'School Events',
-            description: 'Check out our annual events, celebrations, competitions, and cultural programs.',
-            targetElement: '.blog-section'
-        },
-        'gallery': {
-            title: 'Photo Gallery',
-            description: 'Browse through pictures capturing memorable moments from school life, events, and activities.',
-            targetElement: '.carousel-container'
-        }
-    };
-
+    // Topic descriptions for the tour with actual links
+const tourTopics = {
+    'address': {
+        title: 'Our School Address',
+        description: 'Find our campus location at Sector A, Talwandi, Kota, Rajasthan 324005. Get directions and visit our beautiful campus.',
+        targetElement: '.footer-info',
+        link: 'campus_location.html'
+    },
+    'contact': {
+        title: 'Contact Information',
+        description: 'Reach us at +91-744-24211167, +91-744-2411116, or email info@modernschool.ac.in. Visit our website: www.modernschool.ac.in',
+        targetElement: '.footer-info .contact-col',
+        link: 'contact.html'
+    },
+    'social': {
+        title: 'Social Media Connect',
+        description: 'Connect with us on Facebook, Twitter, Instagram, LinkedIn, and YouTube for updates and school news.',
+        targetElement: '.footer-info .social-media',
+        link: '#'
+    },
+    'academics': {
+        title: 'Academic Programs',
+        description: 'Explore our comprehensive curriculum, academic calendar, and timetable for all classes.',
+        targetElement: '.footer-columns .footer-col:nth-child(1)',
+        link: 'Curriculum.html'
+    },
+    'information': {
+        title: 'Important Information',
+        description: 'Access tuition fees details, CBSE corner information, mandatory disclosures, and alumni network.',
+        targetElement: '.footer-columns .footer-col:nth-child(2)',
+        link: 'fees.html'
+    },
+    'campus-life': {
+        title: 'Campus Life & Activities',
+        description: 'Discover student council, events, athletics, and campus facilities that enrich student life.',
+        targetElement: '.footer-columns .footer-col:nth-child(3)',
+        link: 'student_counsel.html'
+    },
+    'about-us': {
+        title: 'About Modern School',
+        description: 'Learn about our history since 1973, vision & direction, leadership team, and administration.',
+        targetElement: '.footer-columns .footer-col:nth-child(4)',
+        link: 'history.html'
+    },
+    'connect': {
+        title: 'Connect With Us',
+        description: 'Find campus location, career opportunities, TC verification, and other branch information.',
+        targetElement: '.footer-columns .footer-col:nth-child(5)',
+        link: 'campus_location.html'
+    },
+    'admissions': {
+        title: 'Admissions Process',
+        description: 'Learn about our admission criteria, application process, and important dates for session 2026-2027.',
+        targetElement: '.admission-btn',
+        link: '#enquiry-form'
+    },
+    'infrastructure': {
+        title: 'Modern Infrastructure',
+        description: 'Explore our state-of-the-art facilities including smart classrooms, labs, libraries, and sports complexes.',
+        targetElement: '.carousel-container',
+        link: 'campus_facilities.html'
+    },
+    'leadership': {
+        title: 'School Leadership',
+        description: 'Meet our visionary Chairman Dr. Deepak Singh and Director Mr. Vaibhav Singh who guide our educational philosophy.',
+        targetElement: '#leadershipSection',
+        link: 'leadership.html'
+    },
+    'faculty': {
+        title: 'Expert Faculty Team',
+        description: 'Meet our dedicated teaching staff committed to nurturing young minds with excellence.',
+        targetElement: '.testimonial-section',
+        link: 'admin.html'
+    },
+    'curriculum': {
+        title: 'Comprehensive Curriculum',
+        description: 'Discover our CBSE-aligned curriculum that balances academic excellence with holistic development.',
+        targetElement: '.scroll-area',
+        link: 'Curriculum.html'
+    },
+    'extracurriculars': {
+        title: 'Extracurricular Activities',
+        description: 'Explore sports, arts, music, dance, and club activities that develop well-rounded personalities.',
+        targetElement: '.carousel-container .slide[data-index="2"]',
+        link: 'sport.html'
+    },
+    'testimonials': {
+        title: 'Parent Testimonials',
+        description: 'Read what parents say about their children\'s transformative journey at Modern School.',
+        targetElement: '.testimonial-section',
+        link: '#testimonials'
+    },
+    'blog': {
+        title: 'School Blog & News',
+        description: 'Stay updated with latest events, achievements, and insights from our school community.',
+        targetElement: '.blog-section',
+        link: '#blog'
+    },
+    'events': {
+        title: 'School Events Calendar',
+        description: 'Check out our annual events, celebrations, competitions, and cultural programs.',
+        targetElement: '.blog-section',
+        link: 'event.html'
+    },
+    'gallery': {
+        title: 'Photo Gallery',
+        description: 'Browse through pictures capturing memorable moments from school life and activities.',
+        targetElement: '.carousel-container',
+        link: 'gallery.html'
+    }
+};
     // Simple function to update last interaction time
     function updateLastInteraction() {
         lastInteractionTime = Date.now();
@@ -7161,26 +7028,41 @@ function initWebsiteTour() {
     });
 
     // Tour Selection Logic
-    const startTourBtn = document.getElementById('start-selected-tour');
-    const tourOptionBtns = document.querySelectorAll('.tour-option-btn');
+   // Tour Selection Logic
+const startTourBtn = document.getElementById('start-selected-tour');
+const tourOptionBtns = document.querySelectorAll('.tour-option-btn');
 
-    if (tourOptionBtns.length > 0 && startTourBtn) {
-        tourOptionBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                tourOptionBtns.forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-                selectedTourTopic = btn.dataset.topic;
-                startTourBtn.disabled = false;
-            });
+if (tourOptionBtns.length > 0 && startTourBtn) {
+    tourOptionBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tourOptionBtns.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selectedTourTopic = btn.dataset.topic;
+            startTourBtn.disabled = false;
+            
+            // Store the link in a data attribute on the button
+            startTourBtn.dataset.link = btn.dataset.link;
         });
+    });
 
-        startTourBtn.addEventListener('click', () => {
-            if (!selectedTourTopic) return;
-            tourSelectionModal.style.display = 'none';
-            startTour(selectedTourTopic);
-        });
-    }
-
+    startTourBtn.addEventListener('click', () => {
+        if (!selectedTourTopic) return;
+        
+        // Get the link from the selected button
+        const selectedBtn = document.querySelector('.tour-option-btn.selected');
+        const link = selectedBtn ? selectedBtn.dataset.link : null;
+        
+        // If there's a direct link and it's not a tour page, navigate directly
+        if (link && !link.startsWith('#')) {
+            window.location.href = link;
+            return;
+        }
+        
+        // Otherwise show the tour view
+        tourSelectionModal.style.display = 'none';
+        startTour(selectedTourTopic);
+    });
+}
     document.getElementById('skip-tour-selection')?.addEventListener('click', () => {
         tourSelectionModal.style.display = 'none';
         localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
@@ -7190,51 +7072,77 @@ function initWebsiteTour() {
     });
 
     // Start the actual tour
-    function startTour(topic) {
-        const tourData = tourTopics[topic];
-        if (!tourData) return;
+ // Start the actual tour
+function startTour(topic) {
+    const tourData = tourTopics[topic];
+    if (!tourData) return;
 
-        console.log('Starting tour for topic:', topic);
+    console.log('Starting tour for topic:', topic);
+    
+    // Update tour view content
+    const tourContent = document.querySelector('.tour-view-content');
+    if (tourContent) {
+        tourContent.innerHTML = `
+            <h2>${tourData.title}</h2>
+            <p>${tourData.description}</p>
+            <button class="tour-navigate-btn" style="margin-top: 20px; padding: 12px 24px; background: var(--primary-maroon); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
+                <i class="fas fa-external-link-alt" style="margin-right: 8px;"></i>
+                Navigate to ${tourData.title}
+            </button>
+        `;
         
-        // Update tour view content
-        const tourContent = document.querySelector('.tour-view-content');
-        if (tourContent) {
-            tourContent.innerHTML = `
-                <h2>${tourData.title}</h2>
-                <p>${tourData.description}</p>
-            `;
-        }
-
-        // Show tour view
-        activeTourView.style.display = 'flex';
-        
-        // Scroll to the relevant section
-        if (tourData.targetElement) {
-            const target = document.querySelector(tourData.targetElement);
-            if (target) {
-                setTimeout(() => {
-                    try {
-                        target.scrollIntoView({ 
-                            behavior: 'smooth', 
-                            block: 'center' 
-                        });
-                        
-                        // Add highlight effect
-                        const originalBoxShadow = target.style.boxShadow;
-                        target.style.boxShadow = '0 0 0 4px rgba(128, 0, 0, 0.3)';
-                        target.style.transition = 'box-shadow 0.3s ease';
-                        
-                        setTimeout(() => {
-                            target.style.boxShadow = originalBoxShadow;
-                        }, 3000);
-                    } catch (e) {
-                        console.error('Error scrolling to target:', e);
-                    }
-                }, 500);
-            }
+        // Add click event to navigate button
+        const navigateBtn = tourContent.querySelector('.tour-navigate-btn');
+        if (navigateBtn) {
+            navigateBtn.addEventListener('click', function() {
+                // Close tour view
+                activeTourView.style.display = 'none';
+                document.body.classList.remove('tour-modal-open');
+                
+                // Navigate to the page
+                if (tourData.link.startsWith('#')) {
+                    // It's an anchor link on same page
+                    window.location.href = tourData.link;
+                } else if (tourData.link === '#') {
+                    // No link specified
+                    alert('Page under construction. Coming soon!');
+                } else {
+                    // It's a different page
+                    window.location.href = tourData.link;
+                }
+            });
         }
     }
 
+    // Show tour view
+    activeTourView.style.display = 'flex';
+    
+    // Scroll to the relevant section on current page (if it exists)
+    if (tourData.targetElement) {
+        const target = document.querySelector(tourData.targetElement);
+        if (target) {
+            setTimeout(() => {
+                try {
+                    target.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    
+                    // Add highlight effect
+                    const originalBoxShadow = target.style.boxShadow;
+                    target.style.boxShadow = '0 0 0 4px rgba(128, 0, 0, 0.3)';
+                    target.style.transition = 'box-shadow 0.3s ease';
+                    
+                    setTimeout(() => {
+                        target.style.boxShadow = originalBoxShadow;
+                    }, 3000);
+                } catch (e) {
+                    console.error('Error scrolling to target:', e);
+                }
+            }, 500);
+        }
+    }
+}
     // Tour View Controls
     document.getElementById('back-to-tour-modal')?.addEventListener('click', () => {
         activeTourView.style.display = 'none';
@@ -7318,7 +7226,9 @@ function initWebsiteTour() {
     setTimeout(() => {
         initInactivityDetection();
     }, 1000); // Wait 1 second after page loads
-}// ===== INITIALIZE ON DOM CONTENT LOADED =====
+}
+
+// ===== INITIALIZE ON DOM CONTENT LOADED =====
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize navbar scroll effect immediately
     initNavbarScrollEffect();
