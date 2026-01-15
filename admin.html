@@ -324,10 +324,11 @@
 
         .image-frame {
             width: 200px;
-            height: 100px;
+            height: 200px;
             background: #f8f0e0;
             border-radius: 12px;
             overflow: hidden;
+          
             border: 2px solid #5d2a2a;
             position: relative;
             margin: 0 auto;
@@ -938,7 +939,63 @@
         padding: 3px 10px;
     }
 }
-    </style>
+   /* Updated Image Frame Styles for proper photo alignment */
+.image-frame {
+    width: 300px;
+    height: 300px;
+    background: #f8f0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #5d2a2a;
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Changed from 'cover' to 'contain' */
+    transition: transform 0.5s ease;
+    background-color: #f8f0e0; /* Background color to match frame */
+}
+
+/* Updated Mini Image Styles */
+.img-mini {
+    width: 80px;
+    height: 80px;
+    background: #f8f0e0;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+    overflow: hidden;
+    border: 2px solid #8b4513;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-mini img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Changed from 'cover' to 'contain' */
+    background-color: #f8f0e0; /* Background color to match frame */
+}
+
+/* For class executive cards without photos */
+.img-mini div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #5d2a2a;
+    font-weight: bold;
+    font-size: 0.9rem;
+    background-color: #e8d9c5;
+}
+ </style>
 </head>
 <body>
     <div class="hamburger" id="hamburger">
@@ -992,7 +1049,7 @@
     
     <div class="profile-container pc-lead chairman-card">
         <div class="image-frame">
-          <img src="DeepakSingh.jpg"> </div>
+          <img src="chairman.jpg"> </div>
         <div class="info">
             <!-- INLINE DESIGNATION WITH LOCATIONS -->
             <div class="designation-with-location">
@@ -1019,7 +1076,7 @@
 
     <div class="profile-container pc-lead">
         <div class="image-frame">
-           <img src="VaibhavSingh.jpg"> </div>
+           <img src="director.jpg"> </div>
         <div class="info">
             <!-- INLINE DESIGNATION WITH LOCATIONS -->
             
@@ -1144,7 +1201,7 @@
                         </div>
                         <span class="s-desig">LKG</span>
                         <h4 class="s-name">Ms. Tripti Chauhan</h4>
-                        <p class="s-quote">Break all self-imposed limitations and helped tap potential.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1152,7 +1209,7 @@
                         </div>
                         <span class="s-desig">HKG</span>
                         <h4 class="s-name">Ms Aishwarya Saxena</h4>
-                        <p class="s-quote">Devoted to nurturing the youngest minds. Joyful environment.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1160,7 +1217,7 @@
                         </div>
                         <span class="s-desig">I</span>
                         <h4 class="s-name">Ms Rupinder Kaur</h4>
-                        <p class="s-quote">Helped tap untapped potential. Aspire to spread smiles.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1168,7 +1225,7 @@
                         </div>
                         <span class="s-desig">II</span>
                         <h4 class="s-name">Ms Shilpa Chawla</h4>
-                        <p class="s-quote">Grooming students by inculcating human values.</p>
+                        <p class="s-quote"></p>
                     </div>
                 </div>
                 
@@ -1180,7 +1237,7 @@
                         </div>
                         <span class="s-desig">III</span>
                         <h4 class="s-name">Ms. Vijaya Singh</h4>
-                        <p class="s-quote">Encouraging students to reach max potential. Build self-esteem.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1188,7 +1245,7 @@
                         </div>
                         <span class="s-desig">IV</span>
                         <h4 class="s-name">Ms Smitika Singh</h4>
-                        <p class="s-quote">Students are building blocks of modern society.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1196,7 +1253,7 @@
                         </div>
                         <span class="s-desig">V</span>
                         <h4 class="s-name">Ms Nupur Saxena</h4>
-                        <p class="s-quote">Being nice is more important than being important.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1204,7 +1261,7 @@
                         </div>
                         <span class="s-desig">VI</span>
                         <h4 class="s-name">Ms Rina Shukla</h4>
-                        <p class="s-quote">Fostering supportive and engaging environment.</p>
+                        <p class="s-quote"></p>
                     </div>
                 </div>
                 
@@ -1216,7 +1273,7 @@
                         </div>
                         <span class="s-desig">VII</span>
                         <h4 class="s-name">Ms Chanchal Vijay</h4>
-                        <p class="s-quote">40+ year journey. Fueled by passion and commitment.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1224,7 +1281,7 @@
                         </div>
                         <span class="s-desig">VIII</span>
                         <h4 class="s-name">Ms Archana Sharma</h4>
-                        <p class="s-quote">Admired professionalism and standards.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1232,7 +1289,7 @@
                         </div>
                         <span class="s-desig">IX</span>
                         <h4 class="s-name">Ms Bhawna Singh</h4>
-                        <p class="s-quote">Academic excellence and holistic development.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1240,7 +1297,7 @@
                         </div>
                         <span class="s-desig">X</span>
                         <h4 class="s-name">Ms D.K. Penci</h4>
-                        <p class="s-quote">Teaching is a serious vocation; needs patience.</p>
+                        <p class="s-quote"></p>
                     </div>
                 </div>
                 
@@ -1252,7 +1309,7 @@
                         </div>
                         <span class="s-desig">XI</span>
                         <h4 class="s-name">Ms Priti Yadav</h4>
-                        <p class="s-quote">Legacy of 'We Care'. Child is morally upright.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
@@ -1260,7 +1317,7 @@
                         </div>
                         <span class="s-desig">XII</span>
                         <h4 class="s-name">Mr. Mohit Rohira</h4>
-                        <p class="s-quote">Council plays a pivotal role in shaping leadership skills.</p>
+                        <p class="s-quote"></p>
                     </div>
                 </div>
             </section>
@@ -1276,28 +1333,28 @@
                          <img src="Satish_Gosain.jpg">  </div>
                         <span class="s-desig">Floater Executive Officer</span>
                         <h4 class="s-name">Mr Satish Gosain</h4>
-                        <p class="s-quote">Ensuring smooth operations across all departments.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
                           <img src="SM_Vaishnav.jpg"> </div>
                         <span class="s-desig">Student's Council Officer</span>
                         <h4 class="s-name">Mr S.M. Vaishnav</h4>
-                        <p class="s-quote">Guiding student leadership and council activities.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
                           <img src="Manisha_Kohli.jpg"></div>
                         <span class="s-desig">Cultural Officer</span>
                         <h4 class="s-name">Ms Manisha Kohli</h4>
-                        <p class="s-quote">Nurturing artistic talents and cultural events.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
                            <img src="Rina_Roanka.jpg"></div>
                         <span class="s-desig">Assistant Cultural Officer</span>
                         <h4 class="s-name">Ms Raina Roanka</h4>
-                        <p class="s-quote">Supporting cultural activities and student participation.</p>
+                        <p class="s-quote"></p>
                     </div>
                 </div>
                 
@@ -1308,28 +1365,28 @@
                            <img src="Rajeev_Singh.jpg"></div>
                         <span class="s-desig">Sports Officer</span>
                         <h4 class="s-name">Mr Rajeev Rathore</h4>
-                        <p class="s-quote">Promoting sportsmanship and physical fitness.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
                            <img src="Alwin_Abreo.jpg"> </div>
                         <span class="s-desig">HR Officer</span>
                         <h4 class="s-name">Mr Alwin Abreo</h4>
-                        <p class="s-quote">Managing human resources and staff development.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
                            <img src="Ankita_Suri.jpg"> </div>
                         <span class="s-desig">HR Officer</span>
                         <h4 class="s-name">Ms Ankita Suri</h4>
-                        <p class="s-quote">Supporting staff welfare and development.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
                             <img src="Shilpa_Chawla.jpg"> </div>
                         <span class="s-desig">Social Media Officer</span>
                         <h4 class="s-name">Ms Shilpa Chawla</h4>
-                        <p class="s-quote">Managing digital presence and communication.</p>
+                        <p class="s-quote"></p>
                     </div>
                 </div>
                 
@@ -1340,14 +1397,14 @@
                            <img src="Yash_Bansal.jpg"> </div>
                         <span class="s-desig">Assistant Social Media Officer</span>
                         <h4 class="s-name">Mr Yash Bansal</h4>
-                        <p class="s-quote">Supporting digital initiatives and online engagement.</p>
+                        <p class="s-quote"></p>
                     </div>
                     <div class="small-card">
                         <div class="img-mini">
                           <img src="Donald_Joel.jpg"> </div>
                         <span class="s-desig">Assistant Executive Officer</span>
                         <h4 class="s-name">Mr Donald Joel</h4>
-                        <p class="s-quote">Assisting in operational management and coordination.</p>
+                        <p class="s-quote"></p>
                     </div>
                 </div>
             </section>
