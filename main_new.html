@@ -2557,6 +2557,8 @@ body.menu-open .navbar {
     will-change: transform;
     position: relative;
     z-index: 20;
+     align-items: flex-start; /* Changed from default stretch to flex-start */
+    padding-top: 50px; /* Add this to push everything down */
 }
 
 .leadership-slide {
@@ -4501,6 +4503,8 @@ body.menu-open .admission-btn.menu-only {
     right: auto;
     opacity: 0; /* Hide initially */
 }
+
+
 </style>
 </head>
 <body style="overflow: hidden;">
@@ -5256,29 +5260,29 @@ body.menu-open .admission-btn.menu-only {
 <section class="leadership-section" id="leadershipSection">
     <!-- Desktop: Common image frame that moves between sides -->
 <div class="common-image-frame chairman-image-frame" id="chairmanImageFrame">
-    <img src="chairman.png" alt="Dr. Deepak Singh - Chairman">
+    <img src="chairman.jpg" alt="Dr. Deepak Singh - Chairman">
 </div>
 
 <div class="common-image-frame director-image-frame" id="directorImageFrame">
-    <img src="director.png" alt="Mr. Vaibhav Singh - Director">
+    <img src="director.jpg" alt="Mr. Vaibhav Singh - Director">
 </div>
 
     
     <!-- Mobile: Separate Chairman image (right side) -->
    <div class="mobile-chairman-image" id="mobileChairmanImage">
-    <img src="chairman.png" alt="Dr. Deepak Singh - Chairman">
+    <img src="chairman.jpg" alt="Dr. Deepak Singh - Chairman">
 </div>
 
 <div class="mobile-director-image" id="mobileDirectorImage">
-    <img src="director.png" alt="Mr. Vaibhav Singh - Director">
+    <img src="director.jpg" alt="Mr. Vaibhav Singh - Director">
 </div>
     
     <div class="horizontal-container" id="leadershipHorizontalContainer">
         <!-- Slide 1 - Chairman (Text left, Image right) -->
         <div class="leadership-slide slide-1" id="leadership-slide-1">
-            <div class="leadership-content-wrapper">
-                <div class="leadership-description-area">
-                    <p><strong>"Innovation is the bridge between aspiration and achievement."</strong></p>
+            <div class="leadership-content-wrapper" >
+                <div class="leadership-description-area" >
+                  <p><strong>"Innovation is the bridge between aspiration and achievement."</strong></p>
                     <p>Goal setting is not a mind game. It is a process of developing the internal willpower to accomplish what you have set out to do. I wish that all the Modernites look beyond the internal barriers and push through on the road to success. Face the challenges with courage, as challenges are goals pursued with conviction. So, propel yourself forward with a vision. Be strong and steady and develop yourselves with the human values inculcated for making a difference in this world. I wish all Modernites become strong pillars of humanity and spread positivity wherever they go. Your words have incredible power. They reinforce your beliefs, and your beliefs create your reality.</p>
                     <h2>Dr. Deepak Singh</h2>
                     <h3>Chairman, Modern School</h3>
