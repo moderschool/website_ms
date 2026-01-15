@@ -4470,7 +4470,37 @@ body.menu-open .admission-btn.menu-only {
 .sidebar.scrolled .user-info p {
     color: var(--gray-500); /* Keep original color */
 }
+/* Common image frame for desktop - Updated */
+.common-image-frame {
+    position: absolute;
+    width: 500px;
+    height: 520px;
+    top: 55%;
+    transform: translateY(-50%);
+    z-index: 99;
+    border-radius: 10px;
+    overflow: hidden;
+    display: block !important;
+}
 
+.common-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+}
+
+/* Specific positions for each frame */
+.chairman-image-frame {
+    right: 100px; /* Position on right for first slide */
+    left: auto;
+}
+
+.director-image-frame {
+    left: 100px; /* Position on left for second slide */
+    right: auto;
+    opacity: 0; /* Hide initially */
+}
 </style>
 </head>
 <body style="overflow: hidden;">
@@ -5225,19 +5255,23 @@ body.menu-open .admission-btn.menu-only {
   <!-- LEADERSHIP SECTION - HORIZONTAL SCROLL WITH FLIPPING IMAGE -->
 <section class="leadership-section" id="leadershipSection">
     <!-- Desktop: Common image frame that moves between sides -->
-    <div class="common-image-frame" id="commonImageFrame">
-        <img src="flip.png" alt="Modern Schools Leadership">
-    </div>
+<div class="common-image-frame chairman-image-frame" id="chairmanImageFrame">
+    <img src="chairman.png" alt="Dr. Deepak Singh - Chairman">
+</div>
+
+<div class="common-image-frame director-image-frame" id="directorImageFrame">
+    <img src="director.png" alt="Mr. Vaibhav Singh - Director">
+</div>
+
     
     <!-- Mobile: Separate Chairman image (right side) -->
-    <div class="mobile-chairman-image" id="mobileChairmanImage">
-        <img src="chairman.png" alt="Dr. Deepak Singh - Chairman">
-    </div>
-    
-    <!-- Mobile: Separate Director image (left side) -->
-    <div class="mobile-director-image" id="mobileDirectorImage">
-        <img src="director.png" alt="Mr. Vaibhav Singh - Director">
-    </div>
+   <div class="mobile-chairman-image" id="mobileChairmanImage">
+    <img src="chairman.png" alt="Dr. Deepak Singh - Chairman">
+</div>
+
+<div class="mobile-director-image" id="mobileDirectorImage">
+    <img src="director.png" alt="Mr. Vaibhav Singh - Director">
+</div>
     
     <div class="horizontal-container" id="leadershipHorizontalContainer">
         <!-- Slide 1 - Chairman (Text left, Image right) -->
@@ -5923,18 +5957,18 @@ function initAllComponents() {
 // ===== LEADERSHIP SECTION GSAP ANIMATION =====
 function initLeadershipAnimation() {
     const container = document.querySelector(".horizontal-container");
-    const imageFrame = document.getElementById("commonImageFrame");
+    const chairmanFrame = document.getElementById("chairmanImageFrame");
+    const directorFrame = document.getElementById("directorImageFrame");
     const mobileChairmanImage = document.getElementById("mobileChairmanImage");
     const mobileDirectorImage = document.getElementById("mobileDirectorImage");
     
     const isMobile = window.innerWidth <= 768;
 
     if (!isMobile) {
-        // DESKTOP/TABLET: Use moving image frame
-        gsap.set(imageFrame, {
-            right: window.innerWidth <= 1024 ? "40px" : "80px",
-            left: "auto"
-        });
+        // DESKTOP/TABLET: Use two separate image frames
+        // Hide director frame initially
+        gsap.set(directorFrame, { opacity: 0 });
+        gsap.set(chairmanFrame, { opacity: 1 });
 
         const holdPower = 1.5;
         let tl = gsap.timeline({
@@ -5949,21 +5983,28 @@ function initLeadershipAnimation() {
                 markers: false,
                 onUpdate: (self) => {
                     const progress = self.progress;
-                    const position = window.innerWidth <= 1024 ? "40px" : "80px";
                     
                     if (progress < 0.5) {
-                        // First slide (Chairman) - Image on right
-                        gsap.to(imageFrame, {
-                            right: position,
-                            left: "auto",
+                        // First slide (Chairman) - Show chairman image, hide director
+                        gsap.to(chairmanFrame, {
+                            opacity: 1,
+                            duration: 0.5,
+                            ease: "power2.out"
+                        });
+                        gsap.to(directorFrame, {
+                            opacity: 0,
                             duration: 0.5,
                             ease: "power2.out"
                         });
                     } else {
-                        // Second slide (Director) - Image on left
-                        gsap.to(imageFrame, {
-                            left: position,
-                            right: "auto",
+                        // Second slide (Director) - Show director image, hide chairman
+                        gsap.to(chairmanFrame, {
+                            opacity: 0,
+                            duration: 0.5,
+                            ease: "power2.out"
+                        });
+                        gsap.to(directorFrame, {
+                            opacity: 1,
                             duration: 0.5,
                             ease: "power2.out"
                         });
@@ -5985,8 +6026,7 @@ function initLeadershipAnimation() {
             tl.to({}, { duration: holdPower }); 
         });
     } else {
-        // MOBILE: Use separate fixed images
-        // Force display and visibility of mobile images
+        // MOBILE: Use separate fixed images (existing code remains the same)
         gsap.set(mobileChairmanImage, { 
             display: "block",
             opacity: 1,
@@ -6074,7 +6114,6 @@ function initLeadershipAnimation() {
         }
     });
 }
-
 // ===== MAIN WEBSITE LOGIC =====
 function initNavigation() {
     const hamburger = document.getElementById('hamburger');
@@ -6595,33 +6634,6 @@ function initGSAPScrollAnimation() {
     const maxDistance = 60;
     const scene1Duration = 13000;
 
-    // IMPORTANT: Store references to key elements
-    const milestonesScene = document.querySelector('.milestones-scene');
-    const progressHeader = document.getElementById('progressHeader');
-    const finalTextContainer = document.getElementById('finalTextContainer');
-    const finalDot = document.querySelector('.final-dot');
-    const animatedDot = document.getElementById('animatedDot');
-
-    // Reset all elements to their initial state
-    function resetAnimationState() {
-        gsap.set(milestonesScene, { opacity: 1, x: "100%" });
-        gsap.set(progressHeader, { opacity: 0, visibility: "hidden" });
-        gsap.set(finalTextContainer, { opacity: 0 });
-        gsap.set(finalDot, { opacity: 0, scale: 1 });
-        gsap.set(animatedDot, { opacity: 0, scale: 1, clearProps: "all" });
-        gsap.set(curtain, { x: "100%", display: "none" });
-        
-        // Reset progress bar steps
-        const stepPoints = document.querySelectorAll('.step-point');
-        stepPoints.forEach(point => {
-            point.classList.remove('active', 'completed');
-        });
-        document.getElementById('fillLine').style.width = '0%';
-    }
-
-    // Reset state initially
-    resetAnimationState();
-
     // Create the main animation timeline
     let tl = gsap.timeline({
         scrollTrigger: {
@@ -6636,18 +6648,8 @@ function initGSAPScrollAnimation() {
                 curtain.style.display = 'none';
             },
             onLeaveBack: () => {
-                // When scrolling back up to top, reset the animation
-                resetAnimationState();
+                // Keep it simple like your working code
                 curtain.style.display = 'none';
-            },
-            onUpdate: (self) => {
-                // This ensures reverse animation works properly
-                if (self.direction === -1) {
-                    // When scrolling up, ensure milestones scene is visible
-                    if (self.progress < 0.8) {
-                        milestonesScene.style.opacity = Math.max(0.1, 1 - (self.progress * 1.5));
-                    }
-                }
             }
         }
     });
@@ -6730,22 +6732,114 @@ function initGSAPScrollAnimation() {
     // 6.3 - 7.3: Animate through the progress bar steps
     // Step 1
     tl.call(() => {
-        setStepState(1);
+        const stepPoints = document.querySelectorAll('.step-point');
+        const fillLine = document.getElementById('fillLine');
+        const totalSteps = stepPoints.length;
+        
+        let currentStep = Math.max(1, Math.min(totalSteps, 1));
+        
+        stepPoints.forEach((point) => {
+            const index = parseInt(point.getAttribute('data-index'));
+            
+            point.classList.remove('active');
+            point.classList.remove('completed');
+
+            if (index < currentStep) {
+                point.classList.add('completed');
+            } else if (index === currentStep) {
+                point.classList.add('active');
+                point.classList.add('completed');
+            }
+        });
+
+        if (totalSteps > 1) {
+            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            fillLine.style.width = `${percentage}%`;
+        }
     }, null, 6.3)
     
     // Step 2
     tl.call(() => {
-        setStepState(2);
+        const stepPoints = document.querySelectorAll('.step-point');
+        const fillLine = document.getElementById('fillLine');
+        const totalSteps = stepPoints.length;
+        
+        let currentStep = Math.max(1, Math.min(totalSteps, 2));
+        
+        stepPoints.forEach((point) => {
+            const index = parseInt(point.getAttribute('data-index'));
+            
+            point.classList.remove('active');
+            point.classList.remove('completed');
+
+            if (index < currentStep) {
+                point.classList.add('completed');
+            } else if (index === currentStep) {
+                point.classList.add('active');
+                point.classList.add('completed');
+            }
+        });
+
+        if (totalSteps > 1) {
+            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            fillLine.style.width = `${percentage}%`;
+        }
     }, null, 6.6)
     
     // Step 3
     tl.call(() => {
-        setStepState(3);
+        const stepPoints = document.querySelectorAll('.step-point');
+        const fillLine = document.getElementById('fillLine');
+        const totalSteps = stepPoints.length;
+        
+        let currentStep = Math.max(1, Math.min(totalSteps, 3));
+        
+        stepPoints.forEach((point) => {
+            const index = parseInt(point.getAttribute('data-index'));
+            
+            point.classList.remove('active');
+            point.classList.remove('completed');
+
+            if (index < currentStep) {
+                point.classList.add('completed');
+            } else if (index === currentStep) {
+                point.classList.add('active');
+                point.classList.add('completed');
+            }
+        });
+
+        if (totalSteps > 1) {
+            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            fillLine.style.width = `${percentage}%`;
+        }
     }, null, 6.9)
     
     // Step 4
     tl.call(() => {
-        setStepState(4);
+        const stepPoints = document.querySelectorAll('.step-point');
+        const fillLine = document.getElementById('fillLine');
+        const totalSteps = stepPoints.length;
+        
+        let currentStep = Math.max(1, Math.min(totalSteps, 4));
+        
+        stepPoints.forEach((point) => {
+            const index = parseInt(point.getAttribute('data-index'));
+            
+            point.classList.remove('active');
+            point.classList.remove('completed');
+
+            if (index < currentStep) {
+                point.classList.add('completed');
+            } else if (index === currentStep) {
+                point.classList.add('active');
+                point.classList.add('completed');
+            }
+        });
+
+        if (totalSteps > 1) {
+            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            fillLine.style.width = `${percentage}%`;
+        }
     }, null, 7.2)
 
     // 7.3 - 7.8: Progress bar fades out
@@ -6771,7 +6865,7 @@ function initGSAPScrollAnimation() {
         ease: "power2.in"
     }, 8.3)
 
-    // 8.8 - 9.3: Parents text fades in (if exists)
+    // 8.8 - 9.3: Parents text fades in
     const parentsTextContainer = document.getElementById('parentsTextContainer');
     if (parentsTextContainer) {
         tl.to("#parentsTextContainer", {
@@ -6833,40 +6927,9 @@ function initGSAPScrollAnimation() {
         backgroundColor: "rgba(128, 0, 0, 0.9)"
     }, 12.3)
 
-    // 12.8 - 13.3: Milestones scene fades out
-    tl.to(".milestones-scene", {
-        opacity: 0,
-        duration: 0.5,
-        ease: "power2.in"
-    }, 12.8)
-
-    // Helper function for progress bar steps
-    function setStepState(step) {
-        const stepPoints = document.querySelectorAll('.step-point');
-        const fillLine = document.getElementById('fillLine');
-        const totalSteps = stepPoints.length;
-        
-        let currentStep = Math.max(1, Math.min(totalSteps, step));
-        
-        stepPoints.forEach((point) => {
-            const index = parseInt(point.getAttribute('data-index'));
-            
-            point.classList.remove('active');
-            point.classList.remove('completed');
-
-            if (index < currentStep) {
-                point.classList.add('completed');
-            } else if (index === currentStep) {
-                point.classList.add('active');
-                point.classList.add('completed');
-            }
-        });
-
-        if (totalSteps > 1) {
-            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            fillLine.style.width = `${percentage}%`;
-        }
-    }
+    // CRITICAL FIX: DON'T fade out the milestones scene
+    // 12.8 - 13.3: Keep milestones scene visible but don't change its opacity
+    tl.to({}, { duration: 0.5 }, 12.8) // Just empty duration, no opacity change
 
     // CREATE CURTAIN EFFECT AFTER TIMELINE COMPLETION
     let curtainTl = gsap.timeline({
@@ -6881,8 +6944,6 @@ function initGSAPScrollAnimation() {
                 gsap.set(curtain, { x: "100%" });
             },
             onLeaveBack: () => {
-                // When scrolling back up through curtain, show milestones scene again
-                gsap.set(milestonesScene, { opacity: 1 });
                 curtain.style.display = 'none';
             }
         }
