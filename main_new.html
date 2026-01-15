@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
     <title>Modern School, Kota</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -4504,7 +4504,496 @@ body.menu-open .admission-btn.menu-only {
     opacity: 0; /* Hide initially */
 }
 
+/* ===== UPDATED BLOG MODAL STYLES - BOTTOM CENTER ANIMATION ===== */
+.full-detail-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    justify-content: center;
+    align-items: flex-end; /* Changed from center to flex-end */
+    z-index: 2000;
+    padding: 20px;
+    overflow-y: auto;
+}
 
+.modal-content {
+    background: var(--primary-white);
+    border-radius: 16px 16px 0 0; /* Rounded top corners only */
+    max-width: 600px;
+    width: 100%;
+    max-height: 85vh;
+    position: relative;
+    padding: 30px;
+    box-shadow: 0 -5px 40px rgba(0,0,0,0.5);
+    animation: slideUpFromBottom 0.4s ease; /* Changed animation */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-bottom: 0; /* Ensure it touches bottom */
+}
+
+@keyframes slideUpFromBottom {
+    from { 
+        transform: translateY(100%); 
+        opacity: 0; 
+    }
+    to { 
+        transform: translateY(0); 
+        opacity: 1; 
+    }
+}
+
+.modal-image {
+    width: 100%;
+    height: auto;
+    max-height: 250px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    background-color: #f5f5f5;
+}
+
+.modal-title {
+    color: var(--text-maroon);
+    margin-top: 0;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.modal-description {
+    color: var(--text-dark-gray);
+    line-height: 1.6;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    max-height: 300px;
+}
+
+/* Custom scrollbar for modal description */
+.modal-description::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-description::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.modal-description::-webkit-scrollbar-thumb {
+    background: var(--primary-maroon);
+    border-radius: 3px;
+}
+
+.modal-description::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-dark-maroon);
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 30px;
+    font-weight: 300;
+    color: var(--text-gray);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.3s;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    z-index: 2;
+    padding: 0;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.close-btn:hover {
+    color: #333;
+    background: #f8f9fa;
+    transform: scale(1.05);
+}
+
+/* Add a handle/drag indicator at the top */
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 4px;
+    background: var(--border-light);
+    border-radius: 2px;
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 100%;
+        padding: 25px 20px;
+        max-height: 80vh;
+        border-radius: 20px 20px 0 0;
+    }
+    .modal-title { font-size: 1.6rem; }
+    .modal-description { font-size: 0.95rem; max-height: 250px; }
+    .modal-image { max-height: 200px; }
+    .close-btn { top: 10px; right: 10px; font-size: 25px; width: 30px; height: 30px; }
+}
+
+@media (max-width: 480px) {
+    .full-detail-overlay {
+        padding: 0; /* Remove padding on mobile for full width */
+    }
+    .modal-content {
+        max-width: 100%;
+        padding: 20px 15px;
+        max-height: 75vh;
+        border-radius: 16px 16px 0 0;
+    }
+    .modal-title { font-size: 1.4rem; margin-bottom: 12px; }
+    .modal-description { font-size: 0.9rem; line-height: 1.5; max-height: 200px; }
+    .modal-image { max-height: 150px; margin-bottom: 15px; }
+    .close-btn { top: 8px; right: 8px; font-size: 22px; width: 28px; height: 28px; }
+}
+
+/* Optional: Add backdrop click to close */
+.full-detail-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    cursor: pointer;
+}
+/* Add to your CSS */
+@media (max-width: 768px) {
+    /* Disable GSAP animations on mobile for performance */
+    .scroll-area {
+        height: auto !important;
+        min-height: 100vh;
+    }
+    
+    .sticky-container {
+        position: relative !important;
+        height: auto !important;
+        min-height: 100vh;
+    }
+    
+    /* Disable complex GSAP animations on mobile */
+    .arc-container,
+    .milestones-scene,
+    .maroon-circle,
+    .final-dot {
+        display: none !important;
+    }
+    
+    /* Show mobile-friendly alternative */
+    .scroll-area::before {
+        content: "Modern School Excellence";
+        display: block;
+        text-align: center;
+        font-size: 2rem;
+        color: var(--text-maroon);
+        padding: 40px 20px;
+        background: var(--bg-cream);
+    }
+}/* Add these mobile-specific styles for leadership section */
+@media (max-width: 1024px) {
+    .leadership-section {
+        height: auto !important;
+        min-height: 100vh;
+    }
+    
+    .horizontal-container {
+        flex-direction: column !important;
+        width: 100% !important;
+        height: auto !important;
+        transform: none !important;
+        overflow-y: auto;
+    }
+    
+    .leadership-slide {
+        width: 100% !important;
+        height: auto !important;
+        min-height: 100vh;
+        padding: 60px 20px !important;
+        justify-content: center !important;
+    }
+    
+    .leadership-content-wrapper {
+        flex-direction: column;
+        gap: 40px;
+    }
+    
+    /* Mobile images */
+    .mobile-chairman-image,
+    .mobile-director-image {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        width: 200px !important;
+        height: 250px !important;
+        margin: 0 auto 30px !important;
+    }
+    
+    /* Hide desktop frames on mobile */
+    .common-image-frame {
+        display: none !important;
+    }
+    
+    /* Adjust description area */
+    .leadership-description-area {
+        max-width: 100% !important;
+        margin: 0 !important;
+        text-align: center !important;
+    }
+    
+    /* Remove specific slide margins */
+    .slide-1 .leadership-description-area,
+    .slide-2 .leadership-description-area {
+        margin: 0 !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .leadership-slide {
+        padding: 40px 15px !important;
+    }
+    
+    .mobile-chairman-image,
+    .mobile-director-image {
+        width: 150px !important;
+        height: 200px !important;
+    }
+    
+    .leadership-description-area {
+        padding: 15px !important;
+    }
+    
+    .leadership-description-area h2 {
+        font-size: 1.4rem !important;
+    }
+    
+    .leadership-description-area h3 {
+        font-size: 1rem !important;
+    }
+}
+/* General mobile fixes */
+@media (max-width: 768px) {
+    /* Fix body overflow */
+    body {
+        overflow-x: hidden !important;
+        width: 100% !important;
+        position: relative !important;
+    }
+    
+    /* Fix navbar for mobile */
+    .navbar {
+        padding: 10px 15px !important;
+        height: 60px !important;
+    }
+    
+    .navbar-logo-text,
+    .navbar-text {
+        font-size: 1.2rem !important;
+        letter-spacing: 1px !important;
+    }
+    
+    /* Fix hamburger position */
+    .hamburger {
+        top: 18px !important;
+        left: 15px !important;
+    }
+    
+    /* Fix admission button */
+    .admission-btn {
+        top: 10px !important;
+        right: 15px !important;
+        padding: 6px 12px !important;
+        font-size: 0.8rem !important;
+    }
+    
+    /* Fix carousel for mobile */
+    .carousel-container {
+        height: 400px !important;
+        margin: 20px 0 !important;
+        padding: 0 10px !important;
+    }
+    
+    .slide {
+        width: 200px !important;
+    }
+    
+    .slide.center {
+        width: 250px !important;
+        height: 200px !important;
+    }
+    
+    .image-container {
+        height: 150px !important;
+    }
+    
+    /* Fix testimonial for mobile */
+    .testimonial-slide {
+        flex-direction: column !important;
+        text-align: center !important;
+        padding: 20px !important;
+    }
+    
+    .parent-photo {
+        width: 120px !important;
+        height: 120px !important;
+        margin: 0 auto 15px !important;
+    }
+    
+    .testimonial-text {
+        font-size: 16px !important;
+        padding-left: 0 !important;
+        text-align: center !important;
+    }
+    
+    /* Fix footer for mobile */
+    .footer-info {
+        flex-direction: column !important;
+        text-align: center !important;
+    }
+    
+    .info-col {
+        flex: 0 0 100% !important;
+        margin-bottom: 30px !important;
+        border: none !important;
+    }
+    
+    .footer-columns {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Fix chat assistant for mobile */
+    #chat-card {
+        width: 90% !important;
+        height: 70vh !important;
+        bottom: 10px !important;
+        right: 5% !important;
+        left: 5% !important;
+    }
+    
+    #launcher {
+        right: 15px !important;
+        bottom: 10px !important;
+        padding: 10px 15px !important;
+        font-size: 0.9rem !important;
+    }
+}
+
+/* Tablet specific fixes */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .navbar-logo-text,
+    .navbar-text {
+        font-size: 1.5rem !important;
+    }
+    
+    .carousel-container {
+        height: 450px !important;
+    }
+    
+    .slide.center {
+        width: 350px !important;
+        height: 250px !important;
+    }
+    
+    .leadership-slide {
+        padding: 0 50px !important;
+    }
+    
+    .common-image-frame {
+        width: 350px !important;
+        height: 400px !important;
+    }
+    
+    .testimonial-slide {
+        padding: 30px !important;
+    }
+}
+/* Touch-friendly styles */
+@media (hover: none) and (pointer: coarse) {
+    /* Increase tap targets */
+    .menu-item-with-submenu,
+    .main-menu-screen a,
+    .submenu-screen a {
+        min-height: 44px !important;
+        padding: 15px 10px !important;
+    }
+    
+    /* Increase button sizes */
+    button,
+    .admission-btn,
+    .enquiry-button,
+    .panel-button,
+    .tour-option-btn-compact {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        padding: 12px 20px !important;
+    }
+    
+    /* Increase form input sizes */
+    input,
+    select,
+    textarea {
+        font-size: 16px !important; /* Prevents iOS zoom */
+        padding: 12px !important;
+    }
+    
+    /* Disable hover effects on touch devices */
+    *:hover {
+        transform: none !important;
+    }
+    
+    /* Show touch indicators */
+    .chip,
+    .blog-item,
+    .testimonial-nav-button {
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(128, 0, 0, 0.1);
+    }
+}
+/* iOS Safari fixes */
+@supports (-webkit-touch-callout: none) {
+    /* Fix 100vh issue on iOS */
+    .leadership-section,
+    .sticky-container {
+        height: -webkit-fill-available !important;
+    }
+    
+    /* Fix sticky elements */
+    .navbar {
+        position: -webkit-sticky !important;
+    }
+    
+    /* Fix input appearance */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+        -webkit-appearance: none;
+        border-radius: 0;
+    }
+}
 </style>
 </head>
 <body style="overflow: hidden;">
@@ -5157,7 +5646,7 @@ body.menu-open .admission-btn.menu-only {
                                 <!-- Parent photo and details on left -->
                                 <div class="parent-photo-container">
                                     <div class="parent-photo">
-                                        <img src="parent1.jpg" alt="Mr. Rajesh Sharma">
+                                        <img src="dummy.png" alt="Mr. Rajesh Sharma">
                                     </div>
                                     <div class="parent-details-side">
                                         <div class="parent">Mr. Rajesh Sharma</div>
@@ -5180,7 +5669,7 @@ body.menu-open .admission-btn.menu-only {
                                 <!-- Parent photo and details on left -->
                                 <div class="parent-photo-container">
                                     <div class="parent-photo">
-                                        <img src="parent2.jpg" alt="Mrs. Priya Verma">
+                                        <img src="dummy.png" alt="Mrs. Priya Verma">
                                     </div>
                                     <div class="parent-details-side">
                                         <div class="parent">Mrs. Priya Verma</div>
@@ -5203,7 +5692,7 @@ body.menu-open .admission-btn.menu-only {
                                 <!-- Parent photo and details on left -->
                                 <div class="parent-photo-container">
                                     <div class="parent-photo">
-                                        <img src="parent3.jpg" alt="Mr. Amit Gupta">
+                                        <img src="dummy.png" alt="Mr. Amit Gupta">
                                     </div>
                                     <div class="parent-details-side">
                                         <div class="parent">Mr. Amit Gupta</div>
@@ -5226,7 +5715,7 @@ body.menu-open .admission-btn.menu-only {
                                 <!-- Parent photo and details on left -->
                                 <div class="parent-photo-container">
                                     <div class="parent-photo">
-                                        <img src="parent4.jpg" alt="Mrs. Sunita Patel">
+                                        <img src="dummy.png" alt="Mrs. Sunita Patel">
                                     </div>
                                     <div class="parent-details-side">
                                         <div class="parent">Mrs. Sunita Patel</div>
@@ -5530,7 +6019,7 @@ body.menu-open .admission-btn.menu-only {
     </div>
 
 <script>
-// ===== CHAT ASSISTANT LOGIC =====
+/// ===== CHAT ASSISTANT LOGIC =====
 const flow = document.getElementById('flow');
 const chatCard = document.getElementById('chat-card');
 const launcher = document.getElementById('launcher');
@@ -5777,6 +6266,103 @@ skipIntro.onclick = () => {
     setTimeout(endIntro, 500);
 };
 
+// ===== MOBILE DETECTION =====
+function detectMobile() {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    
+    if (isMobile) {
+        document.body.classList.add('is-mobile');
+        document.body.classList.remove('is-desktop');
+    } else {
+        document.body.classList.add('is-desktop');
+        document.body.classList.remove('is-mobile');
+    }
+}
+
+// ===== PERFORMANCE OPTIMIZATION FOR MOBILE =====
+function optimizeForMobile() {
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+    
+    if (isMobile || isTablet) {
+        // Reduce animation complexity
+        if (window.gsap && gsap.globalTimeline) {
+            gsap.globalTimeline.timeScale(1.5); // Speed up animations
+        }
+        
+        // Disable heavy effects
+        document.body.classList.add('mobile-view');
+        
+        // Reduce carousel auto-slide speed
+        if (window.blogAutoSlide) {
+            clearInterval(window.blogAutoSlide);
+            window.blogAutoSlide = setInterval(() => {
+                if (window.moveBlogTo) {
+                    window.moveBlogTo((window.blogSlideIndex + 1) % window.TOTAL_BLOG_SLIDES);
+                }
+            }, 8000); // Slower on mobile
+        }
+        
+        // Disable parallax effects on mobile
+        if (window.ScrollTrigger) {
+            ScrollTrigger.getAll().forEach(trigger => {
+                if (trigger.vars && trigger.vars.scrub && isMobile) {
+                    trigger.kill();
+                }
+            });
+        }
+        
+        // Optimize GSAP scroll animation for mobile
+        if (isMobile && document.querySelector('.scroll-area')) {
+            const scrollArea = document.querySelector('.scroll-area');
+            const stickyContainer = document.querySelector('.sticky-container');
+            
+            if (scrollArea && stickyContainer) {
+                scrollArea.style.height = 'auto';
+                scrollArea.style.minHeight = '100vh';
+                stickyContainer.style.position = 'relative';
+                stickyContainer.style.height = 'auto';
+                
+                // Hide complex animations on mobile
+                const complexElements = document.querySelectorAll('.arc-container, .milestones-scene, .maroon-circle, .final-dot');
+                complexElements.forEach(el => {
+                    if (el) el.style.display = 'none';
+                });
+                
+                // Show mobile-friendly alternative
+                if (!document.querySelector('.mobile-scroll-alternative')) {
+                    const altDiv = document.createElement('div');
+                    altDiv.className = 'mobile-scroll-alternative';
+                    altDiv.innerHTML = `
+                        <div style="text-align: center; padding: 40px 20px;">
+                            <h2 style="color: var(--text-maroon); font-size: 1.8rem; margin-bottom: 20px;">Modern School Excellence</h2>
+                            <p style="color: var(--text-dark-maroon); line-height: 1.6;">
+                                Forging a highly significant impact through excellence beyond boundaries
+                            </p>
+                        </div>
+                    `;
+                    scrollArea.appendChild(altDiv);
+                }
+            }
+        }
+    } else {
+        // Desktop optimizations
+        document.body.classList.remove('mobile-view');
+        document.body.classList.add('desktop-view');
+        
+        // Restore normal animation speed
+        if (window.gsap && gsap.globalTimeline) {
+            gsap.globalTimeline.timeScale(1);
+        }
+        
+        // Remove mobile alternative if exists
+        const mobileAlt = document.querySelector('.mobile-scroll-alternative');
+        if (mobileAlt) {
+            mobileAlt.remove();
+        }
+    }
+}
+
 // ===== NAVBAR SCROLL EFFECT =====
 function initNavbarScrollEffect() {
     const navbar = document.querySelector('.navbar');
@@ -5795,8 +6381,6 @@ function initNavbarScrollEffect() {
     // Add scroll event listener
     window.addEventListener('scroll', handleScroll);
 }
-
-// ===== ACTIVATE FOOTER ENQUIRY LINKS =====
 
 // ===== NAVBAR TEXT COLOR WAVE EFFECT =====
 function initNavbarTextEffect() {
@@ -5943,21 +6527,38 @@ function initNavbarTextEffect() {
     
     // Also update on resize
     window.addEventListener('resize', updateNavbarEffects);
-}// ===== INITIALIZE ALL COMPONENTS =====
+}
+
 // ===== INITIALIZE ALL COMPONENTS =====
 function initAllComponents() {
+    detectMobile();
+    optimizeForMobile();
     initNavigation();
     initNavbarScrollEffect();
-    initNavbarTextEffect(); // Make sure this line is here
+    initNavbarTextEffect();
     initCarousel();
     initProgressBar();
     initBlogCarousel();
     initTestimonialCarousel();
-    initGSAPScrollAnimation(); // Add this line
+    initGSAPScrollAnimation();
     initEnquiryModal();
     initLeadershipAnimation();
     initWebsiteTour();
-    activateFooterEnquiryLinks(); // Add this line to activate footer enquiry links
+    activateFooterEnquiryLinks();
+    
+    // Add resize listener for re-optimization
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            detectMobile();
+            optimizeForMobile();
+            // Refresh ScrollTrigger on resize
+            if (window.ScrollTrigger) {
+                ScrollTrigger.refresh();
+            }
+        }, 250);
+    });
 }
 
 // ===== LEADERSHIP SECTION GSAP ANIMATION =====
@@ -5969,10 +6570,10 @@ function initLeadershipAnimation() {
     const mobileDirectorImage = document.getElementById("mobileDirectorImage");
     
     const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024;
 
-    if (!isMobile) {
-        // DESKTOP/TABLET: Use two separate image frames
-        // Hide director frame initially
+    if (!isMobile && !isTablet) {
+        // DESKTOP: Use two separate image frames
         gsap.set(directorFrame, { opacity: 0 });
         gsap.set(chairmanFrame, { opacity: 1 });
 
@@ -6031,8 +6632,8 @@ function initLeadershipAnimation() {
             }
             tl.to({}, { duration: holdPower }); 
         });
-    } else {
-        // MOBILE: Use separate fixed images (existing code remains the same)
+    } else if (isTablet && !isMobile) {
+        // TABLET: Simplified animation
         gsap.set(mobileChairmanImage, { 
             display: "block",
             opacity: 1,
@@ -6043,14 +6644,6 @@ function initLeadershipAnimation() {
             opacity: 0,
             visibility: "visible"
         });
-        
-        // Ensure images are properly loaded
-        if (mobileChairmanImage.querySelector('img')) {
-            mobileChairmanImage.querySelector('img').style.display = "block";
-        }
-        if (mobileDirectorImage.querySelector('img')) {
-            mobileDirectorImage.querySelector('img').style.display = "block";
-        }
         
         const holdPower = 1.2;
         let tl = gsap.timeline({
@@ -6067,7 +6660,6 @@ function initLeadershipAnimation() {
                     const progress = self.progress;
                     
                     if (progress < 0.5) {
-                        // First slide (Chairman) - Show Chairman, hide Director
                         gsap.to(mobileChairmanImage, {
                             opacity: 1,
                             duration: 0.3,
@@ -6079,7 +6671,6 @@ function initLeadershipAnimation() {
                             ease: "power2.out"
                         });
                     } else {
-                        // Second slide (Director) - Show Director, hide Chairman
                         gsap.to(mobileChairmanImage, {
                             opacity: 0,
                             duration: 0.3,
@@ -6095,7 +6686,6 @@ function initLeadershipAnimation() {
             }
         });
 
-        // Animation for the second slide
         const slides = gsap.utils.toArray(".leadership-slide");
         slides.forEach((slide, i) => {
             if (i > 0) {
@@ -6107,19 +6697,92 @@ function initLeadershipAnimation() {
             }
             tl.to({}, { duration: holdPower }); 
         });
+    } else {
+        // MOBILE: Vertical layout instead of horizontal
+        const leadershipSection = document.getElementById('leadershipSection');
+        const horizontalContainer = document.getElementById('leadershipHorizontalContainer');
+        
+        if (leadershipSection && horizontalContainer) {
+            // Change to vertical layout on mobile
+            leadershipSection.style.height = 'auto';
+            horizontalContainer.style.flexDirection = 'column';
+            horizontalContainer.style.width = '100%';
+            horizontalContainer.style.height = 'auto';
+            horizontalContainer.style.transform = 'none !important';
+            
+            // Make slides stack vertically
+            const slides = document.querySelectorAll('.leadership-slide');
+            slides.forEach(slide => {
+                slide.style.width = '100%';
+                slide.style.height = 'auto';
+                slide.style.minHeight = '100vh';
+                slide.style.padding = '60px 20px';
+            });
+            
+            // Show mobile images
+            gsap.set(mobileChairmanImage, { 
+                display: "block",
+                opacity: 1,
+                visibility: "visible",
+                position: 'relative',
+                margin: '0 auto 30px',
+                width: '200px',
+                height: '250px'
+            });
+            
+            gsap.set(mobileDirectorImage, { 
+                display: "block",
+                opacity: 1,
+                visibility: "visible",
+                position: 'relative',
+                margin: '0 auto 30px',
+                width: '200px',
+                height: '250px'
+            });
+            
+            // Hide desktop frames
+            if (chairmanFrame) chairmanFrame.style.display = 'none';
+            if (directorFrame) directorFrame.style.display = 'none';
+            
+            // Adjust content wrapper
+            const contentWrappers = document.querySelectorAll('.leadership-content-wrapper');
+            contentWrappers.forEach(wrapper => {
+                wrapper.style.flexDirection = 'column';
+                wrapper.style.gap = '30px';
+                wrapper.style.paddingTop = '0';
+            });
+            
+            // Adjust description areas
+            const descriptionAreas = document.querySelectorAll('.leadership-description-area');
+            descriptionAreas.forEach(area => {
+                area.style.maxWidth = '100%';
+                area.style.margin = '0';
+                area.style.textAlign = 'center';
+            });
+        }
     }
 
     // Handle window resize
+    let resizeTimeout;
     window.addEventListener('resize', function() {
-        // Reload the page when switching between mobile/desktop
-        const newIsMobile = window.innerWidth <= 768;
-        if ((isMobile && !newIsMobile) || (!isMobile && newIsMobile)) {
-            location.reload();
-        } else {
-            ScrollTrigger.refresh();
-        }
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            const newIsMobile = window.innerWidth <= 768;
+            const newIsTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+            
+            if ((isMobile && !newIsMobile) || (!isMobile && newIsMobile) || 
+                (isTablet && !newIsTablet) || (!isTablet && newIsTablet)) {
+                // Refresh page layout on significant breakpoint changes
+                location.reload();
+            } else {
+                if (window.ScrollTrigger) {
+                    ScrollTrigger.refresh();
+                }
+            }
+        }, 250);
     });
 }
+
 // ===== MAIN WEBSITE LOGIC =====
 function initNavigation() {
     const hamburger = document.getElementById('hamburger');
@@ -6139,11 +6802,9 @@ function initNavigation() {
             { text: 'Curriculum', href: 'Curriculum.html' },
             { text: 'Exam &amp; Result', href: 'timetable.html' },
             { text: 'Calendar', href: 'calendar.html' },
-           
-           
         ],
         'campus-life': [
-             { text: 'Student Counsel', href: 'student_counsel.html' },
+            { text: 'Student Counsel', href: 'student_counsel.html' },
             { text: 'Event', href: 'event.html' },
             { text: 'Athletics', href: 'sport.html' },
             { text: 'Campus Facilities', href: '#' },
@@ -6157,6 +6818,9 @@ function initNavigation() {
         ]
     };
 
+    // Mobile detection
+    const isMobile = window.innerWidth <= 768;
+    
     function closeMenu() {
         hamburger.classList.remove('active');
         overlayMenu.classList.remove('active');
@@ -6165,13 +6829,31 @@ function initNavigation() {
         submenuScreen.innerHTML = '';
     }
 
+    function openMenu() {
+        hamburger.classList.add('active');
+        overlayMenu.classList.add('active');
+        body.classList.add('menu-open');
+        
+        // Mobile-specific adjustments
+        if (isMobile) {
+            // Increase tap targets on mobile
+            document.querySelectorAll('.main-menu-screen a, .submenu-screen a').forEach(item => {
+                item.style.minHeight = '50px';
+                item.style.padding = '15px 10px';
+                item.style.fontSize = '22px';
+            });
+            
+            // Make hamburger more prominent
+            hamburger.style.transform = 'scale(1.3)';
+            hamburger.style.top = '20px';
+        }
+    }
+
     hamburger.addEventListener('click', () => {
         if (hamburger.classList.contains('active')) {
             closeMenu();
         } else {
-            hamburger.classList.add('active');
-            overlayMenu.classList.add('active');
-            body.classList.add('menu-open');
+            openMenu();
         }
     });
 
@@ -6189,20 +6871,27 @@ function initNavigation() {
                 submenuScreen.appendChild(li);
             });
 
-           submenuScreen.querySelectorAll('.close-menu').forEach(link => {
-    link.addEventListener('click', function(e) {
-        // Allow normal navigation for actual links
-        if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
-            closeMenu();
-            // Link will navigate normally
-            return true;
-        }
-        e.preventDefault();
-        closeMenu();
-        console.log('Navigate to:', link.textContent);
-    });
-});
+            submenuScreen.querySelectorAll('.close-menu').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Allow normal navigation for actual links
+                    if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
+                        closeMenu();
+                        // Link will navigate normally
+                        return true;
+                    }
+                    e.preventDefault();
+                    closeMenu();
+                    console.log('Navigate to:', link.textContent);
+                });
+            });
+            
             overlayMenu.classList.add('submenu-active');
+            
+            // Mobile-specific: adjust back button
+            if (isMobile) {
+                backButton.style.fontSize = '20px';
+                backButton.style.padding = '20px 15px';
+            }
         });
     });
 
@@ -6222,6 +6911,25 @@ function initNavigation() {
 
     overlayMenu.addEventListener('click', e => {
         if (e.target === overlayMenu) closeMenu();
+    });
+
+    // Close menu when clicking outside on mobile
+    if (isMobile) {
+        document.addEventListener('click', (e) => {
+            if (overlayMenu.classList.contains('active') && 
+                !overlayMenu.contains(e.target) && 
+                e.target !== hamburger && 
+                !hamburger.contains(e.target)) {
+                closeMenu();
+            }
+        });
+    }
+
+    // Handle escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlayMenu.classList.contains('active')) {
+            closeMenu();
+        }
     });
 }
 
@@ -6261,14 +6969,59 @@ function initCarousel() {
             description: "Modern School's MUN program transforms students into global diplomats, mastering international negotiation and complex geopolitical debate. This platform empowers \"Modernites\" to sharpen their leadership and public speaking skills through professional committee simulations.",
             buttonText: "See Activities"
         },
-       
     ];
+
+    // Mobile detection
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+
+    // Adjust carousel for mobile/tablet
+    if (isMobile) {
+        // Mobile: simplify carousel
+        document.querySelector('.carousel-container').style.height = '350px';
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.style.width = '180px';
+        });
+        document.querySelector('.slide.center').style.width = '220px';
+        document.querySelector('.slide.center .image-container').style.height = '150px';
+    } else if (isTablet) {
+        // Tablet adjustments
+        document.querySelector('.carousel-container').style.height = '400px';
+        document.querySelectorAll('.slide').forEach(slide => {
+            slide.style.width = '250px';
+        });
+        document.querySelector('.slide.center').style.width = '300px';
+    }
 
     updateCarousel();
     updateDescriptionPanel();
     updateProgressBar();
 
-    window.addEventListener('wheel', handleScroll, { passive: false });
+    // Handle both wheel and touch events
+    if (isMobile) {
+        // Mobile: use touch events
+        let touchStartY = 0;
+        
+        document.querySelector('.carousel-track').addEventListener('touchstart', (e) => {
+            touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+        
+        document.querySelector('.carousel-track').addEventListener('touchend', (e) => {
+            const touchEndY = e.changedTouches[0].clientY;
+            const diff = touchStartY - touchEndY;
+            
+            if (Math.abs(diff) > 50) { // Swipe threshold
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        }, { passive: true });
+    } else {
+        // Desktop: use wheel events
+        window.addEventListener('wheel', handleScroll, { passive: false });
+    }
 
     function handleScroll(e) {
         if (carouselCompleted) return;
@@ -6322,6 +7075,14 @@ function initCarousel() {
         panelDescription.textContent = data.description;
         panelButton.textContent = data.buttonText;
         descriptionPanel.classList.add('active');
+        
+        // Mobile: adjust panel
+        if (isMobile) {
+            descriptionPanel.style.width = '90%';
+            descriptionPanel.style.left = '5%';
+            panelHeading.style.fontSize = '1.2rem';
+            panelDescription.style.fontSize = '0.9rem';
+        }
     }
 
     function nextSlide() {
@@ -6373,7 +7134,10 @@ function initCarousel() {
             additionalContent.classList.remove('show');
             scrollHint.textContent = "Scroll up or down to navigate the carousel";
             carouselInstructions.textContent = " creating space for the description panel. Scroll down to move forward and up to move backward through the carousel.";
-            window.addEventListener('wheel', handleScroll, { passive: false });
+            
+            if (!isMobile) {
+                window.addEventListener('wheel', handleScroll, { passive: false });
+            }
         }
     }
 
@@ -6385,7 +7149,10 @@ function initCarousel() {
             additionalContent.classList.add('show');
             scrollHint.textContent = "Normal scrolling is now enabled";
             carouselInstructions.textContent = "You've completed the carousel. You can now scroll normally to view additional content about our school. Scroll back to the top to reactivate the carousel.";
-            window.removeEventListener('wheel', handleScroll);
+            
+            if (!isMobile) {
+                window.removeEventListener('wheel', handleScroll);
+            }
         }, 500);
     }
 
@@ -6401,7 +7168,10 @@ function initCarousel() {
             additionalContent.classList.remove('show');
             scrollHint.textContent = "Scroll up or down to navigate the carousel";
             carouselInstructions.textContent = "The center image is positioned lower, creating space for the description panel. Scroll down to move forward and up to move backward through the carousel.";
-            window.addEventListener('wheel', handleScroll, { passive: false });
+            
+            if (!isMobile) {
+                window.addEventListener('wheel', handleScroll, { passive: false });
+            }
         }
     });
 }
@@ -6455,6 +7225,26 @@ function initBlogCarousel() {
     let blogSlideIndex = 0;
     const TOTAL_BLOG_SLIDES = blogSlides.length;
 
+    // Mobile detection
+    const isMobile = window.innerWidth <= 768;
+    
+    // Adjust for mobile
+    if (isMobile) {
+        // Reduce auto-slide interval
+        window.blogAutoSlideInterval = 8000;
+        
+        // Adjust blog item layout
+        document.querySelectorAll('.blog-item').forEach(item => {
+            item.style.padding = '10px';
+        });
+        
+        document.querySelectorAll('.blog-img').forEach(img => {
+            img.style.height = '180px';
+        });
+    } else {
+        window.blogAutoSlideInterval = 5000;
+    }
+
     // Initialize indicators
     function updateBlogIndicators() {
         indicators.forEach((indicator, i) => {
@@ -6493,11 +7283,27 @@ function initBlogCarousel() {
         modalImage.alt = topic + ' image';
         overlay.classList.add('active');
         document.body.style.overflow = 'hidden';
+        
+        // Adjust modal for mobile
+        if (isMobile) {
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.style.maxWidth = '95%';
+            modalContent.style.padding = '20px 15px';
+            modalTitle.style.fontSize = '1.4rem';
+            modalDescription.style.fontSize = '0.9rem';
+        }
     }
 
     function hideModal() {
         overlay.classList.remove('active');
         document.body.style.overflow = '';
+        
+        // Reset modal styles
+        if (isMobile) {
+            const modalContent = document.querySelector('.modal-content');
+            modalContent.style.maxWidth = '';
+            modalContent.style.padding = '';
+        }
     }
 
     // Event Listener for "Show Full Detail" button
@@ -6513,10 +7319,26 @@ function initBlogCarousel() {
 
             showModal(topic, desc, image);
         });
+        
+        // Also make the entire blog item clickable for touch devices
+        if (isMobile) {
+            button.closest('.blog-item').addEventListener('click', (e) => {
+                if (!e.target.closest('.show-more-btn')) {
+                    const item = button.closest('.blog-item');
+                    const topic = item.dataset.topic;
+                    const desc = item.dataset.desc;
+                    const image = item.dataset.image;
+                    showModal(topic, desc, image);
+                }
+            });
+        }
     });
 
     // Event Listener for "Close" button
     closeModalBtn.addEventListener('click', hideModal);
+    
+    // Also close with touch events
+    closeModalBtn.addEventListener('touchstart', hideModal);
 
     // Close modal when clicking outside
     overlay.addEventListener('click', (e) => {
@@ -6524,26 +7346,90 @@ function initBlogCarousel() {
             hideModal();
         }
     });
+    
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && overlay.classList.contains('active')) {
+            hideModal();
+        }
+    });
+
+    // Add swipe functionality for mobile
+    if (isMobile) {
+        let touchStartY = 0;
+        let touchEndY = 0;
+        
+        overlay.addEventListener('touchstart', (e) => {
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
+        
+        overlay.addEventListener('touchend', (e) => {
+            touchEndY = e.changedTouches[0].screenY;
+            const modalContent = document.querySelector('.modal-content');
+            const modalRect = modalContent.getBoundingClientRect();
+            
+            // If swipe down is significant and started near the top of modal
+            if (touchStartY - touchEndY > 100 && touchStartY < modalRect.top + 100) {
+                hideModal();
+            }
+        }, { passive: true });
+    }
 
     // Initial Blog Setup
     window.addEventListener('resize', updateBlogTrack);
     updateBlogTrack();
 
-    // Auto slide blog carousel every 5 seconds
-    let blogAutoSlide = setInterval(() => {
+    // Auto slide blog carousel
+    window.blogAutoSlide = setInterval(() => {
         moveBlogTo((blogSlideIndex + 1) % TOTAL_BLOG_SLIDES);
-    }, 5000);
+    }, window.blogAutoSlideInterval || 5000);
 
-    // Pause auto-slide on hover
+    // Pause auto-slide on hover/touch
     blogContainer.addEventListener('mouseenter', () => {
-        clearInterval(blogAutoSlide);
+        clearInterval(window.blogAutoSlide);
     });
 
     blogContainer.addEventListener('mouseleave', () => {
-        blogAutoSlide = setInterval(() => {
+        window.blogAutoSlide = setInterval(() => {
             moveBlogTo((blogSlideIndex + 1) % TOTAL_BLOG_SLIDES);
-        }, 5000);
+        }, window.blogAutoSlideInterval || 5000);
     });
+    
+    // Add touch swipe for blog carousel on mobile
+    if (isMobile) {
+        let carouselTouchStartX = 0;
+        let carouselTouchEndX = 0;
+        const SWIPE_THRESHOLD = 50;
+        
+        blogContainer.addEventListener('touchstart', (e) => {
+            carouselTouchStartX = e.changedTouches[0].screenX;
+            // Pause auto-slide during touch
+            clearInterval(window.blogAutoSlide);
+        }, { passive: true });
+        
+        blogContainer.addEventListener('touchend', (e) => {
+            carouselTouchEndX = e.changedTouches[0].screenX;
+            const diff = carouselTouchStartX - carouselTouchEndX;
+            
+            // Determine swipe direction
+            if (Math.abs(diff) > SWIPE_THRESHOLD) {
+                if (diff > 0) {
+                    // Swipe left - next slide
+                    moveBlogTo((blogSlideIndex + 1) % TOTAL_BLOG_SLIDES);
+                } else {
+                    // Swipe right - previous slide
+                    moveBlogTo((blogSlideIndex - 1 + TOTAL_BLOG_SLIDES) % TOTAL_BLOG_SLIDES);
+                }
+            }
+            
+            // Resume auto-slide after touch
+            setTimeout(() => {
+                window.blogAutoSlide = setInterval(() => {
+                    moveBlogTo((blogSlideIndex + 1) % TOTAL_BLOG_SLIDES);
+                }, window.blogAutoSlideInterval || 5000);
+            }, 3000);
+        }, { passive: true });
+    }
 }
 
 // ===== TESTIMONIAL CAROUSEL LOGIC =====
@@ -6556,7 +7442,39 @@ function initTestimonialCarousel() {
 
     let testimonialIndex = 0;
     let testimonialAutoTimer = null;
-    const TESTIMONIAL_AUTO_MS = 6000;
+    const isMobile = window.innerWidth <= 768;
+    const TESTIMONIAL_AUTO_MS = isMobile ? 8000 : 6000;
+
+    // Mobile adjustments
+    if (isMobile) {
+        // Adjust testimonial layout for mobile
+        testimonialSlides.forEach(slide => {
+            const parentPhoto = slide.querySelector('.parent-photo');
+            const testimonialText = slide.querySelector('.testimonial-text');
+            const quoteStart = slide.querySelector('.quote-start');
+            const quoteEnd = slide.querySelector('.quote-end');
+            
+            if (parentPhoto) {
+                parentPhoto.style.width = '100px';
+                parentPhoto.style.height = '100px';
+            }
+            
+            if (testimonialText) {
+                testimonialText.style.fontSize = '16px';
+                testimonialText.style.paddingLeft = '10px';
+            }
+            
+            if (quoteStart) {
+                quoteStart.style.fontSize = '60px';
+                quoteStart.style.left = '5px';
+                quoteStart.style.top = '-15px';
+            }
+            
+            if (quoteEnd) {
+                quoteEnd.style.fontSize = '60px';
+            }
+        });
+    }
 
     // Event Listeners for controls
     testimonialPrevBtn.addEventListener('click', () => {
@@ -6607,6 +7525,32 @@ function initTestimonialCarousel() {
         testimonialStartAuto();
     }
 
+    // Add touch swipe for mobile
+    if (isMobile) {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const SWIPE_THRESHOLD = 50;
+        
+        testimonialCarousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            clearInterval(testimonialAutoTimer);
+        }, { passive: true });
+        
+        testimonialCarousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > SWIPE_THRESHOLD) {
+                if (diff > 0) {
+                    testimonialNext();
+                } else {
+                    testimonialPrev();
+                }
+            }
+            testimonialStartAuto();
+        }, { passive: true });
+    }
+
     // Initial setup
     window.addEventListener('resize', setTestimonialSlideWidths);
     setTestimonialSlideWidths();
@@ -6621,8 +7565,48 @@ function initTestimonialCarousel() {
 }
 
 // ===== GSAP SCROLL ANIMATION LOGIC =====
-// ===== GSAP SCROLL ANIMATION LOGIC =====
 function initGSAPScrollAnimation() {
+    // Check if mobile - disable complex animations on mobile
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024;
+    
+    if (isMobile) {
+        // Simplified mobile version - disable complex GSAP
+        const scrollArea = document.querySelector('.scroll-area');
+        if (scrollArea) {
+            scrollArea.style.height = 'auto';
+            scrollArea.style.minHeight = '100vh';
+            
+            // Create mobile-friendly content
+            if (!document.querySelector('.mobile-scroll-content')) {
+                const mobileContent = document.createElement('div');
+                mobileContent.className = 'mobile-scroll-content';
+                mobileContent.innerHTML = `
+                    <div style="padding: 60px 20px; text-align: center;">
+                        <h2 style="color: var(--text-maroon); font-size: 2rem; margin-bottom: 30px;">
+                            Forging a highly significant impact
+                        </h2>
+                        <div style="margin: 40px 0;">
+                            <h3 style="color: var(--text-dark-maroon); font-size: 1.5rem; margin-bottom: 20px;">
+                                Excellence beyond the boundaries
+                            </h3>
+                            <p style="color: var(--text-light-maroon); line-height: 1.6; margin-bottom: 30px;">
+                                Setting milestones in education standards through discipline, courtesy, efficiency, and care.
+                            </p>
+                        </div>
+                        <div style="background: var(--primary-maroon); color: white; padding: 30px; border-radius: 10px; margin: 40px 0;">
+                            <h4 style="font-size: 1.8rem; margin-bottom: 15px;">Education beyond boundaries</h4>
+                            <p>Forging a legacy of excellence in education since 1973</p>
+                        </div>
+                    </div>
+                `;
+                scrollArea.appendChild(mobileContent);
+            }
+        }
+        return; // Skip complex GSAP animations on mobile
+    }
+    
+    // Only run complex GSAP on desktop/tablet
     gsap.registerPlugin(ScrollTrigger);
 
     // Create curtain element for AFTER timeline completion
@@ -6638,7 +7622,7 @@ function initGSAPScrollAnimation() {
     const dx3_to_target = targetX - 0;
     const dx4_to_target = targetX - 250;
     const maxDistance = 60;
-    const scene1Duration = 13000;
+    const scene1Duration = isTablet ? 10000 : 13000; // Shorter on tablet
 
     // Create the main animation timeline
     let tl = gsap.timeline({
@@ -6646,7 +7630,7 @@ function initGSAPScrollAnimation() {
             trigger: ".scroll-area",
             start: "top top",
             end: "+=" + scene1Duration,
-            scrub: 1,
+            scrub: isTablet ? 0.5 : 1, // Slower scrub on tablet
             pin: ".sticky-container",
             pinSpacing: false,
             anticipatePin: 1,
@@ -6654,332 +7638,348 @@ function initGSAPScrollAnimation() {
                 curtain.style.display = 'none';
             },
             onLeaveBack: () => {
-                // Keep it simple like your working code
                 curtain.style.display = 'none';
             }
         }
     });
 
-    // 0.0 - 1.0: Image collapse
-    tl.to(".header-reveal", { opacity: 0, y: -50, duration: 0.5, ease: "power1.in" }, 0)
-    tl.to(".image-1", { x: dx1_to_target, rotationY: 0, z: -10, opacity: 0, ease: "power1.inOut" }, 0)
-    tl.to(".image-2", { x: dx2_to_target, rotationY: 0, z: -20, opacity: 0, ease: "power1.inOut" }, 0)
-    tl.to(".image-3", { x: dx3_to_target, rotationY: 0, z: -30, opacity: 0, ease: "power1.inOut" }, 0)
-    tl.to(".image-4", { x: dx4_to_target, rotationY: 0, z: -40, opacity: 0, ease: "power1.inOut" }, 0)
-    tl.to(".image-5", { rotationY: 0, z: 0, ease: "power1.inOut" }, 0)
-    tl.to(".arc-container", { x: "10%", opacity: 0, ease: "power2.inOut", duration: 1.0 }, 0)
+    // Simplified animation for tablet
+    if (isTablet) {
+        // Tablet: simpler animations
+        tl.to(".header-reveal", { opacity: 0, y: -30, duration: 0.3, ease: "power1.in" }, 0)
+        tl.to(".arc-container", { opacity: 0, duration: 0.5 }, 0)
+        tl.to(".text-reveal-container", { opacity: 1, duration: 0.5 }, 0.3)
+        tl.to(".milestones-scene", { x: "0%", duration: 0.3 }, 1.0)
+        tl.to("#progressHeader", { opacity: 1, visibility: "visible", duration: 0.3 }, 2.0)
+        tl.to(".final-text-dot-container", { opacity: 1, duration: 0.3 }, 3.0)
+        tl.to(".final-dot", { opacity: 0.9, duration: 0.3 }, 4.0)
+    } else {
+        // Desktop: full animations
+        // 0.0 - 1.0: Image collapse
+        tl.to(".header-reveal", { opacity: 0, y: -50, duration: 0.5, ease: "power1.in" }, 0)
+        tl.to(".image-1", { x: dx1_to_target, rotationY: 0, z: -10, opacity: 0, ease: "power1.inOut" }, 0)
+        tl.to(".image-2", { x: dx2_to_target, rotationY: 0, z: -20, opacity: 0, ease: "power1.inOut" }, 0)
+        tl.to(".image-3", { x: dx3_to_target, rotationY: 0, z: -30, opacity: 0, ease: "power1.inOut" }, 0)
+        tl.to(".image-4", { x: dx4_to_target, rotationY: 0, z: -40, opacity: 0, ease: "power1.inOut" }, 0)
+        tl.to(".image-5", { rotationY: 0, z: 0, ease: "power1.inOut" }, 0)
+        tl.to(".arc-container", { x: "10%", opacity: 0, ease: "power2.inOut", duration: 1.0 }, 0)
 
-    // 0.5 - 2.5: Excellence reveal
-    tl.to(".text-reveal-container", {
-        opacity: 1,
-        duration: 1.0,
-        ease: "power2.out"
-    }, 0.5)
+        // 0.5 - 2.5: Excellence reveal
+        tl.to(".text-reveal-container", {
+            opacity: 1,
+            duration: 1.0,
+            ease: "power2.out"
+        }, 0.5)
 
-    tl.to(".text-reveal-container .word", {
-        x: 0,
-        opacity: 1,
-        stagger: 0.2,
-        duration: 0.6,
-        ease: "power2.out"
-    }, 0.5)
+        tl.to(".text-reveal-container .word", {
+            x: 0,
+            opacity: 1,
+            stagger: 0.2,
+            duration: 0.6,
+            ease: "power2.out"
+        }, 0.5)
 
-    // 2.0 - 3.0: Excellence fades out
-    tl.to(".scene1-text", {
-        x: -200,
-        opacity: 0,
-        duration: 0.8,
-        ease: "power2.in"
-    }, 2.0)
-
-    // 2.5 - 3.0: Milestones scene slides in
-    tl.to(".milestones-scene", {
-        x: "0%",
-        duration: 0.5,
-        ease: "power2.out"
-    }, 2.5)
-
-    // 3.0 - 4.0: Milestones text separates
-    tl.to(".scene2-small-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
-    tl.to(".scene2-left-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
-    tl.to(".scene2-right-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
-    tl.to(".scene2-sub-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
-
-    // 4.0 - 4.3: Semi-transparent Maroon Dot appears
-    tl.to("#animatedDot", { 
-        opacity: 0.95,
-        duration: 0.3, 
-        ease: "power2.out" 
-    }, 4.0)
-
-    // 4.3 - 5.8: Dot expands
-    tl.to("#animatedDot", {
-        scale: 200,
-        duration: 1.5,
-        ease: "power1.inOut"
-    }, 4.3)
-
-    // 5.0 - 5.8: Text fades out as dot expands
-    tl.to([".scene2-small-text", ".scene2-left-text", ".scene2-right-text", ".scene2-sub-text", ".decoration"],
-        {
+        // 2.0 - 3.0: Excellence fades out
+        tl.to(".scene1-text", {
+            x: -200,
             opacity: 0,
             duration: 0.8,
-            ease: "power2.out"
-        }, 5.0)
+            ease: "power2.in"
+        }, 2.0)
 
-    // 5.8 - 6.3: Progress bar appears
-    tl.to("#progressHeader", {
-        opacity: 1,
-        visibility: "visible",
-        duration: 0.5,
-        ease: "power2.out"
-    }, 5.8)
-
-    // 6.3 - 7.3: Animate through the progress bar steps
-    // Step 1
-    tl.call(() => {
-        const stepPoints = document.querySelectorAll('.step-point');
-        const fillLine = document.getElementById('fillLine');
-        const totalSteps = stepPoints.length;
-        
-        let currentStep = Math.max(1, Math.min(totalSteps, 1));
-        
-        stepPoints.forEach((point) => {
-            const index = parseInt(point.getAttribute('data-index'));
-            
-            point.classList.remove('active');
-            point.classList.remove('completed');
-
-            if (index < currentStep) {
-                point.classList.add('completed');
-            } else if (index === currentStep) {
-                point.classList.add('active');
-                point.classList.add('completed');
-            }
-        });
-
-        if (totalSteps > 1) {
-            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            fillLine.style.width = `${percentage}%`;
-        }
-    }, null, 6.3)
-    
-    // Step 2
-    tl.call(() => {
-        const stepPoints = document.querySelectorAll('.step-point');
-        const fillLine = document.getElementById('fillLine');
-        const totalSteps = stepPoints.length;
-        
-        let currentStep = Math.max(1, Math.min(totalSteps, 2));
-        
-        stepPoints.forEach((point) => {
-            const index = parseInt(point.getAttribute('data-index'));
-            
-            point.classList.remove('active');
-            point.classList.remove('completed');
-
-            if (index < currentStep) {
-                point.classList.add('completed');
-            } else if (index === currentStep) {
-                point.classList.add('active');
-                point.classList.add('completed');
-            }
-        });
-
-        if (totalSteps > 1) {
-            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            fillLine.style.width = `${percentage}%`;
-        }
-    }, null, 6.6)
-    
-    // Step 3
-    tl.call(() => {
-        const stepPoints = document.querySelectorAll('.step-point');
-        const fillLine = document.getElementById('fillLine');
-        const totalSteps = stepPoints.length;
-        
-        let currentStep = Math.max(1, Math.min(totalSteps, 3));
-        
-        stepPoints.forEach((point) => {
-            const index = parseInt(point.getAttribute('data-index'));
-            
-            point.classList.remove('active');
-            point.classList.remove('completed');
-
-            if (index < currentStep) {
-                point.classList.add('completed');
-            } else if (index === currentStep) {
-                point.classList.add('active');
-                point.classList.add('completed');
-            }
-        });
-
-        if (totalSteps > 1) {
-            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            fillLine.style.width = `${percentage}%`;
-        }
-    }, null, 6.9)
-    
-    // Step 4
-    tl.call(() => {
-        const stepPoints = document.querySelectorAll('.step-point');
-        const fillLine = document.getElementById('fillLine');
-        const totalSteps = stepPoints.length;
-        
-        let currentStep = Math.max(1, Math.min(totalSteps, 4));
-        
-        stepPoints.forEach((point) => {
-            const index = parseInt(point.getAttribute('data-index'));
-            
-            point.classList.remove('active');
-            point.classList.remove('completed');
-
-            if (index < currentStep) {
-                point.classList.add('completed');
-            } else if (index === currentStep) {
-                point.classList.add('active');
-                point.classList.add('completed');
-            }
-        });
-
-        if (totalSteps > 1) {
-            const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
-            fillLine.style.width = `${percentage}%`;
-        }
-    }, null, 7.2)
-
-    // 7.3 - 7.8: Progress bar fades out
-    tl.to("#progressHeader", {
-        opacity: 0,
-        visibility: "hidden",
-        duration: 0.5,
-        ease: "power2.in"
-    }, 7.3)
-
-    // 7.8 - 8.3: Dot shrinks back
-    tl.to("#animatedDot", {
-        scale: 1,
-        duration: 0.5,
-        ease: "power1.inOut",
-        opacity: 0.95
-    }, 7.8)
-
-    // 8.3 - 8.8: Move dot to position next to "saying" in parents text
-    tl.to("#animatedDot", {
-        opacity: 0,
-        duration: 0.5,
-        ease: "power2.in"
-    }, 8.3)
-
-    // 8.8 - 9.3: Parents text fades in
-    const parentsTextContainer = document.getElementById('parentsTextContainer');
-    if (parentsTextContainer) {
-        tl.to("#parentsTextContainer", {
-            opacity: 1,
-            y: 0,
+        // 2.5 - 3.0: Milestones scene slides in
+        tl.to(".milestones-scene", {
+            x: "0%",
             duration: 0.5,
             ease: "power2.out"
-        }, 8.8)
-    }
+        }, 2.5)
 
-    // 9.3 - 10.3: Hold the scene
-    tl.to({}, { duration: 1.0 }, 9.3)
+        // 3.0 - 4.0: Milestones text separates
+        tl.to(".scene2-small-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
+        tl.to(".scene2-left-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
+        tl.to(".scene2-right-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
+        tl.to(".scene2-sub-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
 
-    // 10.3 - 10.8: Parents text fades out
-    if (parentsTextContainer) {
-        tl.to("#parentsTextContainer", {
+        // 4.0 - 4.3: Semi-transparent Maroon Dot appears
+        tl.to("#animatedDot", { 
+            opacity: 0.95,
+            duration: 0.3, 
+            ease: "power2.out" 
+        }, 4.0)
+
+        // 4.3 - 5.8: Dot expands
+        tl.to("#animatedDot", {
+            scale: 200,
+            duration: 1.5,
+            ease: "power1.inOut"
+        }, 4.3)
+
+        // 5.0 - 5.8: Text fades out as dot expands
+        tl.to([".scene2-small-text", ".scene2-left-text", ".scene2-right-text", ".scene2-sub-text", ".decoration"],
+            {
+                opacity: 0,
+                duration: 0.8,
+                ease: "power2.out"
+            }, 5.0)
+
+        // 5.8 - 6.3: Progress bar appears
+        tl.to("#progressHeader", {
+            opacity: 1,
+            visibility: "visible",
+            duration: 0.5,
+            ease: "power2.out"
+        }, 5.8)
+
+        // 6.3 - 7.3: Animate through the progress bar steps
+        // Step 1
+        tl.call(() => {
+            const stepPoints = document.querySelectorAll('.step-point');
+            const fillLine = document.getElementById('fillLine');
+            const totalSteps = stepPoints.length;
+            
+            let currentStep = Math.max(1, Math.min(totalSteps, 1));
+            
+            stepPoints.forEach((point) => {
+                const index = parseInt(point.getAttribute('data-index'));
+                
+                point.classList.remove('active');
+                point.classList.remove('completed');
+
+                if (index < currentStep) {
+                    point.classList.add('completed');
+                } else if (index === currentStep) {
+                    point.classList.add('active');
+                    point.classList.add('completed');
+                }
+            });
+
+            if (totalSteps > 1) {
+                const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                fillLine.style.width = `${percentage}%`;
+            }
+        }, null, 6.3)
+        
+        // Step 2
+        tl.call(() => {
+            const stepPoints = document.querySelectorAll('.step-point');
+            const fillLine = document.getElementById('fillLine');
+            const totalSteps = stepPoints.length;
+            
+            let currentStep = Math.max(1, Math.min(totalSteps, 2));
+            
+            stepPoints.forEach((point) => {
+                const index = parseInt(point.getAttribute('data-index'));
+                
+                point.classList.remove('active');
+                point.classList.remove('completed');
+
+                if (index < currentStep) {
+                    point.classList.add('completed');
+                } else if (index === currentStep) {
+                    point.classList.add('active');
+                    point.classList.add('completed');
+                }
+            });
+
+            if (totalSteps > 1) {
+                const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                fillLine.style.width = `${percentage}%`;
+            }
+        }, null, 6.6)
+        
+        // Step 3
+        tl.call(() => {
+            const stepPoints = document.querySelectorAll('.step-point');
+            const fillLine = document.getElementById('fillLine');
+            const totalSteps = stepPoints.length;
+            
+            let currentStep = Math.max(1, Math.min(totalSteps, 3));
+            
+            stepPoints.forEach((point) => {
+                const index = parseInt(point.getAttribute('data-index'));
+                
+                point.classList.remove('active');
+                point.classList.remove('completed');
+
+                if (index < currentStep) {
+                    point.classList.add('completed');
+                } else if (index === currentStep) {
+                    point.classList.add('active');
+                    point.classList.add('completed');
+                }
+            });
+
+            if (totalSteps > 1) {
+                const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                fillLine.style.width = `${percentage}%`;
+            }
+        }, null, 6.9)
+        
+        // Step 4
+        tl.call(() => {
+            const stepPoints = document.querySelectorAll('.step-point');
+            const fillLine = document.getElementById('fillLine');
+            const totalSteps = stepPoints.length;
+            
+            let currentStep = Math.max(1, Math.min(totalSteps, 4));
+            
+            stepPoints.forEach((point) => {
+                const index = parseInt(point.getAttribute('data-index'));
+                
+                point.classList.remove('active');
+                point.classList.remove('completed');
+
+                if (index < currentStep) {
+                    point.classList.add('completed');
+                } else if (index === currentStep) {
+                    point.classList.add('active');
+                    point.classList.add('completed');
+                }
+            });
+
+            if (totalSteps > 1) {
+                const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                fillLine.style.width = `${percentage}%`;
+            }
+        }, null, 7.2)
+
+        // 7.3 - 7.8: Progress bar fades out
+        tl.to("#progressHeader", {
             opacity: 0,
-            y: 0,
+            visibility: "hidden",
             duration: 0.5,
             ease: "power2.in"
-        }, 10.3)
+        }, 7.3)
+
+        // 7.8 - 8.3: Dot shrinks back
+        tl.to("#animatedDot", {
+            scale: 1,
+            duration: 0.5,
+            ease: "power1.inOut",
+            opacity: 0.95
+        }, 7.8)
+
+        // 8.3 - 8.8: Move dot to position next to "saying" in parents text
+        tl.to("#animatedDot", {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.in"
+        }, 8.3)
+
+        // 8.8 - 9.3: Parents text fades in
+        const parentsTextContainer = document.getElementById('parentsTextContainer');
+        if (parentsTextContainer) {
+            tl.to("#parentsTextContainer", {
+                opacity: 1,
+                y: 0,
+                duration: 0.5,
+                ease: "power2.out"
+            }, 8.8)
+        }
+
+        // 9.3 - 10.3: Hold the scene
+        tl.to({}, { duration: 1.0 }, 9.3)
+
+        // 10.3 - 10.8: Parents text fades out
+        if (parentsTextContainer) {
+            tl.to("#parentsTextContainer", {
+                opacity: 0,
+                y: 0,
+                duration: 0.5,
+                ease: "power2.in"
+            }, 10.3)
+        }
+
+        // 10.8 - 11.3: Bring back the original dot
+        tl.to("#animatedDot", {
+            opacity: 0.95,
+            duration: 0.5,
+            ease: "power2.out"
+        }, 10.8)
+
+        // 11.3 - 11.8: Final text with dot appears
+        tl.to(".final-text-dot-container", {
+            opacity: 1,
+            duration: 0.5,
+            ease: "power2.out"
+        }, 11.3)
+
+        // 11.8 - 12.3: Hold final text with dot
+        tl.to({}, { duration: 0.5 }, 11.8)
+
+        // 12.3 - 12.8: Final text with dot fades out, top left dot appears
+        tl.to(".final-text-dot-container", {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.in"
+        }, 12.3)
+
+        tl.to("#animatedDot", {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.in"
+        }, 12.3)
+
+        tl.to(".final-dot", {
+            opacity: 0.9,
+            scale: 1,
+            duration: 0.5,
+            ease: "power2.out",
+            backgroundColor: "rgba(128, 0, 0, 0.9)"
+        }, 12.3)
+
+        // CRITICAL FIX: DON'T fade out the milestones scene
+        // 12.8 - 13.3: Keep milestones scene visible but don't change its opacity
+        tl.to({}, { duration: 0.5 }, 12.8) // Just empty duration, no opacity change
+
+        // CREATE CURTAIN EFFECT AFTER TIMELINE COMPLETION
+        let curtainTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".scroll-area",
+                start: `+=${scene1Duration - 1000}`,
+                end: "+=4000",
+                scrub: 1,
+                pin: ".sticky-container",
+                onEnter: () => {
+                    curtain.style.display = 'block';
+                    gsap.set(curtain, { x: "100%" });
+                },
+                onLeaveBack: () => {
+                    curtain.style.display = 'none';
+                }
+            }
+        });
+
+        curtainTl.to(curtain, {
+            x: "0%",
+            duration: 1.0,
+            ease: "power2.out"
+        }, 0)
+
+        curtainTl.to(curtain, {
+            x: "-100%",
+            duration: 1.0,
+            ease: "power2.in"
+        }, 3.0)
     }
 
-    // 10.8 - 11.3: Bring back the original dot
-    tl.to("#animatedDot", {
-        opacity: 0.95,
-        duration: 0.5,
-        ease: "power2.out"
-    }, 10.8)
-
-    // 11.3 - 11.8: Final text with dot appears
-    tl.to(".final-text-dot-container", {
-        opacity: 1,
-        duration: 0.5,
-        ease: "power2.out"
-    }, 11.3)
-
-    // 11.8 - 12.3: Hold final text with dot
-    tl.to({}, { duration: 0.5 }, 11.8)
-
-    // 12.3 - 12.8: Final text with dot fades out, top left dot appears
-    tl.to(".final-text-dot-container", {
-        opacity: 0,
-        duration: 0.5,
-        ease: "power2.in"
-    }, 12.3)
-
-    tl.to("#animatedDot", {
-        opacity: 0,
-        duration: 0.5,
-        ease: "power2.in"
-    }, 12.3)
-
-    tl.to(".final-dot", {
-        opacity: 0.9,
-        scale: 1,
-        duration: 0.5,
-        ease: "power2.out",
-        backgroundColor: "rgba(128, 0, 0, 0.9)"
-    }, 12.3)
-
-    // CRITICAL FIX: DON'T fade out the milestones scene
-    // 12.8 - 13.3: Keep milestones scene visible but don't change its opacity
-    tl.to({}, { duration: 0.5 }, 12.8) // Just empty duration, no opacity change
-
-    // CREATE CURTAIN EFFECT AFTER TIMELINE COMPLETION
-    let curtainTl = gsap.timeline({
-        scrollTrigger: {
-            trigger: ".scroll-area",
-            start: `+=${scene1Duration - 1000}`,
-            end: "+=4000",
-            scrub: 1,
-            pin: ".sticky-container",
-            onEnter: () => {
-                curtain.style.display = 'block';
-                gsap.set(curtain, { x: "100%" });
-            },
-            onLeaveBack: () => {
-                curtain.style.display = 'none';
-            }
-        }
-    });
-
-    curtainTl.to(curtain, {
-        x: "0%",
-        duration: 1.0,
-        ease: "power2.out"
-    }, 0)
-
-    curtainTl.to(curtain, {
-        x: "-100%",
-        duration: 1.0,
-        ease: "power2.in"
-    }, 3.0)
-
     // Create separate ScrollTrigger for the maroon section
-    gsap.to(".timeline-scroll-section", {
-        scrollTrigger: {
-            trigger: ".timeline-scroll-section",
-            start: "top 80%",
-            end: "bottom top",
-            scrub: 1,
-            toggleActions: "play none none reverse"
-        },
-        opacity: 1,
-        duration: 1
-    });
+    if (!isMobile) {
+        gsap.to(".timeline-scroll-section", {
+            scrollTrigger: {
+                trigger: ".timeline-scroll-section",
+                start: "top 80%",
+                end: "bottom top",
+                scrub: isTablet ? 0.5 : 1,
+                toggleActions: "play none none reverse"
+            },
+            opacity: 1,
+            duration: 1
+        });
+    }
 }
+
+// ===== ENQUIRY MODAL =====
 function initEnquiryModal() {
     const enquiryBtn = document.querySelector('.admission-btn');
     const enquiryModal = document.getElementById('enquiryModal');
@@ -6990,6 +7990,9 @@ function initEnquiryModal() {
     const submitEnquiryBtn = document.getElementById('submitEnquiryBtn');
     const loadingSpinner = submitEnquiryBtn.querySelector('.loading-spinner');
     const btnText = submitEnquiryBtn.querySelector('.btn-text');
+
+    // Mobile detection
+    const isMobile = window.innerWidth <= 768;
 
     // Open modal when clicking enquiry button
     enquiryBtn.addEventListener('click', (e) => {
@@ -7062,6 +8065,29 @@ function initEnquiryModal() {
         // Allow only numbers and limit to 10 digits
         e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
     });
+
+    // Mobile-specific adjustments
+    if (isMobile) {
+        // Make form inputs more touch-friendly
+        const inputs = enquiryFormElement.querySelectorAll('input, select, textarea');
+        inputs.forEach(input => {
+            input.style.fontSize = '16px'; // Prevents iOS zoom
+            input.style.padding = '12px';
+            input.style.minHeight = '44px'; // Minimum touch target size
+        });
+        
+        // Adjust modal for mobile
+        enquiryModal.style.alignItems = 'flex-start';
+        enquiryModal.style.paddingTop = '40px';
+        
+        const modalContent = document.querySelector('.enquiry-modal-content');
+        if (modalContent) {
+            modalContent.style.maxHeight = '85vh';
+            modalContent.style.overflowY = 'auto';
+            modalContent.style.marginTop = 'auto';
+            modalContent.style.marginBottom = 'auto';
+        }
+    }
 
     function openEnquiryModal() {
         enquiryModal.classList.add('active');
@@ -7160,7 +8186,6 @@ function initEnquiryModal() {
 }
 
 // ===== WEBSITE TOUR LOGIC =====
-// ===== WEBSITE TOUR LOGIC =====
 function initWebsiteTour() {
     const introTourModal = document.getElementById('intro-tour-modal');
     const tourSelectionModal = document.getElementById('tour-selection-modal');
@@ -7173,6 +8198,9 @@ function initWebsiteTour() {
     let isUserActive = false;
     let lastInteractionTime = Date.now();
     let isTourActive = false;
+
+    // Mobile detection
+    const isMobile = window.innerWidth <= 768;
 
     // Topic descriptions for the tour
     const tourTopics = {
@@ -7323,6 +8351,16 @@ function initWebsiteTour() {
         
         // Add a class to body to prevent scrolling
         document.body.classList.add('tour-modal-open');
+        
+        // Mobile adjustments
+        if (isMobile) {
+            const modalContent = introTourModal.querySelector('.tour-modal-content');
+            if (modalContent) {
+                modalContent.style.width = '90%';
+                modalContent.style.maxWidth = '400px';
+                modalContent.style.padding = '30px 20px';
+            }
+        }
     }
 
     // Initialize inactivity detection
@@ -7386,6 +8424,23 @@ function initWebsiteTour() {
     const startTourBtn = document.getElementById('start-selected-tour');
     const tourOptionBtns = document.querySelectorAll('.tour-option-btn-compact');
 
+    // Mobile adjustments for tour selection
+    if (isMobile) {
+        const tourSheet = tourSelectionModal.querySelector('.tour-modal-sheet');
+        if (tourSheet) {
+            tourSheet.style.maxWidth = '100%';
+            tourSheet.style.borderRadius = '20px 20px 0 0';
+        }
+        
+        // Adjust grid for mobile
+        const tourGrid = document.querySelector('.tour-options-grid-compact');
+        if (tourGrid) {
+            tourGrid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+            tourGrid.style.gap = '8px';
+            tourGrid.style.maxHeight = '300px';
+        }
+    }
+
     if (tourOptionBtns.length > 0 && startTourBtn) {
         tourOptionBtns.forEach(btn => {
             btn.addEventListener('click', () => {
@@ -7397,6 +8452,12 @@ function initWebsiteTour() {
                 // Store the link in a data attribute on the button
                 startTourBtn.dataset.link = btn.dataset.link;
             });
+            
+            // Mobile: add touch feedback
+            if (isMobile) {
+                btn.style.minHeight = '70px';
+                btn.style.padding = '12px 8px';
+            }
         });
 
         startTourBtn.addEventListener('click', () => {
@@ -7439,6 +8500,15 @@ function initWebsiteTour() {
                 </button>
             `;
             
+            // Mobile adjustments
+            if (isMobile) {
+                tourContent.querySelector('h2').style.fontSize = '1.5rem';
+                tourContent.querySelector('p').style.fontSize = '1rem';
+                tourContent.querySelector('.tour-navigate-btn').style.padding = '15px 20px';
+                tourContent.querySelector('.tour-navigate-btn').style.fontSize = '1rem';
+                tourContent.querySelector('.tour-navigate-btn').style.minHeight = '50px';
+            }
+            
             // Add click event to navigate button
             const navigateBtn = tourContent.querySelector('.tour-navigate-btn');
             if (navigateBtn) {
@@ -7457,6 +8527,16 @@ function initWebsiteTour() {
         // Show tour view
         activeTourView.style.display = 'flex';
         isTourActive = true;
+        
+        // Mobile adjustments for tour view
+        if (isMobile) {
+            const tourControls = document.querySelector('.tour-controls');
+            if (tourControls) {
+                tourControls.style.flexDirection = 'column';
+                tourControls.style.width = '90%';
+                tourControls.style.left = '5%';
+            }
+        }
     }
 
     // Tour View Controls
@@ -7547,11 +8627,29 @@ function initWebsiteTour() {
             box-shadow: 0 2px 10px rgba(0,0,0,0.3);
         `;
         
+        // Mobile adjustments
+        if (isMobile) {
+            tourNav.style.flexDirection = 'column';
+            tourNav.style.right = '5px';
+            tourNav.style.top = '5px';
+            tourNav.style.padding = '8px 10px';
+            tourNav.style.gap = '5px';
+        }
+        
         tourNav.innerHTML = `
             <span style="margin-right: 10px;">Tour: ${tourTopics[topic]?.title || topic}</span>
             <button id="backToTour" style="background: white; color: var(--primary-maroon); border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Back to Tour</button>
             <button id="endTour" style="background: transparent; color: white; border: 1px solid white; padding: 5px 10px; border-radius: 3px; cursor: pointer;">End Tour</button>
         `;
+        
+        // Mobile button adjustments
+        if (isMobile) {
+            tourNav.querySelectorAll('button').forEach(btn => {
+                btn.style.padding = '8px 12px';
+                btn.style.minHeight = '36px';
+                btn.style.fontSize = '14px';
+            });
+        }
         
         document.body.appendChild(tourNav);
         
@@ -7578,6 +8676,24 @@ function initWebsiteTour() {
         checkTourReturn();
     }, 1000); // Wait 1 second after page loads
 }
+
+// ===== ACTIVATE FOOTER ENQUIRY LINKS =====
+function activateFooterEnquiryLinks() {
+    const footerEnquiryLinks = document.querySelectorAll('a[href="#enquiry-form"], .footer-col a[href="#"]');
+    
+    footerEnquiryLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Find the enquiry modal trigger
+            const enquiryBtn = document.querySelector('.admission-btn');
+            if (enquiryBtn) {
+                enquiryBtn.click();
+            }
+        });
+    });
+}
+
 // ===== INITIALIZE ON DOM CONTENT LOADED =====
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize navbar scroll effect immediately
@@ -7589,6 +8705,16 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
         initAllComponents();
     }
+});
+
+// Add resize listener for performance optimization
+let performanceResizeTimer;
+window.addEventListener('resize', function() {
+    clearTimeout(performanceResizeTimer);
+    performanceResizeTimer = setTimeout(() => {
+        optimizeForMobile();
+        detectMobile();
+    }, 250);
 });
 </script>
 </body>
