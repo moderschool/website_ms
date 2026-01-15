@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School, Kota</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fefaf0; /* Cream background */
+            color: #5d2a2a; /* Maroon font color */
+            line-height: 1.6;
+        }
+
+        /* Top Navbar & Fixed Elements */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease; 
+        }
+
+        body.menu-open .navbar {
+            transform: translateY(-100%);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: space-between;
+            position: fixed; 
+            top: 25px; 
+            left: 20px;
+            z-index: 1002; 
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #5d2a2a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .logo { 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .logo img { height: 40px; width: auto; }
+     
+
+        .admission-btn { 
+            background-color: transparent; 
+            color: #5d2a2a; 
+            border: 2px solid #5d2a2a; 
+            padding: 8px 18px; 
+            border-radius: 20px; 
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1002;
+        }
+        .admission-btn:hover { background-color: #5d2a2a; color: white; }
+
+        /* Full Page Overlay Menu CONTAINER */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1001; 
+            transform: translateX(-100%); /* Start hidden off-screen left */
+            transition: transform 0.5s ease;
+            overflow: hidden; /* Important for horizontal transitions */
+        }
+
+        .overlay-menu.active {
+            transform: translateX(0); /* Slide in from the left */
+        }
+
+        /* Menu Wrapper for Drill-Down Effect */
+        .menu-wrapper {
+            width: 100%; /* Changed from 200% to 100% */
+            height: 100%;
+            display: flex; /* Makes main and sub-menu components line up horizontally */
+            transition: transform 0.4s ease-in-out;
+            margin-top: 80px;
+        }
+
+        /* State when a submenu is active */
+        .overlay-menu.submenu-active .menu-wrapper {
+            transform: translateX(-100%); /* Slide the main menu out (left) and the submenu in (center) */
+        }
+        
+        /* Main Menu and Submenu Screen */
+        .main-menu-screen, .submenu-screen {
+            width: 100%; /* Each takes full width of the wrapper */
+            height: 100%;
+            list-style: none;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0; /* Prevents shrinking */
+            overflow-y: auto; /* Allows scrolling if needed */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the menu items horizontally */
+        }
+
+        /* BACK BUTTON Container - Now positioned at top of submenu */
+        .submenu-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 1003;
+        }
+        
+        .overlay-menu.submenu-active .submenu-header {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #5d2a2a;
+            font-size: 28px; /* Same font size as main menu */
+            font-weight: 600;
+            cursor: pointer;
+            padding: 15px 10px;
+            border-radius: 5px;
+            transition: color 0.3s;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            color: #8b4513; /* Same hover color as menu items */
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+
+        /* Menu Item Styles - Shared */
+        .main-menu-screen li, .submenu-screen li {
+            margin: 0;
+            padding: 0;
+            width: 100%; /* Ensure full width for centering */
+            display: flex;
+            justify-content: center; /* Center the links */
+        }
+        
+        .main-menu-screen a, .submenu-screen a {
+            text-decoration: none;
+            color: #5d2a2a;
+            font-weight: 600;
+            display: block; 
+            padding: 15px 10px;
+            margin-bottom: 5px; /* Spacing between menu items */
+            transition: color 0.3s;
+            position: relative;
+            width: 100%; /* Take full width of the container */
+            max-width: 400px; /* Limit maximum width for better appearance */
+        }
+        
+        .main-menu-screen a, .submenu-screen a { 
+            font-size: 28px; 
+            text-align: center; /* Center the text */
+        }
+
+        /* Arrow Indicator for Drill-Down */
+        .main-menu-screen a.has-submenu::after {
+            content: '\f054'; /* Font Awesome Chevron Right */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        /* Hover Styles (unchanged from original intent) */
+        .main-menu-screen a:hover, .submenu-screen a:hover {
+            color: #8b4513;
+        }
+        
+        /* Submenu screen styling */
+        .submenu-screen {
+            background-color: white; /* Same background as main menu */
+        }
+        
+        /* Content area styles for demonstration */
+        .content {
+            padding-top: 80px; /* Offset for fixed navbar */
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        /* SPORTS INFRASTRUCTURE STYLES - UPDATED TO MATCH THEME */
+        .sport-section {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            min-height: 100vh;
+            border-bottom: 1px solid #e5d8c1;
+            background-color: #fefaf0;
+        }
+
+        .details-pane {
+            background: linear-gradient(135deg, #fff9f0 0%, #fefaf0 100%);
+            padding: 0 60px 80px 60px;
+            position: relative;
+            border-right: 1px solid #e5d8c1;
+        }
+
+        .sticky-header {
+            position: sticky;
+            top: 80px; /* Account for fixed navbar */
+            background: linear-gradient(135deg, #fff9f0 0%, #fefaf0 100%);
+            padding: 60px 0 30px 0;
+            z-index: 10;
+        }
+
+        .sticky-header h2 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 3.5rem;
+            margin: 0;
+            line-height: 0.9;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: #5d2a2a;
+        }
+
+        .infra-tag {
+            font-size: 0.75rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #8b4513; /* Sienna brown to match theme */
+            font-weight: 800;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .description-body p {
+            font-size: 1.1rem;
+            color: #7a3e3e; /* Lighter maroon */
+            font-weight: 400;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .spec-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .spec-box {
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e5d8c1;
+            box-shadow: 0 4px 12px rgba(93, 42, 42, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .spec-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(93, 42, 42, 0.1);
+        }
+
+        .spec-box strong { 
+            display: block; 
+            font-size: 0.95rem; 
+            color: #8b4513; 
+            margin-bottom: 8px; 
+            font-weight: 700;
+        }
+        .spec-box span { 
+            font-size: 0.95rem; 
+            color: #5d2a2a; 
+            line-height: 1.5;
+        }
+
+        .media-pane {
+            padding: 60px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-auto-rows: 280px;
+            gap: 24px;
+            background-color: #fefaf0;
+        }
+
+        .tile {
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid #e5d8c1;
+            background: white;
+            box-shadow: 0 4px 12px rgba(93, 42, 42, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(93, 42, 42, 0.1);
+        }
+
+        .tile img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .tile:hover img {
+            transform: scale(1.05);
+        }
+
+        .wide { grid-column: span 2; }
+        .tall { grid-row: span 2; }
+
+        .glimpses-intro { 
+            padding: 120px 60px 60px; 
+            text-align: center;
+            background: linear-gradient(135deg, #fff9f0 0%, #fefaf0 100%);
+            border-top: 1px solid #e5d8c1;
+        }
+        
+        .glimpses-intro h2 { 
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 4rem; 
+            letter-spacing: -2px; 
+            margin: 20px 0 10px 0; 
+            color: #5d2a2a;
+        }
+        
+        .glimpses-intro .infra-tag {
+            color: #8b4513;
+        }
+
+        /* Custom colors for specific sports */
+        .badminton .infra-tag { color: #3b82f6; }
+        .badminton .sticky-header h2 { color: #3b82f6; }
+        .badminton .spec-box strong { color: #3b82f6; }
+        
+        .basketball .infra-tag { color: #ef4444; }
+        .basketball .sticky-header h2 { color: #ef4444; }
+        .basketball .spec-box strong { color: #ef4444; }
+        
+        .volleyball .infra-tag { color: #a855f7; }
+        .volleyball .sticky-header h2 { color: #a855f7; }
+        .volleyball .spec-box strong { color: #a855f7; }
+        
+        .table-tennis .infra-tag { color: #f59e0b; }
+        .table-tennis .sticky-header h2 { color: #f59e0b; }
+        .table-tennis .spec-box strong { color: #f59e0b; }
+        
+        .cricket .infra-tag { color: #22c55e; }
+        .cricket .sticky-header h2 { color: #22c55e; }
+        .cricket .spec-box strong { color: #22c55e; }
+        
+        .track-field .infra-tag { color: #f97316; }
+        .track-field .sticky-header h2 { color: #f97316; }
+        .track-field .spec-box strong { color: #f97316; }
+
+        @media (max-width: 1100px) {
+            .sport-section { 
+                grid-template-columns: 1fr; 
+                min-height: auto;
+            }
+            .sticky-header { 
+                position: relative; 
+                padding: 40px 0 20px 0; 
+                top: 0;
+            }
+            .details-pane { 
+                padding: 0 40px 40px 40px; 
+                border-right: none;
+                border-bottom: 1px solid #e5d8c1;
+            }
+            .media-pane { 
+                padding: 40px; 
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .glimpses-intro { 
+                padding: 80px 40px 40px; 
+            }
+            .glimpses-intro h2 { 
+                font-size: 3rem; 
+            }
+            .sticky-header h2 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sticky-header h2 { 
+                font-size: 2.2rem; 
+                letter-spacing: -0.5px;
+            }
+            .glimpses-intro h2 { 
+                font-size: 2.2rem; 
+                letter-spacing: -1px; 
+            }
+            .media-pane {
+                grid-template-columns: 1fr;
+                grid-auto-rows: 200px;
+            }
+            .wide, .tall {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+            .description-body p {
+                font-size: 1rem;
+            }
+        }
+        
+        /* Sports Section Header */
+        .sports-header {
+            text-align: center;
+            padding: 100px 20px 60px;
+            background: linear-gradient(135deg, #fefaf0 0%, #fff9f0 100%);
+            border-bottom: 1px solid #e5d8c1;
+        }
+        
+        .sports-header h1 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 4rem;
+            color: #5d2a2a;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            font-weight: 800;
+        }
+        
+        .sports-header p {
+            font-size: 1.2rem;
+            color: #7a3e3e;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        /* New 3-column info section */
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-col {
+            flex: 0 0 33.33%; /* 3 columns - each takes 33.33% */
+            padding: 0 15px;
+            margin-bottom: 20px;
+        }
+        
+        .info-col.logo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .info-col.address-col {
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .info-col.contact-col {
+            text-align: right;
+        }
+        
+        .footer-logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        
+        .info-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #f8d7b3;
+        }
+        
+        .info-col p {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .info-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .info-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        /* New 6-column footer section */
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+        }
+        
+        .footer-col {
+            flex: 0 0 16.66%; /* 6 columns - each takes 16.66% */
+            min-width: 150px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            color: #f8d7b3;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        /* Bottom footer section */
+        .footer-bottom {
+            background-color: #4a1f1f;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        .footer-bottom-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .social-media {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .social-media a:hover {
+            color: #f8d7b3;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .info-col {
+                flex: 0 0 100%; /* 1 column on medium screens */
+                text-align: center !important;
+                border: none !important;
+                margin-bottom: 30px;
+            }
+            
+            .info-col.logo-col {
+                align-items: center;
+            }
+            
+            .footer-col {
+                flex: 0 0 33.33%; /* 3 columns on medium screens */
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .footer-col {
+                flex: 0 0 50%; /* 2 columns on small screens */
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .footer-bottom-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .social-media {
+                margin-right: 0;
+            }
+            
+            .copyright {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-col {
+                flex: 0 0 100%; /* 1 column on extra small screens */
+            }
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <button class="admission-btn">Enquiry</button>
+
+    <nav class="navbar">
+        <img src="ms_logo.png" style="height:70px;margin-top:-10px;">
+    </nav>
+
+    <div class="overlay-menu" id="overlayMenu">
+        
+        <div class="submenu-header" id="submenuHeader">
+            <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="menu-wrapper" id="menuWrapper">
+            
+            <ul class="main-menu-screen" id="mainMenu">
+                <li><a href="#" class="close-menu">Home</a></li>
+                
+                <li class="menu-item-with-submenu" data-submenu="about-us">
+                    <a href="#" class="has-submenu">About Us</a> 
+                </li>
+                
+                <li class="menu-item-with-submenu" data-submenu="academics">
+                    <a href="#" class="has-submenu">Academics</a>
+                </li>
+                
+                <li><a href="#" class="close-menu">Admissions</a></li>
+                
+                <li class="menu-item-with-submenu" data-submenu="campus-life">
+                    <a href="#" class="has-submenu">Campus Life</a>
+                </li>
+                
+                <li class="menu-item-with-submenu" data-submenu="contact-us">
+                    <a href="#" class="has-submenu">Contact Us</a>
+                </li>
+            </ul>
+            
+            <ul class="submenu-screen" id="submenuScreen">
+                </ul>
+
+        </div>
+    </div>
+
+    <div class="content">
+        <!-- SPORTS INFRASTRUCTURE SECTION START -->
+        <div class="sports-header">
+            <h1>SPORTS INFRASTRUCTURE</h1>
+            <p>Modern School offers world-class sports facilities that foster physical development, teamwork, and competitive spirit among students. Our state-of-the-art infrastructure supports a wide range of indoor and outdoor sports activities.</p>
+        </div>
+        
+        <section class="sport-section badminton">
+            <div class="details-pane">
+                <div class="sticky-header">
+                    <span class="infra-tag">Indoor Courts</span>
+                    <h2>BADMINTON</h2>
+                </div>
+                <div class="description-body">
+                    <p>Professional indoor badminton arena featuring BWF-approved synthetic mats. The facility is optimized for shuttlecock trajectory and student safety with specialized lighting and ventilation systems.</p>
+                    <div class="spec-list">
+                        <div class="spec-box"><strong>Surface</strong><span>Anti-skid PVC flooring for joint protection with professional court markings.</span></div>
+                        <div class="spec-box"><strong>Equipment</strong><span>Professional-grade nets, posts, and shuttlecocks provided for all practice sessions.</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="media-pane">
+                <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1626225967045-2c390f5d7f5f?q=80&w=800"></div>
+            </div>
+        </section>
+
+        <section class="sport-section basketball">
+            <div class="details-pane">
+                <div class="sticky-header">
+                    <span class="infra-tag">Olympic Standard</span>
+                    <h2>BASKETBALL</h2>
+                </div>
+                <div class="description-body">
+                    <p>Equipped with a FIBA-standard high-density synthetic cushioned floor, our basketball arena is built for elite performance and injury prevention. The court features professional lighting for evening matches.</p>
+                    <div class="spec-list">
+                        <div class="spec-box"><strong>Hoops</strong><span>Professional breakaway rims with height adjustability for different age groups.</span></div>
+                        <div class="spec-box"><strong>Court</strong><span>Full-sized court with professional markings and spectator seating for 200+.</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="media-pane">
+                <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1544910368-5152f99db577?q=80&w=800"></div>
+            </div>
+        </section>
+
+        <section class="sport-section volleyball">
+            <div class="details-pane">
+                <div class="sticky-header">
+                    <span class="infra-tag">Outdoor Synthetic</span>
+                    <h2>VOLLEYBALL</h2>
+                </div>
+                <div class="description-body">
+                    <p>Specialized all-weather courts with advanced net systems to support competitive team training and tournaments. The facility includes separate practice areas for serving and spiking drills.</p>
+                    <div class="spec-list">
+                        <div class="spec-box"><strong>Safety</strong><span>Shock-absorbing zones and specialized non-abrasive surface for dive protection.</span></div>
+                        <div class="spec-box"><strong>Equipment</strong><span>International standard nets, poles, and official match balls for training.</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="media-pane">
+                <div class="tile tall"><img src="https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?q=80&w=600"></div>
+                <div class="tile"><img src="https://images.unsplash.com/photo-1592656094267-764a45159575?q=80&w=400"></div>
+            </div>
+        </section>
+
+        <section class="sport-section table-tennis">
+            <div class="details-pane">
+                <div class="sticky-header">
+                    <span class="infra-tag">Indoor Arena</span>
+                    <h2>TABLE TENNIS</h2>
+                </div>
+                <div class="description-body">
+                    <p>An indoor facility featuring professional-grade ITTF-approved tables and high-grip flooring for tactical gameplay. The arena is equipped with specialized lighting to eliminate shadows and glare.</p>
+                    <div class="spec-list">
+                        <div class="spec-box"><strong>Tables</strong><span>8 professional tables with consistent bounce and professional net systems.</span></div>
+                        <div class="spec-box"><strong>Training</strong><span>Robotic ball machines and video analysis equipment for technique improvement.</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="media-pane">
+                <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1534158914592-062992fbe900?q=80&w=800"></div>
+            </div>
+        </section>
+
+        <section class="sport-section cricket">
+            <div class="details-pane">
+                <div class="sticky-header">
+                    <span class="infra-tag">Curated Pitch</span>
+                    <h2>CRICKET</h2>
+                </div>
+                <div class="description-body">
+                    <p>Our cricket facility features a vast natural turf outfield and dedicated practice bays. The pitches are curated for consistent bounce to help budding cricketers refine their technique under expert coaching.</p>
+                    <div class="spec-list">
+                        <div class="spec-box"><strong>Practice Bays</strong><span>3 Full-length nets with both turf and cement wickets for varied practice.</span></div>
+                        <div class="spec-box"><strong>Coaching Tech</strong><span>Automatic bowling machines for specialized batting drills and speed training.</span></div>
+                        <div class="spec-box"><strong>Facilities</strong><span>Pavilion with changing rooms, scorer's box, and spectator seating area.</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="media-pane">
+                <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?q=80&w=800"></div>
+                <div class="tile"><img src="https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?q=80&w=400"></div>
+            </div>
+        </section>
+
+        <section class="sport-section track-field">
+            <div class="details-pane">
+                <div class="sticky-header">
+                    <span class="infra-tag">Synthetic Track</span>
+                    <h2>TRACK & FIELD</h2>
+                </div>
+                <div class="description-body">
+                    <p>The 400m synthetic all-weather track is engineered for peak performance, providing optimal traction and energy return for sprinters and long-distance runners alike. The facility hosts annual inter-school athletic meets.</p>
+                    <div class="spec-list">
+                        <div class="spec-box"><strong>Arenas</strong><span>Dedicated pits for Long Jump, Triple Jump, High Jump, Shot-put, and Hurdle sectors.</span></div>
+                        <div class="spec-box"><strong>Equipment</strong><span>Electronic timing system, starting blocks, and professional landing mats.</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="media-pane">
+                <div class="tile wide tall"><img src="https://images.unsplash.com/photo-1541252260730-0412e8e2108e?q=80&w=800"></div>
+            </div>
+        </section>
+
+        <div class="glimpses-intro">
+            <span class="infra-tag">Victory & Spirit</span>
+            <h2>SPORTS MEET GLIMPSES</h2>
+            <p style="max-width: 800px; margin: 20px auto 0; color: #7a3e3e;">Annual sports events showcase the talent, determination, and sportsmanship of our students. These moments capture the essence of teamwork and competitive spirit that Modern School nurtures.</p>
+        </div>
+
+        <div class="media-pane" style="padding-bottom: 100px;">
+            <div class="tile tall"><img src="https://images.unsplash.com/photo-1594503204738-d62157d60f9e?q=80&w=600"></div>
+            <div class="tile wide"><img src="https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=800"></div>
+            <div class="tile"><img src="https://images.unsplash.com/photo-1510931221715-d41935634281?q=80&w=400"></div>
+            <div class="tile"><img src="https://images.unsplash.com/photo-1552674605-db6ffd8facb5?q=80&w=400"></div>
+        </div>
+        <!-- SPORTS INFRASTRUCTURE SECTION END -->
+       
+    </div>
+
+    <!-- New 3-column info section -->
+    <div class="footer-info">
+        <div class="info-col logo-col">
+            <img src="logo.png" alt="Modern School Logo" class="footer-logo">
+           
+            <p>Excellence in Education Since 1973</p>
+        </div>
+        <div class="info-col address-col">
+            <h3>Our Address</h3>
+            <p>Modern School</p>
+            <p>Sector - A Talwandi,</p>
+            <p>Kota, Rajasthan 324005</p>
+            <p>India</p>
+        </div>
+        <div class="info-col contact-col">
+            <h3>Contact Information</h3>
+            <p><i class="fas fa-phone"></i> +91-744-24211167</p>
+            <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
+            <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
+            <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
+        </div>
+    </div>
+
+    <!-- New 6-column footer section -->
+    <div class="footer-columns">
+        <div class="footer-col">
+            <h3>Academics</h3>
+            <ul>
+                <li><a href="#">Curriculum</a></li>
+                <li><a href="#">Exam & Result</a></li>
+                <li><a href="#">Calendar</a></li>
+                <li><a href="#">Counselling</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Admissions</h3>
+            <ul>
+                <li><a href="#">Apply Now</a></li>
+                <li><a href="#">Tuition & Fees</a></li>
+                <li><a href="#">RTE</a></li>
+                <li><a href="#">Campus Tours</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Campus Life</h3>
+            <ul>
+                <li><a href="#">Student Activities</a></li>
+                <li><a href="#">ModFest</a></li>
+                <li><a href="#">Athletics</a></li>
+                <li><a href="#">Campus Facilities</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="#">Our History</a></li>
+                <li><a href="#">Vision & Mission</a></li>
+                <li><a href="#">Leadership</a></li>
+                <li><a href="#">Our Core Team</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#">Alumni Network</a></li>
+                <li><a href="#">CBSE Corner</a></li>
+                <li><a href="#">TC Verification</a></li>
+                <li><a href="#">Mandatory Disclosures</a></li>
+                
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="#">Faculty</a></li>
+                <li><a href="#">Campus Location</a></li>
+                <li><a href="#">Career</a></li>
+                <li><a href="#">General Inquiry</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Bottom footer section -->
+    <div class="footer-bottom">
+        <div class="copyright">
+            <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
+          
+        </div>  <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms & Conditions</a>
+            </div>
+        <div class="footer-bottom-right">
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const hamburger = document.getElementById('hamburger');
+        const overlayMenu = document.getElementById('overlayMenu');
+        const mainMenu = document.getElementById('mainMenu');
+        const submenuScreen = document.getElementById('submenuScreen');
+        const backButton = document.getElementById('backButton');
+        const body = document.body;
+        
+        // Define all submenu data
+        const submenus = {
+            'about-us': [
+                { text: 'Our History', href: '#' },
+                { text: 'Vision & Mission', href: '#' },
+                { text: 'Leadership', href: '#' },
+                { text: 'Our Core Team', href: '#' },
+            ],
+            'academics': [
+                { text: 'Curriculum', href: '#' },
+                { text: 'Exam &amp; Result', href: '#' },
+                { text: 'Calendar', href: '#' },
+                { text: 'Counselling', href: '#' },
+            ],
+            'campus-life': [
+                { text: 'Student Activities', href: '#' },
+                { text: 'ModFest', href: '#' },
+                { text: 'Athletics', href: '#' },
+                { text: 'Campus Facilities', href: '#' },
+            ],
+            'contact-us': [
+                { text: 'Faculty ', href: '#' },
+                { text: 'Campus Location', href: '#' },
+                { text: 'Career', href: '#' },
+                { text: 'General Inquiry', href: '#' },
+            ]
+        };
+
+        // Function to close the entire menu and reset the view
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            overlayMenu.classList.remove('active');
+            body.classList.remove('menu-open');
+            // Ensure menu returns to the main screen view
+            overlayMenu.classList.remove('submenu-active');
+            submenuScreen.innerHTML = ''; // Clear submenu content
+        }
+
+        // Toggle main menu when hamburger is clicked
+        hamburger.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                closeMenu();
+            } else {
+                this.classList.add('active');
+                overlayMenu.classList.add('active');
+                body.classList.add('menu-open');
+            }
+        });
+
+        // Handle clicks on main menu items with submenus (drill-down)
+        document.querySelectorAll('.main-menu-screen a.has-submenu').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const menuItem = this.closest('.menu-item-with-submenu');
+                const submenuKey = menuItem.getAttribute('data-submenu');
+                const submenuData = submenus[submenuKey];
+
+                if (!submenuData) return;
+
+                // 1. Build the submenu content
+                submenuScreen.innerHTML = ''; // Clear previous content
+                submenuData.forEach(item => {
+                    const li = document.createElement('li');
+                    // Add the 'close-menu' class to submenu links to close the entire menu on click
+                    li.innerHTML = `<a href="${item.href}" class="close-menu">${item.text}</a>`; 
+                    submenuScreen.appendChild(li);
+                });
+                
+                // Re-attach the closeMenu listener to the newly created links
+                submenuScreen.querySelectorAll('.close-menu').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        closeMenu(); // Close on click
+                        alert(`Navigating to: ${this.textContent}`);
+                    });
+                });
+
+                // 2. Trigger the slide transition
+                overlayMenu.classList.add('submenu-active');
+            });
+        });
+
+        // Handle the Back Button click
+        backButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Slide back to the main menu view
+            overlayMenu.classList.remove('submenu-active');
+            // Clear the submenu content after the transition starts
+            setTimeout(() => {
+                submenuScreen.innerHTML = '';
+            }, 400); // 400ms to match the CSS transition duration
+        });
+
+        // Close menu when clicking on a close-menu link (home, admissions, etc.)
+        document.querySelectorAll('.close-menu').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMenu();
+                alert(`Navigating to: ${this.textContent}`);
+            });
+        });
+        
+        // Close menu when clicking outside of menu content (overlay background)
+        overlayMenu.addEventListener('click', function(e) {
+            // Check if the click target is the overlay background itself
+            if (e.target === this) {
+                closeMenu();
+            }
+        });
+
+    </script>
+</body>
+</html>

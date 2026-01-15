@@ -1,0 +1,2713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School, Kota</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- GSAP Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fefaf0; /* Cream background */
+            color: #5d2a2a; /* Maroon font color */
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        /* Top Navbar & Fixed Elements */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease; 
+            height: 70px;
+        }
+
+        body.menu-open .navbar {
+            transform: translateY(-100%);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 25px;
+            height: 20px;
+            justify-content: space-between;
+            position: fixed; 
+            top: 25px; 
+            left: 15px;
+            z-index: 1002; 
+        }
+
+        .hamburger span {
+            display: block;
+            height: 2px;
+            width: 100%;
+            background-color: #5d2a2a;
+            border-radius: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
+
+        .admission-btn { 
+            background-color: transparent; 
+            color: #5d2a2a; 
+            border: 2px solid #5d2a2a; 
+            padding: 6px 15px;
+            border-radius: 18px; 
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: background-color 0.3s, color 0.3s;
+            position: fixed;
+            top: 20px;
+            right: 15px;
+            z-index: 1002;
+        }
+        .admission-btn:hover { background-color: #5d2a2a; color: white; }
+
+        /* Full Page Overlay Menu CONTAINER */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1001; 
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+            overflow: hidden;
+        }
+
+        .overlay-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Menu Wrapper for Drill-Down Effect */
+        .menu-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            transition: transform 0.4s ease-in-out;
+            margin-top: 70px;
+        }
+
+        /* State when a submenu is active */
+        .overlay-menu.submenu-active .menu-wrapper {
+            transform: translateX(-100%);
+        }
+        
+        /* Main Menu and Submenu Screen */
+        .main-menu-screen, .submenu-screen {
+            width: 100%;
+            height: 100%;
+            list-style: none;
+            text-align: center;
+            padding: 15px;
+            flex-shrink: 0;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* BACK BUTTON Container */
+        .submenu-header {
+            position: absolute;
+            top: 15px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 10px 15px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 1003;
+        }
+        
+        .overlay-menu.submenu-active .submenu-header {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #5d2a2a;
+            font-size: 22px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 12px 8px;
+            border-radius: 5px;
+            transition: color 0.3s;
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            color: #8b4513;
+        }
+
+        .back-btn i {
+            margin-right: 6px;
+            font-size: 18px;
+        }
+
+        /* Menu Item Styles */
+        .main-menu-screen li, .submenu-screen li {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .main-menu-screen a, .submenu-screen a {
+            text-decoration: none;
+            color: #5d2a2a;
+            font-weight: 600;
+            display: block; 
+            padding: 12px 8px;
+            margin-bottom: 4px;
+            transition: color 0.3s;
+            position: relative;
+            width: 100%;
+            max-width: 350px;
+            font-size: 22px;
+            text-align: center;
+        }
+
+        /* Arrow Indicator for Drill-Down */
+        .main-menu-screen a.has-submenu::after {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+        }
+
+        /* Hover Styles */
+        .main-menu-screen a:hover, .submenu-screen a:hover {
+            color: #8b4513;
+        }
+        
+        /* Submenu screen styling */
+        .submenu-screen {
+            background-color: white;
+        }
+        
+        /* Breadcrumb Navigation */
+        .breadcrumb {
+            position: absolute;
+            top: 80px;
+            left: 15px;
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: #f8d7b3;
+            z-index: 10;
+            background-color: rgba(93, 42, 42, 0.8);
+            padding: 6px 12px;
+            border-radius: 4px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .breadcrumb a {
+            color: #f8d7b3;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.85rem;
+        }
+        
+        .breadcrumb a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+        
+        .breadcrumb span {
+            margin: 0 6px;
+            color: #f8d7b3;
+        }
+        
+        /* History Section */
+        .history-section {
+            background-color: #5d2a2a;
+            color: white;
+            padding: 90px 15px 40px;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+            margin-top: 0;
+        }
+        
+        .history-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .history-content {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 30px;
+            z-index: 2;
+        }
+        
+        .history-image {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+            z-index: 1;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 1s ease-out;
+            align-self: center;
+            text-align: right;
+        }
+        
+        .history-image.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .history-image img {
+            width: 100%;
+            max-width: 350px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: contain;
+        }
+        
+        .history-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            font-weight: 700;
+            color: #f8d7b3;
+            line-height: 1.3;
+        }
+        
+        .history-text {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .history-btn {
+            display: inline-block;
+            background-color: #f8d7b3;
+            color: #5d2a2a;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+        
+        .history-btn:hover {
+            background-color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* COMPACT TIMELINE SECTION */
+        .timeline-section {
+            background-color: #f8d7b3;
+            padding: 0 15px 30px;
+            position: relative;
+            overflow: hidden;
+            margin-top: -80px;
+        }
+
+        .timeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline-title {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #5d2a2a;
+            margin-bottom: 10px;
+            font-weight: 700;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding-top: 75px;
+        }
+        
+        /* Horizontal Timeline Top Section */
+        .timeline-horizontal {
+            position: relative;
+            margin-bottom: 0px;
+            padding: 10px 0 30px;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        /* Horizontal timeline line */
+        .timeline-line-horizontal {
+            position: absolute;
+            left: 40px;
+            right: 40px;
+            top: 27px;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                rgba(93, 42, 42, 0.2) 0%, 
+                #5d2a2a 20%, 
+                #5d2a2a 80%, 
+                rgba(93, 42, 42, 0.2) 100%);
+            border-radius: 2px;
+            z-index: 1;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Horizontal timeline items container */
+        .timeline-items-container {
+            position: relative;
+            width: 100%;
+            overflow: visible;
+        }
+        
+        /* Horizontal timeline items */
+        .timeline-items-horizontal {
+            display: flex;
+            justify-content: flex-start;
+            position: relative;
+            z-index: 2;
+            transition: transform 0.5s ease;
+            width: max-content;
+            padding: 0 40px;
+        }
+        
+        /* COMPACT Timeline item horizontal - MORE SPACING */
+        .timeline-item-horizontal {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            flex-shrink: 0;
+            width: 80px; /* Increased for better spacing */
+            margin: 0 15px; /* Increased from 8px to 15px for better spacing */
+            opacity: 1;
+            transform: scale(0.95);
+        }
+        
+        .timeline-item-horizontal:hover {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        .timeline-item-horizontal.active {
+            opacity: 1;
+            transform: scale(1.1);
+            z-index: 4;
+        }
+        
+        /* COMPACT Timeline marker horizontal - UPDATED COLORS */
+        .timeline-marker-horizontal {
+            width: 60px; /* Adjusted for better proportions */
+            height: 60px; /* Adjusted for better proportions */
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f8d7b3, #f0d0a3); /* Cream color for inactive */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5d2a2a; /* Maroon font for inactive */
+            font-weight: 700;
+            font-size: 1.2rem; /* Slightly larger */
+            position: relative;
+            z-index: 3;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 
+                0 0 0 2px #f8d7b3,
+                0 3px 10px rgba(0, 0, 0, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.3);
+            border: 2px solid rgba(93, 42, 42, 0.1); /* Subtle maroon border */
+            cursor: pointer;
+            overflow: hidden;
+            opacity: 0.85;
+        }
+
+        /* Active marker - MAROON COLOR */
+        .timeline-item-horizontal.active .timeline-marker-horizontal {
+            transform: scale(1.15);
+            background: linear-gradient(135deg, #5d2a2a, #8b4513); /* Maroon gradient for active */
+            box-shadow: 
+                0 0 0 4px #f8d7b3,
+                0 8px 20px rgba(139, 69, 19, 0.3),
+                inset 0 1px 3px rgba(255, 255, 255, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            opacity: 1;
+            color: white; /* White font for active */
+            animation: pulse 2s infinite;
+        }
+
+        /* Next and Previous markers - LIGHTER CREAM COLOR */
+        .timeline-item-horizontal.active + .timeline-item-horizontal .timeline-marker-horizontal,
+        .timeline-item-horizontal:has(+ .timeline-item-horizontal.active) .timeline-marker-horizontal {
+            background: linear-gradient(135deg, #f8d7b3, #e8c893); /* Slightly darker cream */
+            color: #5d2a2a;
+            opacity: 0.95;
+            transform: scale(1.02);
+        }
+
+        .timeline-marker-horizontal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .timeline-marker-horizontal span {
+            position: relative;
+            z-index: 2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        /* Pulsing animation for active marker */
+        @keyframes pulse {
+            0% {
+                box-shadow: 
+                    0 0 0 4px #f8d7b3,
+                    0 8px 20px rgba(139, 69, 19, 0.3),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.4);
+            }
+            50% {
+                box-shadow: 
+                    0 0 0 5px #f8d7b3,
+                    0 10px 25px rgba(139, 69, 19, 0.4),
+                    inset 0 1px 4px rgba(255, 255, 255, 0.5);
+            }
+            100% {
+                box-shadow: 
+                    0 0 0 4px #f8d7b3,
+                    0 8px 20px rgba(139, 69, 19, 0.3),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.4);
+            }
+        }
+
+        /* COMPACT Timeline description panel */
+        .timeline-description-panel {
+            background-color: white;
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            height: 380px; /* Increased for better text display */
+            display: flex;
+            flex-direction: column;
+            max-width: 1100px;
+            margin: 0 auto 30px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        /* Year displayed in header */
+        .timeline-year-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f8d7b3;
+        }
+        
+        .timeline-year-display {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #5d2a2a;
+            background: #f8d7b3;
+            padding: 8px 20px;
+            border-radius: 30px;
+            box-shadow: 0 3px 10px rgba(93, 42, 42, 0.1);
+        }
+        
+        /* Alternating layout for timeline items */
+        .timeline-content-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-start;
+            gap: 25px;
+            height: auto;
+            overflow: visible;
+        }
+        
+        .timeline-content-wrapper.image-left {
+            flex-direction: row;
+        }
+        
+        .timeline-content-wrapper.image-right {
+            flex-direction: row-reverse;
+        }
+        
+        /* SMALLER IMAGE SIDE */
+        .timeline-image-side {
+            flex: 0 0 35%;
+            min-width: 250px;
+            max-width: 350px;
+        }
+        
+        /* LARGER TEXT SIDE */
+        .timeline-text-side {
+            flex: 0 0 60%;
+            min-width: 300px;
+        }
+        
+        .timeline-desc-title {
+            font-size: 1.6rem;
+            color: #5d2a2a;
+            margin-bottom: 10px;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        
+        .timeline-desc-subtitle {
+            font-size: 1.1rem;
+            color: #8b4513;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-style: italic;
+            border-left: 3px solid #f8d7b3;
+            padding-left: 12px;
+        }
+        
+        /* SMALLER Carousel */
+        .timeline-carousel {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            position: relative;
+        }
+
+        .carousel-inner {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-item {
+            height: 100%;
+            display: none;
+            position: relative;
+            float: left;
+            width: 100%;
+            margin-right: -100%;
+            backface-visibility: hidden;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .carousel-item.active {
+            display: block;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            background-color: #f5f5f5;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 8px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            z-index: 10;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .carousel-indicators button {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: none;
+            background-color: rgba(93, 42, 42, 0.5);
+            padding: 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .carousel-indicators button.active {
+            background-color: #5d2a2a;
+            transform: scale(1.1);
+        }
+
+        .carousel-control-prev,
+        .carousel-control-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 35px;
+            height: 35px;
+            background-color: rgba(93, 42, 42, 0.7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+        }
+
+        .carousel-control-prev:hover,
+        .carousel-control-next:hover {
+            background-color: #5d2a2a;
+        }
+
+        .carousel-control-prev {
+            left: 10px;
+        }
+
+        .carousel-control-next {
+            right: 10px;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            width: 18px;
+            height: 18px;
+            background-size: 100% 100%;
+        }
+
+        .carousel-control-prev-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath d='M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e");
+        }
+
+        .carousel-control-next-icon {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3e%3cpath d='M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+        }
+
+        /* SMALLER Single image container */
+        .timeline-image-container {
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-height: 200px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timeline-image-container img {
+            width: auto;
+            max-width: 100%;
+            max-height: 200px;
+            height: auto;
+            display: block;
+            transition: transform 0.8s ease;
+            object-fit: contain;
+        }
+        
+        /* LARGER Text area */
+        .timeline-desc-text {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #333;
+            max-height: 320px; /* Increased for better text display */
+            overflow-y: auto;
+            padding-right: 10px;
+            padding-left: 5px;
+        }
+        
+        .timeline-desc-text::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .timeline-desc-text::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 3px;
+        }
+        
+        .timeline-desc-text::-webkit-scrollbar-thumb {
+            background: #5d2a2a;
+            border-radius: 3px;
+        }
+        
+        .timeline-desc-text::-webkit-scrollbar-thumb:hover {
+            background: #8b4513;
+        }
+        
+        .timeline-desc-text p {
+            margin-bottom: 15px;
+        }
+        
+        /* Scroll Progress Bar */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: rgba(93, 42, 42, 0.1);
+            z-index: 1000;
+        }
+        
+        .scroll-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #5d2a2a, #8b4513);
+            transition: width 0.1s ease;
+        }
+        
+        /* COMPACT Footer sections */
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 30px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .info-col {
+            flex: 0 0 33.33%;
+            padding: 0 12px;
+            margin-bottom: 15px;
+        }
+        
+        .info-col.logo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .info-col.address-col {
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .info-col.contact-col {
+            text-align: right;
+        }
+        
+        .footer-logo {
+            height: 60px;
+            margin-bottom: 10px;
+        }
+        
+        .info-col h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            color: #f8d7b3;
+        }
+        
+        .info-col p {
+            margin-bottom: 6px;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+        
+        .info-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .info-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        /* COMPACT 6-column footer section */
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 30px 15px;
+        }
+        
+        .footer-col {
+            flex: 0 0 16.66%;
+            min-width: 120px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-col h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 8px;
+            color: #f8d7b3;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+        
+        .footer-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .footer-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        /* COMPACT Bottom footer section */
+        .footer-bottom {
+            background-color: #4a1f1f;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            font-size: 0.85rem;
+        }
+        
+        .copyright {
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        .footer-bottom-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .social-media {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .social-media a:hover {
+            color: #f8d7b3;
+        }
+        
+        /* RESPONSIVE ADJUSTMENTS */
+        @media (max-width: 1200px) {
+            .timeline-marker-horizontal {
+                width: 55px;
+                height: 55px;
+                font-size: 1.1rem;
+            }
+            
+            .timeline-item-horizontal {
+                width: 70px;
+                margin: 0 12px;
+            }
+            
+            .timeline-line-horizontal {
+                top: 27px;
+            }
+            
+            .timeline-year-display {
+                font-size: 1.6rem;
+            }
+            
+            .timeline-image-side {
+                flex: 0 0 40%;
+            }
+            
+            .timeline-text-side {
+                flex: 0 0 55%;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .info-col {
+                flex: 0 0 100%;
+                text-align: center !important;
+                border: none !important;
+                margin-bottom: 25px;
+            }
+            
+            .info-col.logo-col {
+                align-items: center;
+            }
+            
+            .footer-col {
+                flex: 0 0 33.33%;
+            }
+            
+            .history-container {
+                flex-direction: column;
+            }
+            
+            .history-content {
+                padding-right: 0;
+                margin-bottom: 30px;
+                text-align: center;
+            }
+            
+            .history-image {
+                text-align: center;
+                align-self: center;
+            }
+            
+            .history-image img {
+                max-width: 300px;
+            }
+            
+            .timeline-marker-horizontal {
+                width: 50px;
+                height: 50px;
+                font-size: 1rem;
+            }
+            
+            .timeline-item-horizontal {
+                width: 65px;
+                margin: 0 10px;
+            }
+            
+            .timeline-line-horizontal {
+                left: 25px;
+                right: 25px;
+                top: 25px;
+            }
+            
+            .timeline-items-horizontal {
+                padding: 0 25px;
+            }
+            
+            /* On tablets, use single column layout for timeline */
+            .timeline-content-wrapper {
+                flex-direction: column !important;
+            }
+            
+            .timeline-image-side, .timeline-text-side {
+                flex: 0 0 100%;
+                min-width: 100%;
+                max-width: 100%;
+            }
+            
+            .timeline-carousel {
+                max-height: 250px;
+            }
+            
+            .carousel-inner {
+                height: 250px;
+            }
+            
+            .timeline-image-container {
+                max-height: 250px;
+            }
+            
+            .timeline-year-display {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .footer-col {
+                flex: 0 0 50%;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+            
+            .footer-bottom-right {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .copyright {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .history-title {
+                font-size: 1.8rem;
+            }
+            
+            .history-section {
+                padding: 80px 12px 30px;
+                min-height: 350px;
+            }
+            
+            .timeline-title {
+                font-size: 1.6rem;
+                margin-bottom: 30px;
+                padding-top: 50px;
+            }
+            
+            .timeline-marker-horizontal {
+                width: 45px;
+                height: 45px;
+                font-size: 0.95rem;
+            }
+            
+            .timeline-item-horizontal {
+                width: 55px;
+                margin: 0 8px;
+            }
+            
+            .timeline-line-horizontal {
+                left: 15px;
+                right: 15px;
+                top: 22px;
+                height: 3px;
+            }
+            
+            .timeline-items-horizontal {
+                padding: 0 15px;
+            }
+            
+            .timeline-description-panel {
+                padding: 20px;
+                min-height: 380px;
+            }
+            
+            .timeline-desc-title {
+                font-size: 1.4rem;
+            }
+            
+            .timeline-year-display {
+                font-size: 1.4rem;
+                padding: 6px 15px;
+            }
+            
+            .timeline-desc-text {
+                font-size: 1rem;
+                max-height: 280px;
+            }
+            
+            .breadcrumb {
+                font-size: 0.8rem;
+                top: 70px;
+                left: 12px;
+                padding: 5px 10px;
+            }
+            
+            .carousel-control-prev,
+            .carousel-control-next {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .carousel-control-prev {
+                left: 8px;
+            }
+            
+            .carousel-control-next {
+                right: 8px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-col {
+                flex: 0 0 100%;
+            }
+            
+            .history-section {
+                padding: 75px 10px 25px;
+                min-height: 300px;
+            }
+            
+            .history-title {
+                font-size: 1.6rem;
+            }
+            
+            .timeline-section {
+                padding: 50px 10px;
+            }
+            
+            .timeline-title {
+                font-size: 1.4rem;
+            }
+            
+            .timeline-marker-horizontal {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
+            
+            .timeline-item-horizontal {
+                width: 50px;
+                margin: 0 6px;
+            }
+            
+            .timeline-line-horizontal {
+                left: 10px;
+                right: 10px;
+                top: 20px;
+                height: 2px;
+            }
+            
+            .timeline-items-horizontal {
+                padding: 0 10px;
+            }
+            
+            .timeline-description-panel {
+                padding: 15px;
+                min-height: 350px;
+            }
+            
+            .timeline-desc-title {
+                font-size: 1.2rem;
+            }
+            
+            .timeline-year-display {
+                font-size: 1.2rem;
+                padding: 5px 12px;
+            }
+            
+            .timeline-desc-text {
+                font-size: 0.95rem;
+                max-height: 260px;
+            }
+            
+            .breadcrumb {
+                font-size: 0.75rem;
+                top: 65px;
+                left: 8px;
+                padding: 4px 8px;
+            }
+            
+            .timeline-carousel {
+                max-height: 180px;
+            }
+            
+            .carousel-inner {
+                height: 180px;
+            }
+            
+            .timeline-image-container {
+                max-height: 180px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-marker-horizontal {
+                width: 35px;
+                height: 35px;
+                font-size: 0.85rem;
+            }
+            
+            .timeline-item-horizontal {
+                width: 45px;
+                margin: 0 4px;
+            }
+            
+            .timeline-line-horizontal {
+                top: 17px;
+            }
+            
+            .timeline-year-display {
+                font-size: 1.1rem;
+                padding: 4px 10px;
+            }
+            
+            .timeline-carousel {
+                max-height: 160px;
+            }
+            
+            .carousel-inner {
+                height: 160px;
+            }
+            
+            .timeline-image-container {
+                max-height: 160px;
+            }
+        }
+        
+        /* Navigation menu item hover effect */
+        .main-menu-screen a:hover, .submenu-screen a:hover {
+            transform: translateX(5px);
+            transition: transform 0.2s ease;
+        }
+        
+        /* Remove scroll indicator dots */
+        .scroll-indicator {
+            display: none;
+        }
+        /* Navbar Text Animation Styles */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    flex-direction: column;
+    height: 70px;
+}
+
+.navbar-content {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+}
+
+.navbar-logo-text,
+.navbar-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    display: flex;
+    gap: 2px;
+    text-transform: uppercase;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.navbar-logo-text {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.navbar-text {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.navbar.scrolled .navbar-logo-text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.navbar.scrolled .navbar-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Letter styling */
+.navbar-logo-text .letter,
+.navbar-text .letter {
+    transition: color 0.5s ease, text-shadow 0.5s ease, transform 0.3s ease;
+    color: #5d2a2a;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.navbar-logo-text .letter.maroon,
+.navbar-text .letter.maroon {
+    color: #A63232; /* Light maroon color */
+    text-shadow: none;
+}
+
+/* Navbar Progress Bar */
+.navbar-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.navbar-progress-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #800000 0%,
+        #c5a059 25%,
+        #FF8C00 50%,
+        #c5a059 75%,
+        #800000 100%
+    );
+    background-size: 200% 100%;
+    animation: progressTrackFlow 2s linear infinite;
+}
+
+@keyframes progressTrackFlow {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.navbar-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        #800000 0%, 
+        #5d2a2a 50%, 
+        #800000 100%);
+    transition: width 0.1s ease-out;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(128, 0, 0, 0.5);
+}
+
+/* Responsive adjustments for navbar */
+@media (max-width: 768px) {
+    .navbar-logo-text,
+    .navbar-text {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        gap: 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-logo-text,
+    .navbar-text {
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* Hide admission button by default */
+.admission-btn.menu-only {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show admission button when menu is open */
+body.menu-open .admission-btn.menu-only {
+    opacity: 1;
+    visibility: visible;
+}
+   /* ===== UPDATED NAVBAR WITH TEXT LOGO & PROGRESS BAR ===== */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    flex-direction: column;
+    height: 70px;
+}
+
+body.menu-open .navbar {
+    transform: translateY(-100%);
+}
+
+.navbar-content {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+}
+
+.navbar-logo-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #5d2a2a;
+    letter-spacing: 2px;
+    display: flex;
+    gap: 2px;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    text-transform: uppercase;
+}
+
+.navbar-logo-text .letter {
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+    color: #5d2a2a;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-logo-text .letter.maroon {
+    color: #A63232;
+    text-shadow: 0 0 10px rgba(128, 0, 0, 0.3);
+}
+
+.navbar-text {
+    position: absolute;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #5d2a2a;
+    letter-spacing: 2px;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    text-transform: uppercase;
+    display: flex;
+    gap: 2px;
+}
+
+.navbar.scrolled .navbar-logo-text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.navbar.scrolled .navbar-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+.navbar-text .letter {
+    transition: color 0.5s ease, text-shadow 0.5s ease;
+    color: #5d2a2a;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-text .letter.maroon {
+    color: #A63232;
+    text-shadow: none;
+}
+
+/* Navbar Progress Bar */
+.navbar-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.navbar-progress-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #800000 0%,
+        #c5a059 25%,
+        #FF8C00 50%,
+        #c5a059 75%,
+        #800000 100%
+    );
+    background-size: 200% 100%;
+    animation: progressTrackFlow 2s linear infinite;
+}
+
+@keyframes progressTrackFlow {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.navbar-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        #800000 0%, 
+        #5d2a2a 50%, 
+        #800000 100%);
+    transition: width 0.1s ease-out;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(128, 0, 0, 0.5);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .navbar-logo-text,
+    .navbar-text {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        gap: 1px;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-logo-text,
+    .navbar-text {
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* Hamburger and admission button adjustments */
+.hamburger {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    width: 30px;
+    height: 24px;
+    justify-content: space-between;
+    position: fixed;
+    top: 25px;
+    left: 20px;
+    z-index: 1002;
+}
+
+.hamburger span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: #5d2a2a;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+.admission-btn { 
+    background-color: transparent; 
+    color: #5d2a2a; 
+    border: 2px solid #5d2a2a; 
+    padding: 8px 18px;
+    border-radius: 20px; 
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background-color 0.3s, color 0.3s;
+    position: fixed;
+    top: 15px;
+    right: 20px;
+    z-index: 1002;
+}
+
+.admission-btn:hover { 
+    background-color: #5d2a2a; 
+    color: white; 
+}
+
+/* Hide admission button by default */
+.admission-btn.menu-only {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show admission button when menu is open */
+body.menu-open .admission-btn.menu-only {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Remove old navbar styles that might conflict */
+.navbar img {
+    display: none !important; /* Hide the image logo since we're using text */
+}
+ </style>
+</head>
+<body>
+    
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress">
+        <div class="scroll-progress-bar"></div>
+    </div>
+    <!-- Updated Top Menu & Navbar -->
+<div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+<button class="admission-btn menu-only">Enquiry</button>
+
+<nav class="navbar">
+    <div class="navbar-content">
+        <div class="navbar-logo-text" id="navbarLogoText"></div>
+        <div class="navbar-text" id="navbarScrolledText"></div>
+    </div>
+    <div class="navbar-progress-container">
+        <div class="navbar-progress-track"></div>
+        <div class="navbar-progress-fill" id="navbarProgressFill"></div>
+    </div>
+</nav>
+
+<!-- Overlay Menu -->
+<div class="overlay-menu" id="overlayMenu">
+    <div class="submenu-header" id="submenuHeader">
+        <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+    </div>
+    
+    <div class="menu-wrapper" id="menuWrapper">
+        <ul class="main-menu-screen" id="mainMenu">
+            <li><a href="index.html" class="close-menu">Home</a></li>
+            <li class="menu-item-with-submenu" data-submenu="about-us">
+                <a href="#" class="has-submenu">About Us</a>
+            </li>
+            <li class="menu-item-with-submenu" data-submenu="academics">
+                <a href="#" class="has-submenu">Academics</a>
+            </li>
+            <li><a href="#enquiry-form" class="close-menu">Admissions</a></li>
+            <li class="menu-item-with-submenu" data-submenu="campus-life">
+                <a href="#" class="has-submenu">Campus Life</a>
+            </li>
+            <li class="menu-item-with-submenu" data-submenu="contact-us">
+                <a href="#" class="has-submenu">Contact Us</a>
+            </li>
+        </ul>
+        <ul class="submenu-screen" id="submenuScreen"></ul>
+    </div>
+</div>
+    <!-- History Section -->
+    <section class="history-section" id="historySection">
+        <div class="breadcrumb">
+            <a href="#">Home</a>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <a href="#">About Us</a>
+            <span><i class="fas fa-chevron-right"></i></span>
+            <span>Our History</span>
+        </div>
+        
+        <div class="history-container">
+            <div class="history-content">
+                <h2 class="history-title">Our rich legacy, <br>Our strong history...</h2>
+            </div>
+            <div class="history-image" id="historyImage">
+                <img src="history1.png" alt="Modern School Campus">
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="timeline-section" id="timelineTrigger" >
+        <h2 class="timeline-title">Our Journey Through Time</h2>
+        
+        <!-- Horizontal Timeline with Milestones -->
+        <div class="timeline-horizontal">
+            <div class="timeline-line-horizontal"></div>
+            <div class="timeline-items-container">
+                <div class="timeline-items-horizontal" id="timelineItemsHorizontal">
+                    <!-- Timeline items will be generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Description Panel -->
+        <div class="timeline-description-panel" id="timelineDescriptionPanel">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </section>
+
+   
+     <!-- New 3-column info section -->
+   <!-- Updated Footer Section -->
+<div class="footer-info">
+    <div class="info-col logo-col">
+        <img src="logo.png" alt="Modern School Logo" class="footer-logo">
+        <p>Excellence in Education Since 1973</p>
+    </div>
+    <div class="info-col address-col">
+        <h3>Our Address</h3>
+        <p>Modern School</p>
+        <p>Sector - A Talwandi,</p>
+        <p>Kota, Rajasthan 324005</p>
+        <p>India</p>
+    </div>
+    <div class="info-col contact-col">
+        <h3>Contact Information</h3>
+        <p><i class="fas fa-phone"></i> +91-744-24211167</p>
+        <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
+        <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
+        <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
+        <div class="social-media" style="margin-top: 10px;">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="footer-columns">
+    <div class="footer-col">
+        <h3>Academics</h3>
+        <ul>
+            <li><a href="curriculum.html">Curriculum</a></li>
+            <li><a href="calendar.html">Calendar</a></li>
+            <li><a href="exam.html">Time Table</a></li>
+        </ul>
+    </div>
+    <div class="footer-col">
+        <h3>Informations</h3>
+        <ul>
+            <li><a href="fees.html">Tuition Fees</a></li>
+            <li><a href="cbse.html">CBSE Corner</a></li>
+            <li><a href="mandatory_disc.html">Mandatory Disclosures</a></li>
+            <li><a href="alumni.html">Alumni Network</a></li>
+        </ul>
+    </div>
+    <div class="footer-col">
+        <h3>Campus Life</h3>
+        <ul>
+            <li><a href="student_council.html">Student Counsel</a></li>
+            <li><a href="event.html">Events</a></li>
+            <li><a href="sport.html">Athletics</a></li>
+            <li><a href="campus_facilities.html">Campus Facilities</a></li>
+        </ul>
+    </div>
+    <div class="footer-col">
+        <h3>About Us</h3>
+        <ul>
+            <li><a href="history.html">Our History</a></li>
+            <li><a href="vision.html">Vision & Direction</a></li>
+            <li><a href="leadership.html">Leadership</a></li>
+            <li><a href="admin.html">Admin Team</a></li>
+        </ul>
+    </div>
+    <div class="footer-col">
+        <h3>Connect</h3>
+        <ul>
+            <li><a href="campus_location.html">Campus Location</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="tc_verification.html">TC Verification</a></li>
+            <li><a href="branches.html">Other Branches</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="footer-bottom">
+    <div class="copyright">
+        <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
+    </div>
+    <div class="footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="tnc.html">Terms & Conditions</a>
+    </div>
+    <div class="footer-bottom-right">
+        <!-- Social media icons already moved to contact-col -->
+    </div>
+</div>
+  <script>
+    // Initialize GSAP
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Get DOM elements
+    const hamburger = document.getElementById('hamburger');
+    const overlayMenu = document.getElementById('overlayMenu');
+    const mainMenu = document.getElementById('mainMenu');
+    const submenuScreen = document.getElementById('submenuScreen');
+    const backButton = document.getElementById('backButton');
+    const body = document.body;
+    const historyImage = document.getElementById('historyImage');
+    const timelineItemsHorizontal = document.getElementById('timelineItemsHorizontal');
+    const timelineDescriptionPanel = document.getElementById('timelineDescriptionPanel');
+    const scrollProgressBar = document.querySelector('.scroll-progress-bar');
+    const admissionBtn = document.querySelector('.admission-btn');
+
+    // Define all submenu data
+    const submenus = {
+        'about-us': [
+            { text: 'Our History', href: 'history.html' },
+            { text: 'Vision & Direction', href: 'vision.html' },
+            { text: 'Leadership', href: 'leadership.html' },
+            { text: 'Admin Team', href: 'admin.html' },
+        ],
+        'academics': [
+            { text: 'Curriculum', href: 'Curriculum.html' },
+            { text: 'Exam & Result', href: 'exam.html' },
+            { text: 'Calendar', href: 'calendar.html' },
+        ],
+        'campus-life': [
+            { text: 'Student Counsel', href: 'student_council.html' },
+            { text: 'Event', href: 'event.html' },
+            { text: 'Athletics', href: 'sport.html' },
+            { text: 'Campus Facilities', href: 'campus_facilities.html' },
+        ],
+        'contact-us': [
+            { text: 'Campus Location', href: 'campus_location.html' },
+            { text: 'Career', href: 'career.html' },
+            { text: 'Enquiry', href: '#enquiry-form' },
+            { text: 'TC Verification', href: 'tc_verification.html' },
+            { text: 'Other Branches', href: 'branches.html' },
+        ]
+    };
+
+    // ===== NAVIGATION FUNCTIONS =====
+    function closeMenu() {
+        hamburger.classList.remove('active');
+        overlayMenu.classList.remove('active');
+        body.classList.remove('menu-open');
+        overlayMenu.classList.remove('submenu-active');
+        submenuScreen.innerHTML = '';
+    }
+
+    // Toggle main menu when hamburger is clicked
+    hamburger.addEventListener('click', function(e) {
+        e.stopPropagation();
+        if (this.classList.contains('active')) {
+            closeMenu();
+        } else {
+            this.classList.add('active');
+            overlayMenu.classList.add('active');
+            body.classList.add('menu-open');
+        }
+    });
+
+    // Handle clicks on main menu items with submenus
+    document.querySelectorAll('.menu-item-with-submenu').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const submenuKey = this.dataset.submenu;
+            const submenuData = submenus[submenuKey];
+
+            if (!submenuData) return;
+
+            // Build the submenu content
+            submenuScreen.innerHTML = '';
+            submenuData.forEach(itemData => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${itemData.href}">${itemData.text}</a>`;
+                submenuScreen.appendChild(li);
+            });
+
+            // Trigger the slide transition
+            overlayMenu.classList.add('submenu-active');
+        });
+    });
+
+    // Handle the Back Button click
+    backButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        overlayMenu.classList.remove('submenu-active');
+        setTimeout(() => {
+            submenuScreen.innerHTML = '';
+        }, 400);
+    });
+
+    // Close menu when clicking on a link in main menu
+    document.querySelectorAll('.main-menu-screen a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (this.classList.contains('has-submenu')) {
+                e.preventDefault();
+                return;
+            }
+            
+            if (this.getAttribute('href') === 'index.html') {
+                // Allow navigation to home
+                return true;
+            }
+            
+            e.preventDefault();
+            closeMenu();
+            
+            // Show message or handle other links
+            if (this.getAttribute('href') === '#enquiry-form') {
+                console.log('Show enquiry form');
+                // You can add your enquiry form logic here
+            }
+        });
+    });
+
+    // Close menu when clicking on a link in submenu
+    document.addEventListener('click', function(e) {
+        if (e.target.closest('.submenu-screen a')) {
+            const link = e.target.closest('.submenu-screen a');
+            if (link.getAttribute('href') && link.getAttribute('href') !== '#') {
+                // Allow navigation for actual links
+                window.location.href = link.getAttribute('href');
+            } else {
+                e.preventDefault();
+                closeMenu();
+            }
+        }
+    });
+
+    // Close menu when clicking outside of menu content
+    overlayMenu.addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeMenu();
+        }
+    });
+
+    // Close menu with Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && overlayMenu.classList.contains('active')) {
+            closeMenu();
+        }
+    });
+
+    // ===== NAVBAR TEXT EFFECT FUNCTIONS =====
+  // ===== NAVBAR TEXT EFFECT FUNCTIONS =====
+function initNavbarTextEffect() {
+    const navbarLogoText = document.getElementById('navbarLogoText');
+    const navbarScrolledText = document.getElementById('navbarScrolledText');
+    const text = 'MODERN SCHOOL';
+    
+    // Clear existing content
+    navbarLogoText.innerHTML = '';
+    navbarScrolledText.innerHTML = '';
+    
+    // Create arrays to store all letter elements
+    const logoLetters = [];
+    const scrolledLetters = [];
+    
+    // Create letter spans for both versions
+    for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        
+        // For navbar-logo-text (visible when not scrolled)
+        const logoLetter = document.createElement('span');
+        logoLetter.className = 'letter';
+        logoLetter.textContent = char;
+        // Handle space differently
+        if (char === ' ') {
+            logoLetter.style.width = '8px';
+            logoLetter.style.pointerEvents = 'none';
+        }
+        navbarLogoText.appendChild(logoLetter);
+        logoLetters.push(logoLetter);
+        
+        // For navbar-text (visible when scrolled)
+        const scrolledLetter = document.createElement('span');
+        scrolledLetter.className = 'letter';
+        scrolledLetter.textContent = char;
+        // Handle space differently
+        if (char === ' ') {
+            scrolledLetter.style.width = '8px';
+            scrolledLetter.style.pointerEvents = 'none';
+        }
+        navbarScrolledText.appendChild(scrolledLetter);
+        scrolledLetters.push(scrolledLetter);
+    }
+    
+    const totalLetters = text.length;
+    const progressFill = document.getElementById('navbarProgressFill');
+    
+    function updateNavbarEffects() {
+        const scrollY = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = scrollY / docHeight;
+        
+        // Update progress bar width
+        if (progressFill) {
+            progressFill.style.width = `${scrollPercent * 100}%`;
+        }
+        
+        // Update navbar scrolled state
+        const navbar = document.querySelector('.navbar');
+        if (scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+        
+        // Calculate which letters should be highlighted based on scroll position
+        const effectStart = 0.1;
+        const effectEnd = 1.0;
+        
+        if (scrollPercent < effectStart) {
+            // Reset all letters to original color at the top
+            logoLetters.forEach(letter => {
+                if (letter.textContent !== ' ') {
+                    letter.classList.remove('maroon');
+                }
+            });
+            scrolledLetters.forEach(letter => {
+                if (letter.textContent !== ' ') {
+                    letter.classList.remove('maroon');
+                }
+            });
+        } else if (scrollPercent > effectEnd) {
+            // At the end, keep only the last letter highlighted
+            logoLetters.forEach((letter, index) => {
+                if (letter.textContent !== ' ') {
+                    if (index === totalLetters - 1) {
+                        letter.classList.add('maroon');
+                    } else {
+                        letter.classList.remove('maroon');
+                    }
+                }
+            });
+            scrolledLetters.forEach((letter, index) => {
+                if (letter.textContent !== ' ') {
+                    if (index === totalLetters - 1) {
+                        letter.classList.add('maroon');
+                    } else {
+                        letter.classList.remove('maroon');
+                    }
+                }
+            });
+        } else {
+            // Calculate progress within the effect range
+            const effectProgress = (scrollPercent - effectStart) / (effectEnd - effectStart);
+            
+            // Determine which single letter should be highlighted
+            // Skip spaces when calculating position
+            const nonSpaceLetters = Array.from(text).filter(char => char !== ' ');
+            const highlightPosition = Math.floor(effectProgress * nonSpaceLetters.length);
+            
+            // Convert highlight position back to original string position
+            let currentPosition = -1;
+            let targetIndex = -1;
+            for (let i = 0; i < text.length; i++) {
+                if (text[i] !== ' ') {
+                    currentPosition++;
+                    if (currentPosition === highlightPosition) {
+                        targetIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            // Apply maroon class to only one letter at a time
+            logoLetters.forEach((letter, index) => {
+                if (letter.textContent !== ' ') {
+                    if (index === targetIndex) {
+                        letter.classList.add('maroon');
+                    } else {
+                        letter.classList.remove('maroon');
+                    }
+                }
+            });
+            
+            scrolledLetters.forEach((letter, index) => {
+                if (letter.textContent !== ' ') {
+                    if (index === targetIndex) {
+                        letter.classList.add('maroon');
+                    } else {
+                        letter.classList.remove('maroon');
+                    }
+                }
+            });
+        }
+    }
+    
+    // Initial call to set colors
+    updateNavbarEffects();
+    
+    // Update effects on scroll
+    window.addEventListener('scroll', updateNavbarEffects);
+    
+    // Also update on resize
+    window.addEventListener('resize', updateNavbarEffects);
+}
+    // ===== HISTORY IMAGE ANIMATION =====
+    function animateHistoryImage() {
+        const historySection = document.getElementById('historySection');
+        if (!historySection || !historyImage) return;
+        
+        const rect = historySection.getBoundingClientRect();
+        
+        if (rect.top < (window.innerHeight - 100) && rect.bottom >= 0) {
+            historyImage.classList.add('animate');
+            window.removeEventListener('scroll', animateHistoryImage);
+        }
+    }
+
+    // ===== TIMELINE DATA =====
+    const timelineData = {
+        '1973': {
+            title: 'Foundation',
+            subtitle: 'MRS. F.T. SINGH',
+            date: '1973',
+            images: ['1973.png'],
+            description: `<p><strong>A visionary whose faith in education became Modern's foundation.</strong></p>
+            <p><strong>Faith that Built a Future</strong></p>
+            <p>Every great story begins with a dreamer for us, it was Mrs. F.T. Singh, lovingly called Mama. With faith in humanity and an unshakable belief in education, she laid the first brick of Modern School. Her purpose was simple yet profound to build not just a school, but a home where values would shape futures.</p>
+            <p><strong>Humble Beginnings, Great Dreams</strong> It all started in a single room six curious children, a few benches, and Mama's boundless faith. She didn't dream of numbers; she dreamed of nurturing hearts. Those six young learners became the roots of a legacy that would one day grow into a flourishing family of Modernites.</p>
+            <p>Each lesson she taught carried warmth, discipline, and purpose. It was never about perfection, but about potential about seeing the extraordinary in every child. From that tiny classroom, a movement began — one that continues to inspire thousands today.</p>`
+        },
+        '1976': {
+            title: 'Strength in Togetherness',
+            subtitle: 'Building the Modern Family',
+            date: '1976',
+            images: ['1976.png'],
+            description: `<p>Behind every vision stands a team that believes — and Mama found hers. With teachers who shared her dedication, Modern School began to find its rhythm. Together, they worked not for recognition, but for transformation - hand in hand, heart to heart, building the foundation of the Modern family.</p>
+            <p>Modern School began to grow not because of advertisements, but because of trust. Families believed in Mama's vision, and that belief became Modern's biggest strength.</p>
+            <p><strong>Houses that Built Spirit</strong> As Modern grew, so did its heartbeat the four houses: Pearl, Ruby, Emerald, and Diamond.</p>`
+        },
+        '1978': {
+            title: 'DR. DEEPAK SINGH',
+            subtitle: 'The guiding force who turned vision into a legacy of learning.',
+            date: '1978',
+            images: ['1978.png'],
+            description: `<p><strong>The Torch Passes On</strong></p>
+            <p>In 1978, Dr. Deepak Singh joined Mama, carrying with him energy, vision, and fresh ideas. With the same passion and unwavering values, he became the force that turned Mama's dream into a growing legacy. Today, as the Chairman, he continues to guide Modern with the same purpose - nurturing minds, shaping character, and carrying forward her light.</p>`
+        },
+        '1981': {
+            title: 'A New Dawn - Talwandi',
+            subtitle: 'A dream grew into a landmark',
+            date: '1981',
+            images: ['1981.png'],
+            description: `<p>The Talwandi branch was built a turning point that transformed the future of Modern School. From Garh to a grand new campus, it marked the moment Modern's vision found its wings. A new beginning, yet rooted in the same values that Mama had planted years ago.</p>`
+        },
+        '1991': {
+            title: 'A Hub of Growth and Innovation',
+            subtitle: 'Modern School Talwandi Expansion',
+            date: '1991',
+            images: ['1991.png'],
+            description: `<p>Modern School Talwandi soon became the heart of the Modern legacy — a vibrant campus that grew with the dreams of its students. Classrooms multiplied, facilities expanded, and new buildings rose, each one echoing the same spirit of excellence.</p>
+            <p>Every wall, corridor, and courtyard reflected purpose-built not for grandeur, but for growth. The expansion was not just physical; it was a reflection of Modern's evolving vision for holistic education.</p>
+            <p>Today, the Talwandi campus stands as a landmark of dedication and progress - a space where every child's potential is nurtured, and every dream finds direction.</p>`
+        },
+        '1994': {
+            title: 'A Home for Readers & Discovery',
+            subtitle: 'Library and Laboratories',
+            date: '1994',
+            images: ['1994.png'],
+            description: `<p><strong>A Home for Readers</strong></p>
+            <p>The library became the quiet heartbeat of Modern School - a place where stories, ideas, and imagination came alive. Rows of books nurtured young minds, teaching them to think deeply and dream endlessly.</p>
+            <p><strong>Spaces of Discovery</strong></p>
+            <p>Modern School introduced dedicated science and computer laboratories - spaces where curiosity met creativity. These labs encouraged students to question, explore, and learn by doing. Every experiment became a step toward innovation, every discovery a moment of pride.</p>`
+        },
+        '1996': {
+            title: 'Making Waves of Excellence',
+            subtitle: 'Swimming Pool Inauguration',
+            date: '1996',
+            images: ['1996.png'],
+            description: `<p>The inauguration of the swimming pool marked another milestone in Modern's journey - one of the very first schools in the region to offer such a facility. It became a space where students learned resilience, confidence, and focus - lessons that stayed with them far beyond the pool.</p>`
+        },
+        '1998': {
+            title: 'The Computer Lab of the late 90s',
+            subtitle: 'Where curiosity met technology',
+            date: '1998',
+            images: ['1998.png'],
+            description: `<p>Where curiosity met technology and imagination found a digital canvas. It wasn't just about screens and keyboards, but about opening young minds to endless possibilities, shaping thinkers ready to explore a rapidly evolving world of innovation.</p>`
+        },
+        '2002': {
+            title: 'The Auditorium & Basketball Court',
+            subtitle: 'Spaces for Expression and Dreams',
+            date: '2002',
+            images: ['2002_1.png', '2002_2.png'],
+            description: `<p><strong>The Auditorium - A Stage for Expression</strong></p>
+            <p>Modern's auditorium became a hub of creativity and celebration. From morning assemblies to grand events, it echoed with laughter, applause, and inspiration. It stood as a space where every child could express, perform, and shine.</p>
+            <p><strong>A Court of Dreams</strong></p>
+            <p>The state-of-the-art basketball court, with its wooden flooring, became a source of pride for Modernites. It wasn't just a sports facility—it was a stage where teamwork, discipline, and determination were learned.</p>
+            <p>Every bounce of the ball echoed the Modern spirit - to play fair, to play strong, and to never stop striving.</p>`
+        },
+        '2004': {
+            title: 'MR. VAIBHAV SINGH',
+            subtitle: 'The dynamic mind shaping modern ideas into meaningful impact.',
+            date: '2004',
+            images: ['2004.png'],
+            description: `<p><strong>A New Energy - A Dynamic Transformation</strong></p>
+            <p>In 2004, a new chapter began as Mr. Vaibhav Singh joined Modern School carrying forward a legacy while igniting a wave of transformation. Young, visionary, and deeply inspired, he brought a renewed sense of energy and innovation to the institution.</p>
+            <p>He believed that the true strength of education lies in balance — the perfect blend of values and vision, roots and wings. His leadership embraced technology, global perspectives, and new-age learning, yet always stayed grounded in the timeless ethics that Modern was built upon.</p>
+            <p>He envisioned a school where every student would thrive not only academically but emotionally and socially - a place where learning would be joyful, purposeful, and personal. Under his direction, Modern stepped confidently into the future, integrating smart classrooms, modern teaching methodologies, and holistic learning environments.</p>
+            <p>His philosophy, "At Modern, We Care," became more than a motto - it became a movement. It reflected empathy in action, nurturing every child with attention, affection, and understanding.</p>
+            <p>His arrival marked a generational shift - a moment when Modern embraced the future with open arms, carrying forward its past with pride and purpose.</p>`
+        },
+        '2014': {
+            title: 'The Steps Inaugurated',
+            subtitle: 'First branch for youngest learners',
+            date: '2014',
+            images: ['2014.png'],
+            description: `<p>As Modern continued to grow, a new dream took shape -the first branch was opened, dedicated to the youngest learners. This marked the birth of Steps-The Playgroup Wing, a nurturing space where curiosity met care.</p>`
+        },
+        '2016': {
+            title: 'Baran Branch Opens',
+            subtitle: 'Expanding Modern\'s Reach',
+            date: '2016',
+            images: ['2016.png'],
+            description: `<p>Modern School's journey of growth reached new horizons with the opening of the Baran branch. It reflected the institution's commitment to spreading quality education beyond Kota - bringing Modern's values, excellence, and spirit to new communities.</p>`
+        },
+        '2017': {
+            title: 'Bharatpur & Jaipur Branches',
+            subtitle: 'Expanding across Rajasthan',
+            date: '2017',
+            images: ['2017_1.png', '2017_2.png'],
+            description: `<p><strong>Bharatpur Branch Inaugurated</strong></p>
+            <p>With the inauguration of the Bharatpur branch, Modern's dream of nurturing young minds across Rajasthan took another step forward.</p>
+            <p><strong>Jaipur Branch Established</strong></p>
+            <p>The establishment of Modern School Jaipur marked a proud milestone bringing Modern's legacy to the capital city. Designed with state-of-the-art infrastructure and a forward-thinking approach, it became a symbol of how tradition and innovation can coexist beautifully. Here, the Modern vision of holistic growth found a new and dynamic home.</p>
+            <p><strong>Learning Through Experience - Educational Visits</strong></p>
+            <p>Modern School always believed that education goes beyond books.</p>`
+        },
+        '2021': {
+            title: 'Nayanohra Branch Opens',
+            subtitle: 'Another chapter in Modern\'s journey',
+            date: '2021',
+            images: ['2021.png'],
+            description: `<p>The Nayanohra branch added yet another chapter to Modern's inspiring journey of expansion. Set amid serene surroundings, it was built to offer a learning environment that encouraged exploration, creativity, and confidence. Each new branch carried one heartbeat to nurture the next generation with love, integrity, and excellence.</p>`
+        },
+        '2025': {
+            title: 'Continuing the Legacy',
+            subtitle: 'Our story has just begun',
+            date: '2025',
+            images: ['2025.png'],
+            description: `<p>As our story has just begun, we carry forward the values that built our foundation integrity, innovation, and inspiration. With every new chapter, we honour our legacy while embracing the future, continuing the journey of shaping minds, touching hearts, and creating tomorrow's Modern-because We Care.</p>`
+        }
+    };
+
+    // ===== TIMELINE FUNCTIONS =====
+    function generateImageCarousel(images, year) {
+        if (images.length === 1) {
+            return `
+                <div class="timeline-image-container">
+                    <img src="${images[0]}" alt="${year}" class="timeline-image">
+                </div>
+            `;
+        } else {
+            const carouselId = `carousel-${year}`;
+            
+            let slidesHtml = '';
+            let indicatorsHtml = '';
+            
+            images.forEach((img, index) => {
+                const isActive = index === 0 ? 'active' : '';
+                slidesHtml += `
+                    <div class="carousel-item ${isActive}">
+                        <img src="${img}" alt="${year} - Image ${index + 1}" class="timeline-image">
+                    </div>
+                `;
+                
+                indicatorsHtml += `
+                    <button type="button" data-target="#${carouselId}" data-slide-to="${index}" class="${isActive}" aria-label="Slide ${index + 1}"></button>
+                `;
+            });
+            
+            return `
+                <div id="${carouselId}" class="carousel slide timeline-carousel" data-ride="carousel">
+                    <div class="carousel-indicators">
+                        ${indicatorsHtml}
+                    </div>
+                    <div class="carousel-inner">
+                        ${slidesHtml}
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-target="#${carouselId}" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-target="#${carouselId}" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    function initializeCarousel(year) {
+        const carouselId = `carousel-${year}`;
+        const carouselElement = document.getElementById(carouselId);
+        
+        if (carouselElement && carouselElement.querySelectorAll('.carousel-item').length > 1) {
+            const carouselItems = carouselElement.querySelectorAll('.carousel-item');
+            const indicators = carouselElement.querySelectorAll('.carousel-indicators button');
+            const prevButton = carouselElement.querySelector('.carousel-control-prev');
+            const nextButton = carouselElement.querySelector('.carousel-control-next');
+            
+            let currentIndex = 0;
+            let autoRotateInterval;
+            
+            function showSlide(index) {
+                carouselItems.forEach(item => item.classList.remove('active'));
+                indicators.forEach(indicator => indicator.classList.remove('active'));
+                
+                if (carouselItems[index]) {
+                    carouselItems[index].classList.add('active');
+                }
+                if (indicators[index]) {
+                    indicators[index].classList.add('active');
+                }
+                
+                currentIndex = index;
+            }
+            
+            function nextSlide() {
+                let nextIndex = currentIndex + 1;
+                if (nextIndex >= carouselItems.length) {
+                    nextIndex = 0;
+                }
+                showSlide(nextIndex);
+            }
+            
+            function prevSlide() {
+                let prevIndex = currentIndex - 1;
+                if (prevIndex < 0) {
+                    prevIndex = carouselItems.length - 1;
+                }
+                showSlide(prevIndex);
+            }
+            
+            function startAutoRotate() {
+                autoRotateInterval = setInterval(nextSlide, 5000);
+            }
+            
+            function stopAutoRotate() {
+                clearInterval(autoRotateInterval);
+            }
+            
+            if (nextButton) {
+                nextButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    nextSlide();
+                    stopAutoRotate();
+                    startAutoRotate();
+                });
+            }
+            
+            if (prevButton) {
+                prevButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    prevSlide();
+                    stopAutoRotate();
+                    startAutoRotate();
+                });
+            }
+            
+            indicators.forEach((indicator, index) => {
+                indicator.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    showSlide(index);
+                    stopAutoRotate();
+                    startAutoRotate();
+                });
+            });
+            
+            startAutoRotate();
+            
+            carouselElement.addEventListener('mouseenter', stopAutoRotate);
+            carouselElement.addEventListener('mouseleave', startAutoRotate);
+        }
+    }
+
+    function generateTimelineItems() {
+        const years = Object.keys(timelineData);
+        years.sort((a, b) => parseInt(a) - parseInt(b));
+        
+        let html = '';
+        years.forEach(year => {
+            html += `
+                <div class="timeline-item-horizontal" data-year="${year}">
+                    <div class="timeline-marker-horizontal">
+                        <span>${year}</span>
+                    </div>
+                </div>
+            `;
+        });
+        
+        timelineItemsHorizontal.innerHTML = html;
+        
+        // Add click event listeners to all timeline items
+        document.querySelectorAll('.timeline-item-horizontal').forEach(item => {
+            item.addEventListener('click', function() {
+                const year = this.getAttribute('data-year');
+                const index = years.indexOf(year);
+                if (timelineScrollTrigger) {
+                    const progress = index / (years.length - 1);
+                    const scrollTo = timelineScrollTrigger.start + (progress * timelineScrollLength);
+                    window.scrollTo({ top: scrollTo, behavior: 'smooth' });
+                }
+            });
+        });
+    }
+
+    function updateTimelineDescription(year) {
+        const data = timelineData[year];
+        if (data) {
+            const imageHtml = generateImageCarousel(data.images, year);
+            
+            // Determine if this year should have image on left or right
+            const yearNum = parseInt(year);
+            const imageSide = yearNum % 2 === 0 ? 'image-left' : 'image-right';
+            
+            timelineDescriptionPanel.innerHTML = `
+                <div class="timeline-year-header">
+                    <h3 class="timeline-desc-title">${data.title}</h3>
+                    <div class="timeline-year-display">${year}</div>
+                </div>
+                <div class="timeline-content-wrapper ${imageSide}">
+                    <div class="timeline-image-side">
+                        ${imageHtml}
+                    </div>
+                    <div class="timeline-text-side">
+                        ${data.subtitle ? `<div class="timeline-desc-subtitle">${data.subtitle}</div>` : ''}
+                        <div class="timeline-desc-text">${data.description}</div>
+                    </div>
+                </div>
+            `;
+            
+            // Animate the description panel
+            gsap.to(timelineDescriptionPanel, {
+                opacity: 1,
+                y: 0,
+                duration: 0.6,
+                ease: "power2.out"
+            });
+            
+            // Initialize carousel controls if there are multiple images
+            if (data.images.length > 1) {
+                setTimeout(() => {
+                    initializeCarousel(year);
+                }, 100);
+            }
+        }
+    }
+
+    function centerActiveTimelineItem(index) {
+        const itemsContainer = document.querySelector('.timeline-items-horizontal');
+        const activeItem = document.querySelectorAll('.timeline-item-horizontal')[index];
+        
+        if (!itemsContainer || !activeItem) return;
+        
+        const containerWidth = document.querySelector('.timeline-items-container').clientWidth;
+        const itemWidth = activeItem.offsetWidth;
+        const itemOffsetLeft = activeItem.offsetLeft;
+        const itemsContainerWidth = itemsContainer.scrollWidth;
+        
+        const centerPosition = (containerWidth / 2) - (itemWidth / 2) - itemOffsetLeft;
+        const maxTranslate = 0;
+        const minTranslate = containerWidth - itemsContainerWidth;
+        let translateX = Math.max(minTranslate, Math.min(maxTranslate, centerPosition));
+        
+        gsap.to(itemsContainer, {
+            x: translateX,
+            duration: 0.6,
+            ease: "power2.out"
+        });
+    }
+
+    // ===== SCROLL PROGRESS BAR =====
+    function updateScrollProgress() {
+        const totalScrollHeight = document.body.scrollHeight - window.innerHeight;
+        const currentScroll = window.scrollY;
+        const scrollProgress = totalScrollHeight > 0 ? (currentScroll / totalScrollHeight) * 100 : 0;
+        
+        if (scrollProgressBar) {
+            scrollProgressBar.style.width = `${scrollProgress}%`;
+        }
+    }
+
+    // ===== MAIN INITIALIZATION =====
+    function initEverything() {
+        // Initialize navbar text effect
+        initNavbarTextEffect();
+        
+        // Initialize timeline
+        generateTimelineItems();
+        
+        // Set the first item as active
+        const firstItem = document.querySelector('.timeline-item-horizontal');
+        const years = Object.keys(timelineData).sort((a, b) => parseInt(a) - parseInt(b));
+        if (firstItem) {
+            firstItem.classList.add('active');
+            updateTimelineDescription(firstItem.getAttribute('data-year'));
+        }
+        
+        // Add scroll event listener for history image
+        window.addEventListener('scroll', animateHistoryImage);
+        window.addEventListener('load', animateHistoryImage);
+        
+        // Add scroll event for progress bar
+        window.addEventListener('scroll', updateScrollProgress);
+        
+        // Initial call for progress bar
+        updateScrollProgress();
+        
+        // GSAP Animations for History Section
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: "#historySection",
+                start: "top 80%",
+                end: "bottom 20%",
+                toggleActions: "play none none reverse"
+            }
+        })
+        .from("#historySection .history-title", {
+            opacity: 0,
+            y: 20,
+            duration: 0.8,
+            ease: "power2.out"
+        })
+        .from("#historySection .history-content", {
+            opacity: 0,
+            x: -20,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.4")
+        .from("#historySection .history-image", {
+            opacity: 0,
+            x: 20,
+            duration: 0.8,
+            ease: "power2.out"
+        }, "-=0.4");
+
+        // GSAP ScrollTrigger for Timeline Section
+        let timelineScrollTrigger;
+        const timelineScrollLength = 3500;
+
+        // Main timeline scroll animation
+        timelineScrollTrigger = ScrollTrigger.create({
+            trigger: "#timelineTrigger",
+            start: "top top",
+            end: `+=${timelineScrollLength}`,
+            pin: true,
+            scrub: 1,
+            markers: false,
+            onUpdate: (self) => {
+                const progress = self.progress;
+                const years = Object.keys(timelineData).sort((a, b) => parseInt(a) - parseInt(b));
+                const totalYears = years.length;
+                const activeIndex = Math.min(Math.floor(progress * totalYears), totalYears - 1);
+                
+                // Update active timeline item
+                const timelineItems = document.querySelectorAll('.timeline-item-horizontal');
+                timelineItems.forEach((item, index) => {
+                    if (index === activeIndex) {
+                        item.classList.add('active');
+                        centerActiveTimelineItem(activeIndex);
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+                
+                // Update description panel with current year
+                if (years[activeIndex]) {
+                    updateTimelineDescription(years[activeIndex]);
+                }
+            }
+        });
+
+        // Handle window resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                const activeItem = document.querySelector('.timeline-item-horizontal.active');
+                if (activeItem) {
+                    const years = Object.keys(timelineData).sort((a, b) => parseInt(a) - parseInt(b));
+                    const activeIndex = Array.from(document.querySelectorAll('.timeline-item-horizontal')).indexOf(activeItem);
+                    centerActiveTimelineItem(activeIndex);
+                }
+                ScrollTrigger.refresh();
+            }, 250);
+        });
+    }
+
+    // ===== ENQUIRY BUTTON HANDLER =====
+    if (admissionBtn) {
+        admissionBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Enquiry button clicked');
+            // Add your enquiry form logic here
+            // Example: show a modal or scroll to enquiry form
+        });
+    }
+
+    // Initialize everything when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        initEverything();
+        
+        // Initialize after everything is loaded
+        window.addEventListener('load', function() {
+            ScrollTrigger.refresh();
+            const activeItem = document.querySelector('.timeline-item-horizontal.active');
+            if (activeItem) {
+                const years = Object.keys(timelineData).sort((a, b) => parseInt(a) - parseInt(b));
+                const activeIndex = Array.from(document.querySelectorAll('.timeline-item-horizontal')).indexOf(activeItem);
+                centerActiveTimelineItem(activeIndex);
+            }
+        });
+    });
+</script>
+</body>
+</html>

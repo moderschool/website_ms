@@ -1,0 +1,2400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern School, Kota - Careers</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #fefaf0; /* Cream background */
+            color: #5d2a2a; /* Maroon font color */
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Top Navbar & Fixed Elements */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed; 
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease; 
+        }
+
+        body.menu-open .navbar {
+            transform: translateY(-100%);
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            width: 30px;
+            height: 24px;
+            justify-content: space-between;
+            position: fixed; 
+            top: 25px; 
+            left: 20px;
+            z-index: 1002; 
+        }
+
+        .hamburger span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #5d2a2a;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(10px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-10px) rotate(-45deg); }
+
+        .admission-btn { 
+            background-color: transparent; 
+            color: #5d2a2a; 
+            border: 2px solid #5d2a2a; 
+            padding: 8px 18px; 
+            border-radius: 20px; 
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s, color 0.3s;
+            position: fixed;
+            top: 15px;
+            right: 20px;
+            z-index: 1002;
+        }
+        .admission-btn:hover { background-color: #5d2a2a; color: white; }
+
+        /* Full Page Overlay Menu CONTAINER */
+        .overlay-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            z-index: 1001; 
+            transform: translateX(-100%); /* Start hidden off-screen left */
+            transition: transform 0.5s ease;
+            overflow: hidden; /* Important for horizontal transitions */
+        }
+
+        .overlay-menu.active {
+            transform: translateX(0); /* Slide in from the left */
+        }
+
+        /* Menu Wrapper for Drill-Down Effect */
+        .menu-wrapper {
+            width: 100%; /* Changed from 200% to 100% */
+            height: 100%;
+            display: flex; /* Makes main and sub-menu components line up horizontally */
+            transition: transform 0.4s ease-in-out;
+            margin-top: 80px;
+        }
+
+        /* State when a submenu is active */
+        .overlay-menu.submenu-active .menu-wrapper {
+            transform: translateX(-100%); /* Slide the main menu out (left) and the submenu in (center) */
+        }
+        
+        /* Main Menu and Submenu Screen */
+        .main-menu-screen, .submenu-screen {
+            width: 100%; /* Each takes full width of the wrapper */
+            height: 100%;
+            list-style: none;
+            text-align: center;
+            padding: 20px;
+            flex-shrink: 0; /* Prevents shrinking */
+            overflow-y: auto; /* Allows scrolling if needed */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center the menu items horizontally */
+        }
+
+        /* BACK BUTTON Container - Now positioned at top of submenu */
+        .submenu-header {
+            position: absolute;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+            padding: 10px 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s, visibility 0.4s;
+            z-index: 1003;
+        }
+        
+        .overlay-menu.submenu-active .submenu-header {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-btn {
+            background: none;
+            border: none;
+            color: #5d2a2a;
+            font-size: 28px; /* Same font size as main menu */
+            font-weight: 600;
+            cursor: pointer;
+            padding: 15px 10px;
+            border-radius: 5px;
+            transition: color 0.3s;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            color: #8b4513; /* Same hover color as menu items */
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+        }
+
+        /* Menu Item Styles - Shared */
+        .main-menu-screen li, .submenu-screen li {
+            margin: 0;
+            padding: 0;
+            width: 100%; /* Ensure full width for centering */
+            display: flex;
+            justify-content: center; /* Center the links */
+        }
+        
+        .main-menu-screen a, .submenu-screen a {
+            text-decoration: none;
+            color: #5d2a2a;
+            font-weight: 600;
+            display: block; 
+            padding: 15px 10px;
+            margin-bottom: 5px; /* Spacing between menu items */
+            transition: color 0.3s;
+            position: relative;
+            width: 100%; /* Take full width of the container */
+            max-width: 400px; /* Limit maximum width for better appearance */
+        }
+        
+        .main-menu-screen a, .submenu-screen a { 
+            font-size: 28px; 
+            text-align: center; /* Center the text */
+        }
+
+        /* Arrow Indicator for Drill-Down */
+        .main-menu-screen a.has-submenu::after {
+            content: '\f054'; /* Font Awesome Chevron Right */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+        }
+
+        /* Hover Styles (unchanged from original intent) */
+        .main-menu-screen a:hover, .submenu-screen a:hover {
+            color: #8b4513;
+        }
+        
+        /* Submenu screen styling */
+        .submenu-screen {
+            background-color: white; /* Same background as main menu */
+        }
+        
+        /* Content area styles for careers page */
+        .content {
+            padding-top: 100px; /* Offset for fixed navbar */
+            padding-left: 20px;
+            padding-right: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            min-height: 500px;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #5d2a2a;
+        }
+        
+        .page-header h1 {
+            font-size: 2.5rem;
+            color: #5d2a2a;
+            margin-bottom: 10px;
+        }
+        
+        .page-header p {
+            font-size: 1.2rem;
+            color: #8b4513;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Combined Filter and Toggle Section */
+        .controls-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .filter-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-label {
+            font-weight: 600;
+            color: #5d2a2a;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background-color: white;
+            border: 2px solid #8b4513;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #8b4513;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background-color: #8b4513;
+            color: white;
+        }
+        
+        .filter-btn:hover:not(.active) {
+            background-color: rgba(139, 69, 19, 0.1);
+        }
+        
+        /* Toggle Switch for Current/Past Openings */
+        .toggle-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .toggle-label {
+            font-weight: 600;
+            color: #5d2a2a;
+            white-space: nowrap;
+        }
+        
+        .toggle-switch {
+            display: flex;
+            background-color: #f0f0f0;
+            border-radius: 25px;
+            padding: 5px;
+            border: 2px solid #5d2a2a;
+        }
+        
+        .toggle-option {
+            padding: 10px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            min-width: 120px;
+            color: #5d2a2a;
+        }
+        
+        .toggle-option.active {
+            background-color: #5d2a2a;
+            color: white;
+        }
+        
+        .toggle-option:hover:not(.active) {
+            background-color: rgba(93, 42, 42, 0.1);
+        }
+        
+        /* Single Column Job Listings */
+        .job-listings {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .job-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-left: 5px solid #5d2a2a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .job-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        
+        .job-card.past {
+            border-left-color: #8b4513;
+            opacity: 0.9;
+        }
+        
+        .job-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .job-title {
+            font-size: 1.6rem;
+            color: #5d2a2a;
+            margin-bottom: 5px;
+        }
+        
+        .job-department {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: rgba(93, 42, 42, 0.1);
+            color: #5d2a2a;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .job-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        .job-detail {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .job-brief {
+            line-height: 1.6;
+            color: #555;
+            max-width: 600px;
+        }
+        
+        /* Job Action Buttons */
+        .job-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-width: 150px;
+            margin-left: 20px;
+        }
+        
+        .details-btn, .apply-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .details-btn {
+            background-color: white;
+            color: #5d2a2a;
+            border: 2px solid #5d2a2a;
+        }
+        
+        .details-btn:hover {
+            background-color: rgba(93, 42, 42, 0.1);
+        }
+        
+        .apply-btn {
+            background-color: #5d2a2a;
+            color: white;
+        }
+        
+        .apply-btn:hover {
+            background-color: #8b4513;
+        }
+        
+        .apply-btn.disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        
+        /* Job Details Modal */
+        .job-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .job-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .job-modal {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+        }
+        
+        .job-modal-overlay.active .job-modal {
+            transform: translateY(0);
+        }
+        
+        .job-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .job-modal-header h2 {
+            color: #5d2a2a;
+            font-size: 1.8rem;
+        }
+        
+        .close-job-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #5d2a2a;
+            cursor: pointer;
+        }
+        
+        .job-modal-content {
+            margin-bottom: 25px;
+        }
+        
+        .job-modal-section {
+            margin-bottom: 25px;
+        }
+        
+        .job-modal-section h3 {
+            color: #5d2a2a;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        .job-modal-section ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .job-modal-section li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+        
+        .modal-apply-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #5d2a2a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+        
+        .modal-apply-btn:hover {
+            background-color: #8b4513;
+        }
+        
+        .modal-apply-btn.disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        
+        /* VERIFICATION MODAL STYLES */
+        .verification-step {
+            display: none;
+        }
+        
+        .verification-step.active {
+            display: block;
+        }
+        
+        .success-message {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .success-message.active {
+            display: block;
+        }
+        
+        .success-icon {
+            font-size: 3rem;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+        
+        .countdown-text {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .resend-otp {
+            margin-top: 15px;
+            color: #5d2a2a;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.9rem;
+        }
+        
+        .resend-otp:hover {
+            color: #8b4513;
+        }
+        
+        .error-message {
+            color: #DB4437;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .email-input-section {
+            margin-bottom: 20px;
+        }
+        
+        .email-input-section input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-top: 8px;
+        }
+        
+        .email-input-section input:focus {
+            border-color: #5d2a2a;
+            outline: none;
+        }
+        
+        .send-otp-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #5d2a2a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+        
+        .send-otp-btn:hover {
+            background-color: #8b4513;
+        }
+        
+        .send-otp-btn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        
+        .auth-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2001;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .auth-modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .auth-modal {
+            background-color: white;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transform: translateY(-20px);
+            transition: transform 0.3s;
+        }
+        
+        .auth-modal-overlay.active .auth-modal {
+            transform: translateY(0);
+        }
+        
+        .auth-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .auth-modal-header h2 {
+            color: #5d2a2a;
+        }
+        
+        .close-auth-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #5d2a2a;
+            cursor: pointer;
+        }
+        
+        .otp-input {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        
+        .otp-input input {
+            width: 40px;
+            height: 50px;
+            text-align: center;
+            font-size: 1.5rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+        }
+        
+        .otp-input input:focus {
+            border-color: #5d2a2a;
+        }
+        
+        .verify-btn {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            background-color: #5d2a2a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 15px;
+        }
+        
+        .verify-btn:hover {
+            background-color: #8b4513;
+        }
+        
+        .verify-btn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+        }
+        
+        /* Application Form */
+        .application-form {
+            display: none;
+            background-color: white;
+            border-radius: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-top: 30px;
+        }
+        
+        .application-form.active {
+            display: block;
+        }
+        
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-section h3 {
+            color: #5d2a2a;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            min-width: 250px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #5d2a2a;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            border-color: #5d2a2a;
+            outline: none;
+        }
+        
+        .upload-section {
+            border: 2px dashed #ddd;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .upload-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #5d2a2a;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .upload-btn:hover {
+            background-color: #8b4513;
+        }
+        
+        .uploaded-file {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .submit-application {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #5d2a2a;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        
+        .submit-application:hover {
+            background-color: #8b4513;
+        }
+        
+        /* No Jobs Message */
+        .no-jobs {
+            text-align: center;
+            padding: 50px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* ORIGINAL FOOTER STYLES */
+        .footer-info {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .info-col {
+            flex: 0 0 33.33%;
+            padding: 0 15px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+        }
+        
+        .info-col.logo-col {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        
+        .info-col.address-col {
+            text-align: center;
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .info-col.contact-col {
+            text-align: right;
+        }
+        
+        .footer-logo {
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        
+        .info-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #f8d7b3;
+        }
+        
+        .info-col p {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        
+        .info-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .info-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        .footer-columns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background-color: #5d2a2a;
+            color: white;
+            padding: 40px 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .footer-col {
+            flex: 0 0 16.66%;
+            min-width: 150px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+        
+        .footer-col h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+            color: #f8d7b3;
+        }
+        
+        .footer-col ul {
+            list-style: none;
+        }
+        
+        .footer-col ul li {
+            margin-bottom: 8px;
+        }
+        
+        .footer-col a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-col a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        .footer-bottom {
+            background-color: #4a1f1f;
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
+        .copyright {
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: #f8d7b3;
+            text-decoration: underline;
+        }
+        
+        .footer-bottom-right {
+            display: flex;
+            align-items: center;
+        }
+        
+        .social-media {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-media a {
+            color: white;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+        
+        .social-media a:hover {
+            color: #f8d7b3;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .info-col {
+                flex: 0 0 100%;
+                text-align: center !important;
+                border: none !important;
+                margin-bottom: 30px;
+            }
+            
+            .info-col.logo-col {
+                align-items: center;
+            }
+            
+            .footer-col {
+                flex: 0 0 33.33%;
+            }
+            
+            .controls-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .toggle-section {
+                margin-top: 15px;
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .footer-col {
+                flex: 0 0 50%;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .footer-bottom-right {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .social-media {
+                margin-right: 0;
+            }
+            
+            .copyright {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .job-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .job-actions {
+                margin-left: 0;
+                margin-top: 20px;
+                width: 100%;
+                flex-direction: row;
+            }
+            
+            .details-btn, .apply-btn {
+                width: 48%;
+            }
+            
+            .controls-container {
+                padding: 15px;
+            }
+            
+            .filter-section, .toggle-section {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .otp-input input {
+                width: 35px;
+                height: 45px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .footer-col {
+                flex: 0 0 100%;
+            }
+            
+            .job-actions {
+                flex-direction: column;
+            }
+            
+            .details-btn, .apply-btn {
+                width: 100%;
+            }
+            
+            .job-title {
+                font-size: 1.4rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2rem;
+            }
+            
+            .toggle-option {
+                min-width: 100px;
+                padding: 10px 15px;
+            }
+            
+            .filter-btn, .toggle-option {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .otp-input input {
+                width: 30px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="hamburger" id="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <button class="admission-btn">Enquiry</button>
+
+    <nav class="navbar">
+        <img src="ms_logo.png" style="height:70px;margin-top:-10px;">
+    </nav>
+
+    <div class="overlay-menu" id="overlayMenu">
+        
+        <div class="submenu-header" id="submenuHeader">
+            <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+        </div>
+        
+        <div class="menu-wrapper" id="menuWrapper">
+            
+            <ul class="main-menu-screen" id="mainMenu">
+                <li><a href="#" class="close-menu">Home</a></li>
+                
+                <li class="menu-item-with-submenu" data-submenu="about-us">
+                    <a href="#" class="has-submenu">About Us</a> 
+                </li>
+                
+                <li class="menu-item-with-submenu" data-submenu="academics">
+                    <a href="#" class="has-submenu">Academics</a>
+                </li>
+                
+                <li><a href="#" class="close-menu">Admissions</a></li>
+                
+                <li class="menu-item-with-submenu" data-submenu="campus-life">
+                    <a href="#" class="has-submenu">Campus Life</a>
+                </li>
+                
+                <li class="menu-item-with-submenu" data-submenu="contact-us">
+                    <a href="#" class="has-submenu">Contact Us</a>
+                </li>
+            </ul>
+            
+            <ul class="submenu-screen" id="submenuScreen">
+                </ul>
+
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="page-header">
+            <h1>Join Our Team</h1>
+            <p>Explore career opportunities at Modern School, Kota. We're looking for passionate individuals who are committed to excellence in education.</p>
+        </div>
+        
+        <!-- Combined Controls Container -->
+        <div class="controls-container">
+            <!-- Department Filter on Left -->
+            <div class="filter-section">
+                <span class="filter-label">Filter by Department:</span>
+                <div class="filter-btn active" data-filter="all">All</div>
+                <div class="filter-btn" data-filter="academic">Academic</div>
+                <div class="filter-btn" data-filter="non-academic">Non-Academic</div>
+            </div>
+            
+            <!-- Toggle Switch for Current/Past Openings on Right -->
+            <div class="toggle-section">
+                <span class="toggle-label">Show:</span>
+                <div class="toggle-switch">
+                    <div class="toggle-option active" data-tab="current">Current Openings</div>
+                    <div class="toggle-option" data-tab="past">Past Openings</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Job Listings - Single Column -->
+        <div class="job-listings" id="jobListings">
+            <!-- Job listings will be dynamically inserted here -->
+        </div>
+        
+        <!-- Application Form - Hidden by default -->
+        <div class="application-form" id="applicationForm">
+            <!-- This will be shown after login -->
+        </div>
+    </div>
+
+    <!-- Job Details Modal -->
+    <div class="job-modal-overlay" id="jobModalOverlay">
+        <div class="job-modal">
+            <div class="job-modal-header">
+                <h2 id="jobModalTitle">Mathematics Teacher</h2>
+                <button class="close-job-modal" id="closeJobModal">&times;</button>
+            </div>
+            <div class="job-modal-content" id="jobModalContent">
+                <!-- Job details will be dynamically inserted here -->
+            </div>
+            <button class="modal-apply-btn" id="modalApplyBtn">Apply Now</button>
+        </div>
+    </div>
+
+    <!-- Verification Modal -->
+    <div class="auth-modal-overlay" id="authModalOverlay">
+        <div class="auth-modal">
+            <div class="auth-modal-header">
+                <h2 id="authModalTitle">Apply for Position</h2>
+                <button class="close-auth-modal" id="closeAuthModal">&times;</button>
+            </div>
+            
+            <!-- Email Input Step -->
+            <div class="verification-step active" id="emailStep">
+                <div class="email-input-section">
+                    <p>Please enter your email address to proceed with the application. We'll send a verification OTP to this email.</p>
+                    <label for="userEmail">Email Address *</label>
+                    <input type="email" id="userEmail" placeholder="Enter your email address">
+                    <div class="error-message" id="emailError">Please enter a valid email address.</div>
+                </div>
+                <button class="send-otp-btn" id="sendOtpBtn">Send OTP</button>
+            </div>
+            
+            <!-- OTP Verification Step -->
+            <div class="verification-step" id="otpStep">
+                <p>We've sent a one-time password (OTP) to your email. Please enter it below.</p>
+                <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">Demo OTP: <strong>123456</strong></p>
+                
+                <div class="otp-input">
+                    <input type="text" maxlength="1" id="otp1">
+                    <input type="text" maxlength="1" id="otp2">
+                    <input type="text" maxlength="1" id="otp3">
+                    <input type="text" maxlength="1" id="otp4">
+                    <input type="text" maxlength="1" id="otp5">
+                    <input type="text" maxlength="1" id="otp6">
+                </div>
+                <div class="error-message" id="otpError">Invalid OTP. Please try again.</div>
+                
+                <button class="verify-btn" id="verifyOtpBtn">Verify OTP</button>
+                <div class="resend-otp" id="resendOtp">Resend OTP</div>
+                <div class="countdown-text" id="countdownText">Resend OTP available in <span id="countdown">30</span> seconds</div>
+            </div>
+            
+            <!-- Success Message Step -->
+            <div class="success-message" id="successStep">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3>Verification Successful!</h3>
+                <p>Your email has been verified successfully.</p>
+                <p>You will be redirected to the application page in <span id="redirectCountdown">3</span> seconds...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Sections -->
+    <div class="footer-info">
+        <div class="info-col logo-col">
+            <img src="logo.png" alt="Modern School Logo" class="footer-logo">
+            <p>Excellence in Education Since 1973</p>
+        </div>
+        <div class="info-col address-col">
+            <h3>Our Address</h3>
+            <p>Modern School</p>
+            <p>Sector - A Talwandi,</p>
+            <p>Kota, Rajasthan 324005</p>
+            <p>India</p>
+        </div>
+        <div class="info-col contact-col">
+            <h3>Contact Information</h3>
+            <p><i class="fas fa-phone"></i> +91-744-24211167</p>
+            <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
+            <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
+            <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
+        </div>
+    </div>
+
+    <div class="footer-columns">
+        <div class="footer-col">
+            <h3>Academics</h3>
+            <ul>
+                <li><a href="#">Curriculum</a></li>
+                <li><a href="#">Exam & Result</a></li>
+                <li><a href="#">Calendar</a></li>
+                <li><a href="#">Counselling</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Admissions</h3>
+            <ul>
+                <li><a href="#">Apply Now</a></li>
+                <li><a href="#">Tuition & Fees</a></li>
+                <li><a href="#">RTE</a></li>
+                <li><a href="#">Campus Tours</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Campus Life</h3>
+            <ul>
+                <li><a href="#">Student Activities</a></li>
+                <li><a href="#">ModFest</a></li>
+                <li><a href="#">Athletics</a></li>
+                <li><a href="#">Campus Facilities</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>About Us</h3>
+            <ul>
+                <li><a href="#">Our History</a></li>
+                <li><a href="#">Vision & Mission</a></li>
+                <li><a href="#">Leadership</a></li>
+                <li><a href="#">Our Core Team</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Resources</h3>
+            <ul>
+                <li><a href="#">Alumni Network</a></li>
+                <li><a href="#">CBSE Corner</a></li>
+                <li><a href="#">TC Verification</a></li>
+                <li><a href="#">Mandatory Disclosures</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h3>Contact</h3>
+            <ul>
+                <li><a href="#">Faculty</a></li>
+                <li><a href="#">Campus Location</a></li>
+                <li><a href="#">Career</a></li>
+                <li><a href="#">General Inquiry</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="copyright">
+            <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
+        </div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+        </div>
+        <div class="footer-bottom-right">
+            <div class="social-media">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get DOM elements
+        const hamburger = document.getElementById('hamburger');
+        const overlayMenu = document.getElementById('overlayMenu');
+        const mainMenu = document.getElementById('mainMenu');
+        const submenuScreen = document.getElementById('submenuScreen');
+        const backButton = document.getElementById('backButton');
+        const body = document.body;
+        
+        // Define all submenu data
+        const submenus = {
+            'about-us': [
+                { text: 'Our History', href: '#' },
+                { text: 'Vision & Mission', href: '#' },
+                { text: 'Leadership', href: '#' },
+                { text: 'Our Core Team', href: '#' },
+            ],
+            'academics': [
+                { text: 'Curriculum', href: '#' },
+                { text: 'Exam &amp; Result', href: '#' },
+                { text: 'Calendar', href: '#' },
+                { text: 'Counselling', href: '#' },
+            ],
+            'campus-life': [
+                { text: 'Student Activities', href: '#' },
+                { text: 'ModFest', href: '#' },
+                { text: 'Athletics', href: '#' },
+                { text: 'Campus Facilities', href: '#' },
+            ],
+            'contact-us': [
+                { text: 'Faculty ', href: '#' },
+                { text: 'Campus Location', href: '#' },
+                { text: 'Career', href: '#' },
+                { text: 'General Inquiry', href: '#' },
+            ]
+        };
+
+        // Function to close the entire menu and reset the view
+        function closeMenu() {
+            hamburger.classList.remove('active');
+            overlayMenu.classList.remove('active');
+            body.classList.remove('menu-open');
+            // Ensure menu returns to the main screen view
+            overlayMenu.classList.remove('submenu-active');
+            submenuScreen.innerHTML = ''; // Clear submenu content
+        }
+
+        // Toggle main menu when hamburger is clicked
+        hamburger.addEventListener('click', function() {
+            if (this.classList.contains('active')) {
+                closeMenu();
+            } else {
+                this.classList.add('active');
+                overlayMenu.classList.add('active');
+                body.classList.add('menu-open');
+            }
+        });
+
+        // Handle clicks on main menu items with submenus (drill-down)
+        document.querySelectorAll('.main-menu-screen a.has-submenu').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const menuItem = this.closest('.menu-item-with-submenu');
+                const submenuKey = menuItem.getAttribute('data-submenu');
+                const submenuData = submenus[submenuKey];
+
+                if (!submenuData) return;
+
+                // 1. Build the submenu content
+                submenuScreen.innerHTML = ''; // Clear previous content
+                submenuData.forEach(item => {
+                    const li = document.createElement('li');
+                    // Add the 'close-menu' class to submenu links to close the entire menu on click
+                    li.innerHTML = `<a href="${item.href}" class="close-menu">${item.text}</a>`; 
+                    submenuScreen.appendChild(li);
+                });
+                
+                // Re-attach the closeMenu listener to the newly created links
+                submenuScreen.querySelectorAll('.close-menu').forEach(button => {
+                    button.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        closeMenu(); // Close on click
+                        alert(`Navigating to: ${this.textContent}`);
+                    });
+                });
+
+                // 2. Trigger the slide transition
+                overlayMenu.classList.add('submenu-active');
+            });
+        });
+
+        // Handle the Back Button click
+        backButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Slide back to the main menu view
+            overlayMenu.classList.remove('submenu-active');
+            // Clear the submenu content after the transition starts
+            setTimeout(() => {
+                submenuScreen.innerHTML = '';
+            }, 400); // 400ms to match the CSS transition duration
+        });
+
+        // Close menu when clicking on a close-menu link (home, admissions, etc.)
+        document.querySelectorAll('.close-menu').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                closeMenu();
+                alert(`Navigating to: ${this.textContent}`);
+            });
+        });
+        
+        // Close menu when clicking outside of menu content (overlay background)
+        overlayMenu.addEventListener('click', function(e) {
+            // Check if the click target is the overlay background itself
+            if (e.target === this) {
+                closeMenu();
+            }
+        });
+
+        // ============ CAREERS PAGE FUNCTIONALITY ============
+        
+        // Job data
+        const jobData = [
+            {
+                id: 1,
+                title: "Mathematics Teacher",
+                department: "academic",
+                type: "current",
+                location: "Senior Secondary Wing",
+                experience: "3-5 years",
+                deadline: "2025-04-15",
+                description: "We are looking for an experienced Mathematics teacher to join our senior secondary faculty. The ideal candidate will have a strong background in teaching Mathematics to classes 11-12 and preparing students for competitive exams. Responsibilities include lesson planning, conducting classes, evaluating student performance, and participating in school activities.",
+                requirements: [
+                    "M.Sc. in Mathematics or B.Ed. with Mathematics specialization",
+                    "Minimum 3 years of teaching experience in CBSE curriculum",
+                    "Strong knowledge of JEE/NEET level Mathematics",
+                    "Excellent communication and classroom management skills",
+                    "Ability to develop innovative teaching methods",
+                    "Experience with smart classroom technology"
+                ],
+                brief: "Experienced Mathematics teacher for senior secondary classes with expertise in JEE/NEET preparation."
+            },
+            {
+                id: 2,
+                title: "Science Teacher",
+                department: "academic",
+                type: "current",
+                location: "Middle School",
+                experience: "2-4 years",
+                deadline: "2025-04-20",
+                description: "Looking for a passionate Science teacher for classes 6-8 with expertise in making science concepts interesting and easy to understand. The candidate should be able to conduct practical demonstrations and foster scientific curiosity among students. The role involves developing engaging lesson plans and assessing student progress.",
+                requirements: [
+                    "B.Sc. with B.Ed. (Science)",
+                    "Minimum 2 years of teaching experience",
+                    "Ability to conduct practical demonstrations",
+                    "Knowledge of CBSE curriculum",
+                    "Strong interpersonal skills",
+                    "Creative approach to teaching"
+                ],
+                brief: "Passionate Science teacher for middle school with ability to conduct practical demonstrations."
+            },
+            {
+                id: 3,
+                title: "Administrative Coordinator",
+                department: "non-academic",
+                type: "current",
+                location: "Administration Office",
+                experience: "3-5 years",
+                deadline: "2025-04-10",
+                description: "Responsible for coordinating administrative activities, managing school records, and supporting the Principal's office. The ideal candidate should have excellent organizational skills and attention to detail. Duties include managing correspondence, maintaining databases, organizing meetings, and assisting with event planning.",
+                requirements: [
+                    "Bachelor's degree in any discipline",
+                    "Minimum 3 years of administrative experience",
+                    "Proficiency in MS Office and database management",
+                    "Excellent organizational and communication skills",
+                    "Ability to handle multiple tasks efficiently",
+                    "Discretion and confidentiality"
+                ],
+                brief: "Coordinator for administrative activities with excellent organizational and communication skills."
+            },
+            {
+                id: 4,
+                title: "Computer Lab Assistant",
+                department: "non-academic",
+                type: "current",
+                location: "Computer Lab",
+                experience: "1-2 years",
+                deadline: "2025-03-30",
+                description: "Assist in managing computer lab operations, maintaining hardware/software, and supporting students during lab sessions. The candidate should be tech-savvy and patient with students. Responsibilities include troubleshooting technical issues, maintaining equipment inventory, and assisting teachers with technology integration.",
+                requirements: [
+                    "Diploma or degree in Computer Science",
+                    "Basic knowledge of computer hardware and software",
+                    "Good communication skills",
+                    "Willingness to learn and assist",
+                    "Patience and ability to work with students",
+                    "Basic networking knowledge"
+                ],
+                brief: "Tech-savvy assistant for computer lab operations and student support during lab sessions."
+            },
+            {
+                id: 5,
+                title: "Physics Teacher",
+                department: "academic",
+                type: "past",
+                location: "Senior Secondary",
+                experience: "5+ years",
+                deadline: "2024-12-15",
+                description: "Position was open for an experienced Physics teacher with expertise in JEE/NEET preparation. Role has been filled with a candidate having excellent track record. The position involved teaching Physics to classes 11-12, developing study materials, and mentoring students for competitive exams.",
+                requirements: [
+                    "M.Sc. in Physics",
+                    "Minimum 5 years of teaching experience",
+                    "Strong track record in competitive exam preparation",
+                    "B.Ed. qualification",
+                    "Experience with modern teaching methodologies",
+                    "Research background preferred"
+                ],
+                brief: "Experienced Physics teacher for senior secondary with JEE/NEET preparation expertise. Position filled."
+            },
+            {
+                id: 6,
+                title: "Librarian",
+                department: "non-academic",
+                type: "past",
+                location: "School Library",
+                experience: "2-3 years",
+                deadline: "2024-11-20",
+                description: "Position was open for managing school library resources and promoting reading habits among students. Role has been filled with a candidate having excellent organizational skills. Responsibilities included cataloging books, managing digital resources, organizing reading programs, and assisting students with research.",
+                requirements: [
+                    "Bachelor's in Library Science",
+                    "Minimum 2 years of experience",
+                    "Knowledge of library management systems",
+                    "Love for books and reading",
+                    "Ability to engage students in reading activities",
+                    "Digital literacy skills"
+                ],
+                brief: "Library manager for promoting reading habits among students. Position filled."
+            },
+            {
+                id: 7,
+                title: "English Teacher",
+                department: "academic",
+                type: "past",
+                location: "Primary School",
+                experience: "2-3 years",
+                deadline: "2024-10-30",
+                description: "Position was open for a creative English teacher for primary classes who could make language learning fun and engaging. Role has been filled with a candidate having excellent communication skills.",
+                requirements: [
+                    "B.A. English with B.Ed. or D.Ed.",
+                    "Minimum 2 years of teaching experience",
+                    "Creative teaching methods",
+                    "Good communication skills",
+                    "Patience and love for teaching young children"
+                ],
+                brief: "Creative English teacher for primary classes with focus on interactive language learning. Position filled."
+            },
+            {
+                id: 8,
+                title: "Accounts Executive",
+                department: "non-academic",
+                type: "past",
+                location: "Accounts Department",
+                experience: "3-4 years",
+                deadline: "2024-09-15",
+                description: "Position was open for managing school accounts, fee collection, and financial reporting. Role has been filled with a qualified candidate.",
+                requirements: [
+                    "B.Com/M.Com degree",
+                    "Minimum 3 years of accounting experience",
+                    "Knowledge of Tally software",
+                    "Attention to detail",
+                    "Good analytical skills"
+                ],
+                brief: "Accounts executive for managing school finances and fee collection. Position filled."
+            }
+        ];
+        
+        // DOM Elements for Careers
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const toggleOptions = document.querySelectorAll('.toggle-option');
+        const jobListings = document.getElementById('jobListings');
+        const jobModalOverlay = document.getElementById('jobModalOverlay');
+        const closeJobModal = document.getElementById('closeJobModal');
+        const jobModalTitle = document.getElementById('jobModalTitle');
+        const jobModalContent = document.getElementById('jobModalContent');
+        const modalApplyBtn = document.getElementById('modalApplyBtn');
+        const authModalOverlay = document.getElementById('authModalOverlay');
+        const closeAuthModal = document.getElementById('closeAuthModal');
+        const applicationForm = document.getElementById('applicationForm');
+        
+        // NEW: Elements for the verification modal
+        const authModalTitle = document.getElementById('authModalTitle');
+        const emailStep = document.getElementById('emailStep');
+        const otpStep = document.getElementById('otpStep');
+        const successStep = document.getElementById('successStep');
+        const userEmail = document.getElementById('userEmail');
+        const sendOtpBtn = document.getElementById('sendOtpBtn');
+        const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+        const otpInputs = document.querySelectorAll('.otp-input input');
+        const emailError = document.getElementById('emailError');
+        const otpError = document.getElementById('otpError');
+        const resendOtp = document.getElementById('resendOtp');
+        const countdownText = document.getElementById('countdownText');
+        const countdown = document.getElementById('countdown');
+        const redirectCountdown = document.getElementById('redirectCountdown');
+        
+        // State variables
+        let currentTab = 'current';
+        let currentFilter = 'all';
+        let selectedJobId = null;
+        let isLoggedIn = false;
+        let countdownTimer;
+        let redirectTimer;
+        let canResendOtp = false;
+        
+        // Initialize the page
+        function initCareersPage() {
+            renderJobListings();
+            setupEventListeners();
+        }
+        
+        // Render job listings based on current tab and filter (single column layout)
+        function renderJobListings() {
+            jobListings.innerHTML = '';
+            
+            // Filter jobs based on current tab and department filter
+            const filteredJobs = jobData.filter(job => {
+                const matchesTab = job.type === currentTab;
+                const matchesFilter = currentFilter === 'all' || job.department === currentFilter;
+                return matchesTab && matchesFilter;
+            });
+            
+            if (filteredJobs.length === 0) {
+                jobListings.innerHTML = `
+                    <div class="no-jobs">
+                        <i class="fas fa-search" style="font-size: 3rem; color: #8b4513; margin-bottom: 20px;"></i>
+                        <h3>No ${currentTab === 'current' ? 'Current' : 'Past'} Positions Available</h3>
+                        <p>There are currently no ${currentTab === 'current' ? 'current' : 'past'} openings in the ${currentFilter === 'all' ? 'selected' : currentFilter} department.</p>
+                        ${currentTab === 'past' ? '<p>Check our current openings for available positions.</p>' : ''}
+                    </div>
+                `;
+                return;
+            }
+            
+            filteredJobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = `job-card ${job.type === 'past' ? 'past' : ''}`;
+                
+                const applyButtonText = job.type === 'current' ? 'Apply Now' : 'Position Filled';
+                const applyButtonClass = job.type === 'current' ? 'apply-btn' : 'apply-btn disabled';
+                
+                jobCard.innerHTML = `
+                    <div class="job-info">
+                        <h3 class="job-title">${job.title}</h3>
+                        <span class="job-department">${job.department === 'academic' ? 'Academic' : 'Non-Academic'}</span>
+                        
+                        <div class="job-details">
+                            <div class="job-detail"><i class="fas fa-map-marker-alt"></i> ${job.location}</div>
+                            <div class="job-detail"><i class="fas fa-briefcase"></i> ${job.experience}</div>
+                            <div class="job-detail"><i class="fas fa-clock"></i> Apply by: ${formatDate(job.deadline)}</div>
+                        </div>
+                        
+                        <p class="job-brief">${job.brief}</p>
+                    </div>
+                    
+                    <div class="job-actions">
+                        <button class="details-btn" data-job-id="${job.id}">View Details</button>
+                        <button class="${applyButtonClass}" data-job-id="${job.id}" ${job.type === 'past' ? 'disabled' : ''}>
+                            ${applyButtonText}
+                        </button>
+                    </div>
+                `;
+                
+                jobListings.appendChild(jobCard);
+            });
+            
+            // Add event listeners to details buttons
+            document.querySelectorAll('.details-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const jobId = parseInt(this.getAttribute('data-job-id'));
+                    openJobDetailsModal(jobId);
+                });
+            });
+            
+            // Add event listeners to apply buttons
+            document.querySelectorAll('.apply-btn:not(.disabled)').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const jobId = parseInt(this.getAttribute('data-job-id'));
+                    selectedJobId = jobId;
+                    openAuthModal();
+                });
+            });
+        }
+        
+        // Format date
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+        
+        // Open job details modal
+        function openJobDetailsModal(jobId) {
+            const job = jobData.find(j => j.id === jobId);
+            if (!job) return;
+            
+            jobModalTitle.textContent = job.title;
+            
+            // Build modal content
+            jobModalContent.innerHTML = `
+                <div class="job-modal-section">
+                    <h3>Job Description</h3>
+                    <p>${job.description}</p>
+                </div>
+                
+                <div class="job-modal-section">
+                    <h3>Requirements</h3>
+                    <ul>
+                        ${job.requirements.map(req => `<li>${req}</li>`).join('')}
+                    </ul>
+                </div>
+                
+                <div class="job-modal-section">
+                    <h3>Position Details</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                        <div>
+                            <strong>Department:</strong><br>
+                            ${job.department === 'academic' ? 'Academic' : 'Non-Academic'}
+                        </div>
+                        <div>
+                            <strong>Location:</strong><br>
+                            ${job.location}
+                        </div>
+                        <div>
+                            <strong>Experience Required:</strong><br>
+                            ${job.experience}
+                        </div>
+                        <div>
+                            <strong>Application Deadline:</strong><br>
+                            ${formatDate(job.deadline)}
+                        </div>
+                        <div>
+                            <strong>Status:</strong><br>
+                            ${job.type === 'current' ? 'Open for Applications' : 'Position Filled'}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Update modal apply button
+            if (job.type === 'current') {
+                modalApplyBtn.textContent = 'Apply Now';
+                modalApplyBtn.className = 'modal-apply-btn';
+                modalApplyBtn.disabled = false;
+                modalApplyBtn.style.display = 'block';
+                modalApplyBtn.onclick = function() {
+                    selectedJobId = jobId;
+                    jobModalOverlay.classList.remove('active');
+                    openAuthModal();
+                };
+            } else {
+                modalApplyBtn.textContent = 'Position Filled';
+                modalApplyBtn.className = 'modal-apply-btn disabled';
+                modalApplyBtn.disabled = true;
+                modalApplyBtn.style.display = 'block';
+                modalApplyBtn.onclick = null;
+            }
+            
+            jobModalOverlay.classList.add('active');
+        }
+        
+        // Setup event listeners for careers page
+        function setupEventListeners() {
+            // Filter buttons
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active filter
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update current filter and re-render
+                    currentFilter = this.getAttribute('data-filter');
+                    renderJobListings();
+                });
+            });
+            
+            // Toggle options
+            toggleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Update active toggle option
+                    toggleOptions.forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update current tab and re-render
+                    currentTab = this.getAttribute('data-tab');
+                    renderJobListings();
+                    
+                    // Hide application form
+                    applicationForm.classList.remove('active');
+                });
+            });
+            
+            // Job modal
+            closeJobModal.addEventListener('click', () => {
+                jobModalOverlay.classList.remove('active');
+            });
+            
+            // Close job modal when clicking outside
+            jobModalOverlay.addEventListener('click', (e) => {
+                if (e.target === jobModalOverlay) {
+                    jobModalOverlay.classList.remove('active');
+                }
+            });
+            
+            // Authentication modal
+            closeAuthModal.addEventListener('click', () => {
+                authModalOverlay.classList.remove('active');
+                resetVerificationModal();
+            });
+            
+            // Close auth modal when clicking outside
+            authModalOverlay.addEventListener('click', (e) => {
+                if (e.target === authModalOverlay) {
+                    authModalOverlay.classList.remove('active');
+                    resetVerificationModal();
+                }
+            });
+            
+            // NEW: Send OTP button
+            sendOtpBtn.addEventListener('click', sendOtp);
+            
+            // NEW: Verify OTP button
+            verifyOtpBtn.addEventListener('click', verifyOtp);
+            
+            // NEW: Email input Enter key
+            userEmail.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendOtp();
+                }
+            });
+            
+            // NEW: OTP input navigation
+            otpInputs.forEach((input, index) => {
+                input.addEventListener('input', () => {
+                    if (input.value.length === 1 && index < otpInputs.length - 1) {
+                        otpInputs[index + 1].focus();
+                    }
+                    otpError.style.display = 'none';
+                });
+                
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Backspace' && input.value === '' && index > 0) {
+                        otpInputs[index - 1].focus();
+                    }
+                });
+                
+                // NEW: OTP input Enter key
+                input.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        verifyOtp();
+                    }
+                });
+            });
+            
+            // NEW: Resend OTP
+            resendOtp.addEventListener('click', () => {
+                if (canResendOtp) {
+                    sendOtp();
+                }
+            });
+        }
+        
+        // NEW: Send OTP function
+        function sendOtp() {
+            const email = userEmail.value.trim();
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                emailError.style.display = 'block';
+                userEmail.focus();
+                return;
+            }
+            
+            // Hide error
+            emailError.style.display = 'none';
+            
+            // Disable send button and show loading state
+            sendOtpBtn.disabled = true;
+            sendOtpBtn.textContent = 'Sending OTP...';
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // For demo purposes, we'll always succeed
+                console.log(`OTP sent to: ${email}`);
+                
+                // Switch to OTP step
+                emailStep.classList.remove('active');
+                otpStep.classList.add('active');
+                authModalTitle.textContent = 'Verify Your Email';
+                
+                // Clear OTP inputs
+                otpInputs.forEach(input => input.value = '');
+                
+                // Focus first OTP input
+                otpInputs[0].focus();
+                
+                // Start countdown for resend
+                startResendCountdown();
+                
+                // Reset send button for future use
+                sendOtpBtn.disabled = false;
+                sendOtpBtn.textContent = 'Send OTP';
+            }, 1500);
+        }
+        
+        // NEW: Verify OTP function
+        function verifyOtp() {
+            // Get OTP value
+            let otp = '';
+            otpInputs.forEach(input => {
+                otp += input.value;
+            });
+            
+            // Default OTP is 123456
+            if (otp === '123456') {
+                otpError.style.display = 'none';
+                
+                // Disable verify button and show loading state
+                verifyOtpBtn.disabled = true;
+                verifyOtpBtn.textContent = 'Verifying...';
+                
+                // Simulate verification delay
+                setTimeout(() => {
+                    // Show success message
+                    otpStep.classList.remove('active');
+                    successStep.classList.add('active');
+                    authModalTitle.textContent = 'Verification Successful';
+                    
+                    // Start redirect countdown
+                    startRedirectCountdown();
+                }, 1000);
+            } else {
+                otpError.style.display = 'block';
+                
+                // Clear OTP inputs on wrong attempt
+                otpInputs.forEach(input => input.value = '');
+                otpInputs[0].focus();
+            }
+        }
+        
+        // NEW: Start countdown for resend OTP
+        function startResendCountdown() {
+            canResendOtp = false;
+            resendOtp.style.color = '#aaa';
+            resendOtp.style.cursor = 'not-allowed';
+            countdownText.style.display = 'block';
+            
+            let timeLeft = 30;
+            countdown.textContent = timeLeft;
+            
+            clearInterval(countdownTimer);
+            countdownTimer = setInterval(() => {
+                timeLeft--;
+                countdown.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(countdownTimer);
+                    canResendOtp = true;
+                    resendOtp.style.color = '#5d2a2a';
+                    resendOtp.style.cursor = 'pointer';
+                    countdownText.style.display = 'none';
+                }
+            }, 1000);
+        }
+        
+        // NEW: Start redirect countdown
+        function startRedirectCountdown() {
+            let timeLeft = 3;
+            redirectCountdown.textContent = timeLeft;
+            
+            clearInterval(redirectTimer);
+            redirectTimer = setInterval(() => {
+                timeLeft--;
+                redirectCountdown.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(redirectTimer);
+                    // Redirect to Career_management.html
+                    window.location.href = 'Career_management.html';
+                }
+            }, 1000);
+        }
+        
+        // NEW: Reset verification modal to initial state
+        function resetVerificationModal() {
+            // Reset all steps
+            emailStep.classList.add('active');
+            otpStep.classList.remove('active');
+            successStep.classList.remove('active');
+            
+            // Reset inputs
+            userEmail.value = '';
+            otpInputs.forEach(input => input.value = '');
+            
+            // Reset errors
+            emailError.style.display = 'none';
+            otpError.style.display = 'none';
+            
+            // Reset buttons
+            sendOtpBtn.disabled = false;
+            sendOtpBtn.textContent = 'Send OTP';
+            verifyOtpBtn.disabled = false;
+            verifyOtpBtn.textContent = 'Verify OTP';
+            
+            // Reset title
+            authModalTitle.textContent = 'Apply for Position';
+            
+            // Clear timers
+            clearInterval(countdownTimer);
+            clearInterval(redirectTimer);
+            
+            // Reset resend OTP
+            canResendOtp = false;
+            countdownText.style.display = 'none';
+            resendOtp.style.color = '#5d2a2a';
+            resendOtp.style.cursor = 'pointer';
+        }
+        
+        // Open authentication modal
+        function openAuthModal() {
+            // Reset modal to initial state
+            resetVerificationModal();
+            
+            // Show modal
+            authModalOverlay.classList.add('active');
+            
+            // Focus email input
+            setTimeout(() => {
+                userEmail.focus();
+            }, 100);
+        }
+        
+        // Handle successful login (kept for backward compatibility)
+        function handleSuccessfulLogin() {
+            isLoggedIn = true;
+            authModalOverlay.classList.remove('active');
+            showApplicationForm();
+        }
+        
+        // Show application form
+        function showApplicationForm() {
+            // Hide job listings and show application form
+            jobListings.style.display = 'none';
+            document.querySelector('.controls-container').style.display = 'none';
+            
+            // Build and show the application form
+            const job = selectedJobId ? jobData.find(j => j.id === selectedJobId) : null;
+            const jobTitle = job ? job.title : '';
+            
+            applicationForm.innerHTML = `
+                <h2 style="color: #5d2a2a; margin-bottom: 20px;">Application Form - ${jobTitle}</h2>
+                <p style="margin-bottom: 30px; color: #666;">Please fill out the form below to apply for the position. Fields marked with * are required.</p>
+                
+                <form id="jobApplicationForm">
+                    <!-- Personal Information -->
+                    <div class="form-section">
+                        <h3>Personal Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="fullName">Full Name *</label>
+                                <input type="text" id="fullName" name="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" id="dob" name="dob">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="address">Current Address *</label>
+                                <textarea id="address" name="address" rows="3" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Educational Background -->
+                    <div class="form-section">
+                        <h3>Educational Background</h3>
+                        <div class="form-group">
+                            <label for="highSchool">High School (10th) Details *</label>
+                            <input type="text" id="highSchool" name="highSchool" placeholder="School name, board, year of passing, percentage" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="intermediate">Intermediate (12th) Details *</label>
+                            <input type="text" id="intermediate" name="intermediate" placeholder="School/College name, board, year of passing, percentage" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="graduation">Graduation Details *</label>
+                            <input type="text" id="graduation" name="graduation" placeholder="College name, university, degree, year of passing, percentage" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="postGraduation">Post Graduation Details (if any)</label>
+                            <input type="text" id="postGraduation" name="postGraduation" placeholder="College name, university, degree, year of passing, percentage">
+                        </div>
+                        <div class="form-group">
+                            <label for="otherQualifications">Other Qualifications/Certifications</label>
+                            <textarea id="otherQualifications" name="otherQualifications" rows="3" placeholder="Any additional certifications, courses, etc."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Professional Experience -->
+                    <div class="form-section">
+                        <h3>Professional Experience</h3>
+                        <div class="form-group">
+                            <label for="totalExperience">Total Years of Experience *</label>
+                            <select id="totalExperience" name="totalExperience" required>
+                                <option value="">Select</option>
+                                <option value="0-1">0-1 years</option>
+                                <option value="1-3">1-3 years</option>
+                                <option value="3-5">3-5 years</option>
+                                <option value="5-10">5-10 years</option>
+                                <option value="10+">10+ years</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="currentJob">Current/Most Recent Job *</label>
+                            <input type="text" id="currentJob" name="currentJob" placeholder="Organization, position, duration" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="previousJobs">Previous Work Experience</label>
+                            <textarea id="previousJobs" name="previousJobs" rows="4" placeholder="List your previous positions with organization, role, and duration"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="skills">Key Skills & Expertise *</label>
+                            <textarea id="skills" name="skills" rows="3" placeholder="List your key skills relevant to the position" required></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Documents Upload -->
+                    <div class="form-section">
+                        <h3>Documents</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <div class="upload-section">
+                                    <p>Upload Your Resume/CV *</p>
+                                    <p style="font-size: 0.9rem; color: #666;">PDF, DOC, DOCX (Max: 5MB)</p>
+                                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" style="display: none;">
+                                    <div class="upload-btn" onclick="document.getElementById('resume').click()">Choose File</div>
+                                    <div id="resumeName" class="uploaded-file" style="display: none;">
+                                        <i class="fas fa-file-pdf" style="color: #DB4437;"></i>
+                                        <span>No file chosen</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="upload-section">
+                                    <p>Upload Your Cover Letter</p>
+                                    <p style="font-size: 0.9rem; color: #666;">PDF, DOC, DOCX (Max: 2MB)</p>
+                                    <input type="file" id="coverLetter" name="coverLetter" accept=".pdf,.doc,.docx" style="display: none;">
+                                    <div class="upload-btn" onclick="document.getElementById('coverLetter').click()">Choose File</div>
+                                    <div id="coverLetterName" class="uploaded-file" style="display: none;">
+                                        <i class="fas fa-file-word" style="color: #2b579a;"></i>
+                                        <span>No file chosen</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <div class="upload-section">
+                                    <p>Upload Your Photograph</p>
+                                    <p style="font-size: 0.9rem; color: #666;">JPG, PNG (Max: 2MB)</p>
+                                    <input type="file" id="photo" name="photo" accept=".jpg,.jpeg,.png" style="display: none;">
+                                    <div class="upload-btn" onclick="document.getElementById('photo').click()">Choose File</div>
+                                    <div id="photoName" class="uploaded-file" style="display: none;">
+                                        <i class="fas fa-file-image" style="color: #4CAF50;"></i>
+                                        <span>No file chosen</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" class="submit-application">Submit Application</button>
+                </form>
+            `;
+            
+            applicationForm.classList.add('active');
+            
+            // Add event listeners for file uploads and form submission
+            setTimeout(() => {
+                const resumeInput = document.getElementById('resume');
+                const coverLetterInput = document.getElementById('coverLetter');
+                const photoInput = document.getElementById('photo');
+                const resumeName = document.getElementById('resumeName');
+                const coverLetterName = document.getElementById('coverLetterName');
+                const photoName = document.getElementById('photoName');
+                const jobApplicationForm = document.getElementById('jobApplicationForm');
+                
+                if (resumeInput) {
+                    resumeInput.addEventListener('change', function() {
+                        if (this.files.length > 0) {
+                            const fileName = this.files[0].name;
+                            resumeName.querySelector('span').textContent = fileName;
+                            resumeName.style.display = 'flex';
+                        }
+                    });
+                }
+                
+                if (coverLetterInput) {
+                    coverLetterInput.addEventListener('change', function() {
+                        if (this.files.length > 0) {
+                            const fileName = this.files[0].name;
+                            coverLetterName.querySelector('span').textContent = fileName;
+                            coverLetterName.style.display = 'flex';
+                        }
+                    });
+                }
+                
+                if (photoInput) {
+                    photoInput.addEventListener('change', function() {
+                        if (this.files.length > 0) {
+                            const fileName = this.files[0].name;
+                            photoName.querySelector('span').textContent = fileName;
+                            photoName.style.display = 'flex';
+                        }
+                    });
+                }
+                
+                if (jobApplicationForm) {
+                    jobApplicationForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
+                        
+                        // Simple validation
+                        const requiredFields = this.querySelectorAll('[required]');
+                        let isValid = true;
+                        
+                        requiredFields.forEach(field => {
+                            if (!field.value.trim()) {
+                                isValid = false;
+                                field.style.borderColor = '#DB4437';
+                            } else {
+                                field.style.borderColor = '#ddd';
+                            }
+                        });
+                        
+                        if (isValid) {
+                            alert(`Application submitted successfully for ${jobTitle}! We will contact you soon.`);
+                            // Reset to job listings
+                            applicationForm.classList.remove('active');
+                            jobListings.style.display = 'flex';
+                            document.querySelector('.controls-container').style.display = 'flex';
+                        } else {
+                            alert('Please fill all required fields.');
+                        }
+                    });
+                }
+            }, 100);
+        }
+        
+        // Initialize careers page when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initCareersPage);
+        
+    </script>
+</body>
+</html>
