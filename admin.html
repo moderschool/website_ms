@@ -410,8 +410,8 @@
         }
 
         .img-mini {
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
             background: #f8f0e0;
             border-radius: 50%;
             margin: 0 auto 10px;
@@ -995,6 +995,227 @@
     font-size: 0.9rem;
     background-color: #e8d9c5;
 }
+/* ===== UPDATED NAVBAR WITH TEXT LOGO & PROGRESS BAR ===== */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    flex-direction: column;
+}
+
+.navbar-content {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+}
+
+.navbar-logo-text,
+.navbar-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    display: flex;
+    gap: 2px;
+    text-transform: uppercase;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.navbar-logo-text {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.navbar-text {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.navbar.scrolled .navbar-logo-text {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.navbar.scrolled .navbar-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Letter styling for both versions */
+.navbar-logo-text .letter,
+.navbar-text .letter {
+    transition: color 0.5s ease, text-shadow 0.5s ease, transform 0.3s ease;
+    color: #5d2a2a;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.navbar-logo-text .letter.maroon,
+.navbar-text .letter.maroon {
+    color: #800000;
+    text-shadow: 0 0 10px rgba(128, 0, 0, 0.3);
+}
+
+/* Navbar Progress Bar */
+.navbar-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+.navbar-progress-track {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        #800000 0%,
+        #c5a059 25%,
+        #FF8C00 50%,
+        #c5a059 75%,
+        #800000 100%
+    );
+    background-size: 200% 100%;
+    animation: progressTrackFlow 3s linear infinite;
+}
+
+@keyframes progressTrackFlow {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+.navbar-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        #800000 0%, 
+        #5d2a2a 50%, 
+        #800000 100%);
+    transition: width 0.1s ease-out;
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(128, 0, 0, 0.5);
+}
+
+/* Responsive adjustments for navbar */
+@media (max-width: 768px) {
+    .navbar-logo-text,
+    .navbar-text {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+        gap: 1px;
+    }
+    
+    .hamburger {
+        top: 18px;
+        left: 15px;
+    }
+    
+    .admission-btn {
+        top: 10px;
+        right: 15px;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-logo-text,
+    .navbar-text {
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+/* Hide admission button by default */
+.admission-btn.menu-only {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Show admission button when menu is open */
+body.menu-open .admission-btn.menu-only {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Update content padding to account for fixed navbar */
+.content {
+    padding-top: 80px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+/* Larger images for coordinators */
+.g-co .img-mini {
+    width: 120px;
+    height: 120px;
+}
+
+/* For desktop view, make them even larger */
+@media (min-width: 768px) {
+    .g-co .img-mini {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media (min-width: 992px) {
+    .g-co .img-mini {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+/* Adjust the text size to match larger images */
+.g-co .s-name {
+    font-size: 1.1rem;
+    margin-top: 10px;
+}
+
+.g-co .s-desig {
+    font-size: 0.75rem;
+    margin-bottom: 10px;
+}
+
+@media (min-width: 768px) {
+    .g-co .s-name {
+        font-size: 1.2rem;
+    }
+    
+    .g-co .s-desig {
+        font-size: 0.8rem;
+    }
+}
  </style>
 </head>
 <body>
@@ -1006,36 +1227,53 @@
 
     <button class="admission-btn">Enquiry</button>
 
-    <nav class="navbar">
-        <img src="ms_logo.png" style="height:70px;margin-top:-10px;">
-    </nav>
+    <!-- Replace the entire navigation section in your second code with this -->
 
-    <div class="overlay-menu" id="overlayMenu">
-        <div class="submenu-header" id="submenuHeader">
-            <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
-        </div>
-        <div class="menu-wrapper" id="menuWrapper">
-            <ul class="main-menu-screen" id="mainMenu">
-                <li><a href="#" class="close-menu">Home</a></li>
-                <li class="menu-item-with-submenu" data-submenu="about-us">
-                    <a href="#" class="has-submenu">About Us</a>
-                </li>
-                <li class="menu-item-with-submenu" data-submenu="academics">
-                    <a href="#" class="has-submenu">Academics</a>
-                </li>
-                <li><a href="#" class="close-menu">Admissions</a></li>
-                <li class="menu-item-with-submenu" data-submenu="campus-life">
-                    <a href="#" class="has-submenu">Campus Life</a>
-                </li>
-                <li class="menu-item-with-submenu" data-submenu="contact-us">
-                    <a href="#" class="has-submenu">Contact Us</a>
-                </li>
-            </ul>
-            <ul class="submenu-screen" id="submenuScreen">
-                <!-- Submenu content will be added here -->
-            </ul>
-        </div>
+<!-- UPDATED NAVBAR WITH TEXT LOGO & PROGRESS BAR -->
+<nav class="navbar">
+    <div class="navbar-content">
+        <div class="navbar-logo-text" id="navbarLogoText">MODERN SCHOOL</div>
+        <div class="navbar-text" id="navbarScrolledText">MODERN SCHOOL</div>
     </div>
+    <div class="navbar-progress-container">
+        <div class="navbar-progress-track"></div>
+        <div class="navbar-progress-fill" id="navbarProgressFill"></div>
+    </div>
+</nav>
+
+<div class="hamburger" id="hamburger">
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<button class="admission-btn menu-only">Enquiry</button>
+
+<div class="overlay-menu" id="overlayMenu">
+    <div class="submenu-header" id="submenuHeader">
+        <button class="back-btn" id="backButton"><i class="fas fa-arrow-left"></i> Back</button>
+    </div>
+    
+    <div class="menu-wrapper" id="menuWrapper">
+        <ul class="main-menu-screen" id="mainMenu">
+            <li><a href="index.html" class="close-menu">Home</a></li>
+            <li class="menu-item-with-submenu" data-submenu="about-us">
+                <a href="#" class="has-submenu">About Us</a>
+            </li>
+            <li class="menu-item-with-submenu" data-submenu="academics">
+                <a href="#" class="has-submenu">Academics</a>
+            </li>
+            <li><a href="#enquiry-form" class="close-menu">Admissions</a></li>
+            <li class="menu-item-with-submenu" data-submenu="campus-life">
+                <a href="#" class="has-submenu">Campus Life</a>
+            </li>
+            <li class="menu-item-with-submenu" data-submenu="contact-us">
+                <a href="#" class="has-submenu">Contact Us</a>
+            </li>
+        </ul>
+        <ul class="submenu-screen" id="submenuScreen"></ul>
+    </div>
+</div>
 
     <div class="content">
         <!-- ADMIN TEAM SECTION -->
@@ -1412,245 +1650,641 @@
     </div>
 
     <!-- Footer sections -->
-    <div class="footer-info">
-        <div class="info-col logo-col">
-            <img src="logo.png" alt="Modern School Logo" class="footer-logo">
-            <p>Excellence in Education Since 1973</p>
-        </div>
-        <div class="info-col address-col">
-            <h3>Our Address</h3>
-            <p>Modern School</p>
-            <p>Sector - A Talwandi,</p>
-            <p>Kota, Rajasthan 324005</p>
-            <p>India</p>
-        </div>
-        <div class="info-col contact-col">
-            <h3>Contact Information</h3>
-            <p><i class="fas fa-phone"></i> +91-744-24211167</p>
-            <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
-            <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
-            <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
-        </div>
-    </div>
-
-    <div class="footer-columns">
-        <div class="footer-col">
-            <h3>Academics</h3>
-            <ul>
-                <li><a href="#">Curriculum</a></li>
-                <li><a href="#">Exam & Result</a></li>
-                <li><a href="#">Calendar</a></li>
-                <li><a href="#">Counselling</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h3>Admissions</h3>
-            <ul>
-                <li><a href="#">Apply Now</a></li>
-                <li><a href="#">Tuition & Fees</a></li>
-                <li><a href="#">RTE</a></li>
-                <li><a href="#">Campus Tours</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h3>Campus Life</h3>
-            <ul>
-                <li><a href="#">Student Activities</a></li>
-                <li><a href="#">ModFest</a></li>
-                <li><a href="#">Athletics</a></li>
-                <li><a href="#">Campus Facilities</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h3>About Us</h3>
-            <ul>
-                <li><a href="#">Our History</a></li>
-                <li><a href="#">Vision & Mission</a></li>
-                <li><a href="#">Leadership</a></li>
-                <li><a href="#">Our Core Team</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h3>Resources</h3>
-            <ul>
-                <li><a href="#">Alumni Network</a></li>
-                <li><a href="#">CBSE Corner</a></li>
-                <li><a href="#">TC Verification</a></li>
-                <li><a href="#">Mandatory Disclosures</a></li>
-            </ul>
-        </div>
-        <div class="footer-col">
-            <h3>Contact</h3>
-            <ul>
-                <li><a href="#">Faculty</a></li>
-                <li><a href="#">Campus Location</a></li>
-                <li><a href="#">Career</a></li>
-                <li><a href="#">General Inquiry</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="footer-bottom">
-        <div class="copyright">
-            <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
-        </div>
-        <div class="footer-links">
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms & Conditions</a>
-        </div>
-        <div class="footer-bottom-right">
-            <div class="social-media">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-youtube"></i></a>
+     <div class="footer-info">
+                <div class="info-col logo-col">
+                    <img src="logo.png" alt="Modern School Logo" class="footer-logo">
+                    <p>Excellence in Education Since 1973</p>
+                </div>
+                <div class="info-col address-col">
+                    <h3>Our Address</h3>
+                    <p>Modern School</p>
+                    <p>Sector - A Talwandi,</p>
+                    <p>Kota, Rajasthan 324005</p>
+                    <p>India</p>
+                </div>
+                <div class="info-col contact-col">
+                    <h3>Contact Information</h3>
+                    <p><i class="fas fa-phone"></i> +91-744-24211167</p>
+                    <p><i class="fas fa-mobile-alt"></i> +91-744-2411116</p>
+                    <p><i class="fas fa-envelope"></i> info@modernschool.ac.in</p>
+                    <p><i class="fas fa-globe"></i> www.modernschool.ac.in</p>
+                    
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-facebook"></i></a>
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-twitter"></i></a>
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-instagram"></i></a>
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-linkedin"></i></a>
+                        <a style="font-size:20px;margin:5px;" href="#"><i class="fab fa-youtube"></i></a>
+                   
+                </div>
             </div>
-        </div>
-    </div>
+            <div class="footer-columns">
+                <div class="footer-col">
+                    <h3>Academics</h3>
+                    <ul>
+                        <li><a href="curriculum.html">Curriculum</a></li>
+                        <li><a href="calendar.html">Calendar</a></li>
+                       <li><a href="exam.html">Time Table</a></li>
+                     </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Informations</h3>
+                    <ul>
+                        <li><a href="fees.html">Tuition Fees</a></li>
+                         <li><a href="cbse.html">CBSE Corner</a></li>
+                        <li><a href="mandatory_disc.html">Mandatory Disclosures</a></li>
+                        <li><a href="alumni.html">Alumni Network</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Campus Life</h3>
+                    <ul>
+                        <li><a href="student_council.html">Student Counsel</a></li>
+                         <li><a href="event.html">Events</a></li>
+                        <li><a href="sport.html">Athletics</a></li>
+                        <li><a href="campus_facilities.html">Campus Facilities</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>About Us</h3>
+                    <ul>
+                        <li><a href="history.html">Our History</a></li>
+                        <li><a href="vision.html">Vision & Direction</a></li>
+                        <li><a href="leadership.html">Leadership</a></li>
+                        <li><a href="admin.html">Admin Team</a></li>
+                        
+                    </ul>
+                </div>
+               
+                <div class="footer-col">
+                    <h3>Connect</h3>
+                    <ul>
+                        <li><a href="campus_location.html">Campus Location</a></li>
+                        <li><a href="career.html">Career</a></li>
+                        <li><a href="tc_verification.html">TC Verification</a></li>
+                         <li><a href="branches.html">Other Branches</a></li>
+                      </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="copyright">
+                    <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="privacy.html">Privacy Policy</a>
+                    <a href="tnc.html">Terms & Conditions</a>
+                </div>
+                <div class="footer-bottom-right">
+                   
+                </div>
+            </div>
 
     <script>
-        // Get DOM elements
+    // ===== NAVBAR SCROLL EFFECT =====
+    function initNavbarScrollEffect() {
+        const navbar = document.querySelector('.navbar');
+        
+        function handleScroll() {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        }
+        
+        // Initial check
+        handleScroll();
+        
+        // Add scroll event listener
+        window.addEventListener('scroll', handleScroll);
+    }
+
+    // ===== NAVBAR TEXT COLOR WAVE EFFECT =====
+    function initNavbarTextEffect() {
+        const navbarLogoText = document.getElementById('navbarLogoText');
+        const navbarScrolledText = document.getElementById('navbarScrolledText');
+        const text = 'MODERN SCHOOL';
+        
+        // Clear existing content
+        navbarLogoText.innerHTML = '';
+        navbarScrolledText.innerHTML = '';
+        
+        // Create arrays to store all letter elements
+        const logoLetters = [];
+        const scrolledLetters = [];
+        
+        // Create letter spans for both versions
+        for (let i = 0; i < text.length; i++) {
+            const char = text[i];
+            
+            // For navbar-logo-text (visible when not scrolled)
+            const logoLetter = document.createElement('span');
+            logoLetter.className = 'letter';
+            logoLetter.textContent = char;
+            logoLetter.dataset.index = i;
+            // Handle space differently
+            if (char === ' ') {
+                logoLetter.style.width = '8px'; // Space width
+                logoLetter.style.pointerEvents = 'none'; // Disable interaction for space
+            }
+            navbarLogoText.appendChild(logoLetter);
+            logoLetters.push(logoLetter);
+            
+            // For navbar-text (visible when scrolled)
+            const scrolledLetter = document.createElement('span');
+            scrolledLetter.className = 'letter';
+            scrolledLetter.textContent = char;
+            scrolledLetter.dataset.index = i;
+            // Handle space differently
+            if (char === ' ') {
+                scrolledLetter.style.width = '8px'; // Space width
+                scrolledLetter.style.pointerEvents = 'none'; // Disable interaction for space
+            }
+            navbarScrolledText.appendChild(scrolledLetter);
+            scrolledLetters.push(scrolledLetter);
+        }
+        
+        const totalLetters = text.length;
+        const progressFill = document.getElementById('navbarProgressFill');
+        
+        function updateNavbarEffects() {
+            const scrollY = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollY / docHeight;
+            
+            // Update progress bar width
+            if (progressFill) {
+                progressFill.style.width = `${scrollPercent * 100}%`;
+            }
+            
+            // Calculate which letters should be highlighted based on scroll position
+            const effectStart = 0.1;
+            const effectEnd = 1.0;
+            
+            if (scrollPercent < effectStart) {
+                // Reset all letters to original color at the top
+                logoLetters.forEach(letter => {
+                    if (letter.textContent !== ' ') {
+                        letter.classList.remove('maroon');
+                    }
+                });
+                scrolledLetters.forEach(letter => {
+                    if (letter.textContent !== ' ') {
+                        letter.classList.remove('maroon');
+                    }
+                });
+            } else if (scrollPercent > effectEnd) {
+                // At the end, keep only the last letter highlighted
+                logoLetters.forEach((letter, index) => {
+                    if (letter.textContent !== ' ') {
+                        if (index === totalLetters - 1) {
+                            letter.classList.add('maroon');
+                        } else {
+                            letter.classList.remove('maroon');
+                        }
+                    }
+                });
+                scrolledLetters.forEach((letter, index) => {
+                    if (letter.textContent !== ' ') {
+                        if (index === totalLetters - 1) {
+                            letter.classList.add('maroon');
+                        } else {
+                            letter.classList.remove('maroon');
+                        }
+                    }
+                });
+            } else {
+                // Calculate progress within the effect range
+                const effectProgress = (scrollPercent - effectStart) / (effectEnd - effectStart);
+                
+                // Determine which single letter should be highlighted
+                // Skip spaces when calculating position
+                const nonSpaceLetters = Array.from(text).filter(char => char !== ' ');
+                const highlightPosition = Math.floor(effectProgress * nonSpaceLetters.length);
+                
+                // Convert highlight position back to original string position
+                let currentPosition = -1;
+                let targetIndex = -1;
+                for (let i = 0; i < text.length; i++) {
+                    if (text[i] !== ' ') {
+                        currentPosition++;
+                        if (currentPosition === highlightPosition) {
+                            targetIndex = i;
+                            break;
+                        }
+                    }
+                }
+                
+                // Apply maroon class to only one letter at a time
+                logoLetters.forEach((letter, index) => {
+                    if (letter.textContent !== ' ') {
+                        if (index === targetIndex) {
+                            letter.classList.add('maroon');
+                        } else {
+                            letter.classList.remove('maroon');
+                        }
+                    }
+                });
+                
+                scrolledLetters.forEach((letter, index) => {
+                    if (letter.textContent !== ' ') {
+                        if (index === targetIndex) {
+                            letter.classList.add('maroon');
+                        } else {
+                            letter.classList.remove('maroon');
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Initial call to set colors
+        updateNavbarEffects();
+        
+        // Update effects on scroll
+        window.addEventListener('scroll', updateNavbarEffects);
+        
+        // Also update on resize
+        window.addEventListener('resize', updateNavbarEffects);
+    }
+
+    // ===== ENQUIRY MODAL =====
+    function initEnquiryModal() {
+        const enquiryBtn = document.querySelector('.admission-btn');
+        const enquiryModal = document.getElementById('enquiryModal');
+        
+        // Check if enquiry modal exists on this page
+        if (!enquiryModal) return;
+        
+        const enquiryCloseBtn = document.getElementById('enquiryCloseBtn');
+        const enquiryForm = document.getElementById('enquiryForm');
+        const successContainer = document.getElementById('successContainer');
+        const enquiryFormElement = document.getElementById('enquiryFormElement');
+        const submitEnquiryBtn = document.getElementById('submitEnquiryBtn');
+
+        // Open modal when clicking enquiry button
+        if (enquiryBtn) {
+            enquiryBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                openEnquiryModal();
+            });
+        }
+
+        // Close modal
+        if (enquiryCloseBtn) {
+            enquiryCloseBtn.addEventListener('click', closeEnquiryModal);
+        }
+        
+        // Close modal when clicking outside
+        if (enquiryModal) {
+            enquiryModal.addEventListener('click', (e) => {
+                if (e.target === enquiryModal) {
+                    closeEnquiryModal();
+                }
+            });
+        }
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && enquiryModal && enquiryModal.classList.contains('active')) {
+                closeEnquiryModal();
+            }
+        });
+
+        // Form submission
+        if (enquiryFormElement) {
+            enquiryFormElement.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                // Validate form
+                if (!validateEnquiryForm()) {
+                    return;
+                }
+
+                // Show loading state
+                if (submitEnquiryBtn) {
+                    submitEnquiryBtn.disabled = true;
+                    submitEnquiryBtn.innerHTML = 'Submitting...';
+                }
+
+                try {
+                    // Simulate API call with delay
+                    await submitEnquiryForm();
+                    
+                    // Show success animation
+                    showSuccessAnimation();
+                    
+                    // Reset form after 3 seconds and close modal
+                    setTimeout(() => {
+                        resetEnquiryForm();
+                        closeEnquiryModal();
+                    }, 3000);
+                    
+                } catch (error) {
+                    // Handle error
+                    alert('There was an error submitting your enquiry. Please try again.');
+                    resetSubmitButton();
+                }
+            });
+        }
+
+        // Phone number validation
+        const phoneInput = document.getElementById('phone');
+        if (phoneInput) {
+            phoneInput.addEventListener('input', (e) => {
+                // Allow only numbers and limit to 10 digits
+                e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
+            });
+        }
+
+        function openEnquiryModal() {
+            if (!enquiryModal) return;
+            
+            enquiryModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Reset form when opening
+            if (enquiryForm) enquiryForm.style.display = 'block';
+            if (successContainer) successContainer.classList.remove('active');
+            resetSubmitButton();
+        }
+
+        function closeEnquiryModal() {
+            if (!enquiryModal) return;
+            
+            enquiryModal.classList.remove('active');
+            document.body.style.overflow = '';
+            
+            // Reset form when closing
+            resetEnquiryForm();
+        }
+
+        function validateEnquiryForm() {
+            if (!enquiryFormElement) return false;
+            
+            const form = enquiryFormElement;
+            const inputs = form.querySelectorAll('input[required], select[required]');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.style.borderColor = '#ff4444';
+                    isValid = false;
+                    
+                    // Reset border color on input
+                    input.addEventListener('input', () => {
+                        input.style.borderColor = '#e0d6c2';
+                    }, { once: true });
+                } else {
+                    input.style.borderColor = '#e0d6c2';
+                }
+            });
+
+            // Validate email format
+            const emailInput = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailInput && emailInput.value && !emailRegex.test(emailInput.value)) {
+                emailInput.style.borderColor = '#ff4444';
+                alert('Please enter a valid email address');
+                isValid = false;
+            }
+
+            // Validate phone number (10 digits)
+            if (phoneInput && phoneInput.value && phoneInput.value.length !== 10) {
+                phoneInput.style.borderColor = '#ff4444';
+                alert('Please enter a valid 10-digit phone number');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        async function submitEnquiryForm() {
+            // Simulate API call
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve({
+                        success: true,
+                        message: 'Enquiry submitted successfully'
+                    });
+                }, 1500); // Simulate network delay
+            });
+        }
+
+        function showSuccessAnimation() {
+            // Hide form and show success container
+            if (enquiryForm) enquiryForm.style.display = 'none';
+            if (successContainer) successContainer.classList.add('active');
+            
+            // Reset button state
+            resetSubmitButton();
+        }
+
+        function resetEnquiryForm() {
+            if (!enquiryFormElement) return;
+            
+            enquiryFormElement.reset();
+            if (enquiryForm) enquiryForm.style.display = 'block';
+            if (successContainer) successContainer.classList.remove('active');
+            
+            // Reset all input borders
+            const inputs = enquiryFormElement.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.style.borderColor = '#e0d6c2';
+            });
+        }
+
+        function resetSubmitButton() {
+            if (!submitEnquiryBtn) return;
+            
+            submitEnquiryBtn.disabled = false;
+            submitEnquiryBtn.innerHTML = 'Submit Enquiry';
+        }
+    }
+
+    // ===== MAIN NAVIGATION LOGIC =====
+    function initNavigation() {
         const hamburger = document.getElementById('hamburger');
         const overlayMenu = document.getElementById('overlayMenu');
-        const mainMenu = document.getElementById('mainMenu');
         const submenuScreen = document.getElementById('submenuScreen');
         const backButton = document.getElementById('backButton');
         const body = document.body;
-        
-        // Define all submenu data
+
         const submenus = {
             'about-us': [
-                { text: 'Our History', href: '#' },
-                { text: 'Vision & Mission', href: '#' },
-                { text: 'Leadership', href: '#' },
-                { text: 'Our Core Team', href: '#' },
+                { text: 'Our History', href: 'history.html' },
+                { text: 'Vision & Direction', href: 'vision.html' },
+                { text: 'Leadership', href: 'leadership.html' },
+                { text: 'Admin Team', href: 'admin.html' },
             ],
             'academics': [
-                { text: 'Curriculum', href: '#' },
-                { text: 'Exam &amp; Result', href: '#' },
-                { text: 'Calendar', href: '#' },
-                { text: 'Counselling', href: '#' },
+                { text: 'Curriculum', href: 'Curriculum.html' },
+                { text: 'Exam & Result', href: 'exam.html' },
+                { text: 'Calendar', href: 'calendar.html' },
             ],
             'campus-life': [
-                { text: 'Student Activities', href: '#' },
-                { text: 'ModFest', href: '#' },
-                { text: 'Athletics', href: '#' },
-                { text: 'Campus Facilities', href: '#' },
+                { text: 'Student Counsel', href: 'student_council.html' },
+                { text: 'Events', href: 'event.html' },
+                { text: 'Athletics', href: 'sport.html' },
+                { text: 'Campus Facilities', href: 'campus_facilities.html' },
             ],
             'contact-us': [
-                { text: 'Faculty ', href: '#' },
-                { text: 'Campus Location', href: '#' },
-                { text: 'Career', href: '#' },
-                { text: 'General Inquiry', href: '#' },
+                { text: 'Campus Location', href: 'campus_location.html' },
+                { text: 'Career', href: 'career.html' },
+                { text: 'TC Verification', href: 'tc_verification.html' },
+                { text: 'Other Branches', href: 'branches.html' },
             ]
         };
 
-        // Function to close the entire menu and reset the view
         function closeMenu() {
+            if (!hamburger || !overlayMenu) return;
+            
             hamburger.classList.remove('active');
             overlayMenu.classList.remove('active');
             body.classList.remove('menu-open');
-            // Ensure menu returns to the main screen view
             overlayMenu.classList.remove('submenu-active');
-            submenuScreen.innerHTML = ''; // Clear submenu content
+            if (submenuScreen) submenuScreen.innerHTML = '';
         }
 
-        // Toggle main menu when hamburger is clicked
-        hamburger.addEventListener('click', function() {
-            if (this.classList.contains('active')) {
-                closeMenu();
-            } else {
-                this.classList.add('active');
-                overlayMenu.classList.add('active');
-                body.classList.add('menu-open');
-            }
-        });
+        function openMenu() {
+            if (!hamburger || !overlayMenu) return;
+            
+            hamburger.classList.add('active');
+            overlayMenu.classList.add('active');
+            body.classList.add('menu-open');
+        }
 
-        // Handle clicks on main menu items with submenus (drill-down)
-        document.querySelectorAll('.main-menu-screen a.has-submenu').forEach(link => {
-            link.addEventListener('click', function(e) {
+        if (hamburger) {
+            hamburger.addEventListener('click', () => {
+                if (hamburger.classList.contains('active')) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            });
+        }
+
+        // Handle menu items with submenus
+        document.querySelectorAll('.menu-item-with-submenu').forEach(item => {
+            item.addEventListener('click', function(e) {
                 e.preventDefault();
-                const menuItem = this.closest('.menu-item-with-submenu');
-                const submenuKey = menuItem.getAttribute('data-submenu');
-                const submenuData = submenus[submenuKey];
+                const key = this.dataset.submenu;
+                const data = submenus[key];
+                if (!data) return;
 
-                if (!submenuData) return;
-
-                // 1. Build the submenu content
-                submenuScreen.innerHTML = ''; // Clear previous content
-                submenuData.forEach(item => {
-                    const li = document.createElement('li');
-                    // Add the 'close-menu' class to submenu links to close the entire menu on click
-                    li.innerHTML = `<a href="${item.href}" class="close-menu">${item.text}</a>`; 
-                    submenuScreen.appendChild(li);
-                });
-                
-                // Re-attach the closeMenu listener to the newly created links
-                submenuScreen.querySelectorAll('.close-menu').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        closeMenu(); // Close on click
-                        alert(`Navigating to: ${this.textContent}`);
+                if (submenuScreen) {
+                    submenuScreen.innerHTML = '';
+                    data.forEach(i => {
+                        const li = document.createElement('li');
+                        li.innerHTML = `<a href="${i.href}" class="close-menu">${i.text}</a>`;
+                        submenuScreen.appendChild(li);
                     });
-                });
+                }
 
-                // 2. Trigger the slide transition
-                overlayMenu.classList.add('submenu-active');
+                // Re-attach event listeners to new submenu items
+                if (submenuScreen) {
+                    submenuScreen.querySelectorAll('.close-menu').forEach(link => {
+                        link.addEventListener('click', function(e) {
+                            // Allow normal navigation for actual links
+                            if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
+                                closeMenu();
+                                // Link will navigate normally
+                                return true;
+                            }
+                            e.preventDefault();
+                            closeMenu();
+                        });
+                    });
+                }
+                
+                if (overlayMenu) {
+                    overlayMenu.classList.add('submenu-active');
+                }
             });
         });
 
-        // Handle the Back Button click
-        backButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            // Slide back to the main menu view
-            overlayMenu.classList.remove('submenu-active');
-            // Clear the submenu content after the transition starts
-            setTimeout(() => {
-                submenuScreen.innerHTML = '';
-            }, 400); // 400ms to match the CSS transition duration
-        });
+        // Back button functionality
+        if (backButton) {
+            backButton.addEventListener('click', e => {
+                e.preventDefault();
+                if (overlayMenu) {
+                    overlayMenu.classList.remove('submenu-active');
+                }
+                setTimeout(() => {
+                    if (submenuScreen) {
+                        submenuScreen.innerHTML = '';
+                    }
+                }, 400);
+            });
+        }
 
-        // Close menu when clicking on a close-menu link (home, admissions, etc.)
-        document.querySelectorAll('.close-menu').forEach(button => {
-            button.addEventListener('click', function(e) {
+        // Close menu when clicking on close-menu links
+        document.querySelectorAll('.close-menu').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // If it's a real link, allow navigation
+                if (this.getAttribute('href') && this.getAttribute('href') !== '#') {
+                    closeMenu();
+                    return true;
+                }
                 e.preventDefault();
                 closeMenu();
-                alert(`Navigating to: ${this.textContent}`);
             });
         });
-        
-        // Close menu when clicking outside of menu content (overlay background)
-        overlayMenu.addEventListener('click', function(e) {
-            // Check if the click target is the overlay background itself
-            if (e.target === this) {
+
+        // Close menu when clicking outside
+        if (overlayMenu) {
+            overlayMenu.addEventListener('click', e => {
+                if (e.target === overlayMenu) closeMenu();
+            });
+        }
+
+        // Handle escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlayMenu && overlayMenu.classList.contains('active')) {
                 closeMenu();
             }
         });
+    }
 
-        // GSAP Animations for Admin Team Section
+    // ===== GSAP ANIMATIONS FOR ADMIN TEAM SECTION =====
+    function initGSAPAnimations() {
+        // Check if GSAP is loaded
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+            console.warn('GSAP or ScrollTrigger not loaded. Animations will be disabled.');
+            return;
+        }
+
         gsap.registerPlugin(ScrollTrigger);
 
         // LEADERSHIP: Chairman starts visible
-        let tlLead = gsap.timeline({
-            scrollTrigger: { 
-                trigger: "#sec-lead", 
-                start: "top 100px", 
-                end: "+=2500", 
-                scrub: 1.5,
-                pin: true,
-                anticipatePin: 1,
-                markers: false
-            }
-        });
+        const chairmanCard = document.querySelector('.chairman-card');
+        const pcLeads = document.querySelectorAll('.pc-lead:not(.chairman-card)');
         
-        // Animate chairman out and director in
-        tlLead.to(".chairman-card", { autoAlpha: 0, y: -40, duration: 1, delay: 1 })
-              .to(".pc-lead:not(.chairman-card)", { autoAlpha: 1, y: 0, duration: 1 })
-              .to(".pc-lead:not(.chairman-card)", { autoAlpha: 0, y: -40, duration: 1, delay: 1 });
+        if (chairmanCard && pcLeads.length > 0) {
+            let tlLead = gsap.timeline({
+                scrollTrigger: { 
+                    trigger: "#sec-lead", 
+                    start: "top 100px", 
+                    end: "+=2500", 
+                    scrub: 1.5,
+                    pin: true,
+                    anticipatePin: 1,
+                    markers: false
+                }
+            });
+            
+            // Animate chairman out and director in
+            tlLead.to(chairmanCard, { autoAlpha: 0, y: -40, duration: 1, delay: 1 })
+                  .to(pcLeads, { autoAlpha: 1, y: 0, duration: 1 })
+                  .to(pcLeads, { autoAlpha: 0, y: -40, duration: 1, delay: 1 });
+        }
 
         // ADMINISTRATION section animations
         function setupFades(secId, cardClass, dist) {
+            const section = document.querySelector(secId);
+            const cards = document.querySelectorAll(cardClass);
+            
+            if (!section || cards.length === 0) return;
+            
             let tl = gsap.timeline({
                 scrollTrigger: { 
                     trigger: secId, 
@@ -1662,13 +2296,19 @@
                     markers: false
                 }
             });
-            gsap.utils.toArray(cardClass).forEach((card, index) => {
+            
+            cards.forEach((card, index) => {
                 tl.to(card, { autoAlpha: 1, y: 0, duration: 1 })
                   .to(card, { autoAlpha: 0, y: -40, duration: 1, delay: 2 });
             });
         }
 
         function setupGrids(secId, gridClass, dist) {
+            const section = document.querySelector(secId);
+            const grids = document.querySelectorAll(gridClass);
+            
+            if (!section || grids.length === 0) return;
+            
             let tl = gsap.timeline({
                 scrollTrigger: { 
                     trigger: secId, 
@@ -1680,7 +2320,8 @@
                     markers: false
                 }
             });
-            gsap.utils.toArray(gridClass).forEach((grid, index) => {
+            
+            grids.forEach((grid, index) => {
                 tl.to(grid, { autoAlpha: 1, scale: 1, duration: 1 })
                   .to(grid, { autoAlpha: 0, scale: 0.9, duration: 1, delay: 2 });
             });
@@ -1711,6 +2352,51 @@
                 gsap.to(container, { scale: 1, duration: 0.4 });
             });
         });
+    }
+
+    // ===== INITIALIZE ALL COMPONENTS =====
+    function initAllComponents() {
+        // Initialize navigation
+        initNavigation();
+        
+        // Initialize navbar effects
+        initNavbarScrollEffect();
+        initNavbarTextEffect();
+        
+        // Initialize enquiry modal
+        initEnquiryModal();
+        
+        // Initialize GSAP animations
+        initGSAPAnimations();
+        
+        console.log('All components initialized successfully');
+    }
+
+    // ===== PAGE LOAD INITIALIZATION =====
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize all components when page loads
+        initAllComponents();
+        
+        // Refresh ScrollTrigger on resize for better responsive behavior
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                if (typeof ScrollTrigger !== 'undefined') {
+                    ScrollTrigger.refresh();
+                }
+            }, 250);
+        });
+    });
+
+    // ===== WINDOW LOAD INITIALIZATION =====
+    window.addEventListener('load', function() {
+        // Ensure GSAP animations work properly after all assets are loaded
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh();
+        }
+    });
+
     </script>
 </body>
 </html>
