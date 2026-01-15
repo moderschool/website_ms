@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Advanced Dojo Enterprise Portal</title>
+    
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojox/grid/resources/claroGrid.css">
+    
+    <style>
+        html, body { height: 100%; margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #mainStructure { height: 100%; }
+        .header-bar { background: #1a5276; color: white; line-height: 40px; padding: 0 20px; font-weight: bold; }
+        #grid { height: 250px; width: 100%; }
+        .footer-status { background: #f4f4f4; padding: 5px 15px; border-top: 1px solid #ccc; font-size: 11px; }
+    </style>
+
+    <script>
+        var dojoConfig = { parseOnLoad: true, async: true };
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.10.4/dojo/dojo.js"></script>
+
+    <script>
+        require([
+            "dojo/parser",
+            "dojo/_base/lang",
+            "dojo/data/ItemFileWriteStore",
+            "dojox/grid/DataGrid",
+            "dijit/layout/BorderContainer",
+            "dijit/layout/ContentPane",
+            "dijit/layout/AccordionContainer",
+            "dijit/layout/TabContainer",
+            "dijit/MenuBar",
+            "dijit/PopupMenuBarItem",
+            "dijit/Menu",
+            "dijit/MenuItem",
+            "dijit/form/Button",
+            "dijit/Dialog",
+            "dojo/domReady!"
+        ], function(parser, lang, ItemFileWriteStore) {
+            
+            // 2. Sample Data for the Grid
+            var data = {
+                identifier: "id",
+                items: [
+                    { id: 1, name: "System Kernel", status: "Active", load: "12%", user: "Admin" },
+                    { id: 2, name: "Database Engine", status: "Active", load: "45%", user: "System" },
+                    { id: 3, name: "Web Gateway", status: "Warning", load: "89%", user: "Guest" },
+                    { id: 4, name: "Auth Service", status: "Active", load: "5%", user: "Admin" },
+                    { id: 5, name: "Legacy Bridge", status: "Offline", load: "0%", user: "None" }
+                ]
+            };
+            
+            // 3. Define the Data Store
+            window.userStore = new ItemFileWriteStore({ data: data });
+
+            // 4. Custom Function for UI interaction
+            window.showAlert = function() {
+                dijit.byId("welcomeDialog").show();
+            };
+        });
+    </script>
+</head>
+
+<body class="claro">
+    <div id="mainStructure" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design:'headline', gutters:true">
+        
+        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'top'">
+            <div class="header-bar">DOJO ENTERPRISE OS v2.0</div>
+            <div data-dojo-type="dijit/MenuBar">
+                <div data-dojo-type="dijit/PopupMenuBarItem">
+                    <span>File</span>
+                    <div data-dojo-type="dijit/Menu">
+                        <div data-dojo-type="dijit/MenuItem" data-dojo-props="onClick:function(){ alert('New clicked'); }">New Project</div>
+                        <div data-dojo-type="dijit/MenuItem">Open...</div>
+                        <div data-dojo-type="dijit/MenuItem" data-dojo-props="onClick:function(){ window.location.reload(); }">Restart App</div>
+                    </div>
+                </div>
+                <div data-dojo-type="dijit/PopupMenuBarItem">
+                    <span>Account</span>
+                    <div data-dojo-type="dijit/Menu">
+                        <div data-dojo-type="dijit/MenuItem">Profile</div>
+                        <div data-dojo-type="dijit/MenuItem">Logout</div>
+                    </div>
+                </div>
+                <div data-dojo-type="dijit/MenuItem" data-dojo-props="onClick:showAlert">Help</div>
+            </div>
+        </div>
+
+        <div data-dojo-type="dijit/layout/AccordionContainer" data-dojo-props="region:'leading', splitter:true" style="width: 250px;">
+            <div data-dojo-type="dijit/layout/ContentPane" title="Main Navigation">
+                <button data-dojo-type="dijit/form/Button" style="width:100%" data-dojo-props="onClick:function(){ alert('Home view'); }">Home Dashboard</button><br><br>
+                <button data-dojo-type="dijit/form/Button" style="width:100%">Usage Reports</button><br><br>
+                <button data-dojo-type="dijit/form/Button" style="width:100%">User Logs</button>
+            </div>
+            <div data-dojo-type="dijit/layout/ContentPane" title="System Tools">
+                <p>Database: <b>Online</b></p>
+                <p>Server: <b>US-East-1</b></p>
+            </div>
+            <div data-dojo-type="dijit/layout/ContentPane" title="Quick Settings">
+                <input type="checkbox" id="c1"> <label for="c1">Enable Notifications</label>
+            </div>
+        </div>
+
+        <div data-dojo-type="dijit/layout/TabContainer" data-dojo-props="region:'center'">
+            
+            <div data-dojo-type="dijit/layout/ContentPane" title="Server Grid" style="padding:10px;">
+                <h3>Real-time System Processes</h3>
+                <p>Below is a <i>dojox/grid/DataGrid</i> connected to an <i>ItemFileWriteStore</i>.</p>
+                
+                <table id="grid" data-dojo-type="dojox/grid/DataGrid" 
+                       data-dojo-props="store:userStore, query:{ id: '*' }, clientSort:true">
+                    <thead>
+                        <tr>
+                            <th field="id" width="50px">ID</th>
+                            <th field="name" width="auto">Process Name</th>
+                            <th field="status" width="100px">Status</th>
+                            <th field="load" width="100px">CPU Load</th>
+                            <th field="user" width="100px">User</th>
+                        </tr>
+                    </thead>
+                </table>
+                
+                <div style="margin-top:15px;">
+                    <button data-dojo-type="dijit/form/Button" data-dojo-props="onClick:function(){ alert('Refreshing Grid...'); }">Refresh Data</button>
+                </div>
+            </div>
+
+            <div data-dojo-type="dijit/layout/ContentPane" title="API Docs">
+                <h3>Documentation</h3>
+                <p>Dojo Toolkit 1.10 provides:</p>
+                <ul>
+                    <li><b>AMD Module Loading:</b> Only load what you use.</li>
+                    <li><b>Dijit:</b> High-quality UI widgets.</li>
+                    <li><b>DojoX:</b> Extended modules like Grids, Charts, and Graphics.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region:'bottom'" class="footer-status">
+            Connected to <b>production_node_01</b> | Latency: 24ms | System Time: 2026-01-08
+        </div>
+    </div>
+
+    <div id="welcomeDialog" data-dojo-type="dijit/Dialog" title="System Help">
+        <div class="dijitDialogPaneContentArea">
+            <p>Welcome to the Dojo Toolkit Feature Demo!</p>
+            <p>You can drag the splitters between panels to resize them.</p>
+        </div>
+        <div class="dijitDialogPaneActionBar">
+            <button data-dojo-type="dijit/form/Button" type="button" data-dojo-props="onClick:function(){ dijit.byId('welcomeDialog').hide(); }">Close</button>
+        </div>
+    </div>
+
+</body>
+</html>
