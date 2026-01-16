@@ -4994,6 +4994,24 @@ body.menu-open .admission-btn.menu-only {
         border-radius: 0;
     }
 }
+/* Add this to your CSS */
+.scroll-area + section,
+.scroll-area + .blog-section {
+    position: relative;
+    z-index: 10;
+    background: var(--bg-cream);
+}
+
+.leadership-section + .spacer-before-footer {
+    height: 50px;
+    position: relative;
+    z-index: 5;
+}
+
+/* Ensure proper stacking context */
+.leadership-section {
+    isolation: isolate;
+}
 </style>
 </head>
 <body style="overflow: hidden;">
@@ -6572,217 +6590,251 @@ function initLeadershipAnimation() {
     const isMobile = window.innerWidth <= 768;
     const isTablet = window.innerWidth <= 1024;
 
+    // IMPORTANT: Kill any existing ScrollTriggers for leadership section
+    const existingTriggers = ScrollTrigger.getAll();
+    existingTriggers.forEach(trigger => {
+        if (trigger.vars && (trigger.vars.trigger === "#leadershipSection" || trigger.trigger === "#leadershipSection")) {
+            trigger.kill();
+        }
+    });
+
     if (!isMobile && !isTablet) {
         // DESKTOP: Use two separate image frames
-        gsap.set(directorFrame, { opacity: 0 });
-        gsap.set(chairmanFrame, { opacity: 1 });
+        gsap.set(directorFrame, { opacity: 0, x: 0 });
+        gsap.set(chairmanFrame, { opacity: 1, x: 0 });
+        gsap.set(container, { x: 0 });
 
-        const holdPower = 1.5;
-        let tl = gsap.timeline({
+        // Calculate scroll distance properly
+        const scrollDistance = Math.max(100, container.scrollWidth - window.innerWidth);
+        
+        // Create a standalone animation (not part of the main timeline)
+        gsap.to(container, {
+            x: () => -(container.scrollWidth - window.innerWidth),
+            ease: "none",
             scrollTrigger: {
                 trigger: "#leadershipSection",
                 start: "top top",
-                end: "bottom bottom",
+                end: () => `+=${scrollDistance}`,
+                scrub: 2.5,
                 pin: true,
-                scrub: 1,
-                end: () => "+=" + (container.scrollWidth - window.innerWidth + 1500), 
-                invalidateOnRefresh: true,
+                pinSpacing: true,
+                anticipatePin: 1,
                 markers: false,
-                onUpdate: (self) => {
-                    const progress = self.progress;
-                    
-                    if (progress < 0.5) {
-                        // First slide (Chairman) - Show chairman image, hide director
-                        gsap.to(chairmanFrame, {
-                            opacity: 1,
-                            duration: 0.5,
-                            ease: "power2.out"
-                        });
-                        gsap.to(directorFrame, {
-                            opacity: 0,
-                            duration: 0.5,
-                            ease: "power2.out"
-                        });
-                    } else {
-                        // Second slide (Director) - Show director image, hide chairman
-                        gsap.to(chairmanFrame, {
-                            opacity: 0,
-                            duration: 0.5,
-                            ease: "power2.out"
-                        });
-                        gsap.to(directorFrame, {
-                            opacity: 1,
-                            duration: 0.5,
-                            ease: "power2.out"
-                        });
-                    }
+                id: "leadership-scroll",
+                invalidateOnRefresh: true,
+                onEnter: () => {
+                    console.log("Leadership section entered");
+                },
+                onLeave: () => {
+                    console.log("Leadership section left");
+                },
+                onEnterBack: () => {
+                    console.log("Leadership section entered back");
                 }
             }
         });
 
-        // Animation for the second slide
-        const slides = gsap.utils.toArray(".leadership-slide");
-        slides.forEach((slide, i) => {
-            if (i > 0) {
-                tl.to(container, {
-                    x: () => -(slide.offsetLeft),
-                    duration: 1.2, 
-                    ease: "power2.inOut"
-                });
+        // Separate animation for image transitions
+        let imageTransition = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#leadershipSection",
+                start: "top top",
+                end: () => `+=${scrollDistance}`,
+                scrub: 2.5,
+                markers: false,
+                id: "leadership-images"
             }
-            tl.to({}, { duration: holdPower }); 
         });
+
+        // Image opacity transitions
+        imageTransition.to(chairmanFrame, {
+            opacity: 0,
+            duration: 0.5,
+            ease: "power2.out"
+        }, 0.3)
+        .to(directorFrame, {
+            opacity: 1,
+            duration: 0.5,
+            ease: "power2.out"
+        }, 0.3);
+
     } else if (isTablet && !isMobile) {
         // TABLET: Simplified animation
         gsap.set(mobileChairmanImage, { 
             display: "block",
             opacity: 1,
-            visibility: "visible"
+            visibility: "visible",
+            x: 0
         });
         gsap.set(mobileDirectorImage, { 
             display: "block",
             opacity: 0,
-            visibility: "visible"
+            visibility: "visible",
+            x: 0
         });
+        gsap.set(container, { x: 0 });
         
-        const holdPower = 1.2;
-        let tl = gsap.timeline({
+        const scrollDistance = Math.max(100, container.scrollWidth - window.innerWidth);
+        
+        // Horizontal scroll for tablet
+        gsap.to(container, {
+            x: () => -(container.scrollWidth - window.innerWidth),
+            ease: "none",
             scrollTrigger: {
                 trigger: "#leadershipSection",
                 start: "top top",
-                end: "bottom bottom",
+                end: () => `+=${scrollDistance}`,
+                scrub: 0.5,
                 pin: true,
-                scrub: 1,
-                end: () => "+=" + (container.scrollWidth - window.innerWidth + 1200), 
-                invalidateOnRefresh: true,
+                pinSpacing: true,
+                anticipatePin: 1,
                 markers: false,
-                onUpdate: (self) => {
-                    const progress = self.progress;
-                    
-                    if (progress < 0.5) {
-                        gsap.to(mobileChairmanImage, {
-                            opacity: 1,
-                            duration: 0.3,
-                            ease: "power2.out"
-                        });
-                        gsap.to(mobileDirectorImage, {
-                            opacity: 0,
-                            duration: 0.3,
-                            ease: "power2.out"
-                        });
-                    } else {
-                        gsap.to(mobileChairmanImage, {
-                            opacity: 0,
-                            duration: 0.3,
-                            ease: "power2.out"
-                        });
-                        gsap.to(mobileDirectorImage, {
-                            opacity: 1,
-                            duration: 0.3,
-                            ease: "power2.out"
-                        });
-                    }
-                }
+                id: "leadership-tablet-scroll"
             }
         });
 
-        const slides = gsap.utils.toArray(".leadership-slide");
-        slides.forEach((slide, i) => {
-            if (i > 0) {
-                tl.to(container, {
-                    x: () => -(slide.offsetLeft),
-                    duration: 1, 
-                    ease: "power2.inOut"
-                });
+        // Image transitions for tablet
+        let tabletImageTL = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#leadershipSection",
+                start: "top top",
+                end: () => `+=${scrollDistance}`,
+                scrub: 0.5,
+                markers: false,
+                id: "leadership-tablet-images"
             }
-            tl.to({}, { duration: holdPower }); 
         });
+
+        tabletImageTL.to(mobileChairmanImage, {
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.out"
+        }, 0.4)
+        .to(mobileDirectorImage, {
+            opacity: 1,
+            duration: 0.3,
+            ease: "power2.out"
+        }, 0.4);
+
     } else {
-        // MOBILE: Vertical layout instead of horizontal
+        // MOBILE: Vertical layout - NO ScrollTrigger
         const leadershipSection = document.getElementById('leadershipSection');
         const horizontalContainer = document.getElementById('leadershipHorizontalContainer');
         
         if (leadershipSection && horizontalContainer) {
+            // Kill any triggers on mobile
+            ScrollTrigger.getAll().forEach(trigger => {
+                if (trigger.vars && trigger.vars.id && trigger.vars.id.includes("leadership")) {
+                    trigger.kill();
+                }
+            });
+            
+            // Reset all GSAP properties
+            gsap.set(container, { clearProps: "all" });
+            gsap.set(chairmanFrame, { clearProps: "all" });
+            gsap.set(directorFrame, { clearProps: "all" });
+            gsap.set(mobileChairmanImage, { clearProps: "all" });
+            gsap.set(mobileDirectorImage, { clearProps: "all" });
+            
             // Change to vertical layout on mobile
             leadershipSection.style.height = 'auto';
+            leadershipSection.style.minHeight = 'auto';
+            leadershipSection.style.position = 'relative';
+            leadershipSection.style.overflow = 'visible';
+            
             horizontalContainer.style.flexDirection = 'column';
             horizontalContainer.style.width = '100%';
             horizontalContainer.style.height = 'auto';
             horizontalContainer.style.transform = 'none !important';
+            horizontalContainer.style.overflow = 'visible';
             
             // Make slides stack vertically
             const slides = document.querySelectorAll('.leadership-slide');
-            slides.forEach(slide => {
+            slides.forEach((slide, index) => {
                 slide.style.width = '100%';
                 slide.style.height = 'auto';
                 slide.style.minHeight = '100vh';
-                slide.style.padding = '60px 20px';
+                slide.style.padding = '80px 20px';
+                slide.style.position = 'relative';
+                slide.style.transform = 'none !important';
+                slide.style.left = '0 !important';
+                slide.style.right = '0 !important';
+                
+                // Reset GSAP transforms
+                gsap.set(slide, { clearProps: "all" });
             });
             
             // Show mobile images
-            gsap.set(mobileChairmanImage, { 
-                display: "block",
-                opacity: 1,
-                visibility: "visible",
-                position: 'relative',
-                margin: '0 auto 30px',
-                width: '200px',
-                height: '250px'
-            });
+            if (mobileChairmanImage) {
+                mobileChairmanImage.style.display = 'block';
+                mobileChairmanImage.style.opacity = '1';
+                mobileChairmanImage.style.visibility = 'visible';
+                mobileChairmanImage.style.position = 'relative';
+                mobileChairmanImage.style.margin = '0 auto 30px';
+                mobileChairmanImage.style.width = '200px';
+                mobileChairmanImage.style.height = '250px';
+                mobileChairmanImage.style.transform = 'none !important';
+            }
             
-            gsap.set(mobileDirectorImage, { 
-                display: "block",
-                opacity: 1,
-                visibility: "visible",
-                position: 'relative',
-                margin: '0 auto 30px',
-                width: '200px',
-                height: '250px'
-            });
+            if (mobileDirectorImage) {
+                mobileDirectorImage.style.display = 'block';
+                mobileDirectorImage.style.opacity = '1';
+                mobileDirectorImage.style.visibility = 'visible';
+                mobileDirectorImage.style.position = 'relative';
+                mobileDirectorImage.style.margin = '0 auto 30px';
+                mobileDirectorImage.style.width = '200px';
+                mobileDirectorImage.style.height = '250px';
+                mobileDirectorImage.style.transform = 'none !important';
+            }
             
             // Hide desktop frames
-            if (chairmanFrame) chairmanFrame.style.display = 'none';
-            if (directorFrame) directorFrame.style.display = 'none';
-            
-            // Adjust content wrapper
-            const contentWrappers = document.querySelectorAll('.leadership-content-wrapper');
-            contentWrappers.forEach(wrapper => {
-                wrapper.style.flexDirection = 'column';
-                wrapper.style.gap = '30px';
-                wrapper.style.paddingTop = '0';
-            });
-            
-            // Adjust description areas
-            const descriptionAreas = document.querySelectorAll('.leadership-description-area');
-            descriptionAreas.forEach(area => {
-                area.style.maxWidth = '100%';
-                area.style.margin = '0';
-                area.style.textAlign = 'center';
-            });
+            if (chairmanFrame) {
+                chairmanFrame.style.display = 'none';
+            }
+            if (directorFrame) {
+                directorFrame.style.display = 'none';
+            }
         }
     }
 
-    // Handle window resize
-    let resizeTimeout;
+    // Improved resize handler
+    let resizeTimer;
+    let lastWidth = window.innerWidth;
+    
     window.addEventListener('resize', function() {
-        clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(() => {
-            const newIsMobile = window.innerWidth <= 768;
-            const newIsTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() {
+            const newWidth = window.innerWidth;
+            const widthChange = Math.abs(newWidth - lastWidth);
             
-            if ((isMobile && !newIsMobile) || (!isMobile && newIsMobile) || 
-                (isTablet && !newIsTablet) || (!isTablet && newIsTablet)) {
-                // Refresh page layout on significant breakpoint changes
-                location.reload();
-            } else {
-                if (window.ScrollTrigger) {
-                    ScrollTrigger.refresh();
-                }
+            // Only reinitialize on significant width changes or breakpoint crossings
+            if (widthChange > 100 || 
+                (lastWidth <= 768 && newWidth > 768) || 
+                (lastWidth > 768 && newWidth <= 768) ||
+                (lastWidth <= 1024 && newWidth > 1024) || 
+                (lastWidth > 1024 && newWidth <= 1024)) {
+                
+                lastWidth = newWidth;
+                
+                // Kill all leadership-related ScrollTriggers
+                ScrollTrigger.getAll().forEach(trigger => {
+                    if (trigger.vars && trigger.vars.id && trigger.vars.id.includes("leadership")) {
+                        trigger.kill();
+                    }
+                });
+                
+                // Clear transforms
+                if (container) gsap.set(container, { clearProps: "all" });
+                
+                // Reinitialize
+                setTimeout(initLeadershipAnimation, 100);
             }
+            
+            // Always refresh ScrollTrigger on resize
+            ScrollTrigger.refresh();
         }, 250);
     });
 }
-
 // ===== MAIN WEBSITE LOGIC =====
 function initNavigation() {
     const hamburger = document.getElementById('hamburger');
@@ -8719,4 +8771,5 @@ window.addEventListener('resize', function() {
 </script>
 </body>
 </html>
+
 
