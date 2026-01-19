@@ -1222,7 +1222,7 @@ body.menu-open .navbar {
 
 .header-reveal {
     position: absolute;
-    top: 10vh;
+    top: 20vh;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 3vw;
     font-weight: 900;
@@ -1393,52 +1393,7 @@ body.menu-open .navbar {
     margin-bottom: 10px;
     text-shadow: 0 0 25px rgba(255, 215, 0, 0.7);
 }
-
-.final-dot {
-    position: fixed;
-    top: 30px;
-    left: 30px;
-    width: 20px;
-    height: 20px;
-    background-color: rgba(128, 0, 0, 0.9);
-    border-radius: 50%;
-    opacity: 0;
-    z-index: 1000;
-    box-shadow: 0 0 15px rgba(128, 0, 0, 0.7);
-    backdrop-filter: blur(2px);
-    -webkit-backface-visibility: hidden;
-    -webkit-transform: translateZ(0);
-}
-
-.final-text-dot-container {
-    position: absolute;
-    bottom: 25%;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    opacity: 0;
-    z-index: 80;
-    will-change: opacity;
-}
-
-.final-text {
-    font-size: 2rem;
-    color: #5d2a2a;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.final-text-dot {
-    width: 12px;
-    height: 12px;
-    background-color: rgba(128, 0, 0, 0.9);
-    border-radius: 50%;
-    box-shadow: 0 0 12px rgba(128, 0, 0, 0.7);
-    -webkit-backface-visibility: hidden;
-    -webkit-transform: translateZ(0);
-}
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
 
 .milestones-scene .maroon-dot {
     display: inline-block;
@@ -1522,7 +1477,7 @@ body.menu-open .navbar {
     position: relative;
     width: 90%;
     max-width: 900px;
-    height: 40px;
+    height: 100px;
     display: flex;
     align-items: center;
     margin: 0 auto;
@@ -2958,8 +2913,6 @@ body.menu-open .navbar {
     .legacy-text { font-size: 3rem; }
     .legacy-text .number { font-size: 4rem; }
     .maroon-circle { width: 500px; height: 500px; }
-    .final-dot { width: 15px; height: 15px; }
-    .final-text { font-size: 1.8rem; }
     .milestones-scene .main-text { font-size: 3rem; }
     .parents-text { font-size: 2.2rem; }
     .progress-header { max-width: 700px; }
@@ -2982,8 +2935,6 @@ body.menu-open .navbar {
     .legacy-text { font-size: 2.5rem; }
     .legacy-text .number { font-size: 3.5rem; }
     .maroon-circle { width: 400px; height: 400px; }
-    .final-dot { width: 12px; height: 12px; }
-    .final-text { font-size: 1.5rem; }
     .milestones-scene .main-text { font-size: 2.5rem; }
     .timeline-content-wrapper h2 { font-size: 3rem; }
     .timeline-content-wrapper p { font-size: 1.2rem; }
@@ -3011,8 +2962,6 @@ body.menu-open .navbar {
     .legacy-text { font-size: 2rem; }
     .legacy-text .number { font-size: 2.8rem; }
     .maroon-circle { width: 300px; height: 300px; }
-    .final-dot { width: 10px; height: 10px; }
-    .final-text { font-size: 1.2rem; }
     .milestones-scene .main-text { font-size: 2rem; flex-direction: column; }
     .milestones-scene .maroon-dot { margin: 15px 0; }
     .timeline-content-wrapper h2 { font-size: 2.5rem; }
@@ -3769,302 +3718,9 @@ body.menu-open .admission-btn.menu-only {
 
 /* ===== WEBSITE TOUR MODAL STYLES ===== */
 /* Shared Backdrop */
-.tour-modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 2002;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
 
-/* Intro Modal - Centered */
-#intro-tour-modal .tour-modal-content {
-    background: var(--primary-white);
-    border-radius: 24px;
-    width: 90%;
-    max-width: 480px;
-    padding: 40px 32px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    animation: scaleIn 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
 
-#intro-tour-modal h2 {
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--secondary-dark-maroon);
-    margin: 0 0 16px;
-}
 
-#intro-tour-modal p {
-    font-size: 16.5px;
-    color: var(--secondary-light-maroon);
-    line-height: 1.6;
-    margin-bottom: 36px;
-}
-
-/* Tour Selection Modal - Bottom Center */
-#tour-selection-modal .tour-modal-sheet {
-    background: var(--primary-white);
-    border-radius: 28px 28px 0 0;
-    width: 100%;
-    max-width: 660px;
-    padding: 24px 20px 32px;
-    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.25);
-    animation: slideUp 0.45s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0 auto;
-}
-
-.sheet-handle {
-    width: 42px;
-    height: 5px;
-    background: var(--border-light);
-    border-radius: 3px;
-    margin: 0 auto 24px;
-}
-
-#tour-selection-modal h2 {
-    font-size: 26px;
-    font-weight: 700;
-    text-align: center;
-    margin: 0 0 12px;
-    color: var(--secondary-dark-maroon);
-}
-
-#tour-selection-modal .subtitle {
-    text-align: center;
-    color: var(--secondary-light-maroon);
-    font-size: 16px;
-    margin-bottom: 32px;
-    font-weight: 500;
-}
-
-.tour-options-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin-bottom: 32px;
-}
-
-.tour-option-btn {
-    position: relative;
-    background: var(--primary-white);
-    border: 2px solid var(--border-light);
-    border-radius: 18px;
-    padding: 16px 10px;
-    text-align: center;
-    font-size: 14.5px;
-    font-weight: 600;
-    color: var(--secondary-dark-maroon);
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-}
-
-.tour-option-btn:hover,
-.tour-option-btn.selected {
-    border: 3px solid var(--border-maroon);
-    padding: 15px 9px;
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(128, 0, 0, 0.22);
-}
-
-.tour-option-btn i {
-    display: block;
-    font-size: 28px;
-    margin-bottom: 10px;
-    color: var(--text-maroon);
-}
-
-.tour-check-mark {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 22px;
-    height: 22px;
-    background: var(--primary-maroon);
-    color: var(--text-white);
-    border-radius: 50%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 15px;
-    font-weight: bold;
-}
-
-.tour-option-btn.selected .tour-check-mark {
-    display: flex;
-}
-
-/* Shared Action Buttons Style */
-.tour-actions {
-    display: flex;
-    gap: 12px;
-}
-
-.tour-actions button {
-    flex: 1;
-    padding: 16px;
-    border-radius: 16px;
-    font-size: 17px;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.tour-primary-btn {
-    background: var(--primary-maroon);
-    color: var(--text-white);
-}
-
-.tour-secondary-btn {
-    background: var(--bg-light-cream);
-    color: var(--text-maroon);
-    border: 2px solid var(--border-maroon);
-}
-
-.tour-primary-btn:disabled {
-    background: #a88;
-    opacity: 0.7;
-    cursor: not-allowed;
-}
-
-.tour-primary-btn:hover:not(:disabled),
-.tour-secondary-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.3);
-}
-
-/* Tour View */
-.tour-view {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--primary-white);
-    display: none;
-    flex-direction: column;
-    z-index: 2003;
-}
-
-.tour-view-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-    text-align: center;
-}
-
-.tour-view-content h2 {
-    font-size: 30px;
-    font-weight: 700;
-    color: var(--secondary-dark-maroon);
-    margin-bottom: 20px;
-}
-
-.tour-view-content p {
-    font-size: 18px;
-    color: var(--secondary-light-maroon);
-    max-width: 700px;
-    line-height: 1.6;
-}
-
-.tour-controls {
-    position: fixed;
-    bottom: 24px;
-    left: 15%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 14px;
-    z-index: 2004;
-    background: none;
-    backdrop-filter: blur(12px);
-    padding: 5px 5px;
-    border-radius: 24px;
-    border: 1px solid var(--border-light);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-}
-
-.tour-controls button {
-    padding: 12px 20px;
-    border-radius: 24px;
-    background: transparent;
-    border: 1px solid var(--border-light);
-    cursor: pointer;
-    font-size: 15.5px;
-    font-weight: 600;
-    transition: all 0.25s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.tour-controls button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
-}
-
-#back-to-tour-modal {
-    color: var(--text-maroon);
-}
-
-#end-tour-btn {
-    color: #dc2626;
-}
-
-@keyframes scaleIn {
-    from { transform: translate(-50%, -50%) scale(0.9); opacity: 0; }
-    to { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { transform: translate(-50%, 100%); opacity: 0; }
-    to { transform: translate(-50%, 0); opacity: 1; }
-}
-
-/* Responsive styles for tour modals */
-@media (max-width: 768px) {
-    .tour-options-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-    .tour-view-content h2 { font-size: 24px; }
-    .tour-view-content p { font-size: 16px; }
-    #tour-selection-modal .tour-modal-sheet {
-        max-width: 100%;
-        border-radius: 24px 24px 0 0;
-    }
-    .tour-controls { width: 90%; justify-content: center; }
-}
-
-@media (max-width: 576px) {
-    .tour-options-grid { grid-template-columns: repeat(2, 1fr); }
-    #intro-tour-modal .tour-modal-content { padding: 30px 20px; width: 95%; }
-    .tour-view-content { padding: 30px 20px; }
-    .tour-controls { flex-direction: column; width: 90%; }
-    #tour-selection-modal .tour-modal-sheet { padding: 20px 15px; }
-    .tour-option-btn { padding: 14px 8px; font-size: 13px; }
-    .tour-option-btn i { font-size: 24px; }
-}
 @media (max-width: 768px) {
     .footer-columns {
         display: grid;
@@ -5012,6 +4668,1154 @@ body.menu-open .admission-btn.menu-only {
 .leadership-section {
     isolation: isolate;
 }
+   /* ACHIEVEMENT SECTION STYLES */
+    .achievement-section {
+        width: 100%;
+        background-color: var(--bg-cream);
+        margin-top: 0;
+        position: relative;
+        z-index: 90;
+    }
+
+    .scroll-space { 
+        height: 350vh; 
+        position: relative; 
+        background-color: var(--bg-cream);
+    }
+
+    .sticky-box {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+        padding: 0 15px;
+        background-color: var(--bg-cream);
+    }
+
+    .section-header { 
+        text-align: center; 
+        margin-bottom: 40px; 
+        padding-top: 60px;
+    }
+
+    .section-header h2 {
+        font-size: 3.5rem;
+        color: var(--text-maroon);
+        font-weight: 700;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+    }
+
+    .section-header .text-muted {
+        color: var(--text-light-maroon) !important;
+        font-size: 1.2rem;
+    }
+
+    .cards-container {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+        width: 100%;
+        max-width: 1200px;
+        margin: 0 auto;
+          padding: 0 20px; /* Added padding */
+    }
+
+    @media (max-width: 1200px) { 
+        .cards-container { 
+            max-width: 1000px;
+            gap: 15px;
+        }
+    }
+
+    @media (max-width: 992px) { 
+        .cards-container { 
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 800px;
+        }
+        
+        .section-header h2 {
+            font-size: 2.8rem;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .cards-container {
+            grid-template-columns: 1fr;
+            max-width: 300px;
+            height: 60vh;
+            position: relative;
+        }
+        
+        .achievement-card { 
+            position: absolute !important; 
+            width: 100%; 
+            top: 0; 
+            left: 0; 
+        }
+        
+        .section-header h2 {
+            font-size: 2.2rem;
+        }
+        
+        .section-header .text-muted {
+            font-size: 1rem;
+        }
+        
+        .scroll-space {
+            height: 300vh;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .section-header h2 {
+            font-size: 1.8rem;
+        }
+        
+        .cards-container {
+            max-width: 280px;
+        }
+    }
+
+    .achievement-card {
+        height: 220px;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        background: var(--bg-light-cream);
+        box-shadow: 0 20px 40px var(--shadow-dark);
+        transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.5s ease;
+        border: 1px solid var(--border-light);
+        cursor: pointer;
+    }
+
+    .achievement-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 30px 50px rgba(0,0,0,0.2);
+    }
+
+    .achievement-card img { 
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        transition: transform 0.5s ease; 
+    }
+    
+    .achievement-card:hover img { 
+        transform: scale(1.1); 
+    }
+
+    /* THE ATTRACTIVE BANNER */
+    .card-winner-banner {
+        position: absolute;
+        bottom: 85px;
+        left: -10px;
+        right: -10px;
+        background: var(--progress-fill);
+        color: var(--text-dark-maroon);
+        padding: 8px 0;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-align: center;
+        transform: rotate(-3deg);
+        z-index: 3;
+        box-shadow: 0 5px 15px var(--shadow-dark);
+        letter-spacing: 2px;
+        border-top: 1px solid rgba(255,255,255,0.5);
+        border-bottom: 1px solid rgba(0,0,0,0.2);
+        overflow: hidden;
+    }
+
+    /* Shimmer Animation Effect */
+    .card-winner-banner::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+        transform: skewX(-25deg);
+        animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+        0% { left: -100%; }
+        30%, 100% { left: 150%; }
+    }
+
+    .prize-tag {
+        position: absolute;
+        top: 2px;
+        right: 2px;
+        background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(5px);
+        color: var(--secondary-gold);
+        padding: 4px 8px;
+        border-radius: 50px;
+        font-size: 0.6rem;
+        font-weight: 700;
+        border: 1px solid var(--secondary-gold);
+        z-index: 4;
+    }
+
+    .content-overlay {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        padding: 20px 15px;
+        background: linear-gradient(to top, var(--secondary-dark-maroon) 70%, transparent);
+        z-index: 2;
+    }
+
+    .content-overlay h6 { 
+        color: var(--text-white); 
+        margin: 0; 
+        font-size: 1.1rem; 
+        font-weight: 700; 
+    }
+    
+    .content-overlay p { 
+        color: var(--secondary-gold); 
+        margin: 2px 0 0; 
+        font-size: 0.85rem; 
+        font-weight: 500; 
+    }
+
+    .exit-effect {
+    transform: translateX(-120vw) rotate(-20deg) scale(0.5) !important;
+    opacity: 0 !important;
+    transition: transform 1.2s ease-out, opacity 1.2s ease-out !important; /* Increased from default */
+}
+    /* Add this to your CSS to fix extra space */
+.achievement-section {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.scroll-space {
+    height: 400vh !important; /* Keep as is */
+}
+
+.sticky-box {
+    /* Keep existing styles */
+    margin-bottom: 0 !important;
+}
+
+/* Ensure proper cleanup after unpinning */
+.scroll-space::after {
+    content: '';
+    display: block;
+    height: 50px; /* Small spacer after section */
+    background: transparent;
+}
+/* Remove extra space between Hall of Fame and next section */
+.achievement-section + .scroll-area {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+/* Also ensure the scroll-space height is properly calculated */
+.scroll-space {
+    height: 70vh !important;
+    margin-bottom: 0 !important;
+}
+
+/* Adjust the sticky box to remove bottom padding */
+.sticky-box {
+    padding-bottom: 0 !important;
+}
+
+/* Add a small transition space if needed, but minimal */
+.achievement-section::after {
+    content: '';
+    display: block;
+    height: 20px; /* Very small space instead of 40px */
+    background: transparent;
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure no extra space in scroll-area */
+.scroll-area {
+    margin-top: 0 !important; /* Override the 40px */
+    position: relative;
+    top: -20px; /* Pull it up slightly */
+}
+/* Add these styles to your existing CSS */
+.achievement-card {
+    transition: all 1.8s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Force the slower transition */
+}
+
+.exit-effect {
+    transform: translateX(-120vw) rotate(-20deg) scale(0.5) !important;
+    opacity: 0 !important;
+    transition: transform 1.8s ease-out, opacity 1.8s ease-out !important; /* Increased from 1.2s to 1.8s */
+}
+
+/* Optional: Add a slight delay between card animations */
+.achievement-card:nth-child(2) { transition-delay: 0.1s !important; }
+.achievement-card:nth-child(3) { transition-delay: 0.2s !important; }
+.achievement-card:nth-child(4) { transition-delay: 0.3s !important; }
+.achievement-card:nth-child(5) { transition-delay: 0.4s !important; }
+/* ===== FIXED TOUR STYLES ===== */
+/* Remove red shadows and fix positioning */
+.tour-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2002;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.tour-modal-content,
+.tour-modal-sheet {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    margin: 20px;
+}
+
+.tour-modal-sheet {
+    max-width: 600px;
+}
+
+.tour-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.tour-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: #1a1a1a;
+    flex: 1;
+    margin-right: 24px;
+}
+
+.tour-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.tour-close-btn:hover {
+    color: #333;
+}
+
+/* Button styles - No red shadows */
+.tour-actions,
+.tour-controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.tour-actions button,
+.tour-controls button,
+.tour-navigate-btn {
+    flex: 1;
+    padding: 6px 6px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: transparent;
+    border: 1.5px solid;
+}
+
+.tour-primary-btn,
+.tour-navigate-btn {
+    border-color: var(--primary-maroon);
+    color: var(--primary-maroon);
+}
+
+.tour-secondary-btn,
+#back-to-tour-modal {
+    border-color: rgba(128, 0, 0, 0.2);
+    color: #666;
+}
+
+#end-tour-btn {
+    border-color: rgba(255, 68, 68, 0.3);
+    color: #ff4444;
+}
+
+/* Hover effects without red shadows */
+.tour-actions button:hover,
+.tour-controls button:hover,
+.tour-navigate-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Neutral shadow */
+}
+
+.tour-primary-btn:hover,
+.tour-navigate-btn:hover {
+    background: rgba(128, 0, 0, 0.04);
+}
+
+.tour-secondary-btn:hover,
+#back-to-tour-modal:hover {
+    background: rgba(128, 0, 0, 0.02);
+    border-color: rgba(128, 0, 0, 0.3);
+}
+
+#end-tour-btn:hover {
+    background: rgba(255, 68, 68, 0.02);
+    border-color: rgba(255, 68, 68, 0.4);
+}
+
+/* Tour options grid */
+.tour-options-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.tour-option-btn-compact {
+    position: relative;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1.5px solid rgba(128, 0, 0, 0.12);
+    border-radius: 14px;
+    padding: 18px 10px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90px;
+    overflow: hidden;
+}
+
+.tour-option-btn-compact:hover {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(128, 0, 0, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* Neutral shadow */
+}
+
+.tour-option-btn-compact.selected {
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid var(--primary-maroon);
+    padding: 17px 9px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Neutral shadow */
+}
+
+.tour-option-btn-compact i {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: var(--primary-maroon);
+    opacity: 0.8;
+    transition: all 0.25s;
+}
+
+.tour-option-btn-compact:hover i,
+.tour-option-btn-compact.selected i {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.tour-check-mark-compact {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 18px;
+    height: 18px;
+    background: var(--primary-maroon);
+    color: white;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.tour-option-btn-compact.selected .tour-check-mark-compact {
+    display: flex;
+    animation: checkPop 0.2s ease-out;
+}
+
+@keyframes checkPop {
+    0% { transform: scale(0); }
+    80% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(20px);
+        opacity: 0; 
+    }
+    to { 
+        transform: translateY(0);
+        opacity: 1; 
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tour-options-grid-compact {
+        grid-template-columns: repeat(2, 1fr);
+        max-height: 250px;
+    }
+    
+    .tour-option-btn-compact {
+        height: 80px;
+        padding: 16px 8px;
+        font-size: 11px;
+    }
+    
+    .tour-actions,
+    .tour-controls {
+        flex-direction: column;
+    }
+    
+    .tour-modal-content,
+    .tour-modal-sheet {
+        padding: 20px;
+        margin: 10px;
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    .tour-options-grid-compact {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .tour-option-btn-compact {
+        height: 75px;
+        padding: 14px 6px;
+    }
+    
+    .tour-header h2 {
+        font-size: 18px;
+    }
+}
+
+/* Make sure body doesn't scroll when modal is open */
+body.tour-modal-open {
+    overflow: hidden;
+}
+/* ===== PROGRESS HEADER GRID LAYOUT ===== */
+.progress-header-grid {
+    display: grid;
+    grid-template-rows: auto auto; /* Two rows: header and progress bar */
+    gap: 50px;
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 72;
+}
+
+/* When progress header is active (shown) */
+.progress-header-grid.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Header content - Top row */
+.progress-header-content {
+    grid-row: 1;
+    text-align: center;
+    padding: 130px 60px;
+}
+
+.progress-main-title {
+    font-size: 3rem;
+    color: #FFFDD0;
+    font-weight: 900;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+    letter-spacing: 1.5px;
+    line-height: 1.2;
+}
+
+.progress-main-subtitle {
+    font-size: 1.5rem;
+    color: rgba(255, 253, 208, 0.9);
+    font-weight: 600;
+    margin: 0;
+    font-style: italic;
+    letter-spacing: 0.8px;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.5;
+}
+
+/* Progress track container - Bottom row */
+.progress-header-grid .progress-track-container {
+    grid-row: 2;
+    margin-top: 0;
+    width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .progress-header-grid {
+        gap: 40px;
+        max-width: 700px;
+    }
+    
+    .progress-main-title {
+        font-size: 2.2rem;
+    }
+    
+    .progress-main-subtitle {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .progress-header-grid {
+        gap: 30px;
+        padding: 15px;
+    }
+    
+    .progress-main-title {
+        font-size: 1.8rem;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+    }
+    
+    .progress-main-subtitle {
+        font-size: 1rem;
+        letter-spacing: 0.5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .progress-header-grid {
+        gap: 25px;
+    }
+    
+    .progress-main-title {
+        font-size: 1.5rem;
+    }
+    
+    .progress-main-subtitle {
+        font-size: 0.9rem;
+    }
+}
+/* ===== UPDATED TOUR MODAL STYLES ===== */
+.tour-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2002;
+    align-items: flex-start; /* Align to top */
+    justify-content: flex-end; /* Align to right */
+    animation: fadeIn 0.2s ease-out;
+    padding: 20px;
+}
+
+/* Intro Modal - Top Right Corner */
+#intro-tour-modal .tour-modal-content {
+    background: var(--primary-white);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px; /* Reduced from 480px */
+    padding: 24px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: slideDownFromTop 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    margin-top: 80px; /* Space from top */
+    margin-right: 20px;
+    transform-origin: top right;
+}
+
+/* Tour Selection Modal - Top Right Corner */
+#tour-selection-modal .tour-modal-content {
+    background: var(--primary-white);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px; /* Reduced from 600px */
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: slideDownFromTop 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    margin-top: 80px; /* Space from top */
+    margin-right: 20px;
+    transform-origin: top right;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+/* Remove the bottom sheet styles and use regular content */
+#tour-selection-modal .tour-modal-sheet {
+    display: none; /* Hide bottom sheet */
+}
+
+#tour-selection-modal .tour-modal-content {
+    display: block; /* Show as regular content */
+}
+
+/* Remove sheet handle */
+.sheet-handle {
+    display: none;
+}
+
+/* New animation for top-right entry */
+@keyframes slideDownFromTop {
+    from {
+        transform: translateY(-20px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Adjust tour options grid for top-right positioning */
+.tour-options-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin: 20px 0;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* Adjust tour option buttons for compact top-right layout */
+.tour-option-btn-compact {
+    position: relative;
+    background: rgba(255, 255, 255, 0.6);
+    border: 1.5px solid rgba(128, 0, 0, 0.12);
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+    overflow: hidden;
+}
+
+.tour-option-btn-compact:hover,
+.tour-option-btn-compact.selected {
+    border: 2px solid var(--primary-maroon);
+    padding: 11px 7px;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.tour-option-btn-compact i {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: var(--primary-maroon);
+    opacity: 0.8;
+    transition: all 0.25s;
+}
+
+/* Adjust tour header for top-right */
+.tour-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.tour-header h2 {
+    margin: 0;
+    font-size: 20px;
+    color: var(--secondary-dark-maroon);
+    flex: 1;
+}
+
+.tour-close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.tour-close-btn:hover {
+    color: #333;
+}
+
+/* Tour actions at the bottom */
+.tour-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.tour-actions button {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1.5px solid;
+}
+
+/* Mobile adjustments for top-right positioning */
+@media (max-width: 768px) {
+    .tour-modal-backdrop {
+        padding: 10px;
+        align-items: flex-start;
+        justify-content: center; /* Center on mobile */
+    }
+    
+    #intro-tour-modal .tour-modal-content,
+    #tour-selection-modal .tour-modal-content {
+        width: 95%;
+        max-width: 95%;
+        margin-top: 60px; /* Less space on mobile */
+        margin-right: 0; /* No right margin on mobile */
+        padding: 20px 15px;
+    }
+    
+    .tour-options-grid-compact {
+        grid-template-columns: repeat(3, 1fr);
+        max-height: 250px;
+        gap: 8px;
+    }
+    
+    .tour-option-btn-compact {
+        height: 75px;
+        padding: 10px 6px;
+        font-size: 10px;
+    }
+    
+    .tour-option-btn-compact i {
+        font-size: 16px;
+        margin-bottom: 6px;
+    }
+    
+    .tour-actions {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 480px) {
+    #intro-tour-modal .tour-modal-content,
+    #tour-selection-modal .tour-modal-content {
+        margin-top: 50px;
+        padding: 18px 12px;
+    }
+    
+    .tour-options-grid-compact {
+        grid-template-columns: repeat(2, 1fr);
+        max-height: 200px;
+    }
+    
+    .tour-option-btn-compact {
+        height: 70px;
+        padding: 8px 4px;
+        font-size: 9px;
+    }
+    
+    .tour-option-btn-compact i {
+        font-size: 14px;
+        margin-bottom: 4px;
+    }
+    
+    .tour-check-mark-compact {
+        width: 14px;
+        height: 14px;
+        font-size: 9px;
+        top: 4px;
+        right: 4px;
+    }
+}
+
+/* Active Tour View - Also from top right */
+#active-tour-view {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--primary-white);
+    display: none;
+    flex-direction: column;
+    z-index: 2003;
+}
+
+.tour-view-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 24px;
+    text-align: center;
+}
+
+/* Tour Controls - Position at bottom */
+.tour-controls {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 2004;
+}
+
+.tour-controls button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: var(--primary-white);
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tour-controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+/* ===== LEGACY CELEBRATION BANNER STYLES ===== */
+.legacy-banner {
+    width: 100%;
+    background: linear-gradient(135deg, var(--primary-maroon) 0%, var(--secondary-dark-maroon) 100%);
+    padding: 25px 20px;
+    position: relative;
+    overflow: hidden;
+    z-index: 90;
+    margin-top: 40px;
+    box-shadow: 0 5px 20px rgba(128, 0, 0, 0.3);
+    border-top: 2px solid var(--secondary-gold);
+    border-bottom: 2px solid var(--secondary-gold);
+}
+
+.banner-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    position: relative;
+    z-index: 2;
+}
+
+.banner-text {
+    color: var(--text-white);
+    font-size: 2.2rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.9;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.legacy-number {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    perspective: 1000px;
+}
+
+.legacy-number span {
+    display: inline-block;
+    font-size: 5.5rem;
+    font-weight: 900;
+    color: var(--secondary-gold-light);
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    position: relative;
+    line-height: 1;
+}
+
+.number-5 {
+    animation: numberFloat 3s ease-in-out infinite, numberGlow 2s ease-in-out infinite;
+    animation-delay: 0.5s;
+}
+
+.number-3 {
+    animation: numberFloat 3s ease-in-out infinite, numberGlow 2s ease-in-out infinite;
+    animation-delay: 1s;
+}
+
+@keyframes numberFloat {
+    0%, 100% {
+        transform: translateY(0) rotateY(0deg);
+    }
+    25% {
+        transform: translateY(-8px) rotateY(10deg);
+    }
+    50% {
+        transform: translateY(4px) rotateY(-5deg);
+    }
+    75% {
+        transform: translateY(-4px) rotateY(5deg);
+    }
+}
+
+@keyframes numberGlow {
+    0%, 100% {
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
+                     0 0 40px rgba(255, 215, 0, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
+                     0 0 60px rgba(255, 215, 0, 0.5),
+                     0 0 80px rgba(255, 215, 0, 0.3);
+    }
+}
+
+.banner-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 30%, rgba(255, 215, 0, 0.1) 70%);
+    animation: glowPulse 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+    .legacy-banner {
+        padding: 20px 15px;
+        margin-top: 30px;
+    }
+    
+    .banner-content {
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+    
+    .banner-text {
+        font-size: 1.5rem;
+        letter-spacing: 1px;
+    }
+    
+    .legacy-number span {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .legacy-banner {
+        padding: 15px 10px;
+        margin-top: 20px;
+    }
+    
+    .banner-content {
+        gap: 10px;
+    }
+    
+    .banner-text {
+        font-size: 1.2rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .legacy-number span {
+        font-size: 3rem;
+    }
+    
+    .legacy-number {
+        gap: 3px;
+    }
+}
+
+/* Tablet Styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .legacy-banner {
+        padding: 22px 18px;
+    }
+    
+    .banner-text {
+        font-size: 1.8rem;
+    }
+    
+    .legacy-number span {
+        font-size: 4.5rem;
+    }
+}
 </style>
 </head>
 <body style="overflow: hidden;">
@@ -5151,17 +5955,70 @@ body.menu-open .admission-btn.menu-only {
                 <div class="progress-bar"></div>
             </div>
 
-           
-         <!-- GSAP Scroll Animation Section -->
-<section class="scroll-area">
-    <div class="sticky-container">
+            <section class="achievement-section" >
+    <div class="scroll-space" >
+        <div class="sticky-box">
+            <div class="section-header">
+                <h2 class="fw-bold display-4">Hall of Fame</h2>
+              
+            </div>
+
+            <div class="cards-container">
+                <div class="achievement-card" style="z-index: 4;">
+                    <div class="prize-tag">Winners</div>
+                    <img src="01_hof.png" alt="1">
+                    <div class="card-winner-banner">MUN-25 @ Modern-Jaipur</div>
+                    <div class="content-overlay"><p>@ Jaipur</p></div>
+                </div>
+
+                <div class="achievement-card" style="z-index: 3;">
+                    <div class="prize-tag">Winners</div>
+                    <img src="02_hof.png" alt="2">
+                    <div class="card-winner-banner">Inter-School Swimming</div>
+                    <div class="content-overlay"><p>@ KOTA</p></div>
+                </div>
+
+                <div class="achievement-card" style="z-index: 2;">
+                    <div class="prize-tag">Winners</div>
+                    <img src="03_hof.png" alt="3">
+                    <div class="card-winner-banner">Inter-School Kabbadi</div>
+                    <div class="content-overlay"><p>@ KOTA</p></div>
+                </div>
+
+               
+
+                <div class="achievement-card" style="z-index: 1;">
+                    <div class="prize-tag">Winners</div>
+                    <img src="05_hof.png" alt="5">
+                    <div class="card-winner-banner">MUN-25 @ St. Pauls</div>
+                    <div class="content-overlay"><p>@ KOTA</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>  <br> <br>
+<!-- Legacy Celebration Banner -->
+<div class="legacy-banner">
+    <div class="banner-content">
+        <span class="banner-text">Celebrating</span>
+        <div class="legacy-number">
+            <span class="number-5">5</span>
+            <span class="number-3">3</span>
+        </div>
+        <span class="banner-text">years of legacy</span>
+    </div>
+    <div class="banner-glow"></div>
+</div>
+   <!-- GSAP Scroll Animation Section -->
+<section class="scroll-area" >
+    <div class="sticky-container" >
         <h1 class="header-reveal">Forging a highly significant impact</h1>
-        <div class="text-reveal-container scene1-text">
+        <!--div class="text-reveal-container scene1-text">
             <span class="word">Excellence</span>
             <span class="word">beyond</span>
             <span class="word">the</span>
             <span class="word">boundaries</span>
-        </div>
+        </div-->
 
         <div class="arc-container">
             <div class="arc-image image-1"><img src="intro2a.JPG" alt="Photo 1"></div>
@@ -5170,6 +6027,7 @@ body.menu-open .admission-btn.menu-only {
             <div class="arc-image image-4"><img src="intro2d.jpg" alt="Photo 4"></div>
             <div class="arc-image image-5 last-image"><img src="intro2e.JPG" alt="Photo 5"></div>
         </div>
+<!--here is achievement section -->
 
         <div class="milestones-scene">
             <div class="container">
@@ -5186,69 +6044,69 @@ body.menu-open .admission-btn.menu-only {
             </div>
             
             <!-- Progress Bar Container (Initially Hidden) -->
-            <div class="progress-header" id="progressHeader">
-                <div class="progress-track-container">
-                    <div class="track-bg"></div>
-                    <div class="track-fill" id="fillLine"></div>
+          <!-- Progress Bar Container (Initially Hidden) -->
+<div class="progress-header-grid" id="progressHeader">
+    <!-- Header Section -->
+    <div class="progress-header-content">
+        <p class="progress-main-subtitle">The operating values that drive us are serialim:</p>
+    </div>
+    
+    <!-- Progress Bar Section -->
+    <div class="progress-track-container">
+        <div class="track-bg"></div>
+        <div class="track-fill" id="fillLine"></div>
 
-                    <div class="steps-wrapper">
-                        
-                        <div class="step-point" data-index="1">
-                            <div class="active-dot"></div>
-                            <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            
-                            <div class="step-info">
-                                <span class="info-label">Discipline</span>
-                                <img src="discipline.png" alt="Step 1 Icon" class="info-image">
-                            </div>
-                        </div>
-
-                        <div class="step-point" data-index="2">
-                            <div class="active-dot"></div>
-                            <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            
-                            <div class="step-info">
-                                <span class="info-label">Courtesy</span>
-                                <img src="courtesy.png" alt="Step 2 Icon" class="info-image">
-                            </div>
-                        </div>
-
-                        <div class="step-point" data-index="3">
-                            <div class="active-dot"></div>
-                            <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            
-                            <div class="step-info">
-                                <span class="info-label">Efficiency</span>
-                                <img src="efficiency.png" alt="Step 3 Icon" class="info-image">
-                            </div>
-                        </div>
-
-                        <div class="step-point" data-index="4">
-                            <div class="active-dot"></div>
-                            <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                            
-                            <div class="step-info">
-                                <span class="info-label">Care</span>
-                                <img src="care.png" alt="Step 4 Icon" class="info-image">
-                            </div>
-                        </div>
-                        
-                    </div>
+        <div class="steps-wrapper">
+            <div class="step-point" data-index="1">
+                <div class="active-dot"></div>
+                <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div class="step-info">
+                    <span class="info-label">Discipline</span>
+                    <img src="discipline.png" alt="Step 1 Icon" class="info-image">
                 </div>
             </div>
 
-            <!-- Final text with dot -->
-            <div class="final-text-dot-container" id="finalTextContainer">
-                <div class="final-text">Education beyond boundaries</div>
-                <div class="final-text-dot"></div>
+            <div class="step-point" data-index="2">
+                <div class="active-dot"></div>
+                <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div class="step-info">
+                    <span class="info-label">Courtesy</span>
+                    <img src="courtesy.png" alt="Step 2 Icon" class="info-image">
+                </div>
             </div>
+
+            <div class="step-point" data-index="3">
+                <div class="active-dot"></div>
+                <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div class="step-info">
+                    <span class="info-label">Efficiency</span>
+                    <img src="efficiency.png" alt="Step 3 Icon" class="info-image">
+                </div>
+            </div>
+
+            <div class="step-point" data-index="4">
+                <div class="active-dot"></div>
+                <svg class="check-icon" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div class="step-info">
+                    <span class="info-label">Care</span>
+                    <img src="care.png" alt="Step 4 Icon" class="info-image">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+            <!-- Final text with dot -->
+           
         </div>
         
         <!-- Final small dot for top left -->
-        <div class="final-dot"></div>
+    
     </div>
 </section>
-            <!-- BLOG SECTION - FULL WIDTH -->
+          <!--here i am placing the acheivment section-->  
+       
+
+          <!-- BLOG SECTION - FULL WIDTH -->
             <section class="blog-section">
                 <div class="blog-header">
                     <h2>School Blog</h2>
@@ -5451,13 +6309,16 @@ body.menu-open .admission-btn.menu-only {
 
 <!-- Tour Selection Modal (Bottom Center) -->
 <!-- Tour Selection Modal (Bottom Center) -->
+<!-- Tour Selection Modal (Top Right Corner) -->
 <div id="tour-selection-modal" class="tour-modal-backdrop">
-    <div class="tour-modal-sheet">
-        <div class="sheet-handle"></div>
-        <h2>Explore Our School</h2>
+    <div class="tour-modal-content">
+        <div class="tour-header">
+            <h2>Explore Our School</h2>
+           
+        </div>
         <p class="subtitle">Select one section to begin the tour</p>
         
-        <div class="tour-options-grid-compact">
+          <div class="tour-options-grid-compact">
             <button class="tour-option-btn-compact" data-topic="curriculum" data-link="Curriculum.html">
                 <i class="fas fa-book-open"></i>
                 <span>Curriculum</span>
@@ -6556,6 +7417,7 @@ function initAllComponents() {
     initNavbarTextEffect();
     initCarousel();
     initProgressBar();
+     initAchievementAnimation(); // Add this line
     initBlogCarousel();
     initTestimonialCarousel();
     initGSAPScrollAnimation();
@@ -6578,7 +7440,26 @@ function initAllComponents() {
         }, 250);
     });
 }
-
+function optimizeForMobile() {
+    const isMobile = window.innerWidth <= 768;
+    const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+    
+    if (isMobile || isTablet) {
+        // Reduce animation complexity for achievement section on mobile
+        const achievementSection = document.getElementById('achievementSection');
+        if (achievementSection) {
+            achievementSection.style.marginTop = '20px';
+            
+            // Simplify animation for mobile
+            if (isMobile) {
+                const cards = document.querySelectorAll('.achievement-card');
+                cards.forEach(card => {
+                    card.style.transition = 'all 0.5s ease';
+                });
+            }
+        }
+    }
+}
 // ===== LEADERSHIP SECTION GSAP ANIMATION =====
 function initLeadershipAnimation() {
     const container = document.querySelector(".horizontal-container");
@@ -6615,7 +7496,7 @@ function initLeadershipAnimation() {
                 trigger: "#leadershipSection",
                 start: "top top",
                 end: () => `+=${scrollDistance}`,
-                scrub: 2.5,
+                scrub: 0.5,
                 pin: true,
                 pinSpacing: true,
                 anticipatePin: 1,
@@ -6640,7 +7521,7 @@ function initLeadershipAnimation() {
                 trigger: "#leadershipSection",
                 start: "top top",
                 end: () => `+=${scrollDistance}`,
-                scrub: 2.5,
+                scrub: 0.5,
                 markers: false,
                 id: "leadership-images"
             }
@@ -6649,14 +7530,14 @@ function initLeadershipAnimation() {
         // Image opacity transitions
         imageTransition.to(chairmanFrame, {
             opacity: 0,
-            duration: 0.5,
+            duration: 0.45,
             ease: "power2.out"
-        }, 0.3)
+        }, 0.45)
         .to(directorFrame, {
             opacity: 1,
-            duration: 0.5,
+            duration: 0.45,
             ease: "power2.out"
-        }, 0.3);
+        }, 0.45);
 
     } else if (isTablet && !isMobile) {
         // TABLET: Simplified animation
@@ -7615,7 +8496,105 @@ function initTestimonialCarousel() {
     
     testimonialCarousel.addEventListener('mouseleave', () => testimonialStartAuto());
 }
-
+//here i am placing hall of fame  ====//
+function initAchievementAnimation() {
+    const cards = document.querySelectorAll('.achievement-card');
+    const scrollSpace = document.querySelector('.scroll-space');
+    
+    if (!scrollSpace || cards.length === 0) return;
+    
+    const isMobile = window.innerWidth <= 768;
+    
+    // Set initial transition for all cards with slower duration
+    cards.forEach(card => {
+        card.style.transition = 'all 1.8s cubic-bezier(0.4, 0, 0.2, 1)'; // Increased from 1.2s to 1.8s
+    });
+    
+    // Simple ScrollTrigger for pinning with longer duration
+    ScrollTrigger.create({
+        trigger: scrollSpace,
+        start: "top top",
+        end: () => `+=${scrollSpace.offsetHeight * 1.8}`, // Increased from 1.2 to 1.8
+        scrub: true,
+        pin: true,
+        pinSpacing: false,
+        id: "simple-achievement-pin",
+        onUpdate: (self) => {
+            const progress = self.progress;
+            const totalCards = cards.length;
+            
+            cards.forEach((card, index) => {
+                // Calculate individual progress for each card (staggered)
+                const cardProgress = (progress * totalCards * 0.8) - index; // Reduced multiplier for slower progression
+                
+                if (cardProgress > 0.2 && cardProgress < 0.8) { // Wider active range
+                    // Card is active - scale up and bring to front
+                    const scale = 1 + cardProgress * 0.08; // Slower scaling
+                    card.style.transform = `scale(${scale})`;
+                    card.style.opacity = '1';
+                    card.style.filter = 'brightness(1.1)';
+                    card.style.zIndex = totalCards - index + 10;
+                    card.classList.remove('exit-effect');
+                } else if (cardProgress >= 0.8 && cardProgress < 2.0) { // Extended exit range
+                    // Card is exiting - one by one with staggered timing
+                    const exitProgress = (cardProgress - 0.8) / 1.2; // Slower exit
+                    const exitValue = Math.min(1, exitProgress);
+                    
+                    // Apply exit transformation
+                    card.style.transform = `
+                        translateX(${-120 * exitValue}vw) 
+                        rotate(${-20 * exitValue}deg) 
+                        scale(${1 - (0.5 * exitValue)})
+                    `;
+                    card.style.opacity = `${1 - exitValue * 0.8}`; // Slower fade
+                    card.style.filter = `brightness(${1.1 - (0.1 * exitValue)})`;
+                    card.style.zIndex = totalCards - index;
+                } else if (cardProgress >= 2.0) {
+                    // Card has fully exited
+                    card.style.transform = 'translateX(-120vw) rotate(-20deg) scale(0.5)';
+                    card.style.opacity = '0';
+                    card.classList.add('exit-effect');
+                } else {
+                    // Card is upcoming or not yet active
+                    card.style.transform = 'scale(1)';
+                    card.style.opacity = '1';
+                    card.style.filter = 'brightness(1)';
+                    card.style.zIndex = totalCards - index;
+                    card.classList.remove('exit-effect');
+                }
+            });
+        },
+        onLeave: () => {
+            // When leaving section, ensure all cards have exited
+            cards.forEach((card, index) => {
+                // Stagger the final exit animation with longer delays
+                setTimeout(() => {
+                    card.style.transform = 'translateX(-120vw) rotate(-20deg) scale(0.5)';
+                    card.style.opacity = '0';
+                    card.classList.add('exit-effect');
+                }, index * 300); // Increased from 200ms to 300ms
+            });
+        },
+        onEnterBack: () => {
+            // Reset cards when coming back in reverse order with longer delays
+            cards.forEach((card, index) => {
+                const reverseIndex = cards.length - 1 - index;
+                setTimeout(() => {
+                    card.classList.remove('exit-effect');
+                    card.style.transform = 'scale(1)';
+                    card.style.opacity = '1';
+                    card.style.filter = 'brightness(1)';
+                }, reverseIndex * 150); // Increased from 100ms to 150ms
+            });
+        }
+    });
+    
+    // Adjust scroll area height for proper scrolling - increase height for slower animation
+    const totalCardsHeight = cards[0].offsetHeight * cards.length;
+    const viewportHeight = window.innerHeight;
+    // Increased height to accommodate slower exit
+    scrollSpace.style.height = `${totalCardsHeight + viewportHeight * 2.2}px`; // Increased from 1.5 to 2.2
+}
 // ===== GSAP SCROLL ANIMATION LOGIC =====
 function initGSAPScrollAnimation() {
     // Check if mobile - disable complex animations on mobile
@@ -7708,71 +8687,71 @@ function initGSAPScrollAnimation() {
     } else {
         // Desktop: full animations
         // 0.0 - 1.0: Image collapse
-        tl.to(".header-reveal", { opacity: 0, y: -50, duration: 0.5, ease: "power1.in" }, 0)
-        tl.to(".image-1", { x: dx1_to_target, rotationY: 0, z: -10, opacity: 0, ease: "power1.inOut" }, 0)
-        tl.to(".image-2", { x: dx2_to_target, rotationY: 0, z: -20, opacity: 0, ease: "power1.inOut" }, 0)
-        tl.to(".image-3", { x: dx3_to_target, rotationY: 0, z: -30, opacity: 0, ease: "power1.inOut" }, 0)
-        tl.to(".image-4", { x: dx4_to_target, rotationY: 0, z: -40, opacity: 0, ease: "power1.inOut" }, 0)
-        tl.to(".image-5", { rotationY: 0, z: 0, ease: "power1.inOut" }, 0)
-        tl.to(".arc-container", { x: "10%", opacity: 0, ease: "power2.inOut", duration: 1.0 }, 0)
+        tl.to(".header-reveal", { opacity: 0, y: -50, duration: 1.5, ease: "power1.in" }, 0)
+        tl.to(".image-1", { x: dx1_to_target, rotationY: 0, z: -10, opacity: 0, ease: "power1.inOut" }, 0.75)
+        tl.to(".image-2", { x: dx2_to_target, rotationY: 0, z: -20, opacity: 0, ease: "power1.inOut" }, 0.75)
+        tl.to(".image-3", { x: dx3_to_target, rotationY: 0, z: -30, opacity: 0, ease: "power1.inOut" }, 0.75)
+        tl.to(".image-4", { x: dx4_to_target, rotationY: 0, z: -40, opacity: 0, ease: "power1.inOut" }, 0.75)
+        tl.to(".image-5", { rotationY: 0, z: 0, ease: "power1.inOut" }, 1.5)
+        tl.to(".arc-container", { x: "10%", opacity: 0, ease: "power2.inOut", duration: 2.0 }, 0)
 
         // 0.5 - 2.5: Excellence reveal
-        tl.to(".text-reveal-container", {
-            opacity: 1,
-            duration: 1.0,
-            ease: "power2.out"
-        }, 0.5)
+     //   tl.to(".text-reveal-container", {
+     //       opacity: 1,
+     //       duration: 1.0,
+     //       ease: "power2.out"
+     //   }, 0.5)
 
-        tl.to(".text-reveal-container .word", {
-            x: 0,
-            opacity: 1,
-            stagger: 0.2,
-            duration: 0.6,
-            ease: "power2.out"
-        }, 0.5)
+     //   tl.to(".text-reveal-container .word", {
+     //       x: 0,
+     //       opacity: 1,
+      //      stagger: 0.2,
+      //      duration: 0.6,
+      //      ease: "power2.out"
+      //  }, 0.5)
 
         // 2.0 - 3.0: Excellence fades out
-        tl.to(".scene1-text", {
-            x: -200,
-            opacity: 0,
-            duration: 0.8,
-            ease: "power2.in"
-        }, 2.0)
+     //   tl.to(".scene1-text", {
+     //       x: -200,
+     //       opacity: 0,
+     //       duration: 0.8,
+     //       ease: "power2.in"
+    //    }, 2.0)
 
         // 2.5 - 3.0: Milestones scene slides in
         tl.to(".milestones-scene", {
             x: "0%",
             duration: 0.5,
             ease: "power2.out"
-        }, 2.5)
+        }, 1.0)
 
         // 3.0 - 4.0: Milestones text separates
-        tl.to(".scene2-small-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
-        tl.to(".scene2-left-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
-        tl.to(".scene2-right-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
-        tl.to(".scene2-sub-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 3.0)
+        tl.to(".scene2-small-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 1.5)
+        tl.to(".scene2-left-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 1.5)
+        tl.to(".scene2-right-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 1.5)
+        tl.to(".scene2-sub-text", { x: maxDistance, duration: 1.0, ease: "power1.inOut" }, 1.5)
 
         // 4.0 - 4.3: Semi-transparent Maroon Dot appears
         tl.to("#animatedDot", { 
             opacity: 0.95,
             duration: 0.3, 
             ease: "power2.out" 
-        }, 4.0)
+        }, 2.5)
 
         // 4.3 - 5.8: Dot expands
         tl.to("#animatedDot", {
             scale: 200,
-            duration: 1.5,
+            duration: 0.5,
             ease: "power1.inOut"
-        }, 4.3)
+        }, 2.8)
 
         // 5.0 - 5.8: Text fades out as dot expands
         tl.to([".scene2-small-text", ".scene2-left-text", ".scene2-right-text", ".scene2-sub-text", ".decoration"],
             {
                 opacity: 0,
-                duration: 0.8,
+                duration: 0.2,
                 ease: "power2.out"
-            }, 5.0)
+            }, 3.0)
 
         // 5.8 - 6.3: Progress bar appears
         tl.to("#progressHeader", {
@@ -7780,7 +8759,7 @@ function initGSAPScrollAnimation() {
             visibility: "visible",
             duration: 0.5,
             ease: "power2.out"
-        }, 5.8)
+        }, 3.5)
 
         // 6.3 - 7.3: Animate through the progress bar steps
         // Step 1
@@ -7809,7 +8788,7 @@ function initGSAPScrollAnimation() {
                 const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
                 fillLine.style.width = `${percentage}%`;
             }
-        }, null, 6.3)
+        }, null, 4.0)
         
         // Step 2
         tl.call(() => {
@@ -7837,7 +8816,7 @@ function initGSAPScrollAnimation() {
                 const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
                 fillLine.style.width = `${percentage}%`;
             }
-        }, null, 6.6)
+        }, null, 5.0)
         
         // Step 3
         tl.call(() => {
@@ -7865,7 +8844,7 @@ function initGSAPScrollAnimation() {
                 const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
                 fillLine.style.width = `${percentage}%`;
             }
-        }, null, 6.9)
+        }, null, 6.0)
         
         // Step 4
         tl.call(() => {
@@ -7893,7 +8872,7 @@ function initGSAPScrollAnimation() {
                 const percentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
                 fillLine.style.width = `${percentage}%`;
             }
-        }, null, 7.2)
+        }, null, 7.0)
 
         // 7.3 - 7.8: Progress bar fades out
         tl.to("#progressHeader", {
@@ -7901,7 +8880,7 @@ function initGSAPScrollAnimation() {
             visibility: "hidden",
             duration: 0.5,
             ease: "power2.in"
-        }, 7.3)
+        }, 8.0)
 
         // 7.8 - 8.3: Dot shrinks back
         tl.to("#animatedDot", {
@@ -7949,37 +8928,7 @@ function initGSAPScrollAnimation() {
             ease: "power2.out"
         }, 10.8)
 
-        // 11.3 - 11.8: Final text with dot appears
-        tl.to(".final-text-dot-container", {
-            opacity: 1,
-            duration: 0.5,
-            ease: "power2.out"
-        }, 11.3)
-
-        // 11.8 - 12.3: Hold final text with dot
-        tl.to({}, { duration: 0.5 }, 11.8)
-
-        // 12.3 - 12.8: Final text with dot fades out, top left dot appears
-        tl.to(".final-text-dot-container", {
-            opacity: 0,
-            duration: 0.5,
-            ease: "power2.in"
-        }, 12.3)
-
-        tl.to("#animatedDot", {
-            opacity: 0,
-            duration: 0.5,
-            ease: "power2.in"
-        }, 12.3)
-
-        tl.to(".final-dot", {
-            opacity: 0.9,
-            scale: 1,
-            duration: 0.5,
-            ease: "power2.out",
-            backgroundColor: "rgba(128, 0, 0, 0.9)"
-        }, 12.3)
-
+      
         // CRITICAL FIX: DON'T fade out the milestones scene
         // 12.8 - 13.3: Keep milestones scene visible but don't change its opacity
         tl.to({}, { duration: 0.5 }, 12.8) // Just empty duration, no opacity change
