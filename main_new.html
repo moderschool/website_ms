@@ -5649,171 +5649,251 @@ body.tour-modal-open {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-/* ===== LEGACY CELEBRATION BANNER STYLES ===== */
-.legacy-banner {
-    width: 100%;
-    background: linear-gradient(135deg, var(--primary-maroon) 0%, var(--secondary-dark-maroon) 100%);
-    padding: 25px 20px;
-    position: relative;
-    overflow: hidden;
-    z-index: 90;
-    margin-top: 40px;
-    box-shadow: 0 5px 20px rgba(128, 0, 0, 0.3);
-    border-top: 2px solid var(--secondary-gold);
-    border-bottom: 2px solid var(--secondary-gold);
-}
 
-.banner-content {
+/* ===== 53-YEAR ANNIVERSARY BANNER STYLES ===== */
+.royal-banner {
+    width: 100%;
+    height: 140px;
+    background: radial-gradient(circle, var(--royal-maroon) 0%, var(--deep-maroon) 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 20px;
+    border-top: 2px solid var(--gold-leaf);
+    border-bottom: 2px solid var(--gold-leaf);
+    overflow: hidden;
     position: relative;
-    z-index: 2;
+    margin: 40px 0;
+    z-index: 10;
 }
 
-.banner-text {
-    color: var(--text-white);
-    font-size: 2.2rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    opacity: 0.9;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.legacy-number {
+.content-inner {
     display: flex;
     align-items: center;
-    gap: 5px;
-    perspective: 1000px;
+    gap: 12px;
+    z-index: 5;
 }
 
-.legacy-number span {
-    display: inline-block;
-    font-size: 5.5rem;
-    font-weight: 900;
-    color: var(--secondary-gold-light);
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-    position: relative;
-    line-height: 1;
+.prefix {
+    font-family: 'Cinzel', serif;
+    color: #fff;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
-.number-5 {
-    animation: numberFloat 3s ease-in-out infinite, numberGlow 2s ease-in-out infinite;
-    animation-delay: 0.5s;
+/* Tightly packed SVG for the numbers */
+.number-svg {
+    width: 110px;
+    height: 80px;
 }
 
-.number-3 {
-    animation: numberFloat 3s ease-in-out infinite, numberGlow 2s ease-in-out infinite;
-    animation-delay: 1s;
+.digit {
+    font-family: 'Bodoni Moda', serif;
+    font-size: 90px;
+    font-weight: 600;
+    font-style: italic;
+    fill: none;
+    stroke: var(--gold-leaf);
+    stroke-width: 2;
+    stroke-dasharray: 500;
+    stroke-dashoffset: 500;
 }
 
-@keyframes numberFloat {
-    0%, 100% {
-        transform: translateY(0) rotateY(0deg);
-    }
-    25% {
-        transform: translateY(-8px) rotateY(10deg);
-    }
-    50% {
-        transform: translateY(4px) rotateY(-5deg);
-    }
-    75% {
-        transform: translateY(-4px) rotateY(5deg);
-    }
+/* Sequential Writing Animation */
+.num-5 { animation: draw 1.8s ease-in-out forwards; }
+.num-3 { animation: draw 1.8s ease-in-out 0.8s forwards; }
+
+@keyframes draw {
+    0% { stroke-dashoffset: 500; fill: rgba(212, 175, 55, 0); }
+    60% { stroke-dashoffset: 0; fill: rgba(212, 175, 55, 0); }
+    100% { stroke-dashoffset: 0; fill: var(--gold-leaf); }
 }
 
-@keyframes numberGlow {
-    0%, 100% {
-        text-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
-                     0 0 40px rgba(255, 215, 0, 0.3);
-    }
-    50% {
-        text-shadow: 0 0 30px rgba(255, 215, 0, 0.8),
-                     0 0 60px rgba(255, 215, 0, 0.5),
-                     0 0 80px rgba(255, 215, 0, 0.3);
-    }
+.suffix {
+    font-family: 'Bodoni Moda', serif;
+    color: var(--gold-leaf);
+    font-size: 2rem;
+    font-style: italic;
+    font-weight: 600;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 2.4s forwards;
+    white-space: nowrap;
 }
 
-.banner-glow {
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+/* Elegant Shimmer line */
+.shimmer {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    left: -100%;
+    width: 30%;
     height: 100%;
-    background: radial-gradient(circle at center, transparent 30%, rgba(255, 215, 0, 0.1) 70%);
-    animation: glowPulse 4s ease-in-out infinite;
-    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+    transform: skewX(-20deg);
+    animation: move 6s infinite linear;
 }
 
-@keyframes glowPulse {
-    0%, 100% {
-        opacity: 0.3;
-    }
-    50% {
-        opacity: 0.7;
-    }
+@keyframes move {
+    0% { left: -100%; }
+    30% { left: 120%; }
+    100% { left: 120%; }
 }
 
-/* Mobile Responsive Styles */
+/* Add the CSS variables if not already present */
+:root {
+    /* Add these to your existing :root variables */
+    --royal-maroon: #4a0000;
+    --deep-maroon: #2a0000;
+    --gold-leaf: #d4af37;
+}
+
+/* Responsive Styles */
 @media (max-width: 768px) {
-    .legacy-banner {
-        padding: 20px 15px;
-        margin-top: 30px;
+    .royal-banner {
+        height: 120px;
+        margin: 30px 0;
     }
     
-    .banner-content {
-        gap: 15px;
-        flex-wrap: wrap;
+    .content-inner {
+        transform: scale(0.85);
+        gap: 8px;
     }
     
-    .banner-text {
-        font-size: 1.5rem;
-        letter-spacing: 1px;
+    .prefix {
+        font-size: 1.3rem;
     }
     
-    .legacy-number span {
-        font-size: 4rem;
+    .number-svg {
+        width: 90px;
+        height: 65px;
+    }
+    
+    .digit {
+        font-size: 75px;
+    }
+    
+    .suffix {
+        font-size: 1.6rem;
     }
 }
 
 @media (max-width: 480px) {
-    .legacy-banner {
-        padding: 15px 10px;
-        margin-top: 20px;
+    .royal-banner {
+        height: 100px;
+        margin: 20px 0;
     }
     
-    .banner-content {
-        gap: 10px;
+    .content-inner {
+        transform: scale(0.7);
+        gap: 6px;
     }
     
-    .banner-text {
+    .prefix {
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+    
+    .number-svg {
+        width: 70px;
+        height: 50px;
+    }
+    
+    .digit {
+        font-size: 60px;
+    }
+    
+    .suffix {
         font-size: 1.2rem;
-        letter-spacing: 0.5px;
+    }
+}
+/* Cursive text styles */
+.cursive-text {
+    font-family: 'Bodoni Moda', 'Cursive', 'Brush Script MT', cursive;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+
+/* Update existing styles */
+.prefix {
+    font-family: 'Bodoni Moda', 'Cursive', 'Brush Script MT', cursive;
+    font-style: italic;
+    color: #fff;
+    font-size: 1.8rem; /* Slightly larger for cursive */
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.suffix {
+    font-family: 'Bodoni Moda', 'Cursive', 'Brush Script MT', cursive;
+    font-style: italic;
+    color: var(--gold-leaf);
+    font-size: 2.2rem; /* Slightly larger */
+    font-weight: 600;
+    opacity: 0;
+    animation: fadeIn 1s ease-out 2.4s forwards;
+    white-space: nowrap;
+}
+
+/* Responsive cursive adjustments */
+@media (max-width: 768px) {
+    .prefix {
+        font-size: 1.4rem;
+        letter-spacing: 1.5px;
     }
     
-    .legacy-number span {
-        font-size: 3rem;
-    }
-    
-    .legacy-number {
-        gap: 3px;
+    .suffix {
+        font-size: 1.8rem;
     }
 }
 
-/* Tablet Styles */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .legacy-banner {
-        padding: 22px 18px;
+@media (max-width: 480px) {
+    .prefix {
+        font-size: 1.1rem;
+        letter-spacing: 1px;
     }
     
-    .banner-text {
+    .suffix {
+        font-size: 1.4rem;
+    }
+}
+/* ===== SIMPLE LEADERSHIP HEADING ===== */
+.leadership-heading-simple {
+    text-align: center;
+    padding: 60px 20px 30px 20px;
+    background: var(--bg-cream);
+    position: relative;
+    z-index: 100;
+}
+
+.leadership-heading-simple h2 {
+    font-size: 2.5rem;
+    color: var(--text-maroon);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.leadership-heading-simple p {
+    color: var(--text-light-maroon);
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .leadership-heading-simple {
+        padding: 40px 15px 20px 15px;
+    }
+    
+    .leadership-heading-simple h2 {
         font-size: 1.8rem;
     }
     
-    .legacy-number span {
-        font-size: 4.5rem;
+    .leadership-heading-simple p {
+        font-size: 1rem;
     }
 }
 </style>
@@ -5954,7 +6034,21 @@ body.tour-modal-open {
             <div class="progress-container">
                 <div class="progress-bar"></div>
             </div>
+ <!-- 53-YEAR ANNIVERSARY BANNER -->
+  <!-- 53-YEAR ANNIVERSARY BANNER -->
+<div class="royal-banner" id="anniversaryBanner">
+    <div class="shimmer"></div>
+    <div class="content-inner cursive-text">
+        <span class="prefix cursive-text">Celebrating</span>
+        
+        <svg class="number-svg" viewBox="0 0 110 100">
+            <text x="35" y="80" text-anchor="middle" class="digit num-5">5</text>
+            <text x="95" y="80" text-anchor="middle" class="digit num-3">3</text>
+        </svg>
 
+        <span class="suffix cursive-text">Years of Legacy</span>
+    </div>
+</div>
             <section class="achievement-section" >
     <div class="scroll-space" >
         <div class="sticky-box">
@@ -5997,21 +6091,34 @@ body.tour-modal-open {
         </div>
     </div>
 </section>  <br> <br>
-<!-- Legacy Celebration Banner -->
-<div class="legacy-banner">
-    <div class="banner-content">
-        <span class="banner-text">Celebrating</span>
-        <div class="legacy-number">
-            <span class="number-5">5</span>
-            <span class="number-3">3</span>
-        </div>
-        <span class="banner-text">years of legacy</span>
-    </div>
-    <div class="banner-glow"></div>
-</div>
+
    <!-- GSAP Scroll Animation Section -->
 <section class="scroll-area" >
-    <div class="sticky-container" >
+    <!-- NEW BANNER SECTION -->
+    <div class="impact-banner" id="impactBanner">
+        <div class="banner-content">
+            <div class="banner-text-container">
+                <h2 class="banner-title">Forging Excellence Since 1973</h2>
+                <p class="banner-subtitle">50+ Years of Educational Leadership & Innovation</p>
+            </div>
+            <div class="banner-stats">
+                <div class="stat-item">
+                    <span class="stat-number">5000+</span>
+                    <span class="stat-label">Students</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">Results</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Activities</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END NEW BANNER -->
+      <div class="sticky-container" >
         <h1 class="header-reveal">Forging a highly significant impact</h1>
         <!--div class="text-reveal-container scene1-text">
             <span class="word">Excellence</span>
@@ -6625,7 +6732,11 @@ body.tour-modal-open {
                     </div>
                 </div>
             </section>
-            
+  <!-- Add this heading before the leadership section -->
+<div class="leadership-heading-simple">
+    <h2>Our Leadership</h2>
+    <p>Guiding our institution with Vision and Direction</p>
+</div>         
   <!-- LEADERSHIP SECTION - HORIZONTAL SCROLL WITH FLIPPING IMAGE -->
 <section class="leadership-section" id="leadershipSection">
     <!-- Desktop: Common image frame that moves between sides -->
@@ -7419,13 +7530,14 @@ function initAllComponents() {
     initProgressBar();
      initAchievementAnimation(); // Add this line
     initBlogCarousel();
+    loadAnniversaryFonts();
     initTestimonialCarousel();
     initGSAPScrollAnimation();
     initEnquiryModal();
     initLeadershipAnimation();
     initWebsiteTour();
     activateFooterEnquiryLinks();
-    
+     initAnniversaryAnimation();
     // Add resize listener for re-optimization
     let resizeTimer;
     window.addEventListener('resize', function() {
@@ -7460,6 +7572,58 @@ function optimizeForMobile() {
         }
     }
 }
+ function initAnniversaryAnimation() {
+        const banner = document.getElementById('anniversaryBanner');
+        if (!banner) return;
+        
+        // Reset animations
+        gsap.set(banner.querySelectorAll('.digit'), { strokeDasharray: 500, strokeDashoffset: 500, fill: 'rgba(212, 175, 55, 0)' });
+        gsap.set(banner.querySelector('.suffix'), { opacity: 0 });
+        
+        // Create animation timeline
+        let anniversaryTL = gsap.timeline({
+            onComplete: function() {
+                // Schedule next animation after 10 seconds
+                setTimeout(() => {
+                    initAnniversaryAnimation();
+                }, 5000); // 10 seconds delay before repeating
+            }
+        });
+        
+        // Sequential writing animation for numbers
+        anniversaryTL.to(banner.querySelector('.num-5'), {
+            strokeDashoffset: 0,
+            duration: 1.8,
+            ease: "power2.inOut"
+        })
+        .to(banner.querySelector('.num-5'), {
+            fill: 'var(--gold-leaf)',
+            duration: 0.3
+        }, "-=0.5")
+        .to(banner.querySelector('.num-3'), {
+            strokeDashoffset: 0,
+            duration: 1.8,
+            ease: "power2.inOut"
+        }, "-=1.0")
+        .to(banner.querySelector('.num-3'), {
+            fill: 'var(--gold-leaf)',
+            duration: 0.3
+        }, "-=0.5")
+        .to(banner.querySelector('.suffix'), {
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out"
+        }, "-=0.5");
+        
+        // Loop the shimmer animation
+        gsap.to(banner.querySelector('.shimmer'), {
+            x: '400%',
+            duration: 6,
+            repeat: -1,
+            ease: "none"
+        });
+    }
+   
 // ===== LEADERSHIP SECTION GSAP ANIMATION =====
 function initLeadershipAnimation() {
     const container = document.querySelector(".horizontal-container");
@@ -8675,25 +8839,26 @@ function initGSAPScrollAnimation() {
     });
 
     // Simplified animation for tablet
-    if (isTablet) {
-        // Tablet: simpler animations
-        tl.to(".header-reveal", { opacity: 0, y: -30, duration: 0.3, ease: "power1.in" }, 0)
-        tl.to(".arc-container", { opacity: 0, duration: 0.5 }, 0)
-        tl.to(".text-reveal-container", { opacity: 1, duration: 0.5 }, 0.3)
-        tl.to(".milestones-scene", { x: "0%", duration: 0.3 }, 1.0)
-        tl.to("#progressHeader", { opacity: 1, visibility: "visible", duration: 0.3 }, 2.0)
-        tl.to(".final-text-dot-container", { opacity: 1, duration: 0.3 }, 3.0)
-        tl.to(".final-dot", { opacity: 0.9, duration: 0.3 }, 4.0)
-    } else {
+   if (isTablet) {
+    // Tablet: simpler animations - delay everything by 1 second
+    tl.to(".header-reveal", { opacity: 0, y: -30, duration: 0.3, ease: "power1.in" }, 1.0) // Already delayed by 1s
+    tl.to(".arc-container", { opacity: 0, duration: 0.5 }, 1.0) // Delay images by 1s (changed from 0)
+    tl.to(".text-reveal-container", { opacity: 1, duration: 0.5 }, 1.3) // Delay text reveal by 1.3s
+    tl.to(".milestones-scene", { x: "0%", duration: 0.3 }, 2.0) // Delay milestones scene by 2s (changed from 1.0)
+    tl.to("#progressHeader", { opacity: 1, visibility: "visible", duration: 0.3 }, 3.0) // Keep same relative timing
+    tl.to(".final-text-dot-container", { opacity: 1, duration: 0.3 }, 4.0) // Keep same relative timing
+    tl.to(".final-dot", { opacity: 0.9, duration: 0.3 }, 5.0) // Keep same relative timing
+} 
+    else {
         // Desktop: full animations
         // 0.0 - 1.0: Image collapse
-        tl.to(".header-reveal", { opacity: 0, y: -50, duration: 1.5, ease: "power1.in" }, 0)
-        tl.to(".image-1", { x: dx1_to_target, rotationY: 0, z: -10, opacity: 0, ease: "power1.inOut" }, 0.75)
-        tl.to(".image-2", { x: dx2_to_target, rotationY: 0, z: -20, opacity: 0, ease: "power1.inOut" }, 0.75)
-        tl.to(".image-3", { x: dx3_to_target, rotationY: 0, z: -30, opacity: 0, ease: "power1.inOut" }, 0.75)
-        tl.to(".image-4", { x: dx4_to_target, rotationY: 0, z: -40, opacity: 0, ease: "power1.inOut" }, 0.75)
-        tl.to(".image-5", { rotationY: 0, z: 0, ease: "power1.inOut" }, 1.5)
-        tl.to(".arc-container", { x: "10%", opacity: 0, ease: "power2.inOut", duration: 2.0 }, 0)
+        tl.to(".header-reveal", { opacity: 0, y: -50, duration: 1.5, ease: "power1.in" }, 1.0)
+        tl.to(".image-1", { x: dx1_to_target, rotationY: 0, z: -10, opacity: 0, ease: "power1.inOut" }, 1.5)
+        tl.to(".image-2", { x: dx2_to_target, rotationY: 0, z: -20, opacity: 0, ease: "power1.inOut" }, 1.5)
+        tl.to(".image-3", { x: dx3_to_target, rotationY: 0, z: -30, opacity: 0, ease: "power1.inOut" }, 1.5)
+        tl.to(".image-4", { x: dx4_to_target, rotationY: 0, z: -40, opacity: 0, ease: "power1.inOut" }, 1.5)
+        tl.to(".image-5", { rotationY: 0, z: 0, ease: "power1.inOut" }, 2.5)
+        tl.to(".arc-container", { x: "10%", opacity: 0, ease: "power2.inOut", duration: 2.0 }, 1.0)
 
         // 0.5 - 2.5: Excellence reveal
      //   tl.to(".text-reveal-container", {
@@ -8723,7 +8888,7 @@ function initGSAPScrollAnimation() {
             x: "0%",
             duration: 0.5,
             ease: "power2.out"
-        }, 1.0)
+        }, 2.25)
 
         // 3.0 - 4.0: Milestones text separates
         tl.to(".scene2-small-text", { x: -maxDistance, duration: 1.0, ease: "power1.inOut" }, 1.5)
@@ -9185,7 +9350,13 @@ function initEnquiryModal() {
         loadingSpinner.style.display = 'none';
     }
 }
-
+// Add font imports to head
+function loadAnniversaryFonts() {
+    const link = document.createElement('link');
+    link.href = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Bodoni+Moda:ital,wght@1,600;1,700&family=Dancing+Script:wght@600&display=swap';
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+}
 // ===== WEBSITE TOUR LOGIC =====
 function initWebsiteTour() {
     const introTourModal = document.getElementById('intro-tour-modal');
@@ -9720,5 +9891,3 @@ window.addEventListener('resize', function() {
 </script>
 </body>
 </html>
-
-
