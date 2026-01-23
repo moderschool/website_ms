@@ -441,7 +441,7 @@ body {
     #introPage .student { width: 140px; height: 180px; }
     #introPage .students-container.final-position .student-2 { transform: translateX(calc(-50% - 100px)); }
     #introPage .students-container.final-position .student-3 { transform: translateX(calc(-50% + 100px)); }
-    #introPage .logo { width: 250px; height: 250px; }
+    #introPage .logo { width: 500px; height: 500px; }
     #introPage .asterisk-1, #introPage .asterisk-3 { font-size: 2.4rem; }
     #introPage .asterisk-2 { font-size: 7rem; }
     #introPage .skip-button { padding: 10px 20px; font-size: 0.9rem; border-radius: 6px; }
@@ -450,14 +450,14 @@ body {
 @media (max-width: 480px) {
     #introPage .text-container { transform: translateY(-40px); }
     #introPage .main-text { gap: 4px; margin-bottom: 12px; }
-    #introPage .truth, #introPage .devote, #introPage .dedicate { font-size: 2.2rem; }
+    #introPage .truth, #introPage .devote, #introPage .dedicate { font-size: 1.5rem; }
     #introPage .orange-dot { width: 5px; height: 5px; }
     #introPage .line-container { width: 92%; height: 1.5px; }
     #introPage .maroon-dot { width: 8px; height: 8px; }
     #introPage .student { width: 100px; height: 140px; }
     #introPage .students-container.final-position .student-2 { transform: translateX(calc(-50% - 75px)); }
     #introPage .students-container.final-position .student-3 { transform: translateX(calc(-50% + 75px)); }
-    #introPage .logo { width: 180px; height: 180px; }
+    #introPage .logo { width: 360px; height: 360px;margin-top:-50px; }
     #introPage .asterisk-1, #introPage .asterisk-3 { font-size: 2rem; }
     #introPage .asterisk-2 { font-size: 5rem; }
     #introPage .skip-button { padding: 8px 16px; font-size: 0.8rem; bottom: 15px; right: 15px; border-radius: 5px; border-width: 1.5px; }
@@ -3860,213 +3860,7 @@ body.menu-open .admission-btn.menu-only {
         max-height: 90vh;
     }
 }
-/* Tour Navigation for other pages */
-#tourNavigation {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background: var(--primary-maroon);
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px;
-    z-index: 10000;
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 14px;
-}
 
-#tourNavigation button {
-    border: none;
-    padding: 5px 10px;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    transition: all 0.3s;
-}
-
-#tourNavigation button:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-#backToTour {
-    background: white;
-    color: var(--primary-maroon);
-}
-
-#endTour {
-    background: transparent;
-    color: white;
-    border: 1px solid white !important;
-}
-/* Compact Tour Options */
-.tour-options-grid-compact {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 25px;
-    max-height: 300px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-/* Custom scrollbar for tour options */
-.tour-options-grid-compact::-webkit-scrollbar {
-    width: 6px;
-}
-
-.tour-options-grid-compact::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 3px;
-}
-
-.tour-options-grid-compact::-webkit-scrollbar-thumb {
-    background: var(--primary-maroon);
-    border-radius: 3px;
-}
-
-.tour-options-grid-compact::-webkit-scrollbar-thumb:hover {
-    background: var(--secondary-dark-maroon);
-}
-
-.tour-option-btn-compact {
-    position: relative;
-    background: var(--primary-white);
-    border: 1.5px solid var(--border-light);
-    border-radius: 12px;
-    padding: 12px 8px;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--secondary-dark-maroon);
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 80px;
-}
-
-.tour-option-btn-compact:hover,
-.tour-option-btn-compact.selected {
-    border: 2px solid var(--border-maroon);
-    padding: 11px 7px;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.15);
-}
-
-.tour-option-btn-compact i {
-    font-size: 18px;
-    margin-bottom: 6px;
-    color: var(--text-maroon);
-    display: block;
-}
-
-.tour-option-btn-compact span {
-    display: block;
-    line-height: 1.2;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.tour-check-mark-compact {
-    position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 16px;
-    height: 16px;
-    background: var(--primary-maroon);
-    color: var(--text-white);
-    border-radius: 50%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-}
-
-.tour-option-btn-compact.selected .tour-check-mark-compact {
-    display: flex;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .tour-options-grid-compact {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        max-height: 250px;
-    }
-    
-    .tour-option-btn-compact {
-        padding: 10px 6px;
-        height: 75px;
-        font-size: 11px;
-    }
-    
-    .tour-option-btn-compact i {
-        font-size: 16px;
-        margin-bottom: 4px;
-    }
-}
-
-@media (max-width: 480px) {
-    .tour-options-grid-compact {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 6px;
-        max-height: 220px;
-    }
-    
-    .tour-option-btn-compact {
-        padding: 8px 4px;
-        height: 70px;
-        font-size: 10px;
-        border-radius: 10px;
-    }
-    
-    .tour-option-btn-compact i {
-        font-size: 14px;
-        margin-bottom: 3px;
-    }
-    
-    .tour-check-mark-compact {
-        width: 14px;
-        height: 14px;
-        font-size: 9px;
-        top: 4px;
-        right: 4px;
-    }
-}
-
-/* Tour Modal Sheet adjustments for compact grid */
-.tour-modal-sheet {
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-}
-
-#tour-selection-modal .tour-modal-sheet {
-    padding: 20px 15px 25px;
-}
-
-#tour-selection-modal h2 {
-    font-size: 1.5rem;
-    margin-bottom: 8px;
-}
-
-#tour-selection-modal .subtitle {
-    font-size: 0.9rem;
-    margin-bottom: 20px;
-    color: var(--text-light-maroon);
-}
-/* Add to your existing CSS */
 
 /* Sidebar modifications */
 .sidebar {
@@ -4962,288 +4756,7 @@ body.menu-open .admission-btn.menu-only {
 .achievement-card:nth-child(3) { transition-delay: 0.2s !important; }
 .achievement-card:nth-child(4) { transition-delay: 0.3s !important; }
 .achievement-card:nth-child(5) { transition-delay: 0.4s !important; }
-/* ===== FIXED TOUR STYLES ===== */
-/* Remove red shadows and fix positioning */
-.tour-modal-backdrop {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 2002;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.2s ease-out;
-}
 
-.tour-modal-content,
-.tour-modal-sheet {
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-    animation: slideUp 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-    max-width: 500px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-    margin: 20px;
-}
-
-.tour-modal-sheet {
-    max-width: 600px;
-}
-
-.tour-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 20px;
-}
-
-.tour-header h2 {
-    margin: 0;
-    font-size: 20px;
-    color: #1a1a1a;
-    flex: 1;
-    margin-right: 24px;
-}
-
-.tour-close-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #888;
-    padding: 0;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.2s;
-}
-
-.tour-close-btn:hover {
-    color: #333;
-}
-
-/* Button styles - No red shadows */
-.tour-actions,
-.tour-controls {
-    display: flex;
-    gap: 12px;
-    margin-top: 24px;
-}
-
-.tour-actions button,
-.tour-controls button,
-.tour-navigate-btn {
-    flex: 1;
-    padding: 6px 6px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    background: transparent;
-    border: 1.5px solid;
-}
-
-.tour-primary-btn,
-.tour-navigate-btn {
-    border-color: var(--primary-maroon);
-    color: var(--primary-maroon);
-}
-
-.tour-secondary-btn,
-#back-to-tour-modal {
-    border-color: rgba(128, 0, 0, 0.2);
-    color: #666;
-}
-
-#end-tour-btn {
-    border-color: rgba(255, 68, 68, 0.3);
-    color: #ff4444;
-}
-
-/* Hover effects without red shadows */
-.tour-actions button:hover,
-.tour-controls button:hover,
-.tour-navigate-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Neutral shadow */
-}
-
-.tour-primary-btn:hover,
-.tour-navigate-btn:hover {
-    background: rgba(128, 0, 0, 0.04);
-}
-
-.tour-secondary-btn:hover,
-#back-to-tour-modal:hover {
-    background: rgba(128, 0, 0, 0.02);
-    border-color: rgba(128, 0, 0, 0.3);
-}
-
-#end-tour-btn:hover {
-    background: rgba(255, 68, 68, 0.02);
-    border-color: rgba(255, 68, 68, 0.4);
-}
-
-/* Tour options grid */
-.tour-options-grid-compact {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 12px;
-    margin: 20px 0;
-    max-height: 300px;
-    overflow-y: auto;
-    padding-right: 8px;
-}
-
-.tour-option-btn-compact {
-    position: relative;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1.5px solid rgba(128, 0, 0, 0.12);
-    border-radius: 14px;
-    padding: 18px 10px;
-    text-align: center;
-    font-size: 12px;
-    font-weight: 500;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 90px;
-    overflow: hidden;
-}
-
-.tour-option-btn-compact:hover {
-    background: rgba(255, 255, 255, 0.8);
-    border-color: rgba(128, 0, 0, 0.25);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08); /* Neutral shadow */
-}
-
-.tour-option-btn-compact.selected {
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid var(--primary-maroon);
-    padding: 17px 9px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1); /* Neutral shadow */
-}
-
-.tour-option-btn-compact i {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color: var(--primary-maroon);
-    opacity: 0.8;
-    transition: all 0.25s;
-}
-
-.tour-option-btn-compact:hover i,
-.tour-option-btn-compact.selected i {
-    opacity: 1;
-    transform: scale(1.1);
-}
-
-.tour-check-mark-compact {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 18px;
-    height: 18px;
-    background: var(--primary-maroon);
-    color: white;
-    border-radius: 50%;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-}
-
-.tour-option-btn-compact.selected .tour-check-mark-compact {
-    display: flex;
-    animation: checkPop 0.2s ease-out;
-}
-
-@keyframes checkPop {
-    0% { transform: scale(0); }
-    80% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from { 
-        transform: translateY(20px);
-        opacity: 0; 
-    }
-    to { 
-        transform: translateY(0);
-        opacity: 1; 
-    }
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .tour-options-grid-compact {
-        grid-template-columns: repeat(2, 1fr);
-        max-height: 250px;
-    }
-    
-    .tour-option-btn-compact {
-        height: 80px;
-        padding: 16px 8px;
-        font-size: 11px;
-    }
-    
-    .tour-actions,
-    .tour-controls {
-        flex-direction: column;
-    }
-    
-    .tour-modal-content,
-    .tour-modal-sheet {
-        padding: 20px;
-        margin: 10px;
-        width: 95%;
-    }
-}
-
-@media (max-width: 480px) {
-    .tour-options-grid-compact {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-    }
-    
-    .tour-option-btn-compact {
-        height: 75px;
-        padding: 14px 6px;
-    }
-    
-    .tour-header h2 {
-        font-size: 18px;
-    }
-}
-
-/* Make sure body doesn't scroll when modal is open */
-body.tour-modal-open {
-    overflow: hidden;
-}
 /* ===== PROGRESS HEADER GRID LAYOUT ===== */
 .progress-header-grid {
     display: grid;
@@ -5351,64 +4864,7 @@ body.tour-modal-open {
         font-size: 0.9rem;
     }
 }
-/* ===== UPDATED TOUR MODAL STYLES ===== */
-.tour-modal-backdrop {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 2002;
-    align-items: flex-start; /* Align to top */
-    justify-content: flex-end; /* Align to right */
-    animation: fadeIn 0.2s ease-out;
-    padding: 20px;
-}
 
-/* Intro Modal - Top Right Corner */
-#intro-tour-modal .tour-modal-content {
-    background: var(--primary-white);
-    border-radius: 16px;
-    width: 90%;
-    max-width: 400px; /* Reduced from 480px */
-    padding: 24px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    animation: slideDownFromTop 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative;
-    margin-top: 80px; /* Space from top */
-    margin-right: 20px;
-    transform-origin: top right;
-}
-
-/* Tour Selection Modal - Top Right Corner */
-#tour-selection-modal .tour-modal-content {
-    background: var(--primary-white);
-    border-radius: 16px;
-    width: 90%;
-    max-width: 500px; /* Reduced from 600px */
-    padding: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    animation: slideDownFromTop 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    position: relative;
-    margin-top: 80px; /* Space from top */
-    margin-right: 20px;
-    transform-origin: top right;
-    max-height: 80vh;
-    overflow-y: auto;
-}
-
-/* Remove the bottom sheet styles and use regular content */
-#tour-selection-modal .tour-modal-sheet {
-    display: none; /* Hide bottom sheet */
-}
-
-#tour-selection-modal .tour-modal-content {
-    display: block; /* Show as regular content */
-}
 
 /* Remove sheet handle */
 .sheet-handle {
@@ -5427,228 +4883,7 @@ body.tour-modal-open {
     }
 }
 
-/* Adjust tour options grid for top-right positioning */
-.tour-options-grid-compact {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 10px;
-    margin: 20px 0;
-    max-height: 300px;
-    overflow-y: auto;
-    padding-right: 8px;
-}
 
-/* Adjust tour option buttons for compact top-right layout */
-.tour-option-btn-compact {
-    position: relative;
-    background: rgba(255, 255, 255, 0.6);
-    border: 1.5px solid rgba(128, 0, 0, 0.12);
-    border-radius: 12px;
-    padding: 12px 8px;
-    text-align: center;
-    font-size: 11px;
-    font-weight: 500;
-    color: #333;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 80px;
-    overflow: hidden;
-}
-
-.tour-option-btn-compact:hover,
-.tour-option-btn-compact.selected {
-    border: 2px solid var(--primary-maroon);
-    padding: 11px 7px;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.tour-option-btn-compact i {
-    font-size: 18px;
-    margin-bottom: 8px;
-    color: var(--primary-maroon);
-    opacity: 0.8;
-    transition: all 0.25s;
-}
-
-/* Adjust tour header for top-right */
-.tour-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.tour-header h2 {
-    margin: 0;
-    font-size: 20px;
-    color: var(--secondary-dark-maroon);
-    flex: 1;
-}
-
-.tour-close-btn {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    color: #888;
-    padding: 0;
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.2s;
-}
-
-.tour-close-btn:hover {
-    color: #333;
-}
-
-/* Tour actions at the bottom */
-.tour-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.tour-actions button {
-    flex: 1;
-    padding: 10px 15px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    border: 1.5px solid;
-}
-
-/* Mobile adjustments for top-right positioning */
-@media (max-width: 768px) {
-    .tour-modal-backdrop {
-        padding: 10px;
-        align-items: flex-start;
-        justify-content: center; /* Center on mobile */
-    }
-    
-    #intro-tour-modal .tour-modal-content,
-    #tour-selection-modal .tour-modal-content {
-        width: 95%;
-        max-width: 95%;
-        margin-top: 60px; /* Less space on mobile */
-        margin-right: 0; /* No right margin on mobile */
-        padding: 20px 15px;
-    }
-    
-    .tour-options-grid-compact {
-        grid-template-columns: repeat(3, 1fr);
-        max-height: 250px;
-        gap: 8px;
-    }
-    
-    .tour-option-btn-compact {
-        height: 75px;
-        padding: 10px 6px;
-        font-size: 10px;
-    }
-    
-    .tour-option-btn-compact i {
-        font-size: 16px;
-        margin-bottom: 6px;
-    }
-    
-    .tour-actions {
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 480px) {
-    #intro-tour-modal .tour-modal-content,
-    #tour-selection-modal .tour-modal-content {
-        margin-top: 50px;
-        padding: 18px 12px;
-    }
-    
-    .tour-options-grid-compact {
-        grid-template-columns: repeat(2, 1fr);
-        max-height: 200px;
-    }
-    
-    .tour-option-btn-compact {
-        height: 70px;
-        padding: 8px 4px;
-        font-size: 9px;
-    }
-    
-    .tour-option-btn-compact i {
-        font-size: 14px;
-        margin-bottom: 4px;
-    }
-    
-    .tour-check-mark-compact {
-        width: 14px;
-        height: 14px;
-        font-size: 9px;
-        top: 4px;
-        right: 4px;
-    }
-}
-
-/* Active Tour View - Also from top right */
-#active-tour-view {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--primary-white);
-    display: none;
-    flex-direction: column;
-    z-index: 2003;
-}
-
-.tour-view-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 40px 24px;
-    text-align: center;
-}
-
-/* Tour Controls - Position at bottom */
-.tour-controls {
-    position: fixed;
-    bottom: 24px;
-    right: 20px;
-    display: flex;
-    gap: 10px;
-    z-index: 2004;
-}
-
-.tour-controls button {
-    padding: 10px 16px;
-    border-radius: 8px;
-    background: var(--primary-white);
-    border: 1px solid var(--border-light);
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.25s;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.tour-controls button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
 
 /* ===== 53-YEAR ANNIVERSARY BANNER STYLES ===== */
 .royal-banner {
@@ -5894,6 +5129,628 @@ body.tour-modal-open {
     
     .leadership-heading-simple p {
         font-size: 1rem;
+    }
+}
+/* ===== WEBSITE TOUR STYLES ===== */
+.tour-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    z-index: 2002;
+    align-items: flex-start;
+    justify-content: flex-end;
+    animation: fadeIn 0.2s ease-out;
+    padding: 20px;
+}
+
+.tour-modal-content {
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 450px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    animation: slideDownFromTop 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    margin-top: 80px;
+    margin-right: 20px;
+    transform-origin: top right;
+    border: 1px solid rgba(128, 0, 0, 0.1);
+}
+
+.tour-header {
+    margin-bottom: 20px;
+}
+
+.tour-header h2 {
+    color: var(--text-dark-maroon);
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    line-height: 1.3;
+}
+
+.subtitle {
+    color: var(--text-light-maroon);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 10px 0;
+}
+
+.tour-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.tour-actions button {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 2px solid;
+}
+
+.tour-primary-btn {
+    background: var(--primary-maroon);
+    color: white;
+    border-color: var(--primary-maroon) !important;
+}
+
+.tour-primary-btn:hover:not(:disabled) {
+    background: var(--hover-maroon);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.2);
+}
+
+.tour-secondary-btn {
+    background: white;
+    color: var(--text-dark-maroon);
+    border-color: rgba(128, 0, 0, 0.2) !important;
+}
+
+.tour-secondary-btn:hover {
+    background: rgba(128, 0, 0, 0.02);
+    border-color: rgba(128, 0, 0, 0.3) !important;
+    transform: translateY(-2px);
+}
+
+.tour-primary-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* Tour options grid */
+.tour-options-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+    max-height: 300px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.tour-option-btn-compact {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid rgba(128, 0, 0, 0.15);
+    border-radius: 12px;
+    padding: 20px 12px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark-maroon);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.tour-option-btn-compact:hover {
+    transform: translateY(-3px);
+    border-color: var(--primary-maroon);
+    box-shadow: 0 8px 20px rgba(128, 0, 0, 0.15);
+}
+
+.tour-option-btn-compact.selected {
+    background: rgba(128, 0, 0, 0.05);
+    border-color: var(--primary-maroon);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(128, 0, 0, 0.2);
+}
+
+.tour-option-btn-compact i {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: var(--primary-maroon);
+    transition: all 0.3s;
+}
+
+.tour-option-btn-compact:hover i,
+.tour-option-btn-compact.selected i {
+    transform: scale(1.1);
+}
+
+.tour-check-mark-compact {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 20px;
+    height: 20px;
+    background: var(--primary-maroon);
+    color: white;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.tour-option-btn-compact.selected .tour-check-mark-compact {
+    display: flex;
+    animation: checkPop 0.3s ease-out;
+}
+
+@keyframes checkPop {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Subtopic buttons */
+.subtopic-btn {
+    background: white;
+    border: 2px solid rgba(128, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dark-maroon);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+
+.subtopic-btn:hover {
+    border-color: var(--primary-maroon);
+    background: rgba(128, 0, 0, 0.02);
+    transform: translateY(-1px);
+}
+
+.subtopic-btn.selected {
+    background: rgba(128, 0, 0, 0.08);
+    border-color: var(--primary-maroon);
+    color: var(--text-maroon);
+    font-weight: 600;
+}
+
+/* Active Tour View */
+#active-tour-view {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    display: none;
+    flex-direction: column;
+    z-index: 2003;
+}
+
+.tour-view-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 30px;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.tour-controls {
+    position: fixed;
+    bottom: 24px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 2004;
+}
+
+.tour-controls button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    background: white;
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tour-controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.tour-navigate-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: var(--primary-maroon);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.tour-navigate-btn:hover {
+    background: var(--hover-maroon);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(128, 0, 0, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideDownFromTop {
+    from {
+        transform: translateY(-20px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Body class when modal is open */
+body.tour-modal-open {
+    overflow: hidden;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .tour-modal-backdrop {
+        padding: 10px;
+        align-items: flex-start;
+        justify-content: center;
+    }
+    
+    .tour-modal-content {
+        width: 95%;
+        max-width: 95%;
+        margin-top: 60px;
+        margin-right: 0;
+        padding: 25px 20px;
+    }
+    
+    .tour-options-grid-compact {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        max-height: 250px;
+    }
+    
+    .tour-option-btn-compact {
+        height: 90px;
+        padding: 16px 10px;
+        font-size: 12px;
+    }
+    
+    .tour-option-btn-compact i {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+    
+    .tour-header h2 {
+        font-size: 20px;
+    }
+    
+    .tour-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .tour-actions button {
+        padding: 14px 16px;
+        font-size: 15px;
+    }
+    
+    .subtopic-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .tour-controls {
+        flex-direction: column;
+        width: 90%;
+        right: 5%;
+        bottom: 20px;
+    }
+    
+    .tour-controls button {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 16px;
+    }
+    
+    .tour-navigate-btn {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 1rem;
+        min-height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tour-options-grid-compact {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        max-height: 220px;
+    }
+    
+    .tour-option-btn-compact {
+        height: 85px;
+        padding: 14px 8px;
+        font-size: 11px;
+    }
+    
+    .tour-option-btn-compact i {
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+    
+    .tour-check-mark-compact {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        top: 6px;
+        right: 6px;
+    }
+    
+    .tour-modal-content {
+        margin-top: 50px;
+        padding: 22px 16px;
+    }
+    
+    .tour-view-content {
+        padding: 30px 20px;
+    }
+}
+/* Update these existing footer styles */
+
+
+/* Social Media Icons */
+.social-media {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.social-media a {
+    color: white;
+    font-size: 20px;
+    transition: color 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.social-media a:hover {
+    color: #f8d7b3;
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* ===== FOOTER COLUMNS LAYOUT ===== */
+.footer-columns {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 columns on desktop */
+    gap: 30px;
+    background-color: #5d2a2a;
+    color: white;
+    padding: 40px 20px;
+    overflow-x: hidden;
+    position: relative;
+    z-index: 100;
+    width: 100%;
+}
+
+/* Tablet View (768px - 1024px) */
+@media (max-width: 1024px) {
+    .footer-columns {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns per row on tablet */
+        gap: 25px;
+    }
+    
+    /* Make 5 columns stack properly on tablet */
+    .footer-col:nth-child(1) { grid-area: 1 / 1 / 2 / 2; } /* Academics - Row 1, Col 1 */
+    .footer-col:nth-child(2) { grid-area: 1 / 2 / 2 / 3; } /* Informations - Row 1, Col 2 */
+    .footer-col:nth-child(3) { grid-area: 2 / 1 / 3 / 2; } /* Campus Life - Row 2, Col 1 */
+    .footer-col:nth-child(4) { grid-area: 2 / 2 / 3 / 3; } /* About Us - Row 2, Col 2 */
+    .footer-col:nth-child(5) { grid-area: 3 / 1 / 4 / 2; } /* Parents Corner - Row 3, Col 1 */
+    .footer-col:nth-child(6) { grid-area: 3 / 2 / 4 / 3; } /* Connect - Row 3, Col 2 */
+}
+
+/* Mobile View (768px and below) */
+@media (max-width: 768px) {
+    .footer-columns {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns per row on mobile */
+        gap: 20px;
+        padding: 30px 15px;
+    }
+    
+    /* Adjust grid areas for better mobile layout */
+    .footer-col:nth-child(1) { grid-area: 1 / 1 / 2 / 2; } /* Academics */
+    .footer-col:nth-child(2) { grid-area: 1 / 2 / 2 / 3; } /* Informations */
+    .footer-col:nth-child(3) { grid-area: 2 / 1 / 3 / 2; } /* Campus Life */
+    .footer-col:nth-child(4) { grid-area: 2 / 2 / 3 / 3; } /* About Us */
+    .footer-col:nth-child(5) { grid-area: 3 / 1 / 4 / 2; } /* Parents Corner */
+    .footer-col:nth-child(6) { grid-area: 3 / 2 / 4 / 3; } /* Connect */
+}
+
+/* Very Small Mobile View (480px and below) */
+@media (max-width: 480px) {
+    .footer-columns {
+        grid-template-columns: 1fr; /* Single column on very small screens */
+        gap: 15px;
+        padding: 25px 10px;
+    }
+    
+    /* Stack all columns in single column */
+    .footer-col:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
+    .footer-col:nth-child(2) { grid-area: 2 / 1 / 3 / 2; }
+    .footer-col:nth-child(3) { grid-area: 3 / 1 / 4 / 2; }
+    .footer-col:nth-child(4) { grid-area: 4 / 1 / 5 / 2; }
+    .footer-col:nth-child(5) { grid-area: 5 / 1 / 6 / 2; }
+    .footer-col:nth-child(6) { grid-area: 6 / 1 / 7 / 2; }
+}
+
+/* Individual Footer Column */
+.footer-col {
+    margin-bottom: 20px;
+    min-width: 0; /* Prevent overflow */
+}
+
+/* Footer Column Content */
+.footer-col h3 {
+    font-size: 18px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 10px;
+    color: #f8d7b3;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 8px;
+}
+
+.footer-col a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+    font-size: 14px;
+    display: inline-block;
+    padding: 2px 0;
+}
+
+.footer-col a:hover {
+    color: #f8d7b3;
+    text-decoration: underline;
+}
+/* ===== ARRANGE IMAGES BORDER STYLING ===== */
+.arc-image {
+    border: 2px solid rgba(255, 255, 255, 0.1);
+   
+    /* Initial State: Standard Rounded Rectangle */
+    border-radius: 40px 40px 40px 40px / 40px 40px 40px 40px;
+    
+    /* Continuous Animation */
+    animation: flexibleAllEdges 6s infinite ease-in-out;
+}
+
+/* Apply different delays for staggered animation */
+.image-1 { animation-delay: 0s; }
+.image-2 { animation-delay: 1.5s; }
+.image-3 { animation-delay: 2s; }
+.image-4 { animation-delay: 2.5s; }
+.image-5 { animation-delay: 3s; }
+
+@keyframes flexibleAllEdges {
+    0%, 100% {
+        /* Balanced Rectangle */
+        border-radius: 40px 40px 50px 40px / 40px 40px 60px 40px;
+    }
+    25% {
+        /* Morphing Top Vertices (Wide Trapezium) */
+        border-radius: 180px 180px 40px 40px / 120px 120px 40px 40px;
+    }
+    50% {
+        /* Morphing Side Vertices (All corners stretching) */
+        border-radius: 100px 40px 100px 40px / 40px 100px 40px 100px;
+    }
+    75% {
+        /* Morphing Bottom Vertices (Inverted Trapezium) */
+        border-radius: 40px 40px 180px 180px / 40px 40px 120px 120px;
+    }
+}
+
+/* Ensure images inside the cards maintain proper appearance */
+.arc-image img {
+    border-radius: inherit; /* Inherit border radius from parent */
+}
+
+/* Optional: Add a subtle overlay for better text contrast */
+.arc-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: inherit;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Optional: Add a glowing effect on hover */
+.arc-image:hover {
+    box-shadow: 0 20px 50px rgba(128, 0, 0, 0.4), 0 0 30px rgba(212, 175, 55, 0.3);
+    border-color: rgba(212, 175, 55, 0.3);
+}
+
+/* Disable animation on mobile for better performance */
+@media (max-width: 768px) {
+    .arc-image {
+        animation: none;
+        border-radius: 20px;
+        border-width: 1px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
     }
 }
 </style>
@@ -6414,108 +6271,59 @@ body.tour-modal-open {
     </div>
 </div>
 
-<!-- Tour Selection Modal (Bottom Center) -->
-<!-- Tour Selection Modal (Bottom Center) -->
-<!-- Tour Selection Modal (Top Right Corner) -->
+<!-- Website Tour Modals -->
+<!-- Intro Modal -->
+<div id="intro-tour-modal" class="tour-modal-backdrop">
+    <div class="tour-modal-content">
+        <div class="tour-header">
+            <h2>Need Help Finding Something?</h2>
+        </div>
+        <div style="text-align: center; margin: 20px 0;">
+            <div style="font-size: 48px; color: var(--primary-maroon); margin-bottom: 15px;">🤔</div>
+            <p style="color: var(--text-dark-maroon); font-size: 16px; line-height: 1.5;">
+                It looks like you might be exploring our website.<br>
+                Would you like a guided tour to help you find what you're looking for?
+            </p>
+        </div>
+        <div class="tour-actions">
+            <button id="start-intro-tour" class="tour-primary-btn">
+                <i class="fas fa-compass"></i> Yes, Show Me Around
+            </button>
+            <button id="skip-intro-tour" class="tour-secondary-btn">
+                No, I'll Explore Myself
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Tour Selection Modal -->
 <div id="tour-selection-modal" class="tour-modal-backdrop">
     <div class="tour-modal-content">
         <div class="tour-header">
-            <h2>Explore Our School</h2>
-           
+            <h2>What Would You Like to Explore?</h2>
         </div>
-        <p class="subtitle">Select one section to begin the tour</p>
+        <p class="subtitle" style="text-align: center; margin-bottom: 25px; color: var(--text-light-maroon);">
+            Select an area you're interested in learning more about
+        </p>
         
-          <div class="tour-options-grid-compact">
-            <button class="tour-option-btn-compact" data-topic="curriculum" data-link="Curriculum.html">
-                <i class="fas fa-book-open"></i>
-                <span>Curriculum</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="calendar" data-link="calendar.html">
-                <i class="fas fa-calendar-alt"></i>
-                <span>Calendar</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="timetable" data-link="exam.html">
-                <i class="fas fa-clock"></i>
-                <span>Time Table</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="fees" data-link="fees.html">
-                <i class="fas fa-money-bill"></i>
-                <span>Tuition Fees</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="cbse" data-link="cbse.html">
-                <i class="fas fa-graduation-cap"></i>
-                <span>CBSE Corner</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="disclosures" data-link="mandatory_disc.html">
-                <i class="fas fa-file-alt"></i>
-                <span>Mandatory Disclosures</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="alumni" data-link="alumni.html">
-                <i class="fas fa-users"></i>
-                <span>Alumni Network</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="student-counsel" data-link="student_council.html">
-                <i class="fas fa-user-friends"></i>
-                <span>Student Counsel</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="events" data-link="event.html">
-                <i class="fas fa-calendar-check"></i>
-                <span>Events</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="athletics" data-link="sport.html">
-                <i class="fas fa-running"></i>
-                <span>Athletics</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="facilities" data-link="campus_facilities.html">
-                <i class="fas fa-building"></i>
-                <span>Campus Facilities</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="history" data-link="history.html">
-                <i class="fas fa-history"></i>
-                <span>Our History</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="vision" data-link="vision.html">
-                <i class="fas fa-eye"></i>
-                <span>Vision & Direction</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="leadership" data-link="leadership.html">
-                <i class="fas fa-star"></i>
-                <span>Leadership</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="admin" data-link="admin.html">
-                <i class="fas fa-user-tie"></i>
-                <span>Admin Team</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="location" data-link="campus_location.html">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>Campus Location</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
-            <button class="tour-option-btn-compact" data-topic="branches" data-link="branches.html">
-                <i class="fas fa-code-branch"></i>
-                <span>Other Branches</span>
-                <div class="tour-check-mark-compact">✓</div>
-            </button>
+        <div class="tour-options-grid-compact" id="topicSelectionGrid">
+            <!-- Options will be populated by JavaScript -->
         </div>
         
-        <div class="tour-actions">
-            <button id="start-selected-tour" class="tour-primary-btn" disabled>Start Tour</button>
-            <button id="skip-tour-selection" class="tour-secondary-btn">Skip</button>
+        <div id="subtopicSelection" style="display: none; margin: 20px 0;">
+            <h4 style="color: var(--text-maroon); margin-bottom: 15px; font-size: 16px;">
+                What specifically would you like to know about <span id="selectedTopicName"></span>?
+            </h4>
+            <div class="subtopic-grid" id="subtopicGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"></div>
+        </div>
+        
+        <div class="tour-actions" style="margin-top: 25px;">
+            <button id="start-selected-tour" class="tour-primary-btn" disabled>
+                <i class="fas fa-play-circle"></i> Start Tour
+            </button>
+            <button id="skip-tour-selection" class="tour-secondary-btn">
+                <i class="fas fa-times"></i> End Tour
+            </button>
         </div>
     </div>
 </div>
@@ -6523,98 +6331,15 @@ body.tour-modal-open {
 <!-- Active Tour View -->
 <div id="active-tour-view" class="tour-view">
     <div class="tour-view-content">
-        <!-- Dynamic content injected here -->
+        <!-- Dynamic content will be injected here -->
     </div>
     <div class="tour-controls">
-        <button id="back-to-tour-modal"><i class="fas fa-arrow-left"></i> Back to Tour</button>
-        <button id="end-tour-btn"><i class="fas fa-times"></i> End Tour</button>
-    </div>
-</div>
-
-<!-- Tour Selection Modal (Bottom Sheet) -->
-<div id="tour-selection-modal" class="tour-modal-backdrop">
-    <div class="tour-modal-sheet">
-        <div class="sheet-handle"></div>
-        <h2>Explore Our School</h2>
-        <p class="subtitle">Select one section to begin the tour</p>
-        <!-- In tour-selection-modal, replace the entire grid with: -->
-<div class="tour-options-grid">
-    <button class="tour-option-btn" data-topic="curriculum" data-link="Curriculum.html">
-        <i class="fas fa-book-open"></i>Curriculum<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="calendar" data-link="calendar.html">
-        <i class="fas fa-calendar-alt"></i>Calendar<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="timetable" data-link="exam.html">
-        <i class="fas fa-clock"></i>Time Table<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="fees" data-link="fees.html">
-        <i class="fas fa-money-bill"></i>Tuition Fees<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="cbse" data-link="cbse.html">
-        <i class="fas fa-graduation-cap"></i>CBSE Corner<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="disclosures" data-link="mandatory_disc.html">
-        <i class="fas fa-file-alt"></i>Disclosures<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="alumni" data-link="alumni.html">
-        <i class="fas fa-users"></i>Alumni Network<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="student-counsel" data-link="student_council.html">
-        <i class="fas fa-user-friends"></i>Student Counsel<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="events" data-link="event.html">
-        <i class="fas fa-calendar-check"></i>Events<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="athletics" data-link="sport.html">
-        <i class="fas fa-running"></i>Athletics<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="facilities" data-link="campus_facilities.html">
-        <i class="fas fa-building"></i>Campus Facilities<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="history" data-link="history.html">
-        <i class="fas fa-history"></i>Our History<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="vision" data-link="vision.html">
-        <i class="fas fa-eye"></i>Vision & Direction<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="leadership" data-link="leadership.html">
-        <i class="fas fa-star"></i>Leadership<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="admin" data-link="admin.html">
-        <i class="fas fa-user-tie"></i>Admin Team<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="connect" data-link="#">
-        <i class="fas fa-link"></i>Connect<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="location" data-link="campus_location.html">
-        <i class="fas fa-map-marker-alt"></i>Campus Location<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="career" data-link="career.html">
-        <i class="fas fa-briefcase"></i>Career<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="tc-verification" data-link="tc_verification.html">
-        <i class="fas fa-file-certificate"></i>TC Verification<div class="tour-check-mark">✓</div>
-    </button>
-    <button class="tour-option-btn" data-topic="branches" data-link="branches.html">
-        <i class="fas fa-code-branch"></i>Other Branches<div class="tour-check-mark">✓</div>
-    </button>
-</div>
-        <div class="tour-actions">
-            <button id="start-selected-tour" class="tour-primary-btn" disabled>Start Tour</button>
-            <button id="skip-tour-selection" class="tour-secondary-btn">Skip</button>
-        </div>
-    </div>
-</div>
-
-<!-- Active Tour View -->
-<div id="active-tour-view" class="tour-view">
-    <div class="tour-view-content">
-        <!-- Dynamic content injected here -->
-    </div>
-    <div class="tour-controls">
-        <button id="back-to-tour-modal"><i class="fas fa-arrow-left"></i> Back to Tour</button>
-        <button id="end-tour-btn"><i class="fas fa-times"></i> End Tour</button>
+        <button id="back-to-tour-modal">
+            <i class="fas fa-arrow-left"></i> Choose Different Topic
+        </button>
+        <button id="end-tour-btn">
+            <i class="fas fa-times"></i> End Tour
+        </button>
     </div>
 </div>
             <!-- TESTIMONIAL SECTION -->
@@ -6841,54 +6566,58 @@ body.tour-modal-open {
                    
                 </div>
             </div>
-            <div class="footer-columns">
-                <div class="footer-col">
-                    <h3>Academics</h3>
-                    <ul>
-                        <li><a href="curriculum.html">Curriculum</a></li>
-                        <li><a href="calendar.html">Calendar</a></li>
-                       <li><a href="exam.html">Time Table</a></li>
-                     </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Informations</h3>
-                    <ul>
-                        <li><a href="fees.html">Tuition Fees</a></li>
-                         <li><a href="cbse.html">CBSE Corner</a></li>
-                        <li><a href="mandatory_disc.html">Mandatory Disclosures</a></li>
-                        <li><a href="alumni.html">Alumni Network</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>Campus Life</h3>
-                    <ul>
-                        <li><a href="student_council.html">Student Counsel</a></li>
-                         <li><a href="event.html">Events</a></li>
-                        <li><a href="sport.html">Athletics</a></li>
-                        <li><a href="campus_facilities.html">Campus Facilities</a></li>
-                    </ul>
-                </div>
-                <div class="footer-col">
-                    <h3>About Us</h3>
-                    <ul>
-                        <li><a href="history.html">Our History</a></li>
-                        <li><a href="vision.html">Vision & Direction</a></li>
-                        <li><a href="leadership.html">Leadership</a></li>
-                        <li><a href="admin.html">Admin Team</a></li>
-                        
-                    </ul>
-                </div>
-               
-                <div class="footer-col">
-                    <h3>Connect</h3>
-                    <ul>
-                        <li><a href="campus_location.html">Campus Location</a></li>
-                        <li><a href="career.html">Career</a></li>
-                        <li><a href="tc_verification.html">TC Verification</a></li>
-                         <li><a href="branches.html">Other Branches</a></li>
-                      </ul>
-                </div>
-            </div>
+      <!-- Update this part in your HTML -->
+<div class="footer-columns">
+    <!-- 5 columns total -->
+    <div class="footer-col">
+        <h3>Academics</h3>
+        <ul>
+            <li><a href="curriculum.html">Curriculum</a></li>
+            <li><a href="calendar.html">Calendar</a></li>
+            <li><a href="exam.html">Time Table</a></li>
+        </ul>
+    </div>
+    
+    <div class="footer-col">
+        <h3>Informations</h3>
+        <ul>
+            <li><a href="fees.html">Tuition Fees</a></li>
+            <li><a href="cbse.html">CBSE Corner</a></li>
+            <li><a href="mandatory_disc.html">Mandatory Disclosures</a></li>
+            <li><a href="alumni.html">Alumni Network</a></li>
+        </ul>
+    </div>
+    
+    <div class="footer-col">
+        <h3>Campus Life</h3>
+        <ul>
+            <li><a href="student_council.html">Student Counsel</a></li>
+            <li><a href="event.html">Events</a></li>
+            <li><a href="sport.html">Athletics</a></li>
+            <li><a href="campus_facilities.html">Campus Facilities</a></li>
+        </ul>
+    </div>
+    
+    <div class="footer-col">
+        <h3>About Us</h3>
+        <ul>
+            <li><a href="history.html">Our History</a></li>
+            <li><a href="vision.html">Vision & Direction</a></li>
+            <li><a href="leadership.html">Leadership</a></li>
+            <li><a href="admin.html">Admin Team</a></li>
+        </ul>
+    </div>
+    
+    <div class="footer-col">
+        <h3>Connect</h3>
+        <ul>
+            <li><a href="campus_location.html">Campus Location</a></li>
+            <li><a href="career.html">Career</a></li>
+            <li><a href="tc_verification.html">TC Verification</a></li>
+            <li><a href="branches.html">Other Branches</a></li>
+        </ul>
+    </div>
+</div>
             <div class="footer-bottom">
                 <div class="copyright">
                     <p>&copy; 2025 Modern School, Kota. All rights reserved.</p>
@@ -7535,7 +7264,6 @@ function initAllComponents() {
     initGSAPScrollAnimation();
     initEnquiryModal();
     initLeadershipAnimation();
-    initWebsiteTour();
     activateFooterEnquiryLinks();
      initAnniversaryAnimation();
     // Add resize listener for re-optimization
@@ -9357,498 +9085,6 @@ function loadAnniversaryFonts() {
     link.rel = 'stylesheet';
     document.head.appendChild(link);
 }
-// ===== WEBSITE TOUR LOGIC =====
-function initWebsiteTour() {
-    const introTourModal = document.getElementById('intro-tour-modal');
-    const tourSelectionModal = document.getElementById('tour-selection-modal');
-    const activeTourView = document.getElementById('active-tour-view');
-    
-    let inactivityTimeout;
-    const INACTIVITY_TIME = 10000; // 10 seconds of inactivity
-    let selectedTourTopic = null;
-    let hasSeenIntro = false;
-    let isUserActive = false;
-    let lastInteractionTime = Date.now();
-    let isTourActive = false;
-
-    // Mobile detection
-    const isMobile = window.innerWidth <= 768;
-
-    // Topic descriptions for the tour
-    const tourTopics = {
-        'curriculum': {
-            title: 'Curriculum',
-            description: 'Explore our comprehensive curriculum designed for holistic development and academic excellence.',
-            link: 'Curriculum.html'
-        },
-        'calendar': {
-            title: 'Academic Calendar',
-            description: 'Check our academic calendar for important dates, holidays, and school events throughout the year.',
-            link: 'calendar.html'
-        },
-        'timetable': {
-            title: 'Time Table',
-            description: 'View daily schedules and class timings for all grades and subjects.',
-            link: 'exam.html'
-        },
-        'fees': {
-            title: 'Tuition Fees',
-            description: 'Access detailed information about tuition fees, payment schedules, and financial policies.',
-            link: 'fees.html'
-        },
-        'cbse': {
-            title: 'CBSE Corner',
-            description: 'Important CBSE-related information, guidelines, and resources for students and parents.',
-            link: 'cbse.html'
-        },
-        'disclosures': {
-            title: 'Mandatory Disclosures',
-            description: 'Official disclosures and information as required by education authorities.',
-            link: 'mandatory_disc.html'
-        },
-        'alumni': {
-            title: 'Alumni Network',
-            description: 'Connect with our alumni community and stay updated with alumni activities.',
-            link: 'alumni.html'
-        },
-        'student-counsel': {
-            title: 'Student Counsel',
-            description: 'Learn about our student council, leadership opportunities, and student activities.',
-            link: 'student_council.html'
-        },
-        'events': {
-            title: 'School Events',
-            description: 'Discover upcoming events, celebrations, competitions, and cultural programs.',
-            link: 'event.html'
-        },
-        'athletics': {
-            title: 'Athletics & Sports',
-            description: 'Explore our sports facilities, athletic programs, and achievements in sports.',
-            link: 'sport.html'
-        },
-        'facilities': {
-            title: 'Campus Facilities',
-            description: 'Tour our state-of-the-art facilities including labs, library, and sports complexes.',
-            link: 'campus_facilities.html'
-        },
-        'history': {
-            title: 'Our History',
-            description: 'Learn about our rich history, legacy, and journey since establishment.',
-            link: 'history.html'
-        },
-        'vision': {
-            title: 'Vision & Direction',
-            description: 'Understand our vision, mission, and educational philosophy that guides us.',
-            link: 'vision.html'
-        },
-        'leadership': {
-            title: 'Leadership',
-            description: 'Meet our visionary leadership team guiding Modern School towards excellence.',
-            link: 'leadership.html'
-        },
-        'admin': {
-            title: 'Admin Team',
-            description: 'Meet our dedicated administration team committed to school management.',
-            link: 'admin.html'
-        },
-        'location': {
-            title: 'Campus Location',
-            description: 'Find our campus location, directions, and visit information.',
-            link: 'campus_location.html'
-        },
-        'branches': {
-            title: 'Other Branches',
-            description: 'Information about other branches of Modern School.',
-            link: 'branches.html'
-        }
-    };
-
-    // Simple function to update last interaction time
-    function updateLastInteraction() {
-        lastInteractionTime = Date.now();
-        isUserActive = true;
-        
-        // Clear any existing timeout
-        if (inactivityTimeout) {
-            clearTimeout(inactivityTimeout);
-        }
-        
-        // Set new timeout
-        if (!hasSeenIntro) {
-            inactivityTimeout = setTimeout(checkInactivity, INACTIVITY_TIME);
-        }
-    }
-
-    // Check if user has been inactive for required time
-    function checkInactivity() {
-        const currentTime = Date.now();
-        const timeSinceLastInteraction = currentTime - lastInteractionTime;
-        
-        if (timeSinceLastInteraction >= INACTIVITY_TIME && !hasSeenIntro) {
-            showIntroModal();
-        }
-    }
-
-    // Show intro modal after inactivity
-    function showIntroModal() {
-        // Don't show if user has already seen the intro
-        if (hasSeenIntro) return;
-        
-        // Don't show if any other modal is open
-        if (document.querySelector('.enquiry-modal-overlay.active') || 
-            document.querySelector('.full-detail-overlay.active')) {
-            // Try again in 5 seconds
-            setTimeout(() => {
-                if (!hasSeenIntro) {
-                    updateLastInteraction(); // Reset timer
-                }
-            }, 5000);
-            return;
-        }
-        
-        // Don't show if hamburger menu is open
-        if (document.body.classList.contains('menu-open')) {
-            // Try again in 5 seconds
-            setTimeout(() => {
-                if (!hasSeenIntro) {
-                    updateLastInteraction(); // Reset timer
-                }
-            }, 5000);
-            return;
-        }
-        
-        // Mark as seen and show modal
-        hasSeenIntro = true;
-        introTourModal.style.display = 'flex';
-        
-        // Add a class to body to prevent scrolling
-        document.body.classList.add('tour-modal-open');
-        
-        // Mobile adjustments
-        if (isMobile) {
-            const modalContent = introTourModal.querySelector('.tour-modal-content');
-            if (modalContent) {
-                modalContent.style.width = '90%';
-                modalContent.style.maxWidth = '400px';
-                modalContent.style.padding = '30px 20px';
-            }
-        }
-    }
-
-    // Initialize inactivity detection
-    function initInactivityDetection() {
-        console.log('Initializing website tour...');
-        
-        // Add event listeners for user interaction
-        const events = [
-            'mousemove',
-            'mousedown',
-            'scroll',
-            'keydown',
-            'touchstart',
-            'touchmove',
-            'click',
-            'wheel',
-            'DOMMouseScroll',
-            'mousewheel'
-        ];
-        
-        events.forEach(event => {
-            document.addEventListener(event, updateLastInteraction, { 
-                passive: true,
-                capture: true 
-            });
-        });
-        
-        // Check localStorage for previous tour
-        const lastTourDate = localStorage.getItem('modernSchoolLastTourDate');
-        const today = new Date().toDateString();
-        
-        if (lastTourDate !== today) {
-            // Start the inactivity timer after page load
-            setTimeout(() => {
-                if (!hasSeenIntro) {
-                    console.log('Starting inactivity timer...');
-                    updateLastInteraction(); // Start the timer
-                }
-            }, 2000); // Wait 2 seconds after page load
-        } else {
-            console.log('User already saw tour today.');
-        }
-    }
-
-    // Intro Modal Actions
-    document.getElementById('start-intro-tour')?.addEventListener('click', () => {
-        console.log('Starting tour...');
-        introTourModal.style.display = 'none';
-        tourSelectionModal.style.display = 'flex';
-        document.body.classList.remove('tour-modal-open');
-    });
-
-    document.getElementById('skip-intro-tour')?.addEventListener('click', () => {
-        console.log('Skipping tour...');
-        introTourModal.style.display = 'none';
-        localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
-        document.body.classList.remove('tour-modal-open');
-    });
-
-    // Tour Selection Logic
-    const startTourBtn = document.getElementById('start-selected-tour');
-    const tourOptionBtns = document.querySelectorAll('.tour-option-btn-compact');
-
-    // Mobile adjustments for tour selection
-    if (isMobile) {
-        const tourSheet = tourSelectionModal.querySelector('.tour-modal-sheet');
-        if (tourSheet) {
-            tourSheet.style.maxWidth = '100%';
-            tourSheet.style.borderRadius = '20px 20px 0 0';
-        }
-        
-        // Adjust grid for mobile
-        const tourGrid = document.querySelector('.tour-options-grid-compact');
-        if (tourGrid) {
-            tourGrid.style.gridTemplateColumns = 'repeat(2, 1fr)';
-            tourGrid.style.gap = '8px';
-            tourGrid.style.maxHeight = '300px';
-        }
-    }
-
-    if (tourOptionBtns.length > 0 && startTourBtn) {
-        tourOptionBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                tourOptionBtns.forEach(b => b.classList.remove('selected'));
-                btn.classList.add('selected');
-                selectedTourTopic = btn.dataset.topic;
-                startTourBtn.disabled = false;
-                
-                // Store the link in a data attribute on the button
-                startTourBtn.dataset.link = btn.dataset.link;
-            });
-            
-            // Mobile: add touch feedback
-            if (isMobile) {
-                btn.style.minHeight = '70px';
-                btn.style.padding = '12px 8px';
-            }
-        });
-
-        startTourBtn.addEventListener('click', () => {
-            if (!selectedTourTopic) return;
-            
-            // Get the link from the selected button
-            const selectedBtn = document.querySelector('.tour-option-btn-compact.selected');
-            const link = selectedBtn ? selectedBtn.dataset.link : null;
-            
-            // Start the tour
-            tourSelectionModal.style.display = 'none';
-            startTour(selectedTourTopic, link);
-        });
-    }
-    
-    document.getElementById('skip-tour-selection')?.addEventListener('click', () => {
-        tourSelectionModal.style.display = 'none';
-        localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
-        document.body.classList.remove('tour-modal-open');
-        // Reset for future visits
-        hasSeenIntro = false;
-    });
-
-    // Start the actual tour
-    function startTour(topic, link) {
-        const tourData = tourTopics[topic];
-        if (!tourData) return;
-
-        console.log('Starting tour for topic:', topic);
-        
-        // Update tour view content
-        const tourContent = document.querySelector('.tour-view-content');
-        if (tourContent) {
-            tourContent.innerHTML = `
-                <h2>${tourData.title}</h2>
-                <p>${tourData.description}</p>
-                <button class="tour-navigate-btn" style="margin-top: 20px; padding: 12px 24px; background: var(--primary-maroon); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s;">
-                    <i class="fas fa-external-link-alt" style="margin-right: 8px;"></i>
-                    Navigate to ${tourData.title}
-                </button>
-            `;
-            
-            // Mobile adjustments
-            if (isMobile) {
-                tourContent.querySelector('h2').style.fontSize = '1.5rem';
-                tourContent.querySelector('p').style.fontSize = '1rem';
-                tourContent.querySelector('.tour-navigate-btn').style.padding = '15px 20px';
-                tourContent.querySelector('.tour-navigate-btn').style.fontSize = '1rem';
-                tourContent.querySelector('.tour-navigate-btn').style.minHeight = '50px';
-            }
-            
-            // Add click event to navigate button
-            const navigateBtn = tourContent.querySelector('.tour-navigate-btn');
-            if (navigateBtn) {
-                navigateBtn.addEventListener('click', function() {
-                    // Store tour info in localStorage for the next page
-                    localStorage.setItem('tourActive', 'true');
-                    localStorage.setItem('currentTourTopic', topic);
-                    localStorage.setItem('tourReturnUrl', window.location.href);
-                    
-                    // Navigate to the page
-                    window.location.href = link;
-                });
-            }
-        }
-
-        // Show tour view
-        activeTourView.style.display = 'flex';
-        isTourActive = true;
-        
-        // Mobile adjustments for tour view
-        if (isMobile) {
-            const tourControls = document.querySelector('.tour-controls');
-            if (tourControls) {
-                tourControls.style.flexDirection = 'column';
-                tourControls.style.width = '90%';
-                tourControls.style.left = '5%';
-            }
-        }
-    }
-
-    // Tour View Controls
-    document.getElementById('back-to-tour-modal')?.addEventListener('click', () => {
-        activeTourView.style.display = 'none';
-        tourSelectionModal.style.display = 'flex';
-        if (tourOptionBtns.length > 0) {
-            tourOptionBtns.forEach(b => b.classList.remove('selected'));
-        }
-        selectedTourTopic = null;
-        if (startTourBtn) startTourBtn.disabled = true;
-    });
-
-    document.getElementById('end-tour-btn')?.addEventListener('click', endTour);
-
-    function endTour() {
-        activeTourView.style.display = 'none';
-        localStorage.removeItem('tourActive');
-        localStorage.removeItem('currentTourTopic');
-        localStorage.removeItem('tourReturnUrl');
-        localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
-        document.body.classList.remove('tour-modal-open');
-        isTourActive = false;
-        // Reset for future visits
-        hasSeenIntro = false;
-    }
-
-    // Close tour modals when clicking outside
-    [introTourModal, tourSelectionModal].forEach(modal => {
-        if (modal) {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                    if (modal === introTourModal) {
-                        localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
-                    }
-                    document.body.classList.remove('tour-modal-open');
-                    // Reset for future visits
-                    hasSeenIntro = false;
-                }
-            });
-        }
-    });
-
-    // Close tour with Escape key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            if (introTourModal.style.display === 'flex') {
-                introTourModal.style.display = 'none';
-                localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
-                document.body.classList.remove('tour-modal-open');
-            } else if (tourSelectionModal.style.display === 'flex') {
-                tourSelectionModal.style.display = 'none';
-                localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
-                document.body.classList.remove('tour-modal-open');
-            } else if (activeTourView.style.display === 'flex') {
-                endTour();
-            }
-        }
-    });
-
-    // Check if we're returning from a tour page
-    function checkTourReturn() {
-        const tourActive = localStorage.getItem('tourActive') === 'true';
-        const tourTopic = localStorage.getItem('currentTourTopic');
-        
-        if (tourActive && tourTopic) {
-            // Show tour navigation options
-            showTourNavigation(tourTopic);
-        }
-    }
-    
-    function showTourNavigation(topic) {
-        // Create a simple navigation bar for tour pages
-        const tourNav = document.createElement('div');
-        tourNav.id = 'tourNavigation';
-        tourNav.style.cssText = `
-            position: fixed;
-            top: 10px;
-            right: 10px;
-            background: var(--primary-maroon);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            z-index: 10000;
-            display: flex;
-            gap: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        `;
-        
-        // Mobile adjustments
-        if (isMobile) {
-            tourNav.style.flexDirection = 'column';
-            tourNav.style.right = '5px';
-            tourNav.style.top = '5px';
-            tourNav.style.padding = '8px 10px';
-            tourNav.style.gap = '5px';
-        }
-        
-        tourNav.innerHTML = `
-            <span style="margin-right: 10px;">Tour: ${tourTopics[topic]?.title || topic}</span>
-            <button id="backToTour" style="background: white; color: var(--primary-maroon); border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer;">Back to Tour</button>
-            <button id="endTour" style="background: transparent; color: white; border: 1px solid white; padding: 5px 10px; border-radius: 3px; cursor: pointer;">End Tour</button>
-        `;
-        
-        // Mobile button adjustments
-        if (isMobile) {
-            tourNav.querySelectorAll('button').forEach(btn => {
-                btn.style.padding = '8px 12px';
-                btn.style.minHeight = '36px';
-                btn.style.fontSize = '14px';
-            });
-        }
-        
-        document.body.appendChild(tourNav);
-        
-        // Add event listeners
-        document.getElementById('backToTour').addEventListener('click', () => {
-            const returnUrl = localStorage.getItem('tourReturnUrl') || 'index.html';
-            localStorage.removeItem('tourActive');
-            localStorage.removeItem('currentTourTopic');
-            window.location.href = returnUrl;
-        });
-        
-        document.getElementById('endTour').addEventListener('click', () => {
-            localStorage.removeItem('tourActive');
-            localStorage.removeItem('currentTourTopic');
-            localStorage.removeItem('tourReturnUrl');
-            localStorage.setItem('modernSchoolLastTourDate', new Date().toDateString());
-            document.getElementById('tourNavigation').remove();
-        });
-    }
-
-    // Initialize
-    setTimeout(() => {
-        initInactivityDetection();
-        checkTourReturn();
-    }, 1000); // Wait 1 second after page loads
-}
-
 // ===== ACTIVATE FOOTER ENQUIRY LINKS =====
 function activateFooterEnquiryLinks() {
     const footerEnquiryLinks = document.querySelectorAll('a[href="#enquiry-form"], .footer-col a[href="#"]');
@@ -9891,3 +9127,5 @@ window.addEventListener('resize', function() {
 </script>
 </body>
 </html>
+
+
